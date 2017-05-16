@@ -10,7 +10,12 @@ var PreheatingView = Backbone.View.extend({
 	extruderPercentage: null,
 	bedPercentage: null,
 	events: {
-		'click .finish-section-button': 'finishClicked'
+		'click .finish-section-button': 'finishClicked',
+		'click .preheat-wizard__cancel-button': 'openCancelModal',
+		'click .yes-button': 'stopPreheating',
+		'click .no-button': 'closeModal',
+		'click .preheat-wizard__confirm-cancel-modal': 'closeModal',
+		'click .preheat-wizard__confirm-cancel-modal__inner': 'noHideModal'
 	},
 
 	// template: null,
@@ -48,6 +53,58 @@ var PreheatingView = Backbone.View.extend({
 	finishClicked: function() {
 		this.$("#preheat-wizard__finish-section").removeClass('active').addClass('hide');
 		this.$("#preheat-wizard__preheating-progress").removeClass('hide').addClass('active');
+	},
+	openCancelModal: function() {
+		this.$(".preheat-wizard__confirm-cancel-modal").removeClass('hide');
+	},
+	noHideModal: function(e) {
+		e.stopPropagation();
+	},
+	closeModal: function() {
+		this.$(".preheat-wizard__confirm-cancel-modal").addClass('hide');
+	},
+	stopPreheating: function() {
+		var data1 = {
+			command: "target",
+			targets: {
+				tool0: 0
+			}
+		};
+
+		var data2 = {
+			command: "target",
+			target: 0
+		}
+
+		$.ajax({
+      url: API_BASEURL + "printer/" + "tool",
+      type: "POST",
+      dataType: "json",
+      contentType: "application/json; charset=UTF-8",
+      data: JSON.stringify(data1),
+      success: function() {
+      	// console.log("Tool: The request was successfull");
+      },
+      error: function() {
+      	console.log("Tool: There was an error!");
+      }
+    });
+
+    $.ajax({
+      url: API_BASEURL + "printer/" + "bed",
+      type: "POST",
+      dataType: "json",
+      contentType: "application/json; charset=UTF-8",
+      data: JSON.stringify(data2),
+      success: function() {
+      	// console.log("Bed: The request was successfull");
+      },
+      error: function() {
+      	console.log("Bed: There was an erro!");
+      }
+    });
+
+    this.closeModal();
 	},
 	updateProgressBar: function() {
 
