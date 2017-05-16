@@ -216,16 +216,17 @@ var TempView = Backbone.View.extend({
 */
 var DistanceControl = Backbone.View.extend({
   el: '#distance-control',
-  selected: 10,
+  selected: 10, // this is the default value which we have set initially. we can change this
   events: {
-    'click button': 'selectDistance'
+    'click button': 'selectDistance' // this is the function which will be envoked on the click event
   },
   selectDistance: function(e)
   {
-    var el = $(e.currentTarget);
+    var el = $(e.currentTarget); // this will get the target button which we hit
     // console.log(el);
+    // this is removing the 'success' from other and adding the secondary class to the other
     this.$el.find('.success').removeClass('success').addClass('secondary');
-    el.addClass('success').removeClass('secondary');
+    el.addClass('success').removeClass('secondary'); // then again adding the 'success' to itself
 
     // here we are setting the value of 'selected' property based on the value choosed
     this.selected = el.attr('data-value');
