@@ -15,12 +15,12 @@ var TempBarVerticalView = TempBarView.extend({
   setHandle: function(value){
     if (!this.dragging) {
       var handle = this.$el.find('.temp-target');
-      handle.find('span.target-value').text(value);
+      handle.find('span.target-value').html(value + " &deg;C");
     }
   },
   renderTemps: function(actual, target){
     if (actual !== null) {
-      this.$el.find('.current-temp-top').html(Math.round(actual)+'&deg;');
+      // this.$el.find('.current-temp-top').html(Math.round(actual)+'&deg;');
     }
     if (target !== null) {
       this.setHandle(Math.min(Math.round(target), this.scale[1]));
