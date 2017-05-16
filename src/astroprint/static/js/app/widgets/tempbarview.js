@@ -1,8 +1,6 @@
-/*
- *  (c) 3DaGoGo, Inc. (product@astroprint.com)
- *
- *  Distributed under the GNU Affero General Public License http://www.gnu.org/licenses/agpl.html
- */
+/****************************************
+* Code edited by Kanishka Mohan Madhuni *
+*****************************************/
 
 var TempBarView = Backbone.View.extend({
   containerDimensions: null,
@@ -15,17 +13,7 @@ var TempBarView = Backbone.View.extend({
   target: 0,
   actual: 0,
   events: {
-    // 'touchstart .temp-target span.target-value': 'onTouchStart',
     'mousedown .temp-target span.target-value': 'onTouchStart',
-
-    /* Removing all the touch based or mouse over events */
-    // 'touchmove': 'onTouchMove',
-    // 'mousemove': 'onTouchMove',
-    // 'touchend .temp-target': 'onTouchEnd',
-    // 'mouseup .temp-target': 'onTouchEnd',
-    // 'mouseout .temp-target': 'onTouchEnd',
-
-    // when the pencil icon is clicked it will reveal the input box to enter the new value
     'click .temp-target a.temp-edit': 'onEditClicked',
     'change .temp-target input': 'onTempFieldChanged',
     'blur .temp-target input': 'onTempFieldBlur'
@@ -34,7 +22,6 @@ var TempBarView = Backbone.View.extend({
   {
     this.scale = params.scale;
     this.type = params.type;
-    $(window).bind("resize.app", _.bind(this.onResize, this));
   },
   remove: function()
   {
@@ -50,32 +37,12 @@ var TempBarView = Backbone.View.extend({
   {
     if (this.scale[1] != value) {
       this.scale[1] = value;
-      this.onResize();
-
       var currentTemp = parseInt(this.$el.find('.temp-target span.target-value').text())
 
       if (!isNaN(currentTemp)) {
         this.setHandle(Math.min(currentTemp, value));
       }
     }
-  },
-  onTouchStart: function(e)
-  {
-    e.preventDefault();
-    e.stopPropagation();
-
-    this.dragging = true;
-    $(e.currentTarget).closest('.temp-target').addClass('moving');
-  },
-  onTouchEnd: function(e)
-  {
-    e.preventDefault();
-
-    $(e.currentTarget).removeClass('moving');
-
-    this._sendToolCommand('target', this.type, this.$el.find('.temp-target span.target-value').text());
-
-    this.dragging = false;
   },
   onEditClicked: function(e)
   {
@@ -115,9 +82,6 @@ var TempBarView = Backbone.View.extend({
   _sendToolCommand: function(command, type, temp, successCb, errorCb)
   {
 
-    // console.log(command);
-    // console.log(type);
-    // console.log(temp);
     if (temp == this.lastSent) return;
 
     var data = {
