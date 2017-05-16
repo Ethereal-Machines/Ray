@@ -592,9 +592,9 @@ var ControlView = Backbone.View.extend({
     // here we have created the new instances for all the views on the #control-page
 
     // this.tempView = new TempView(); /* Comment-change#1 */
-    this.distanceControl = new DistanceControl();
-    this.xyControlView = new XYControlView({distanceControl: this.distanceControl});
-    this.zControlView = new ZControlView({distanceControl: this.distanceControl});
+    // this.distanceControl = new DistanceControl();
+    // this.xyControlView = new XYControlView({distanceControl: this.distanceControl});
+    // this.zControlView = new ZControlView({distanceControl: this.distanceControl});
     // this.extrusionView = new ExtrusionControlView(); /* Comment-change#1 */
     // this.fanView = new FanControlView(); /* Comment-change#1 */
 
@@ -622,22 +622,32 @@ var ControlView = Backbone.View.extend({
 
     // this.extrusionView.render(); /* Comment-change#1 */
     // this.tempView.render(); /* Comment-change#1 */
-    console.log(this.buttonName);
+    this.changeTemplate();
+  },
+  // function for checking validating and rendering the selected template
+  changeTemplate: function() {
+
+    /* Added conditions to render the particular Utility based on the click from Utility page */
 
     if (this.buttonName === "Manual_Controls_Button") {
-      this.template = _.template( this.$("#xyz-controls-template").html() ); 
-      this.$('#manual-container').html(this.template);
+      this.setTemplate(this.$("#xyz-controls-template").html()); 
     } else if (this.buttonName === "Filament_Button"){
-      this.template = _.template( this.$("#filament-template").html() );
-      this.$('#filament-container').html(this.template);
+      this.setTemplate(this.$("#filament-template").html());
     } else if (this.buttonName === "Level_Bed_Button") {
-      this.template = _.template( this.$("#xyz-controls-template").html() ); 
-      this.$('#manual-container').html(this.template);
-    } 
+      this.setTemplate( "<h1 align='center'> No template for the Automatic Bed Levling </h1>"); 
+    } else {
+      this.setTemplate( "<h1 align='center'> No template for the Preheating </h1>");
+    }
 
+    /* Initializing the Views when the selected template has been rendered */
     this.distanceControl = new DistanceControl();
     this.xyControlView = new XYControlView({distanceControl: this.distanceControl});
     this.zControlView = new ZControlView({distanceControl: this.distanceControl});
+  },
+  // function to set the template of Control View
+  setTemplate: function(template) {
+    this.template = _.template(template); 
+    this.$('#manual-container').html(this.template);
   },
   resumePrinting: function(e)
   {
