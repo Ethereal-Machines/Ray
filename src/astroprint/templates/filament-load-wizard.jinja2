@@ -1,0 +1,52 @@
+<div id="filament-load-wizard">
+	<nav id="filament-load-wizard-nav">
+		<div class="wizard-name">
+			Filament Load Wizard
+		</div>
+		<a href="#" class="cancel-button">
+			Cancel
+		</a>
+	</nav>
+	<div class="wrapper">
+		<div class="steps-count">1/3</div>
+		<div class="steps-progress"></div>
+
+		<div id="filament-load-wizard__preheating-progress-section" class="active">
+			<div class="filament-img-temp-container">
+				<div class="filament-img">
+					<img src="http://via.placeholder.com/64x64" alt="Filament" width="64" height="64">
+				</div>
+				<div class="temp-progress">
+					<h3 class="temp-msg">Heating Extruder...</h3>
+					<p class="temp-value">220 &deg;C/220 &deg;C</p>
+				</div>
+			</div>
+			<div class="progress-bar-container">
+				<progress max="100" value="70"></progress>
+			</div>
+			<button type="button" id="preheating-progress-section-button" class="next-button" name="Next">NEXT</button>
+		</div>
+		<div id="insert-filament-section" class="hide">
+			<h2 class="instruction-heading">Insert filament end into the feeder</h2>
+			<p class="instruction-msg">Gently push the filament until it is grabbed by the feeder and is visible in the bowden
+			</p>
+			<button type="button" id="insert-filament-section-button" class="next-button">NEXT</button>
+		</div>
+		<div id="extruding-in-progress-section" class="hide">
+			<h2 class="instruction-heading">Extruding Filament...</h2>
+			<p class="instruction-msg">Press NEXT when the filament starts coming out from the hot end
+			</p>
+			<button type="button" id="extruding-in-progress-section-button" class="next-button">NEXT</button>
+		</div>
+		<div id="filament-load-wizard__finish-section" class="hide">
+			<div class="finish-icon-container">
+				<img src="http://via.placeholder.com/112x112" alt="Finish icon" width="112" height="112">
+				<h2 class="finish-msg">Filament Load Complete!</h2>
+				<div class="next-button">
+					<button type="button" class="finish-section-button" id="filament-load-wizard__finish-button"><a href="#control">FINISH</a></button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="cancel-filament-load-model hide"></div>
+</div>
