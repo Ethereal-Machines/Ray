@@ -12,10 +12,15 @@ var TempBarVerticalView = TempBarView.extend({
   type: null,
   dragging: false,
   events: _.extend(TempBarView.prototype.events, {
+    /*
+    * We have two different events here,
+    * 1) When the .temp-bar is clicked
+    * 2) When the off button is pressed
+    */
     'click .temp-bar': 'onClicked',
     'click button.temp-off': 'turnOff'
   }),
-  // this function is for sliding the horizontal bar on the temp-bar
+  // this function is for sliding the 'temp-target' on the temp-bar
   // this part will not be included in the new UI but a progress bar
   // showing the increasing temp will be needed to display
   setHandle: function(value)
@@ -24,8 +29,11 @@ var TempBarVerticalView = TempBarView.extend({
       var position = this._temp2px(value);
       var handle = this.$el.find('.temp-target');
 
+      // temp-target will move immediately when the value of temp is added
       handle.css({transition: 'top 0.5s'});
       handle.css({top: position + 'px'});
+
+      // 'target-value' is the field where we input the temperature value
       handle.find('span.target-value').text(value);
       setTimeout(function() {
         handle.css({transition: ''});
@@ -54,6 +62,8 @@ var TempBarVerticalView = TempBarView.extend({
       target.find('span.target-value').text(this._px2temp(newTop));
     }
   },
+
+  // callback function for handling the 'click' event on the 'temp-bar'
   onClicked: function(e)
   {
     e.preventDefault();
@@ -61,6 +71,7 @@ var TempBarVerticalView = TempBarView.extend({
     var newTop = e.pageY - this.containerDimensions.top - target.innerHeight()/2.0;
 
     newTop = Math.min( Math.max(newTop, 0), this.containerDimensions.maxTop );
+    // console.log(newTop);
 
     var temp = this._px2temp(newTop);
 
@@ -83,12 +94,18 @@ var TempBarVerticalView = TempBarView.extend({
       px4degree: maxTop / (this.scale[1] - this.scale[0])
     };
   },
+
+  // this function will render the actual increasing temperature 
   renderTemps: function(actual, target)
   {
     var handleHeight = this.$el.find('.temp-target').innerHeight();
 
     if (actual !== null) {
+      // changing the value of rising temp on the 'current-temp-top'
       this.$el.find('.current-temp-top').html(Math.round(actual)+'&deg;');
+
+      // moving the horizontal bar based on the rising temperature
+      // In new UI we will need to show this part as a progress bar
       this.$el.find('.current-temp').css({top: (this._temp2px(actual) + handleHeight/2 )+'px'});
     }
 
@@ -96,12 +113,17 @@ var TempBarVerticalView = TempBarView.extend({
       this.setHandle(Math.min(Math.round(target), this.scale[1]));
     }
   },
+
+  /*
+  function for getting the values in pixel to move the slider to the same amount
+  */
   _temp2px: function(temp)
   {
     var px = temp * this.containerDimensions.px4degree;
 
     return this.containerDimensions.maxTop - px;
   },
+
   _px2temp: function(px)
   {
     return Math.round( ( (this.containerDimensions.maxTop - px) / this.containerDimensions.px4degree ) );
@@ -145,11 +167,15 @@ var TempView = Backbone.View.extend({
       this.bedTempBar.$el.addClass('disabled');
     }
   },
+
+  // this function is having dependecies with: "router.js"
   resetBars: function()
   {
     this.nozzleTempBar.onResize();
     this.bedTempBar.onResize();
   },
+
+  // this function is not having dependencies
   updateBars: function(value)
   {
     if (value.extruder) {
@@ -445,6 +471,7 @@ var FanControlView = Backbone.View.extend({
 
 // This 'view' will initialize all the parent views in the
 // 'control-view' section
+// this 'ControlView' ConstructorFunction will be called through the 'router.js' file
 var ControlView = Backbone.View.extend({
   el: '#control-view',
   events: {
@@ -459,6 +486,7 @@ var ControlView = Backbone.View.extend({
   fanView: null,
   initialize: function()
   {
+    // here we have created the new instances for all the views on the #control-page
     this.tempView = new TempView();
     this.distanceControl = new DistanceControl();
     this.xyControlView = new XYControlView({distanceControl: this.distanceControl});
@@ -466,15 +494,23 @@ var ControlView = Backbone.View.extend({
     this.extrusionView = new ExtrusionControlView();
     this.fanView = new FanControlView();
 
+    // this function is listening for the 'temps' to be changed, and once it changes
+    // it use to call the 'updateTemps' function and that ultimately call the 
+    // 'updateBars' function to display the change in temperature
     this.listenTo(app.socketData, 'change:temps', this.updateTemps);
     this.listenTo(app.socketData, 'change:paused', this.onPausedChanged);
   },
+
+  // this is responsible for updating the temp on the bars when the panel is initialized
   updateTemps: function(s, value)
   {
     if (!this.$el.hasClass('hide')) {
       this.tempView.updateBars(value);
     }
   },
+
+  // this is the render function for the controlView. It will initialized all the
+  // render function for the child views
   render: function()
   {
     this.onPausedChanged(app.socketData, app.socketData.get('paused'));

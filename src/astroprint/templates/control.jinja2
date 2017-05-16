@@ -142,13 +142,19 @@
 
   {%- macro temp_control(class, label) %}
     <div class="temp-control-cont {{class}}">
+      <!-- here we show the rising temperature -->
       <span class="current-temp-top bold">- -</span>
       <div class="temp-bar">
+        <!-- here the 'bed' or 'nozzle' label will display based on the bar we are on -->
         <label class="bold">{{label}}</label>
+
+        <!-- this is the movable bar, which moves slowly slowly on the 
+          temp rise -->
         <div class="current-temp">
           <div class="triangle_left"></div>
           <div class="triangle_right"></div>
         </div>
+        
         <div class="temp-target radius bold">
           <a class="temp-edit"><i class="icon-pencil"></i></a>
           <span class="target-value">- -</span>
