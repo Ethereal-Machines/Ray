@@ -92,9 +92,9 @@ default_settings = {
 	},
 	"printerParameters": {
 		"movementSpeed": {
-			"x": 6000,
-			"y": 6000,
-			"z": 700,
+			"x": 800,
+			"y": 800,
+			"z": 500,
 			"e": 100
 		},
 		"pauseTriggers": [],
