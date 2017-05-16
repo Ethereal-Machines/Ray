@@ -7,6 +7,7 @@ var FilamentUnloadView = Backbone.View.extend({
 	events: {
 		'click .next-button' : 'revealNextStep'
 	},
+	xhrResponse: null,
 	initialize: function() {},
 	render: function() {},
 	revealNextStep: function(e) {
@@ -27,6 +28,8 @@ var FilamentUnloadView = Backbone.View.extend({
 
 		} else if (currentBtnId === "retraction-in-progress-section-button") {
 
+			// Killing the ajax command sent from the previous step on click of the NEXT button
+			this.xhrResponse.abort();
 			currentView.removeClass('active').addClass('hide');
 			this.$el.find("#filament-unload-wizard__finish-section").removeClass('hide').addClass('active');
 
@@ -42,6 +45,9 @@ var FilamentUnloadView = Backbone.View.extend({
 		this._sendRetractionCommand(-1);
 	},
 	_sendRetractionCommand: function(direction) {
+		
+		var self = this;
+
 		var printer_profile = app.printerProfile.toJSON();
 
 		var data = {
@@ -56,8 +62,11 @@ var FilamentUnloadView = Backbone.View.extend({
 	      dataType: "json",
 	      contentType: "application/json; charset=UTF-8",
 	      data: JSON.stringify(data),
-	      success: function() {},
+	      success: function(xhr) {
+	      	self.xhrResponse = xhr;
+	      },
 	      error: function(xhr) {
+	      	self.xhrResponse = xhr;
 	      	console.log("The status code is : " + xhr.status);
 	      	console.log("Msg form the server : " + xhr.responseText);
 	      	console.log("Status text : " + xhr.statusText);
