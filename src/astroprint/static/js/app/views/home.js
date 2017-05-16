@@ -7,10 +7,12 @@ var HomeView = Backbone.View.extend({
   events: {
     'show': 'onShow',
     'click .new-release a.check': 'onReleaseInfoClicked',
-    'click .new-release a.close': 'onCloseReleaseInfoClicked'
+    'click .new-release a.close': 'onCloseReleaseInfoClicked',
+    'click .power-button': 'onPowerClicked',
+    'click .power-off-modal': 'closePowerModal',
+    'click .power-off-modal__button-container': 'noHideModel'
   },
-  initialize: function()
-  {
+  initialize: function() {
     this.listenTo(app.printerProfile, 'change:driver', this.onDriverChanged);
     this.onDriverChanged(app.printerProfile, app.printerProfile.get('driver'));
 
@@ -19,16 +21,14 @@ var HomeView = Backbone.View.extend({
       this.$('.new-release').removeClass('hide');
     }, this));
   },
-  onDriverChanged: function(model, newDriver)
-  {
+  onDriverChanged: function(model, newDriver) {
     if (newDriver == 'marlin') {
       this.$("#app-container ul li.gcode-terminal-app-icon").removeClass('hide');
     } else {
       this.$("#app-container ul li.gcode-terminal-app-icon").addClass('hide');
     }
   },
-  onReleaseInfoClicked: function(e)
-  {
+  onReleaseInfoClicked: function(e) {
     e.preventDefault();
     if (!app.router.settingsView) {
       app.router.settingsView = new SettingsView();
@@ -36,9 +36,17 @@ var HomeView = Backbone.View.extend({
 
     app.router.settingsView.subviews['software-update'].onCheckClicked(e);
   },
-  onCloseReleaseInfoClicked: function(e)
-  {
+  onCloseReleaseInfoClicked: function(e) {
     e.preventDefault();
     this.$('.new-release').remove()
+  },
+  onPowerClicked: function() {
+    this.$('.power-off-modal').removeClass('hide');
+  },
+  closePowerModal: function() {
+    this.$('.power-off-modal').addClass('hide');
+  },
+  noHideModel: function(e) {
+    e.stopPropagation();
   }
 });

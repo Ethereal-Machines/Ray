@@ -4,6 +4,11 @@
 
 var SettingsView = Backbone.View.extend({
   el: "#settings-view",
+  events: {
+  	'click .power-button': 'onPowerClicked',
+    'click .power-off-modal': 'closePowerModal',
+    'click .power-off-modal__button-container': 'noHideModel'
+  },
   initialize: function() {
   	this.render();
   },
@@ -17,5 +22,18 @@ var SettingsView = Backbone.View.extend({
   	$(html).insertBefore(nav);
   	nav.css('padding-left', '8px');
   	name.text("Settings");
+  },
+  onCloseReleaseInfoClicked: function(e) {
+    e.preventDefault();
+    this.$('.new-release').remove()
+  },
+  onPowerClicked: function() {
+    this.$('.power-off-modal').removeClass('hide');
+  },
+  closePowerModal: function() {
+    this.$('.power-off-modal').addClass('hide');
+  },
+  noHideModel: function(e) {
+    e.stopPropagation();
   }
 });

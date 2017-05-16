@@ -5,7 +5,10 @@
 var UtilityView = Backbone.View.extend({
   el: '#utility-view',
   events: {
-    "click .utility-button": "getButtonName"
+    "click .utility-button": "getButtonName",
+    'click .power-button': 'onPowerClicked',
+    'click .power-off-modal': 'closePowerModal',
+    'click .power-off-modal__button-container': 'noHideModel'
   },
   initialize: function() {
     this.render();
@@ -29,5 +32,18 @@ var UtilityView = Backbone.View.extend({
     var el = $(e.currentTarget);
     var className = el.find('.control-link').attr('class').substring(13);
     ControlView.prototype.buttonName = className;
+  },
+  onCloseReleaseInfoClicked: function(e) {
+    e.preventDefault();
+    this.$('.new-release').remove()
+  },
+  onPowerClicked: function() {
+    this.$('.power-off-modal').removeClass('hide');
+  },
+  closePowerModal: function() {
+    this.$('.power-off-modal').addClass('hide');
+  },
+  noHideModel: function(e) {
+    e.stopPropagation();
   }
 });  
