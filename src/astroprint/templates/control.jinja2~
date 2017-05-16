@@ -91,7 +91,11 @@
       ## End of UI for the XY & Z Controller##
       ######################################## 
        -->
-
+    
+    <!-- 
+    ##################################
+    ## UI for the Extrusion Control ##
+    ################################## -->
       <div class="small-12 columns" id="extrusion-control">
         <h2 class="bold"><i class="icon-extruder"></i> Filament Extruder</h2>
         <div class="small-12 medium-7 columns">
@@ -169,6 +173,10 @@
       </div>
     </div>
   </div>
+  <!-- 
+  #########################################
+  ## End of UI for the Extrusion Control ## 
+  #########################################-->
 
   {%- macro temp_control(class, label) %}
     <div class="temp-control-cont {{class}}">
