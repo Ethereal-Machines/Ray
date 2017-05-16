@@ -4,11 +4,15 @@
  *  Distributed under the GNU Affero General Public License http://www.gnu.org/licenses/agpl.html
  */
 
+/*############################
+## TEMPERATURE VIEW CONTROL ##
+##############################*/
+
 // Dependency: /models/printerprofile.js, /widgets/tempbarview.js
 // this object is being extended by the sub part 'TempView'
 var TempBarVerticalView = TempBarView.extend({
   containerDimensions: null,
-  scale: null,
+  scale: null, // array of the values coming from the printer profile
   type: null,
   dragging: false,
   events: _.extend(TempBarView.prototype.events, {
@@ -124,6 +128,9 @@ var TempBarVerticalView = TempBarView.extend({
     return this.containerDimensions.maxTop - px;
   },
 
+  /*
+  this function will convert the pixel to the temperature
+  */
   _px2temp: function(px)
   {
     return Math.round( ( (this.containerDimensions.maxTop - px) / this.containerDimensions.px4degree ) );
@@ -137,12 +144,15 @@ var TempView = Backbone.View.extend({
   nozzleTempBar: null,
   bedTempBar: null,
   initialize: function()
-  {
+  { 
+    // creating the new instance for controlling the nozzle temp-bar
     this.nozzleTempBar = new TempBarVerticalView({
       scale: [0, app.printerProfile.get('max_nozzle_temp')],
       el: this.$el.find('.temp-control-cont.nozzle'),
       type: 'tool0'
     });
+
+    // creating the new instance for controlling the bed temp-bar
     this.bedTempBar = new TempBarVerticalView({
       scale: [0, app.printerProfile.get('max_bed_temp')],
       el: this.$el.find('.temp-control-cont.bed'),
@@ -154,13 +164,15 @@ var TempView = Backbone.View.extend({
     // Referencing the 'models/printerprofile.js' file to get the data
     var profile = app.printerProfile.toJSON();
 
-    console.log(profile);
+    // console.log(profile);
+    // console.log(this);
 
-    console.log(this);
-
+    // here we are setting the nozzleTempBar temperature to the max-nozzle-temp
+    // from the 'printerprofile'
     this.nozzleTempBar.setMax(profile.max_nozzle_temp);
 
     if (profile.heated_bed) {
+      // setting the bed temperature to the max-bed-temp form the printerprofile
       this.bedTempBar.setMax(profile.max_bed_temp);
       this.bedTempBar.$el.removeClass('disabled');
     } else {
@@ -175,7 +187,8 @@ var TempView = Backbone.View.extend({
     this.bedTempBar.onResize();
   },
 
-  // this function is not having dependencies
+  // this function is not having dependencies to outer js file
+  // this function is responsible for setting the nozzle and bed temperature
   updateBars: function(value)
   {
     if (value.extruder) {
@@ -188,7 +201,19 @@ var TempView = Backbone.View.extend({
   }
 });
 
-// this 'view' is reponsible for setting the distance
+/*#####################
+## XY-Z CONTROL PANEL #
+#######################*/
+
+// this 'view' is reponsible for setting the distance to move when the extruder moves
+// based on the click on the control panel in X, Y and Z directions correspondingly
+
+/*
+  Currently we are selecting a particular value and for all the directions this value
+  be set. (5mm slelected means: click X --move 5 mm, click Y --move 5mm, click Z --move 5mm)
+  
+  In the new UI, we want to set the different values to the different directions
+*/
 var DistanceControl = Backbone.View.extend({
   el: '#distance-control',
   selected: 10,
@@ -198,8 +223,11 @@ var DistanceControl = Backbone.View.extend({
   selectDistance: function(e)
   {
     var el = $(e.currentTarget);
+    // console.log(el);
     this.$el.find('.success').removeClass('success').addClass('secondary');
     el.addClass('success').removeClass('secondary');
+
+    // here we are setting the value of 'selected' property based on the value choosed
     this.selected = el.attr('data-value');
   }
 });
@@ -214,6 +242,8 @@ var MovementControlView = Backbone.View.extend({
   {
     this.distanceControl = params.distanceControl;
   },
+
+  // here we are sending a POST request whenever a jogging button in clicked
   sendJogCommand: function(axis, multiplier, distance)
   {
     if (typeof distance === "undefined")
@@ -232,6 +262,8 @@ var MovementControlView = Backbone.View.extend({
       data: JSON.stringify(data)
     });
   },
+
+  // here we are sending the POST request whenever a home button in clicked
   sendHomeCommand: function(axis)
   {
     var data = {
@@ -249,6 +281,7 @@ var MovementControlView = Backbone.View.extend({
   }
 });
 
+// this 'view' is reponsible to handle the click events on the xy controller
 var XYControlView = MovementControlView.extend({
   el: '#xy-controls',
   events: {
@@ -258,8 +291,12 @@ var XYControlView = MovementControlView.extend({
     'click .control_btn_y_minus': 'yMinusTapped',
     'click .home_z': 'homeTapped'
   },
+
+  // call back functions for taking care of the click events on the control keys
   xPlusTapped: function()
-  {
+  { 
+    // console.log(this);
+    // console.log(this.distanceControl.selected);
     this.sendJogCommand('x', 1, this.distanceControl.selected);
   },
   xMinusTapped: function()
@@ -282,6 +319,7 @@ var XYControlView = MovementControlView.extend({
   }
 });
 
+// this view is responsible to handle the click events on the z-control of printer
 var ZControlView = MovementControlView.extend({
   el: '#z-controls',
   events: {
@@ -305,6 +343,10 @@ var ZControlView = MovementControlView.extend({
   }
 });
 
+
+/*#######################
+## EXTRUSION CONTROL ####
+#########################*/
 
 // this 'view' is responsible for the 'extrusion' processs
 // We will need to map the below JS with our new UI
@@ -431,6 +473,9 @@ var ExtrusionControlView = Backbone.View.extend({
   }
 });
 
+/*###############
+## FAN CONTROL ##
+#################*/
 
 // this 'view' is responsible for the 'Fan Controling part'
 // As of now this part is not included in the new UI
