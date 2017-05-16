@@ -16,7 +16,7 @@
 	          <button class="control_btn_x_minus">X-</button> <button class="home_z">HOME</button> <button class="control_btn_x_plus">X+</button><br/>
 	          <button class="control_btn_y_minus">Y-</button>
 	        </div>
-  		</div>
+  		</div><!-- end of "#xy-controls" -->
 		
 		<!-- "#z-controls" -->
   		<div class="small-12 medium-5 columns" id="z-controls">
@@ -26,7 +26,7 @@
 	          <button class="home_z">HOME</button><br/>
 	          <button class="control_btn_z_minus">Z-</button>
 	        </center>
-		</div>
+		</div><!-- end of "z-controls" -->
 		
 		<!-- "#distance-control" -->
 		<div class="small-12 columns" id="distance-control">
@@ -38,13 +38,13 @@
 	            <li><button class="small bold secondary" data-value="100">100</button></li>
 	          </ul>
 	        </center>
-		</div>
+		</div><!-- end of "#distance-control" -->
 	</script>
 	<script type="text/template" id="filament-template">
 		<div class="small-12 columns" id="extrusion-control">
 	        <h2 class="bold"><i class="icon-extruder"></i> Filament Extruder</h2>
 	        <div class="small-12 medium-7 columns">
-	          <div class="row extruder-switch closer"></div>
+				<div class="row extruder-switch closer"></div>
 	        </div>
 	        <div class="small-12 medium-5 columns">
 	          <div class="row closer">
@@ -74,46 +74,46 @@
 	          <% } %>
 	          
 	          <!-- The below divs with heading "Amount" and "Speed" will always show -->
-	          <div class="<% if (profile.extruder_count > 1) { %> small-4 <% } else { %> small-6 <% } %>columns select-with-text">
-	            <label class="bold">Amount</label>
-	            <select class="extrusion-length">
-	              <option value="10" selected default>10 mm</option>
-	              <option value="50">50 mm</option>
-	              <option value="100">100 mm</option>
-	              <option value="200">200 mm</option>
-	              <option value="other">Other...</option>
-	            </select>
+				<div class="<% if (profile.extruder_count > 1) { %> small-4 <% } else { %> small-6 <% } %>columns select-with-text">
+				<label class="bold">Amount</label>
+				<select class="extrusion-length">
+				  <option value="10" selected default>10 mm</option>
+				  <option value="50">50 mm</option>
+				  <option value="100">100 mm</option>
+				  <option value="200">200 mm</option>
+				  <option value="other">Other...</option>
+				</select>
 
-	            <!-- Bleow block is kept .hide by default -->
-	            <div class="row collapse other-length hide">
-	              <div class="small-8 columns">
-	                <input type="number" value="10" class="expand back-to-select" name="extrusion-length"/>
-	              </div>
-	              <div class="small-4 columns">
-	                <span class="postfix radius">mm</span>
-	              </div>
-	            </div>
-	          </div>
+				<!-- Bleow block is kept .hide by default -->
+				<div class="row collapse other-length hide">
+				  <div class="small-8 columns">
+				    <input type="number" value="10" class="expand back-to-select" name="extrusion-length"/>
+				  </div>
+				  <div class="small-4 columns">
+				    <span class="postfix radius">mm</span>
+				  </div>
+				</div>
+				</div>
 
-	          <div class="<% if (profile.extruder_count > 1) { %> small-5 <% } else { %> small-6 <% } %>columns select-with-text">
-	            <label class="bold">Speed</label>
-	            <select class="extrusion-speed">
-	              <option value="50">Fast (50 mm/s)</option>
-	              <option value="2" selected default>Normal (2 mm/s)</option>
-	              <option value="0.5">Slow (0.5 mm/s)</option>
-	              <option value="other">Other...</option>
-	            </select>
+				<div class="<% if (profile.extruder_count > 1) { %> small-5 <% } else { %> small-6 <% } %>columns select-with-text">
+				<label class="bold">Speed</label>
+				<select class="extrusion-speed">
+				  <option value="50">Fast (50 mm/s)</option>
+				  <option value="2" selected default>Normal (2 mm/s)</option>
+				  <option value="0.5">Slow (0.5 mm/s)</option>
+				  <option value="other">Other...</option>
+				</select>
 
-	            <!-- Below block is kept .hide by default -->
-	            <div class="row collapse other-speed hide">
-	              <div class="small-7 columns">
-	                <input type="number" value="2" class="expand back-to-select" name="extrusion-speed"/>
-	              </div>
-	              <div class="small-5 columns">
-	                <span class="postfix radius">mm/s</span>
-	              </div>
-	            </div>
-	          </div>
+				<!-- Below block is kept .hide by default -->
+				<div class="row collapse other-speed hide">
+				  <div class="small-7 columns">
+				    <input type="number" value="2" class="expand back-to-select" name="extrusion-speed"/>
+				  </div>
+				  <div class="small-5 columns">
+				    <span class="postfix radius">mm/s</span>
+				  </div>
+				</div>
+				</div>
 	        </script>
       	</div>
 	</script>
@@ -145,23 +145,22 @@
 		{%- endmacro %}
 
 		<div class="medium-12 large-5 columns" id="temp-control">
-		<div class="row">
-		  <div class="small-4 columns" align="center">
-		    {{ temp_control('nozzle', 'Nozzle')}}
-		  </div>
-		  <div class="small-4 columns fan-control">
-		    <div class="fan-control-push" align="center">
-		      Current Temp (&deg;C)
-		    </div>
-		    <h2 class="bold">Fans <span class="fan_icon"></span></h2>
-		    <button class="radius small success expand fan-on">ON</button>
-		    <button class="radius small secondary expand fan-off">OFF</button>
-		  </div>
-		  <div class="small-4 columns" align="center">
-		    {{ temp_control('bed', 'Bed')}}
-		  </div>
-		</div>
-		</div>
-		
+			<div class="row">
+			  <div class="small-4 columns" align="center">
+			    {{ temp_control('nozzle', 'Nozzle')}}
+			  </div>
+			  <div class="small-4 columns fan-control">
+			    <div class="fan-control-push" align="center">
+			      Current Temp (&deg;C)
+			    </div>
+			    <h2 class="bold">Fans <span class="fan_icon"></span></h2>
+			    <button class="radius small success expand fan-on">ON</button>
+			    <button class="radius small secondary expand fan-off">OFF</button>
+			  </div>
+			  <div class="small-4 columns" align="center">
+			    {{ temp_control('bed', 'Bed')}}
+			  </div>
+			</div><!-- end of '.row' -->
+		</div><!-- end of "#temp-control" -->
 	</script>
 </div>
