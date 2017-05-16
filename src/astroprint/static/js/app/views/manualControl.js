@@ -111,17 +111,30 @@ var MovementControlView = Backbone.View.extend({
 var XYControlView = MovementControlView.extend({
   el: '#xy-controls',
   events: {
-    'click .control_btn_x_plus': 'xPlusTapped',
+    // adding two different events for continuous touch on the X+ button
+    // this functionality will be added to all the buttons once tested on printer
+    'mousedown .control_btn_x_plus': 'xPlusTapped',
+    'mouseup .control_btn_x_plus': 'xPlusReleased',
     'click .control_btn_x_minus': 'xMinusTapped',
     'click .control_btn_y_plus': 'yPlusTapped',
     'click .control_btn_y_minus': 'yMinusTapped',
     'click .home_z': 'homeTapped'
   },
+  init00: null,
 
   // call back functions for taking care of the click events on the control keys
   xPlusTapped: function()
   { 
-    this.sendJogCommand('x', 1, this.distanceControl.xSelected);
+    var self = this;
+    this.init00 = setInterval(function() {
+
+      self.sendJogCommand('x', 1, self.distanceControl.xSelected);
+
+    }, 50);
+    // this.sendJogCommand('x', 1, this.distanceControl.xSelected);
+  },
+  xPlusReleased: function() {
+    clearInterval(this.init00);
   },
   xMinusTapped: function()
   {
