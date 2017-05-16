@@ -87,7 +87,7 @@ var PrintFileInfoDialog = Backbone.View.extend({
     this.$el.css('display', 'none');
   },
   hideModel: function() {
-    this.$el.css('display', 'none');
+    this.$el.css('display', 'none !important');
   }
 });
 
