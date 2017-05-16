@@ -1,8 +1,13 @@
-/*
- *  (c) AstroPrint Product Team. 3DaGoGo, Inc. (product@astroprint.com)
- *
- *  Distributed under the GNU Affero General Public License http://www.gnu.org/licenses/agpl.html
- */
+/******************************************
+* Code modified by Kanishka Mohan Madhuni *
+*******************************************/
+
+/***********
+* Changes: *
+************
+1) Code for the PrintFileInfoDialog has been changed as per the new UI requirements
+2) Code realted to the Uploading items from the local machines have been removed
+*/
 
 var PrintFileInfoDialog = Backbone.View.extend({
   el: '#print-file-info',
@@ -11,8 +16,7 @@ var PrintFileInfoDialog = Backbone.View.extend({
   print_file_view: null,
   events: {
     'click .actions a.remove': 'onDeleteClicked',
-    'click .actions a.print': 'onPrintClicked',
-    'click .actions a.download': 'onDownloadClicked'
+    'click .actions a.print': 'onPrintClicked'
   },
   initialize: function(params)
   {
@@ -78,125 +82,6 @@ var PrintFileInfoDialog = Backbone.View.extend({
   {
     this.print_file_view.downloadClicked(e);
     this.$el.foundation('reveal', 'close');
-  }
-});
-
-var FileUploadFiles = FileUploadCombined.extend({
-  progressBar: null,
-  buttonContainer: null,
-  initialize: function(options) // got the call from line 160 with the object as arguments
-  {
-    console.log("FileUploadFiles is being initialized");
-    console.log(options);
-
-    this.progressBar = options.progressBar;
-    this.buttonContainer = options.buttonContainer;
-
-    // we are calling the FileUploadCombined's initialize method provide that the options parameter
-    // and also binding the current object 'this' to that function
-    FileUploadCombined.prototype.initialize.call(this, options);
-  },
-  started: function(data)
-  {
-    console.log('FileUploadFiles.started function is being called');
-    if (data.files && data.files.length > 0) {
-
-      // when the submit button is clicked to upload the file
-
-      this.buttonContainer.hide(); // hiding the ButtonContainer
-      this.progressBar.show(); // Showing the progress bar in place of Button Container
-
-      // we are initializing the FileUploadCombined's started function by applying 'call' method
-      // such that binding the current object 'this' to the function
-      FileUploadCombined.prototype.started.call(this, data);
-    }
-  },
-  progress: function(progress, message)
-  {
-    console.log('FileUploadFiles.progress function is being called');
-    var intPercent = Math.round(progress);
-
-    this.progressBar.find('.meter').css('width', intPercent+'%');
-    if (!message) {
-      // displaying the percentage of completion over the progress bar
-      message = "Uploading ("+intPercent+"%)";
-      console.log(message);
-    }
-    this.progressBar.find('.progress-message span').text(message);
-  },
-  onError: function(type, error)
-  {
-    console.log('FileUploadFiles.onError function is being called');
-    var message = error;
-
-    switch(error) {
-      //case 'invalid_data':
-      //case 'http_error_400':
-      //break;
-
-      case 'http_error_401':
-        message = 'An AstroPrint account is needed to upload designs';
-        $('#login-modal').foundation('reveal', 'open');
-      break;
-
-      case null:
-        message = 'There was an error uploading your file';
-      break;
-    }
-
-    noty({text: message, timeout: 3000});
-    this.resetUploadArea();
-    console.error(error);
-  },
-  // this function is being called from the uploader.js file as .promise call
-  onPrintFileUploaded: function()
-  { 
-    // this function is resetting the Upload Area
-    this.resetUploadArea();
-  },
-  resetUploadArea: function()
-  {
-    console.log('FileUploadFiles.resetUploadArea function is being called');
-    this.progressBar.hide();
-    this.buttonContainer.show();
-    this.progress(0);
-  }
-});
-
-// 1st Object which got initialized through FilesView object
-var UploadView = Backbone.View.extend({
-  uploadBtn: null, // this will be the new instance of 'FileUploadFiles' and have the access to progress bar and the upload button container
-  progressBar: null, // this will be the '.upload-progress' bar showing the process of uploading
-  buttonContainer: null, // container for the upload button on the top
-  initialize: function(options)
-  {
-    console.log("UploadView is being initialized");
-    this.progressBar = this.$('.upload-progress'); // accessing the progress bar
-    this.buttonContainer = this.$('.upload-buttons'); // upload buttons container
-
-    // initializing the new object with access to the progress bar and button container
-    this.uploadBtn = new FileUploadFiles({
-      el: "#files-view .file-upload-view .file-upload", // button to choose the files from browser
-      progressBar: this.$('.upload-progress'),
-      buttonContainer: this.$('.file-upload-button'),
-      dropZone: options.dropZone
-    });
-
-    this.render();
-  },
-  render: function()
-  {
-    var buttonContainer = this.$('.file-upload-button');
-
-    if (app.printerProfile.get('driver') == 's3g') {
-      buttonContainer.find('.extensions').text('stl, x3g');
-      buttonContainer.find('input').attr('accept', '.stl, .x3g');
-    } else {
-      buttonContainer.find('.extensions').text('stl, gcode');
-      buttonContainer.find('input').attr('accept', '.stl, .gcode, .gco');
-    }
-
-    this.uploadBtn.refreshAccept();
   }
 });
 
@@ -582,121 +467,25 @@ var PrintFilesListView = Backbone.View.extend({
 
 var FilesView = Backbone.View.extend({
   el: '#files-view',
-  uploadView: null,
   printFilesListView: null,
   events: {
     'show': 'onShow'
   },
-  initialize: function(options)
-  {
-    /*
-      options parameter is being passed through the "router.js" file while initializing the
-      the FilesView Object. It contains two properties which are below:
-        {forceSync: false, syncCompleted: f}
-    */
-    // console.log("FilesView is being initialized");
-    // console.log(this.$el);
-    // console.log(this.$el.find('.design-list'));
-    // console.log(options);
-
-    // Initializing the UploadView object and passing the params
-    this.uploadView = new UploadView({
-      // This div is having the buttons for Uploading the files from the local machine's memory
-      el: this.$el.find('.file-upload-view'),
-      // passing the current element "#files-view"
-      dropZone: this.$el
-    });
-
+  initialize: function(options){
     // Initializing the PrintFilesListView and passing the params
     this.printFilesListView = new PrintFilesListView({
-      /*
-        this element 'design-list' containes the Local and Cloud storage options as well as the 
-        container to show up all the files
-      */
       el: this.$el.find('.design-list'),
       forceSync: options.forceSync, // taking the values from the options parameter
       syncCompleted: options.syncCompleted // taking the values from the options parameter
     });
 
-    // console.log(this.printFilesListView);
-    /*
-      Tell an 'object' to listen to a particular event on an 'other' object.
-      ----> object.listenTo(other, event, callback) <----
-      The callback will always be called with object as context.
-
-      So basically it will keep track of changing the driver property on the app.printProfile
-      object and once that event happes, it will run the call back function 'onDriverChanged'
-    */
-
     this.listenTo(app.printerProfile, 'change:driver', this.onDriverChanged);
   },
-
-  // this method is being called on the 'uploader.js' file to refresh the files view
-  refreshPrintFiles: function()
-  {
-    var promise = $.Deferred();
-    this.printFilesListView.refresh(true, function(success) {
-      if (success) {
-        promise.resolve();
-      } else {
-        promise.reject('unable_to_refresh');
-      }
-    });
-
-    return promise;
-  },
-
-  /*
-  This function is being called from the 'router.js' file when the '#file-info/:fileId'
-  is being re-directed. The router will pass the file-id to the function which is being
-  clicked.
-  */
-  fileInfo: function(fileId)
-  {
-    console.log("I am FilesView.fileInfo function being called");
-
-    /*
-      ---> _.find(list, predicate) <---
-      list --> can be an array of items or collection
-      predicate --> will be a function
-
-      Looks through each value in the list, returning the first one that passes a truth test (predicate), or undefined if no value passes the test.
-    */
-
-    // displaying the file-information when the particular FILE-ID is being provided
-    var view = _.find(this.printFilesListView.print_file_views, function(v) {
-      return v.print_file.get('id') == fileId;
-    });
-
-    this.printFilesListView.storage_control_view.selectStorage('cloud');
-
-    // passing the view and calling the callback function to show the file info view
-    this.showFileInfoView(view);
-  },
-
-  // displaying the file information when the FILE NAME is being provided
-  fileInfoByName: function(name)
-  {
-    var view = _.find(this.printFilesListView.print_file_views, function(v) {
-      return v.print_file.get('name') == name;
-    });
-
-    this.showFileInfoView(view);
-  },
-  showFileInfoView: function(view)
-  {
-    if (view) {
-      view.infoClicked();
-    }
-  },
-  onShow: function()
-  {
+  onShow: function(){
     this.printFilesListView.refresh(false);
   },
-
   // this function is the callback function for the event is Driver changes
-  onDriverChanged: function()
-  {
+  onDriverChanged: function(){
     this.uploadView.render();
     this.printFilesListView.refresh(true);
   }
