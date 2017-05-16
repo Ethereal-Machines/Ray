@@ -7,9 +7,9 @@
 <div id="preheat-wizard">
 	<nav id="preheat-wizard-nav">
 		<div class="wizard-name">
-			PREHEAT
+			Preheating...
 		</div>
-		<a href="#" class="back-button">
+		<a href="#control" class="back-button">
 			Back
 		</a>
 	</nav>
@@ -17,7 +17,7 @@
 	<!-- wrapper -->
 	<div class="wrapper">
 		<div id="preheat-wizard__preheating-progress" class="active">
-			<h1 class="preheat-wizard__heading">Heating...</h1>
+			<!-- <h1 class="preheat-wizard__heading">Heating...</h1> -->
 			<!-- nozzle-part -->
 			<div class="preheat-wizard__nozzle-container">
 				<div class="preheat-wizard__nozzle-container__img-temp-container">
@@ -49,6 +49,10 @@
 					<progress max="100" value="0" id="bed-progress-bar"></progress>
 				</div>
 			</div>
+
+			<!-- Cancel Button -->
+			<button type="button" class="preheat-wizard__cancel-button next-button">Cancel</button>
+
 		</div>
 
 		<div id="preheat-wizard__finish-section" class="hide">
@@ -59,6 +63,22 @@
 			<a href="#control">
 				<button type="button" class="finish-section-button next-button" id="preheat-wizard__finish-section__finish-button">FINISH</button>
 			</a>
+		</div>
+
+		<div class="preheat-wizard__confirm-cancel-modal hide">
+			<div class="preheat-wizard__confirm-cancel-modal__inner">
+
+				<h1 class="preheat-wizard__confirm-cancel-modal__modal-heading">Confirm Cancel</h1>
+				<img src="{{ url_for('static', filename='img/preheating-utility/confirm-cancel-icon.svg') }} " width="96" height="96">
+				<p class="preheat-wizard__confirm-cancel-modal__msg">
+					Are you sure you want to cancel preheating?
+				</p>
+				<div class="preheat-wizard__confirm-cancel-modal__button-container">
+					<button class="no-button">NO</button>
+					<button class="yes-button"><a href="#control">YES</a></button>
+				</div>
+
+			</div>
 		</div>
 	</div>
 </div>
