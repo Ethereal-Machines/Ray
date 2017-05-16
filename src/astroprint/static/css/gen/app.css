@@ -1,5 +1,6 @@
 * {
 	box-sizing: border-box;
+	font-family: 'Roboto', sans-serif;
 }
 
 body {
@@ -9,11 +10,12 @@ body {
 .hide {
 	display: none !important;
 }
+
 .app-view {
 	width: 800px;
 	height: 480px;
 	margin: 0 auto;
-	border: 1px solid grey;
+	/*border: 1px solid grey;*/
 }
 
 #manual-container {
