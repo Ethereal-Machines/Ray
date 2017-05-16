@@ -1,3 +1,11 @@
 /* Adding a comment on the file */
 
 /* Adding another comment for testing the working of SSHFS */
+
+.bold {
+	color: maroon;
+}
+
+#step-internet .bold {
+	color: blue;
+}
