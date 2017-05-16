@@ -31,6 +31,8 @@ var ConnectionView = Backbone.View.extend({
       method: "GET",
       dataType: "json",
       success: function(response) {
+        console.log(response.current);
+        console.log(response.options);
         if (response.current.state.substr(0,5) == 'Error' || response.current.state == 'Closed' || response.current.state == 'Offline') {
           if (response.current.state.substr(0,5) == 'Error') {
             console.error("Printer connection had error: "+response.current.state);

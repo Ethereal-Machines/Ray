@@ -29,8 +29,10 @@ var TempBarVerticalView = TempBarView.extend({
   // this function is for sliding the 'temp-target' on the temp-bar
   // this part will not be included in the new UI but a progress bar
   // showing the increasing temp will be needed to display
-  setHandle: function(value)
-  {
+  setHandle: function(value){
+
+    // console.log("setHandle function is being called");
+
     if (!this.dragging) {
       var position = this._temp2px(value);
       var handle = this.$el.find('.temp-target');
@@ -48,7 +50,7 @@ var TempBarVerticalView = TempBarView.extend({
   },
   onTouchMove: function(e)
   {
-    // console.log(this);
+    // console.log("onTouchMove functino is called");
     if (this.dragging) {
       e.preventDefault();
       e.stopPropagation();
@@ -72,9 +74,11 @@ var TempBarVerticalView = TempBarView.extend({
   // callback function for handling the 'click' event on the 'temp-bar'
   onClicked: function(e)
   {
+
+    // console.log("onClicked function is called");
     e.preventDefault();
     var target = this.$el.find('.temp-target');
-    console.log(target);
+    // console.log(target);
     var newTop = e.pageY - this.containerDimensions.top - target.innerHeight()/2.0;
 
     newTop = Math.min( Math.max(newTop, 0), this.containerDimensions.maxTop );
@@ -87,6 +91,7 @@ var TempBarVerticalView = TempBarView.extend({
   },
   onResize: function()
   {
+    // console.log("onResize function is called");
     var container = this.$el.find('.temp-bar');
     var handle = container.find('.temp-target');
     var label = container.find('label');
@@ -105,10 +110,11 @@ var TempBarVerticalView = TempBarView.extend({
   // this function will render the actual increasing temperature 
   renderTemps: function(actual, target)
   {
+    // console.log("renderTemps is called");
     var handleHeight = this.$el.find('.temp-target').innerHeight();
 
     if (actual !== null) {
-      // changing the value of rising temp on the 'current-temp-top'
+      // changing the value of rising temp on the 'current-temp-top' and displaying that
       this.$el.find('.current-temp-top').html(Math.round(actual)+'&deg;');
 
       // moving the horizontal bar based on the rising temperature
@@ -124,8 +130,9 @@ var TempBarVerticalView = TempBarView.extend({
   /*
   function for getting the values in pixel to move the slider to the same amount
   */
-  _temp2px: function(temp)
-  {
+  _temp2px: function(temp){
+    // console.log("_temp2px is called");
+    // console.log(temp);
     var px = temp * this.containerDimensions.px4degree;
 
     return this.containerDimensions.maxTop - px;
@@ -136,6 +143,7 @@ var TempBarVerticalView = TempBarView.extend({
   */
   _px2temp: function(px)
   {
+    // console.log("_px2temp is called");
     return Math.round( ( (this.containerDimensions.maxTop - px) / this.containerDimensions.px4degree ) );
   }
 });
@@ -614,8 +622,12 @@ var ControlView = Backbone.View.extend({
   },
 
   // this is responsible for updating the temp on the bars when the panel is initialized
+  // this function is the call back function to run every time whenver the 'temps' property
+  // in socketData use to change
   updateTemps: function(s, value)
   {
+    console.log(s);
+    console.log(value)
     if (!this.$el.hasClass('hide')) {
       this.tempView.updateBars(value);
     }
