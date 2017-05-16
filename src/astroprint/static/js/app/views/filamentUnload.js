@@ -8,14 +8,55 @@ var FilamentUnloadView = Backbone.View.extend({
 		'click .next-button' : 'revealNextStep'
 	},
 	xhrResponse: null,
-	initialize: function() {},
-	render: function() {},
+	tempView: null,
+	updatedTemp: null,
+	template1: null,
+	extruderPercentage: null,
+	initialize: function() {
+		this.listenTo(app.socketData, 'change:temps', this.tempUpdateAlert);
+	},
+	render: function() {
+		this.$("#filament-unload-wizard__preheating-progress-section").find('.temp-value').html(this.template1({tempObj: this.updatedTemp}));
+	},
+	tempUpdateAlert: function(s, value) {
+		this.updatedTemp = value;
+
+		if (this.updatedTemp !== null) {
+	    this.render();
+	    this.updateProgressBar();
+	  }
+	},
+	updateProgressBar: function() {
+		var progressBar,
+		extruderTarget,
+		extruderActual;
+
+		progressBar = this.$el.find('.progress-bar-container progress');
+
+		extruderActual = this.updatedTemp.extruder.actual;
+		extruderTarget = this.updatedTemp.extruder.target;
+
+		if (extruderActual > extruderTarget) {
+			this.extruderPercentage = Math.min(Math.round(((extruderTarget/extruderActual)*100)));
+		} else {
+			this.extruderPercentage = Math.min(Math.round(((extruderActual/extruderTarget)*100)));
+		}
+
+		progressBar.val(this.extruderPercentage);
+	},
 	revealNextStep: function(e) {
 		var currentView = this.$el.find('.active');
 		var currentBtn = currentView.find('.next-button')[0];
 		var currentBtnId = $(currentBtn).attr('id');
 
-		if (currentBtnId === "filament-unload-wizard__preheating-progress-section-button") {
+		if (currentBtnId === "unload-select-preheat-temp-button") {
+
+			currentView.removeClass('active').addClass('hide');
+			this.$el.find("#filament-unload-wizard__preheating-progress-section").removeClass('hide').addClass('active');
+
+			this.template1 = _.template('<span><%= Math.min(Math.round(tempObj.extruder.actual)) %> &deg;C/ <%= Math.min(Math.round(tempObj.extruder.target)) %> &deg;C</span>');
+
+		} else if (currentBtnId === "filament-unload-wizard__preheating-progress-section-button") {
 			
 			/*
 				We need to start the Retraction process when the button is clicked
@@ -36,7 +77,7 @@ var FilamentUnloadView = Backbone.View.extend({
 		} else {
 
 			currentView.removeClass('active').addClass('hide');
-			this.$el.find("#filament-unload-wizard__preheating-progress-section").removeClass('hide').addClass('active');
+			this.$el.find("#filament-unload-wizard__temp-control").removeClass('hide').addClass('active');
 			
 		}
 	},
