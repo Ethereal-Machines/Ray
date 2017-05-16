@@ -14,6 +14,6 @@ var UtilityPage = Backbone.View.extend({
 });*/
 var UtilityView = Backbone.View.extend({
   el: '#utility-view',
-  	initialize: function() {},
+  initialize: function() {},
 	onShow: function() {}
 });  

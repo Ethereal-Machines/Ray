@@ -10,196 +10,200 @@
 
 // Dependency: /models/printerprofile.js, /widgets/tempbarview.js
 // this object is being extended by the sub part 'TempView'
-var TempBarVerticalView = TempBarView.extend({
-  containerDimensions: null,
-  scale: null, // array of the values coming from the printer profile
-  type: null,
-  dragging: false,
-  events: _.extend(TempBarView.prototype.events, {
-    /*
-    * We have two different events here,
-    * 1) When the .temp-bar is clicked
-    * 2) When the off button is pressed
-    */
-    'click .temp-bar': 'onClicked',
-    'click button.temp-off': 'turnOff'
-  }),
-  // this function is for sliding the 'temp-target' on the temp-bar
-  // this part will not be included in the new UI but a progress bar
-  // showing the increasing temp will be needed to display
-  setHandle: function(value)
-  {
-    if (!this.dragging) {
-      var position = this._temp2px(value);
-      var handle = this.$el.find('.temp-target');
 
-      // temp-target will move immediately when the value of temp is added
-      handle.css({transition: 'top 0.5s'});
-      handle.css({top: position + 'px'});
+/* Comment-change#1 */
+// var TempBarVerticalView = TempBarView.extend({
+//   containerDimensions: null,
+//   scale: null, // array of the values coming from the printer profile
+//   type: null,
+//   dragging: false,
+//   events: _.extend(TempBarView.prototype.events, {
+//     /*
+//     * We have two different events here,
+//     * 1) When the .temp-bar is clicked
+//     * 2) When the off button is pressed
+//     */
+//     'click .temp-bar': 'onClicked',
+//     'click button.temp-off': 'turnOff'
+//   }),
+//   // this function is for sliding the 'temp-target' on the temp-bar
+//   // this part will not be included in the new UI but a progress bar
+//   // showing the increasing temp will be needed to display
+//   setHandle: function(value)
+//   {
+//     if (!this.dragging) {
+//       var position = this._temp2px(value);
+//       var handle = this.$el.find('.temp-target');
 
-      // 'target-value' is the field where we input the temperature value
-      handle.find('span.target-value').text(value);
-      setTimeout(function() {
-        handle.css({transition: ''});
-      }, 800);
-    }
-  },
-  onTouchMove: function(e)
-  {
-    // console.log(this);
-    if (this.dragging) {
-      e.preventDefault();
-      e.stopPropagation();
-      var target = this.$('.temp-target');
+//       // temp-target will move immediately when the value of temp is added
+//       handle.css({transition: 'top 0.5s'});
+//       handle.css({top: position + 'px'});
 
-      if (e.type == 'mousemove') {
-        var pageY = e.originalEvent.pageY;
-      } else {
-        var pageY = e.originalEvent.changedTouches[0].clientY + $(document).scrollTop();
-      }
+//       // 'target-value' is the field where we input the temperature value
+//       handle.find('span.target-value').text(value);
+//       setTimeout(function() {
+//         handle.css({transition: ''});
+//       }, 800);
+//     }
+//   },
+//   onTouchMove: function(e)
+//   {
+//     // console.log(this);
+//     if (this.dragging) {
+//       e.preventDefault();
+//       e.stopPropagation();
+//       var target = this.$('.temp-target');
 
-      var newTop = pageY - this.containerDimensions.top - target.innerHeight()/2.0;
+//       if (e.type == 'mousemove') {
+//         var pageY = e.originalEvent.pageY;
+//       } else {
+//         var pageY = e.originalEvent.changedTouches[0].clientY + $(document).scrollTop();
+//       }
 
-      newTop = Math.min(Math.max(newTop, 0), this.containerDimensions.maxTop );
+//       var newTop = pageY - this.containerDimensions.top - target.innerHeight()/2.0;
 
-      target.css({top: newTop+'px'});
-      target.find('span.target-value').text(this._px2temp(newTop));
-    }
-  },
+//       newTop = Math.min(Math.max(newTop, 0), this.containerDimensions.maxTop );
 
-  // callback function for handling the 'click' event on the 'temp-bar'
-  onClicked: function(e)
-  {
-    e.preventDefault();
-    var target = this.$el.find('.temp-target');
-    var newTop = e.pageY - this.containerDimensions.top - target.innerHeight()/2.0;
+//       target.css({top: newTop+'px'});
+//       target.find('span.target-value').text(this._px2temp(newTop));
+//     }
+//   },
 
-    newTop = Math.min( Math.max(newTop, 0), this.containerDimensions.maxTop );
-    // console.log(newTop);
+//   // callback function for handling the 'click' event on the 'temp-bar'
+//   onClicked: function(e)
+//   {
+//     e.preventDefault();
+//     var target = this.$el.find('.temp-target');
+//     var newTop = e.pageY - this.containerDimensions.top - target.innerHeight()/2.0;
 
-    var temp = this._px2temp(newTop);
+//     newTop = Math.min( Math.max(newTop, 0), this.containerDimensions.maxTop );
+//     // console.log(newTop);
 
-    this.setHandle(temp);
-    this._sendToolCommand('target', this.type, temp);
-  },
-  onResize: function()
-  {
-    var container = this.$el.find('.temp-bar');
-    var handle = container.find('.temp-target');
-    var label = container.find('label');
+//     var temp = this._px2temp(newTop);
 
-    var height = container.height();
-    var maxTop = height - handle.innerHeight() - label.innerHeight();
+//     this.setHandle(temp);
+//     this._sendToolCommand('target', this.type, temp);
+//   },
+//   onResize: function()
+//   {
+//     var container = this.$el.find('.temp-bar');
+//     var handle = container.find('.temp-target');
+//     var label = container.find('label');
 
-    this.containerDimensions = {
-      top: container.offset().top,
-      height: height,
-      maxTop: maxTop,
-      px4degree: maxTop / (this.scale[1] - this.scale[0])
-    };
-  },
+//     var height = container.height();
+//     var maxTop = height - handle.innerHeight() - label.innerHeight();
 
-  // this function will render the actual increasing temperature 
-  renderTemps: function(actual, target)
-  {
-    var handleHeight = this.$el.find('.temp-target').innerHeight();
+//     this.containerDimensions = {
+//       top: container.offset().top,
+//       height: height,
+//       maxTop: maxTop,
+//       px4degree: maxTop / (this.scale[1] - this.scale[0])
+//     };
+//   },
 
-    if (actual !== null) {
-      // changing the value of rising temp on the 'current-temp-top'
-      this.$el.find('.current-temp-top').html(Math.round(actual)+'&deg;');
+//   // this function will render the actual increasing temperature 
+//   renderTemps: function(actual, target)
+//   {
+//     var handleHeight = this.$el.find('.temp-target').innerHeight();
 
-      // moving the horizontal bar based on the rising temperature
-      // In new UI we will need to show this part as a progress bar
-      this.$el.find('.current-temp').css({top: (this._temp2px(actual) + handleHeight/2 )+'px'});
-    }
+//     if (actual !== null) {
+//       // changing the value of rising temp on the 'current-temp-top'
+//       this.$el.find('.current-temp-top').html(Math.round(actual)+'&deg;');
 
-    if (target !== null) {
-      this.setHandle(Math.min(Math.round(target), this.scale[1]));
-    }
-  },
+//       // moving the horizontal bar based on the rising temperature
+//       // In new UI we will need to show this part as a progress bar
+//       this.$el.find('.current-temp').css({top: (this._temp2px(actual) + handleHeight/2 )+'px'});
+//     }
 
-  /*
-  function for getting the values in pixel to move the slider to the same amount
-  */
-  _temp2px: function(temp)
-  {
-    var px = temp * this.containerDimensions.px4degree;
+//     if (target !== null) {
+//       this.setHandle(Math.min(Math.round(target), this.scale[1]));
+//     }
+//   },
 
-    return this.containerDimensions.maxTop - px;
-  },
+//   /*
+//   function for getting the values in pixel to move the slider to the same amount
+//   */
+//   _temp2px: function(temp)
+//   {
+//     var px = temp * this.containerDimensions.px4degree;
 
-  /*
-  this function will convert the pixel to the temperature
-  */
-  _px2temp: function(px)
-  {
-    return Math.round( ( (this.containerDimensions.maxTop - px) / this.containerDimensions.px4degree ) );
-  }
-});
+//     return this.containerDimensions.maxTop - px;
+//   },
+
+//   /*
+//   this function will convert the pixel to the temperature
+//   */
+//   _px2temp: function(px)
+//   {
+//     return Math.round( ( (this.containerDimensions.maxTop - px) / this.containerDimensions.px4degree ) );
+//   }
+// });
 
 // this object is controlling the temperature of bed and nozzle
 // Basically this view is reponsible for preheating process
-var TempView = Backbone.View.extend({
-  el: '#temp-control',
-  nozzleTempBar: null,
-  bedTempBar: null,
-  initialize: function()
-  { 
-    // creating the new instance for controlling the nozzle temp-bar
-    this.nozzleTempBar = new TempBarVerticalView({
-      scale: [0, app.printerProfile.get('max_nozzle_temp')],
-      el: this.$el.find('.temp-control-cont.nozzle'),
-      type: 'tool0'
-    });
 
-    // creating the new instance for controlling the bed temp-bar
-    this.bedTempBar = new TempBarVerticalView({
-      scale: [0, app.printerProfile.get('max_bed_temp')],
-      el: this.$el.find('.temp-control-cont.bed'),
-      type: 'bed'
-    });
-  },
-  render: function()
-  {
-    // Referencing the 'models/printerprofile.js' file to get the data
-    var profile = app.printerProfile.toJSON();
+/* Comment-change#1 */
+// var TempView = Backbone.View.extend({
+//   el: '#temp-control',
+//   nozzleTempBar: null,
+//   bedTempBar: null,
+//   initialize: function()
+//   { 
+//     // creating the new instance for controlling the nozzle temp-bar
+//     this.nozzleTempBar = new TempBarVerticalView({
+//       scale: [0, app.printerProfile.get('max_nozzle_temp')],
+//       el: this.$el.find('.temp-control-cont.nozzle'),
+//       type: 'tool0'
+//     });
 
-    // console.log(profile);
-    // console.log(this);
+//     // creating the new instance for controlling the bed temp-bar
+//     this.bedTempBar = new TempBarVerticalView({
+//       scale: [0, app.printerProfile.get('max_bed_temp')],
+//       el: this.$el.find('.temp-control-cont.bed'),
+//       type: 'bed'
+//     });
+//   },
+//   render: function()
+//   {
+//     // Referencing the 'models/printerprofile.js' file to get the data
+//     var profile = app.printerProfile.toJSON();
 
-    // here we are setting the nozzleTempBar temperature to the max-nozzle-temp
-    // from the 'printerprofile'
-    this.nozzleTempBar.setMax(profile.max_nozzle_temp);
+//     // console.log(profile);
+//     // console.log(this);
 
-    if (profile.heated_bed) {
-      // setting the bed temperature to the max-bed-temp form the printerprofile
-      this.bedTempBar.setMax(profile.max_bed_temp);
-      this.bedTempBar.$el.removeClass('disabled');
-    } else {
-      this.bedTempBar.$el.addClass('disabled');
-    }
-  },
+//     // here we are setting the nozzleTempBar temperature to the max-nozzle-temp
+//     // from the 'printerprofile'
+//     this.nozzleTempBar.setMax(profile.max_nozzle_temp);
 
-  // this function is having dependecies with: "router.js"
-  resetBars: function()
-  {
-    this.nozzleTempBar.onResize();
-    this.bedTempBar.onResize();
-  },
+//     if (profile.heated_bed) {
+//       // setting the bed temperature to the max-bed-temp form the printerprofile
+//       this.bedTempBar.setMax(profile.max_bed_temp);
+//       this.bedTempBar.$el.removeClass('disabled');
+//     } else {
+//       this.bedTempBar.$el.addClass('disabled');
+//     }
+//   },
 
-  // this function is not having dependencies to outer js file
-  // this function is responsible for setting the nozzle and bed temperature
-  updateBars: function(value)
-  {
-    if (value.extruder) {
-      this.nozzleTempBar.setTemps(value.extruder.actual, value.extruder.target);
-    }
+//   // this function is having dependecies with: "router.js"
+//   resetBars: function()
+//   {
+//     this.nozzleTempBar.onResize();
+//     this.bedTempBar.onResize();
+//   },
 
-    if (value.bed) {
-      this.bedTempBar.setTemps(value.bed.actual, value.bed.target);
-    }
-  }
-});
+//   // this function is not having dependencies to outer js file
+//   // this function is responsible for setting the nozzle and bed temperature
+//   updateBars: function(value)
+//   {
+//     if (value.extruder) {
+//       this.nozzleTempBar.setTemps(value.extruder.actual, value.extruder.target);
+//     }
+
+//     if (value.bed) {
+//       this.bedTempBar.setTemps(value.bed.actual, value.bed.target);
+//     }
+//   }
+// });
 
 /*#####################
 ## XY-Z CONTROL PANEL #
@@ -299,7 +303,7 @@ var XYControlView = MovementControlView.extend({
   // call back functions for taking care of the click events on the control keys
   xPlusTapped: function()
   { 
-    // console.log(this);
+    console.log(this);
     // console.log(this.distanceControl.selected);
     this.sendJogCommand('x', 1, this.distanceControl.selected);
   },
@@ -354,167 +358,169 @@ var ZControlView = MovementControlView.extend({
 
 // this 'view' is responsible for the 'extrusion' processs
 // We will need to map the below JS with our new UI
-var ExtrusionControlView = Backbone.View.extend({
-  el: '#extrusion-control',
-  template: null,
-  events: {
-    /* below 2 events will be fired when the user clicks the extrude or retract*/
-    'click .extrude': 'extrudeTapped',
-    'click .retract': 'retractTapped',
-    'change .extrusion-length': 'lengthChanged',
-    'change .extrusion-speed': 'speedChanged',
-    'keydown input.back-to-select': 'onKeyDownBackToSelect'
-  },
-  initialize: function()
-  {
-    // console.log(this.$("#extruder-switch-template").html());
-    this.template = _.template( this.$("#extruder-switch-template").html() );
-  },
-  render: function()
-  {
-    // getting the printer profile
-    var printer_profile = app.printerProfile.toJSON();
 
-    // console.log(printer_profile);
+/* Comment-change#1 */
+// var ExtrusionControlView = Backbone.View.extend({
+//   el: '#extrusion-control',
+//   template: null,
+//   events: {
+//     /* below 2 events will be fired when the user clicks the extrude or retract*/
+//     'click .extrude': 'extrudeTapped',
+//     'click .retract': 'retractTapped',
+//     'change .extrusion-length': 'lengthChanged',
+//     'change .extrusion-speed': 'speedChanged',
+//     'keydown input.back-to-select': 'onKeyDownBackToSelect'
+//   },
+//   initialize: function()
+//   {
+//     // console.log(this.$("#extruder-switch-template").html());
+//     this.template = _.template( this.$("#extruder-switch-template").html() );
+//   },
+//   render: function()
+//   {
+//     // getting the printer profile
+//     var printer_profile = app.printerProfile.toJSON();
 
-    // attaching the template to the HTML
-    this.$('.row.extruder-switch').html(this.template({
-      profile: printer_profile
-    }));
+//     // console.log(printer_profile);
 
-    if (printer_profile.extruder_count > 1) {
-      /*
-      * if extruder count is more than 1, then we are going to add
-      * another event to the event list and also added the event handler function
-      * "extruderChanged"
-      */
-      this.events['change .extruder-number'] = "extruderChanged";
-    }
+//     // attaching the template to the HTML
+//     this.$('.row.extruder-switch').html(this.template({
+//       profile: printer_profile
+//     }));
 
-    this.delegateEvents(this.events);
-  },
+//     if (printer_profile.extruder_count > 1) {
+//       /*
+//       * if extruder count is more than 1, then we are going to add
+//       * another event to the event list and also added the event handler function
+//       * "extruderChanged"
+//       */
+//       this.events['change .extruder-number'] = "extruderChanged";
+//     }
 
-  /* Below function is the callback when the extrude button is tapped */
-  extrudeTapped: function()
-  {
-    if (this._checkAmount()) { // checking the value of extrude amount
-      // sending the POST request to the server for starting the extrusion
-      this._sendExtrusionCommand(1);
-    }
-  },
+//     this.delegateEvents(this.events);
+//   },
 
-  /* Below function is the callback when the retract button is tapped */
-  retractTapped: function()
-  {
-    if (this._checkAmount()) { // checking the value of the extrude amount
-      // sending the POST request to the server for starting the retraction
-      this._sendExtrusionCommand(-1);
-    }
-  },
+//   /* Below function is the callback when the extrude button is tapped */
+//   extrudeTapped: function()
+//   {
+//     if (this._checkAmount()) { // checking the value of extrude amount
+//       // sending the POST request to the server for starting the extrusion
+//       this._sendExtrusionCommand(1);
+//     }
+//   },
 
-  // This function is reponsible to get the value from the UI if the 
-  // Other option is selected for AMOUT
-  lengthChanged: function(e)
-  {
-    var elem = $(e.target);
-    if (elem.val() == 'other') {
-      elem.addClass('hide');
-      this.$('.other-length').removeClass('hide').find('input').focus().select();
-    } else {
-      this.$('input[name="extrusion-length"]').val(elem.val());
-    }
-  },
+//   /* Below function is the callback when the retract button is tapped */
+//   retractTapped: function()
+//   {
+//     if (this._checkAmount()) { // checking the value of the extrude amount
+//       // sending the POST request to the server for starting the retraction
+//       this._sendExtrusionCommand(-1);
+//     }
+//   },
 
-  // if Other option is selected for SPEED
-  speedChanged: function(e)
-  {
-    var elem = $(e.target);
+//   // This function is reponsible to get the value from the UI if the 
+//   // Other option is selected for AMOUT
+//   lengthChanged: function(e)
+//   {
+//     var elem = $(e.target);
+//     if (elem.val() == 'other') {
+//       elem.addClass('hide');
+//       this.$('.other-length').removeClass('hide').find('input').focus().select();
+//     } else {
+//       this.$('input[name="extrusion-length"]').val(elem.val());
+//     }
+//   },
 
-    if (elem.val() == 'other') {
-      elem.addClass('hide');
-      this.$('.other-speed').removeClass('hide').find('input').focus().select();
-    } else {
-      this.$('input[name="extrusion-speed"]').val(elem.val());
-    }
-  },
+//   // if Other option is selected for SPEED
+//   speedChanged: function(e)
+//   {
+//     var elem = $(e.target);
 
-  /* Callback function in case we have more than 1 extruder */
-  extruderChanged: function(e)
-  {
-    this._sendChangeToolCommand($(e.target).val())
-  },
-  /*
-    In case while selecting the 'Other' options from the SPEED or AMOUNT, we didn't enter
-    any custom value and pressed the ESC key, then the below function is responsible to
-    set the things back to the default.
-  */
-  onKeyDownBackToSelect: function(e)
-  {
-    if (e.keyCode == 27) { //ESC Key
-      var target = $(e.currentTarget);
-      console.log(target);
-      var select = target.closest('div.select-with-text').find('select');
+//     if (elem.val() == 'other') {
+//       elem.addClass('hide');
+//       this.$('.other-speed').removeClass('hide').find('input').focus().select();
+//     } else {
+//       this.$('input[name="extrusion-speed"]').val(elem.val());
+//     }
+//   },
 
-      //Find out the default value. Middle one
-      var defaultValue = select.find('option[default]').val();
+//   /* Callback function in case we have more than 1 extruder */
+//   extruderChanged: function(e)
+//   {
+//     this._sendChangeToolCommand($(e.target).val())
+//   },
+//   /*
+//     In case while selecting the 'Other' options from the SPEED or AMOUNT, we didn't enter
+//     any custom value and pressed the ESC key, then the below function is responsible to
+//     set the things back to the default.
+//   */
+//   onKeyDownBackToSelect: function(e)
+//   {
+//     if (e.keyCode == 27) { //ESC Key
+//       var target = $(e.currentTarget);
+//       console.log(target);
+//       var select = target.closest('div.select-with-text').find('select');
 
-      target.closest('.row').addClass('hide');
-      target.val(defaultValue);
-      select.removeClass('hide').val(defaultValue);
-    }
-  },
+//       //Find out the default value. Middle one
+//       var defaultValue = select.find('option[default]').val();
 
-  // function to send the POST request when tool changes
-  _sendChangeToolCommand: function(tool)
-  {
-    var data = {
-      command: "select",
-      tool: 'tool'+tool
-    }
+//       target.closest('.row').addClass('hide');
+//       target.val(defaultValue);
+//       select.removeClass('hide').val(defaultValue);
+//     }
+//   },
 
-    $.ajax({
-      url: API_BASEURL + "printer/tool",
-      type: "POST",
-      dataType: "json",
-      contentType: "application/json; charset=UTF-8",
-      data: JSON.stringify(data)
-    });
-  },
-  _checkAmount: function()
-  {
-    // console.log(this.$el.find('input[name="extrusion-length"]').val());
-    // this is checking the value of exturedAmount from the input
-    return !isNaN(this.$el.find('input[name="extrusion-length"]').val());
-  },
+//   // function to send the POST request when tool changes
+//   _sendChangeToolCommand: function(tool)
+//   {
+//     var data = {
+//       command: "select",
+//       tool: 'tool'+tool
+//     }
 
-  /* This function will send the POST request to the server for starting
-  the extrusion process 
-  */
-  _sendExtrusionCommand: function(direction)
-  {
-    // this is the data to be send to the server in the POST request
-    var data = {
-      command: "extrude",
-      amount: parseFloat(this.$('input[name="extrusion-length"]').val() * direction),
-      speed: parseFloat(this.$('input[name="extrusion-speed"]').val())
-    }
+//     $.ajax({
+//       url: API_BASEURL + "printer/tool",
+//       type: "POST",
+//       dataType: "json",
+//       contentType: "application/json; charset=UTF-8",
+//       data: JSON.stringify(data)
+//     });
+//   },
+//   _checkAmount: function()
+//   {
+//     // console.log(this.$el.find('input[name="extrusion-length"]').val());
+//     // this is checking the value of exturedAmount from the input
+//     return !isNaN(this.$el.find('input[name="extrusion-length"]').val());
+//   },
 
-    // this value will only come if there will be more than 1 extruder
-    var extruder = this.$('select.extruder-number').val();
+//   /* This function will send the POST request to the server for starting
+//   the extrusion process 
+//   */
+//   _sendExtrusionCommand: function(direction)
+//   {
+//     // this is the data to be send to the server in the POST request
+//     var data = {
+//       command: "extrude",
+//       amount: parseFloat(this.$('input[name="extrusion-length"]').val() * direction),
+//       speed: parseFloat(this.$('input[name="extrusion-speed"]').val())
+//     }
 
-    if (extruder) {
-      data['tool'] = 'tool'+extruder;
-    }
+//     // this value will only come if there will be more than 1 extruder
+//     var extruder = this.$('select.extruder-number').val();
 
-    $.ajax({
-      url: API_BASEURL + "printer/tool",
-      type: "POST",
-      dataType: "json",
-      contentType: "application/json; charset=UTF-8",
-      data: JSON.stringify(data)
-    });
-  }
-});
+//     if (extruder) {
+//       data['tool'] = 'tool'+extruder;
+//     }
+
+//     $.ajax({
+//       url: API_BASEURL + "printer/tool",
+//       type: "POST",
+//       dataType: "json",
+//       contentType: "application/json; charset=UTF-8",
+//       data: JSON.stringify(data)
+//     });
+//   }
+// });
 
 /*###############
 ## FAN CONTROL ##
@@ -522,39 +528,41 @@ var ExtrusionControlView = Backbone.View.extend({
 
 // this 'view' is responsible for the 'Fan Controling part'
 // As of now this part is not included in the new UI
-var FanControlView = Backbone.View.extend({
-  el: '#temp-control .fan-control',
-  events: {
-    'click button.fan-on': "fanOn",
-    'click button.fan-off': "fanOff"
-  },
-  fanOn: function()
-  {
-    this._setFanSpeed(255);
-    this.$('.fan_icon').addClass('animate-spin');
-  },
-  fanOff: function()
-  {
-    this._setFanSpeed(0);
-    this.$('.fan_icon').removeClass('animate-spin');
-  },
-  _setFanSpeed: function(speed)
-  {
-    var data = {
-      command: "set",
-      tool: 0,
-      speed: speed
-    }
 
-    $.ajax({
-      url: API_BASEURL + "printer/fan",
-      type: "POST",
-      dataType: "json",
-      contentType: "application/json; charset=UTF-8",
-      data: JSON.stringify(data)
-    });
-  }
-});
+/* Comment-change#1 */
+// var FanControlView = Backbone.View.extend({
+//   el: '#temp-control .fan-control',
+//   events: {
+//     'click button.fan-on': "fanOn",
+//     'click button.fan-off': "fanOff"
+//   },
+//   fanOn: function()
+//   {
+//     this._setFanSpeed(255);
+//     this.$('.fan_icon').addClass('animate-spin');
+//   },
+//   fanOff: function()
+//   {
+//     this._setFanSpeed(0);
+//     this.$('.fan_icon').removeClass('animate-spin');
+//   },
+//   _setFanSpeed: function(speed)
+//   {
+//     var data = {
+//       command: "set",
+//       tool: 0,
+//       speed: speed
+//     }
+
+//     $.ajax({
+//       url: API_BASEURL + "printer/fan",
+//       type: "POST",
+//       dataType: "json",
+//       contentType: "application/json; charset=UTF-8",
+//       data: JSON.stringify(data)
+//     });
+//   }
+// });
 
 
 // This 'view' will initialize all the parent views in the
@@ -566,6 +574,7 @@ var ControlView = Backbone.View.extend({
     'click .back-to-print button': 'resumePrinting',
     'show': 'render'
   }, // 'back-to-print' class is used to resume the printing
+  template: [],
   tempView: null,
   distanceControl: null,
   xyControlView: null,
@@ -574,13 +583,25 @@ var ControlView = Backbone.View.extend({
   fanView: null,
   initialize: function()
   {
+    /*
+      Since the views will access the DOM, we have to initialize as well as
+      render the templates before initializing any other instances of different
+      views.
+    */
+    this.template.push(_.template( this.$("#xyz-controls-template").html() ));
+    this.template.push(_.template( this.$("#filament-template").html() ));
+    this.$('#manual-container').html(this.template[0]);
+    this.$('#filament-container').html(this.template[1]);
+
+
     // here we have created the new instances for all the views on the #control-page
-    this.tempView = new TempView();
+
+    // this.tempView = new TempView(); /* Comment-change#1 */
     this.distanceControl = new DistanceControl();
     this.xyControlView = new XYControlView({distanceControl: this.distanceControl});
     this.zControlView = new ZControlView({distanceControl: this.distanceControl});
-    this.extrusionView = new ExtrusionControlView();
-    this.fanView = new FanControlView();
+    // this.extrusionView = new ExtrusionControlView(); /* Comment-change#1 */
+    // this.fanView = new FanControlView(); /* Comment-change#1 */
 
     // this function is listening for the 'temps' to be changed, and once it changes
     // it use to call the 'updateTemps' function and that ultimately call the 
@@ -601,10 +622,11 @@ var ControlView = Backbone.View.extend({
   // render function for the child views
   render: function()
   {
+
     this.onPausedChanged(app.socketData, app.socketData.get('paused'));
 
-    this.extrusionView.render();
-    this.tempView.render();
+    // this.extrusionView.render(); /* Comment-change#1 */
+    // this.tempView.render(); /* Comment-change#1 */
   },
   resumePrinting: function(e)
   {

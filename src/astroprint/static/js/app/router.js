@@ -181,7 +181,14 @@ var AppRouter = Backbone.Router.extend({
         currentView.trigger('hide');
 
         if (targetId == 'control-view') {
-          this.controlView.tempView.resetBars();
+
+          /* 
+          * below function call is commented because the
+          * functionality is disabled for some time
+          */
+
+          /* Comment-change#1 */
+          // this.controlView.tempView.resetBars();
         }
       }
 
