@@ -168,8 +168,13 @@ var AppRouter = Backbone.Router.extend({
     }
 
     this.selectView(this.settingsView);
-    this.settingsView.menu.changeActive(page || 'printer-connection');
-    app.selectQuickNav('settings');
+
+    /* 
+      Commenting the below code as per the current SettingView page 
+      This needs to be added later on in the project
+    */
+    // this.settingsView.menu.changeActive(page || 'printer-connection');
+    // app.selectQuickNav('settings');
   },
    utilities: function()
   {
