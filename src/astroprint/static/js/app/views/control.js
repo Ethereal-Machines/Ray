@@ -241,7 +241,10 @@ var MovementControlView = Backbone.View.extend({
   printerProfile: null,
   initialize: function(params)
   {
+    // console.log("I got a call for initialization");
+    // console.log(params);
     this.distanceControl = params.distanceControl;
+    // console.log(this.distanceControl);
   },
 
   // here we are sending a POST request whenever a jogging button in clicked
@@ -562,7 +565,7 @@ var ControlView = Backbone.View.extend({
   events: {
     'click .back-to-print button': 'resumePrinting',
     'show': 'render'
-  },
+  }, // 'back-to-print' class is used to resume the printing
   tempView: null,
   distanceControl: null,
   xyControlView: null,
