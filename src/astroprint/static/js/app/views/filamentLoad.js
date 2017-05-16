@@ -8,14 +8,55 @@ var FilamentLoadView = Backbone.View.extend({
 		'click .next-button' : 'revealNextStep'
 	},
 	xhrResponse: null,
-	initialize: function() {},
-	render: function() {},
+	tempView: null,
+	updatedTemp: null,
+	template1: null,
+	extruderPercentage: null,
+	initialize: function(options) {
+		this.listenTo(app.socketData, 'change:temps', this.tempUpdateAlert);
+	},
+	render: function() {
+		this.$("#filament-load-wizard__preheating-progress-section").find('.temp-value').html(this.template1({tempObj: this.updatedTemp}));
+	},
+	tempUpdateAlert: function(s, value) {
+		this.updatedTemp = value;
+
+		if (this.updatedTemp !== null) {
+	    this.render();
+	    this.updateProgressBar();
+	  }
+	},
+	updateProgressBar: function() {
+		var progressBar,
+		extruderTarget,
+		extruderActual;
+
+		progressBar = this.$el.find('.progress-bar-container progress');
+
+		extruderActual = this.updatedTemp.extruder.actual;
+		extruderTarget = this.updatedTemp.extruder.target;
+
+		if (extruderActual > extruderTarget) {
+			this.extruderPercentage = Math.min(Math.round(((extruderTarget/extruderActual)*100)));
+		} else {
+			this.extruderPercentage = Math.min(Math.round(((extruderActual/extruderTarget)*100)));
+		}
+
+		progressBar.val(this.extruderPercentage);
+	},
 	revealNextStep: function(e) {
 		var currentView = this.$el.find('.active');
 		var currentBtn = currentView.find('.next-button')[0];
 		var currentBtnId = $(currentBtn).attr('id');
 
-		if (currentBtnId === "preheating-progress-section-button") {
+		if (currentBtnId === "load-select-preheat-temp-button") {
+
+			currentView.removeClass('active').addClass('hide');
+			this.$el.find("#filament-load-wizard__preheating-progress-section").removeClass('hide').addClass('active');
+
+			this.template1 = _.template('<span><%= Math.min(Math.round(tempObj.extruder.actual)) %> &deg;C/ <%= Math.min(Math.round(tempObj.extruder.target)) %> &deg;C</span>');
+
+		} else if (currentBtnId === "preheating-progress-section-button") {
 
 			currentView.removeClass('active').addClass('hide');
 			this.$el.find("#insert-filament-section").removeClass('hide').addClass('active');
@@ -33,7 +74,6 @@ var FilamentLoadView = Backbone.View.extend({
 		} else if (currentBtnId === "extruding-in-progress-section-button") {
 
 			// Killing the ajax command sent from the previous step on click of the NEXT button
-			console.log(this.xhr);
 			// this.xhrResponse.abort();
 			currentView.removeClass('active').addClass('hide');
 			this.$el.find("#filament-load-wizard__finish-section").removeClass('hide').addClass('active');
@@ -41,16 +81,14 @@ var FilamentLoadView = Backbone.View.extend({
 		} else {
 
 			currentView.removeClass('active').addClass('hide');
-			this.$el.find("#filament-load-wizard__preheating-progress-section").removeClass('hide').addClass('active');
+			this.$el.find("#filament-load-wizard__temp-control").removeClass('hide').addClass('active');
 
 		}
 	},
 	extrudeTapped: function() {
-		this._sendExtrusionCommand(1, handleData);
+		this._sendExtrusionCommand(1);
 	},
 	_sendExtrusionCommand: function(direction, handleData) {
-
-		console.log("Filament Loading starts");
 
 		var self = this;
 
