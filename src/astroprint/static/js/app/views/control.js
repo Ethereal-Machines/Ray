@@ -91,7 +91,9 @@ var ControlView = Backbone.View.extend({
   el: '#control-view',
   events: {
     'click .back-to-print button': 'resumePrinting',
-    'show': 'render'
+    'show': 'render',
+    'click a.load-filament-link': 'startPreheatingLoad',
+    'click a.unload-filament-link': 'startPreheatingUnload'
   }, // 'back-to-print' class is used to resume the printing
   template: null,
   tempView: null,
@@ -100,6 +102,8 @@ var ControlView = Backbone.View.extend({
   zControlView: null,
   extrusionView: null,
   fanView: null,
+  filamentLoadPreheatView: null,
+  filamentUnloadPreheatView: null,
   initialize: function(options){
     this.listenTo(app.socketData, 'change:temps', this.updateTemps);
     this.listenTo(app.socketData, 'change:paused', this.onPausedChanged);
@@ -113,6 +117,12 @@ var ControlView = Backbone.View.extend({
   render: function(){
     this.onPausedChanged(app.socketData, app.socketData.get('paused'));
     this.changeTemplate();
+  },
+  startPreheatingLoad: function() {
+    this.filamentLoadPreheatView = new TempFilamentLoadPreheatView();
+  },
+  startPreheatingUnload: function() {
+    this.filamentUnloadPreheatView = new TempFilamentUnloadPreheatView();
   },
   // function for checking validating and rendering the selected template
   changeTemplate: function() {
@@ -134,7 +144,7 @@ var ControlView = Backbone.View.extend({
 
       this.setTemplate( "<h1 align='center'> No template for the Automatic Bed Levling </h1>", null);
 
-    } else {
+    } else if (this.buttonName === "Preheat_Button"){
 
       this.setTemplate( this.$("#pre-heat-template").html(), null);
       this.tempView = new TempView();
