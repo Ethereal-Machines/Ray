@@ -13,6 +13,9 @@
 		'max_bed_temp': 140,
 		'heated_bed': true,
 		'cancel_gcode': null,
-		'invert_z': false
+		'invert_z': false,
+		// below two properties have been added for the extrusion process
+		'extrusion_amount': 900,
+		'extrusion_speed': 2
 	}
 });
