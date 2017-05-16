@@ -125,7 +125,7 @@ var ControlView = Backbone.View.extend({
       this.filamentUnloadPreheatView.updateBars(value);
     }
   },
-  render: function(){
+  render: function() {
     this.onPausedChanged(app.socketData, app.socketData.get('paused'));
     this.changeTemplate();
   },
