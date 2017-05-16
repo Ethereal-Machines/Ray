@@ -33,14 +33,26 @@
 		
 		<!-- "#distance-control" -->
 		<div class="small-12 columns" id="distance-control">
-	        <center>
-	          <ul class="button-group radius">
-	            <li><button class="small bold secondary" data-value="0.1">0.1</button></li>
-	            <li><button class="small bold secondary" data-value="1">1</button></li>
-	            <li><button class="small bold success" data-value="10">10</button></li>
-	            <li><button class="small bold secondary" data-value="100">100</button></li>
-	          </ul>
-	        </center>
+				<center>
+	        <select class="x-length-changed">
+					  <option value="0.1">0.1 mm</option>
+					  <option value="1">1 mm</option>
+					  <option value="10" selected default>10 mm</option>
+					  <option value="100">100 mm</option>
+					</select>
+					<select class="y-length-changed">
+					  <option value="0.1">0.1 mm</option>
+					  <option value="1">1 mm</option>
+					  <option value="10" selected default>10 mm</option>
+					  <option value="100">100 mm</option>
+					</select>
+					<select class="z-length-changed">
+					  <option value="0.1">0.1 mm</option>
+					  <option value="1">1 mm</option>
+					  <option value="10" selected default>10 mm</option>
+					  <option value="100">100 mm</option>
+					</select>
+				</center>
 		</div><!-- end of "#distance-control" -->
 	</script>
 	<script type="text/template" id="filament-template">

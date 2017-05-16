@@ -221,138 +221,140 @@ var TempView = Backbone.View.extend({
   
   In the new UI, we want to set the different values to the different directions
 */
-var DistanceControl = Backbone.View.extend({
-  el: '#distance-control',
-  selected: 10, // this is the default value which we have set initially. we can change this
-  events: {
-    'click button': 'selectDistance' // this is the function which will be envoked on the click event
-  },
-  selectDistance: function(e)
-  {
-    var el = $(e.currentTarget); // this will get the target button which we hit
-    // console.log(el);
-    // this is removing the 'success' from other and adding the secondary class to the other
-    this.$el.find('.success').removeClass('success').addClass('secondary');
-    el.addClass('success').removeClass('secondary'); // then again adding the 'success' to itself
+// var DistanceControl = Backbone.View.extend({
+//   el: '#distance-control',
+//   selected: 10, // this is the default value which we have set initially. we can change this
+//   events: {
+//     'click button': 'selectDistance' // this is the function which will be envoked on the click event
+//   },
+//   selectDistance: function(e)
+//   {
+//     var el = $(e.currentTarget); // this will get the target button which we hit
+//     console.log(el);
+//     // this is removing the 'success' from other and adding the secondary class to the other
+//     this.$el.find('.success').removeClass('success').addClass('secondary');
+//     el.addClass('success').removeClass('secondary'); // then again adding the 'success' to itself
 
-    // here we are setting the value of 'selected' property based on the value choosed
-    this.selected = el.attr('data-value');
-  }
-});
+//     // here we are setting the value of 'selected' property based on the value choosed
+//     this.selected = el.attr('data-value');
+
+//     console.log(this.selected);
+//   }
+// });
 
 // this 'view' is reponsible for the movents on x,y and z directions
 // the subviews are 'XYControlView' and 'ZControlView' which are
 // extending this view
-var MovementControlView = Backbone.View.extend({
-  distanceControl: null,
-  printerProfile: null,
-  initialize: function(params)
-  {
-    // console.log("I got a call for initialization");
-    // console.log(params);
-    this.distanceControl = params.distanceControl;
-    // console.log(this.distanceControl);
-  },
+// var MovementControlView = Backbone.View.extend({
+//   distanceControl: null,
+//   printerProfile: null,
+//   initialize: function(params)
+//   {
+//     // console.log("I got a call for initialization");
+//     console.log(params);
+//     this.distanceControl = params.distanceControl;
+//     // console.log(this.distanceControl);
+//   },
 
-  // here we are sending a POST request whenever a jogging button in clicked
-  sendJogCommand: function(axis, multiplier, distance)
-  {
-    if (typeof distance === "undefined")
-      distance = 10;
+//   // here we are sending a POST request whenever a jogging button in clicked
+//   sendJogCommand: function(axis, multiplier, distance)
+//   {
+//     if (typeof distance === "undefined")
+//       distance = 10;
 
-    var data = {
-      "command": "jog"
-    }
-    data[axis] = distance * multiplier;
+//     var data = {
+//       "command": "jog"
+//     }
+//     data[axis] = distance * multiplier;
 
-    $.ajax({
-      url: API_BASEURL + "printer/printhead",
-      type: "POST",
-      dataType: "json",
-      contentType: "application/json; charset=UTF-8",
-      data: JSON.stringify(data)
-    });
-  },
+//     $.ajax({
+//       url: API_BASEURL + "printer/printhead",
+//       type: "POST",
+//       dataType: "json",
+//       contentType: "application/json; charset=UTF-8",
+//       data: JSON.stringify(data)
+//     });
+//   },
 
-  // here we are sending the POST request whenever a home button in clicked
-  sendHomeCommand: function(axis)
-  {
-    var data = {
-      "command": "home",
-      "axes": axis
-    }
+//   // here we are sending the POST request whenever a home button in clicked
+//   sendHomeCommand: function(axis)
+//   {
+//     var data = {
+//       "command": "home",
+//       "axes": axis
+//     }
 
-    $.ajax({
-      url: API_BASEURL + "printer/printhead",
-      type: "POST",
-      dataType: "json",
-      contentType: "application/json; charset=UTF-8",
-      data: JSON.stringify(data)
-    });
-  }
-});
+//     $.ajax({
+//       url: API_BASEURL + "printer/printhead",
+//       type: "POST",
+//       dataType: "json",
+//       contentType: "application/json; charset=UTF-8",
+//       data: JSON.stringify(data)
+//     });
+//   }
+// });
 
 // this 'view' is reponsible to handle the click events on the xy controller
-var XYControlView = MovementControlView.extend({
-  el: '#xy-controls',
-  events: {
-    'click .control_btn_x_plus': 'xPlusTapped',
-    'click .control_btn_x_minus': 'xMinusTapped',
-    'click .control_btn_y_plus': 'yPlusTapped',
-    'click .control_btn_y_minus': 'yMinusTapped',
-    'click .home_z': 'homeTapped'
-  },
+// var XYControlView = MovementControlView.extend({
+//   el: '#xy-controls',
+//   events: {
+//     'click .control_btn_x_plus': 'xPlusTapped',
+//     'click .control_btn_x_minus': 'xMinusTapped',
+//     'click .control_btn_y_plus': 'yPlusTapped',
+//     'click .control_btn_y_minus': 'yMinusTapped',
+//     'click .home_z': 'homeTapped'
+//   },
 
-  // call back functions for taking care of the click events on the control keys
-  xPlusTapped: function()
-  { 
-    console.log(this);
-    // console.log(this.distanceControl.selected);
-    this.sendJogCommand('x', 1, this.distanceControl.selected);
-  },
-  xMinusTapped: function()
-  {
-    this.sendJogCommand('x', -1, this.distanceControl.selected);
-  },
-  yPlusTapped: function()
-  {
-    this.sendJogCommand('y', 1, this.distanceControl.selected);
-  },
-  yMinusTapped: function()
-  {
-    this.sendJogCommand('y', -1, this.distanceControl.selected);
-  },
-  homeTapped: function()
-  {
-    if (!app.socketData.get('paused')) {
-      this.sendHomeCommand(['x', 'y']);
-    }
-  }
-});
+//   // call back functions for taking care of the click events on the control keys
+//   xPlusTapped: function()
+//   { 
+//     console.log(this);
+//     // console.log(this.distanceControl.selected);
+//     this.sendJogCommand('x', 1, this.distanceControl.selected);
+//   },
+//   xMinusTapped: function()
+//   {
+//     this.sendJogCommand('x', -1, this.distanceControl.selected);
+//   },
+//   yPlusTapped: function()
+//   {
+//     this.sendJogCommand('y', 1, this.distanceControl.selected);
+//   },
+//   yMinusTapped: function()
+//   {
+//     this.sendJogCommand('y', -1, this.distanceControl.selected);
+//   },
+//   homeTapped: function()
+//   {
+//     if (!app.socketData.get('paused')) {
+//       this.sendHomeCommand(['x', 'y']);
+//     }
+//   }
+// });
 
 // this view is responsible to handle the click events on the z-control of printer
-var ZControlView = MovementControlView.extend({
-  el: '#z-controls',
-  events: {
-    'click .control_btn_z_plus': 'zPlusTapped',
-    'click .control_btn_z_minus': 'zMinusTapped',
-    'click .home_z': 'homeTapped'
-  },
-  zPlusTapped: function()
-  {
-    this.sendJogCommand('z', 1, this.distanceControl.selected);
-  },
-  zMinusTapped: function()
-  {
-    this.sendJogCommand('z', -1 , this.distanceControl.selected);
-  },
-  homeTapped: function()
-  {
-    if (!app.socketData.get('paused')) {
-      this.sendHomeCommand('z');
-    }
-  }
-});
+// var ZControlView = MovementControlView.extend({
+//   el: '#z-controls',
+//   events: {
+//     'click .control_btn_z_plus': 'zPlusTapped',
+//     'click .control_btn_z_minus': 'zMinusTapped',
+//     'click .home_z': 'homeTapped'
+//   },
+//   zPlusTapped: function()
+//   {
+//     this.sendJogCommand('z', 1, this.distanceControl.selected);
+//   },
+//   zMinusTapped: function()
+//   {
+//     this.sendJogCommand('z', -1 , this.distanceControl.selected);
+//   },
+//   homeTapped: function()
+//   {
+//     if (!app.socketData.get('paused')) {
+//       this.sendHomeCommand('z');
+//     }
+//   }
+// });
 
 
 /*#######################
