@@ -77,6 +77,7 @@
       <div id="main ">
         <div class="row">
           <div id="view-container" class="small-12 columns Background">
+            <div id="files-view" class="app-view hide"> {%- include 'files.jinja2' -%} </div>
             <div id="filament-load-view" class="app-view hide"> {%- include 'filament-load-wizard.jinja2' -%} </div>
             <div id="filament-unload-view" class="app-view hide"> {%- include 'filament-unload-wizard.jinja2' -%} </div>
             <div id="settings-view" class="app-view hide"> {%- include 'settings.jinja2' -%} </div>
@@ -88,8 +89,8 @@
             <div id="help-view" class="app-view hide"> {%- include 'help.jinja2' -%} </div>
             <div id="about-view" class="app-view hide"> {%- include 'about.jinja2' -%} </div>
             <div id="home-view" class="app-view hide"> {%- include 'home.jinja2' -%} </div>
-            <div id="files-view" class="app-view hide"> {%- include 'files.jinja2' -%} </div>
             <div id="control-view" class="app-view hide"> {%- include 'control.jinja2' -%} </div>
+            <div id="print-from-storage-view" class="app-view hide"> {%- include 'print-from-storage.jinja2' -%} </div>
           </div>
         </div>
       </div>
@@ -169,7 +170,7 @@
     "js/lib/janus.js", "js/lib/adapter.js", "js/lib/spin.min.js", "js/lib/jquery.localtime.min.js",
     "js/app/models/socketdata.js", "js/app/models/printfiles.js", "js/app/models/printerprofile.js",
     "js/app/widgets/tempbarview.js", "js/app/widgets/camera-control.js",
-    "js/app/views/home.js", "js/app/views/files.js", "js/app/views/control.js", "js/app/views/filamentLoad.js", "js/app/views/filamentUnload.js", "js/app/views/manualControl.js", "js/app/views/settings.js", "js/app/views/connection.js",
+    "js/app/views/home.js", "js/app/views/printFromStorage.js", "js/app/views/files.js", "js/app/views/control.js", "js/app/views/filamentLoad.js", "js/app/views/filamentUnload.js", "js/app/views/manualControl.js", "js/app/views/settings.js", "js/app/views/connection.js",
     "js/app/views/turnoff.js","js/app/views/utility.js", "js/app/views/about.js","js/app/views/reboot.js", "js/app/views/printing.js", "js/app/views/terminal.js", "js/app/views/camera.js", "js/app/views/unreachable.js", "js/app/views/supplies.js", "js/app/views/help.js",
     "js/app/router.js",
     "js/app/app.js" -%}
