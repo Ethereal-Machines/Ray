@@ -2,6 +2,10 @@
 	box-sizing: border-box;
 }
 
+body {
+	margin: 0 !important;
+}
+
 .hide {
 	display: none;
 }
@@ -167,9 +171,9 @@ progress[value] {
 }
 
 /* Adding temporary styling for the pencil icon to enter the temperature */
-a.temp-edit {
+/*a.temp-edit {
 	display: block;
 	width: 40px;
 	height: 40px;
 	background-color: black;
-}
+}*/
