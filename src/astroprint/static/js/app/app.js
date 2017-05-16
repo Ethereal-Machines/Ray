@@ -12,6 +12,8 @@ $.ajaxSetup({
   }
 });
 
+console.log(UI_API_KEY);
+
 var AppMenu = Backbone.View.extend({
   el: '#main-menu',
   turnOffModal: null,
@@ -22,6 +24,7 @@ var AppMenu = Backbone.View.extend({
   {
     e.preventDefault();
     var el = $(e.currentTarget);
+    console.log(el);
     var spinIcon = el.find('.icon-rocket-spinner');
 
     spinIcon.removeClass('hide');
@@ -57,15 +60,47 @@ var AstroBoxApp = Backbone.View.extend({
   initialize: function()
   {
     this.socketData = new SocketData();
+    console.log(this.socketData);
+    
+    /* AppMenu we are not including in the application */
     this.appMenu = new AppMenu();
+    console.log(this.appMenu);
+
+    /* 
+    * This is corresponds to the 'utils.js' file .
+    * This will be included in the new application
+    */
     this.utils = new Utils();
+    console.log(this.utils);
+
+    /*
+    * This the main property which is reponsible for
+    * routing to the different applicaton pages of the application
+    */
     this.router = new AppRouter();
+    console.log(this.router);
+
+    /*
+    * This is related to connections settings.
+    * It will be included in the new app
+    */
     this.connectionView = new ConnectionView({socket: this.socketData});
+    console.log(this.connectionView);
+
+    /*
+    * This is the Modal for the printer profile
+    * Will be there in the new app
+    */
     this.printerProfile = new PrinterProfile(initial_printer_profile);
+    console.log(this.printerProfile);
 
+    /*
+    * This is responsible for 
+    */
     this.eventManager = Backbone.Events;
-
+    console.log(this.eventManager);
     this.socketData.connectionView = this.connectionView;
+    console.log(this.socketData.connectionView);
     this.socketData.connect(WS_TOKEN);
     this.listenTo(this.socketData, 'change:printing', this.reportPrintingChange );
     this.listenTo(this.socketData, 'change:online', this.onlineStatusChange );

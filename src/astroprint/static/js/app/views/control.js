@@ -4,6 +4,8 @@
  *  Distributed under the GNU Affero General Public License http://www.gnu.org/licenses/agpl.html
  */
 
+// Dependency: /models/printerprofile.js, /widgets/tempbarview.js
+// this object is being extended by the sub part 'TempView'
 var TempBarVerticalView = TempBarView.extend({
   containerDimensions: null,
   scale: null,
@@ -13,6 +15,9 @@ var TempBarVerticalView = TempBarView.extend({
     'click .temp-bar': 'onClicked',
     'click button.temp-off': 'turnOff'
   }),
+  // this function is for sliding the horizontal bar on the temp-bar
+  // this part will not be included in the new UI but a progress bar
+  // showing the increasing temp will be needed to display
   setHandle: function(value)
   {
     if (!this.dragging) {
@@ -29,6 +34,7 @@ var TempBarVerticalView = TempBarView.extend({
   },
   onTouchMove: function(e)
   {
+    // console.log(this);
     if (this.dragging) {
       e.preventDefault();
       e.stopPropagation();
@@ -102,6 +108,8 @@ var TempBarVerticalView = TempBarView.extend({
   }
 });
 
+// this object is controlling the temperature of bed and nozzle
+// Basically this view is reponsible for preheating process
 var TempView = Backbone.View.extend({
   el: '#temp-control',
   nozzleTempBar: null,
@@ -121,7 +129,12 @@ var TempView = Backbone.View.extend({
   },
   render: function()
   {
+    // Referencing the 'models/printerprofile.js' file to get the data
     var profile = app.printerProfile.toJSON();
+
+    console.log(profile);
+
+    console.log(this);
 
     this.nozzleTempBar.setMax(profile.max_nozzle_temp);
 
@@ -149,6 +162,7 @@ var TempView = Backbone.View.extend({
   }
 });
 
+// this 'view' is reponsible for setting the distance
 var DistanceControl = Backbone.View.extend({
   el: '#distance-control',
   selected: 10,
@@ -164,6 +178,9 @@ var DistanceControl = Backbone.View.extend({
   }
 });
 
+// this 'view' is reponsible for the movents on x,y and z directions
+// the subviews are 'XYControlView' and 'ZControlView' which are
+// extending this view
 var MovementControlView = Backbone.View.extend({
   distanceControl: null,
   printerProfile: null,
@@ -262,6 +279,9 @@ var ZControlView = MovementControlView.extend({
   }
 });
 
+
+// this 'view' is responsible for the 'extrusion' processs
+// We will need to map the below JS with our new UI
 var ExtrusionControlView = Backbone.View.extend({
   el: '#extrusion-control',
   template: null,
@@ -385,6 +405,9 @@ var ExtrusionControlView = Backbone.View.extend({
   }
 });
 
+
+// this 'view' is responsible for the 'Fan Controling part'
+// As of now this part is not included in the new UI
 var FanControlView = Backbone.View.extend({
   el: '#temp-control .fan-control',
   events: {
@@ -419,6 +442,9 @@ var FanControlView = Backbone.View.extend({
   }
 });
 
+
+// This 'view' will initialize all the parent views in the
+// 'control-view' section
 var ControlView = Backbone.View.extend({
   el: '#control-view',
   events: {
