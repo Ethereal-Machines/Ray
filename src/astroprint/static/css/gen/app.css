@@ -5,6 +5,17 @@
 .hide {
 	display: none;
 }
+.app-view {
+	width: 800px;
+	height: 480px;
+	margin: 0 auto;
+	border: 1px solid grey;
+}
+
+#manual-container {
+	display: flex;
+	flex-direction: row;
+}
 
 #filament-load-wizard__preheating-progress-section,
 #filament-unload-wizard__preheating-progress-section,
@@ -26,14 +37,17 @@
 }
 
 #filament-load-wizard-nav,
-#filament-unload-wizard-nav {
+#filament-unload-wizard-nav,
+#controls-nav,
+#print-from-storage-nav {
 	display: flex;
 	flex-direction: row;
 	width: 100%;
-	height: 48px;
+	height: 56px;
 	background-color: #2E2E2E;
 	color: #FFFFFF;
 	justify-content: space-between;
+	margin-bottom: 32px;
 }
 
 .wrapper {
@@ -45,7 +59,8 @@
 	width: 70%;
 	text-align: left;
 }
-.cancel-button {
+.cancel-button,
+.back-button {
 	width: 30%;
 	text-align:center;
 	background-color: #808080;
@@ -54,9 +69,10 @@
 }
 
 .wizard-name,
-.cancel-button {
-	font-size: 20px;
-	padding: 16px 24px 12px;
+.cancel-button,
+.back-button {
+	font-size: 26px;
+	padding: 15px 24px;
 }
 
 .steps-count {
