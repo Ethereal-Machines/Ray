@@ -1,9 +1,12 @@
-<!--div class="row heading">
+<div class="row heading">
 	<div class="small-12 title-heading">
 		<h1 class="bold">File Manager</h1>
 	</div>
-</div-->
+</div>
 
+<!-- This div "upload-buttons" is the container for the upload button 
+	Used in UploadView object
+-->
 <div class="file-upload-view">
 	<div class="row upload-buttons">
 		<div class="small-12 medium-7 large-4 medium-centered columns">
@@ -13,8 +16,15 @@
 			</span>
 		</div>
 	</div>
+
+	<!-- This block 'upload-process' use to trigger when the file is being uploaded and display the
+	percentage % of the download, and hides when the upload process is finished -->
 	<div class="row upload-progress" style="display:none">
 		<div class="small-12 large-10 large-centered columns">
+			<!--
+			 Width of this 'progress radius' div use to increase 0-100% based
+			on the progress of uploading 
+			 -->
 			<div class="progress radius">
 				<div class="meter" style="width: 0%"></div>
 			</div>
@@ -46,22 +56,35 @@
 		</div>
 	</div>
 
+<!-- 
+	This is the dialog box which opens up when we click the filemanger and
+	the files are being loaded from the local memory to display 
+-->
 	<div class="row">
 		<div class="small-12 columns">
       <div class="local-loading" align="center">
         <i class="icon-refresh animate-spin"></i>
         Loading files...
       </div>
+
+      <!-- 
+				This div 'design-list-container' contains all the files name with
+				printing options
+       -->
 			<div class="design-list-container"></div>
 		</div>
 	</div>
 </div>
 
+<!-- This div "#print-file-info" contains all the options for deleating,
+downloading, and the print options 
+It's having a template "#printfile-info-template" -->
 <div id="print-file-info" class="reveal-modal xlarge" data-reveal>
 	<div class="dlg-content"></div>
 	<a class="close-reveal-modal">&#215;</a>
 </div>
 
+<!-- Template for the "#print-file-info" div -->
 <script type="text/template" id="printfile-info-template">
   <h2 class="bold"><%= p.printFileName ? p.printFileName : p.name %></h2>
 	<div class="modal-content">
@@ -77,12 +100,12 @@
 				<div class="actions">
 					<% if (p.local_filename) { %>
 						<div class="loading-button">
-							<a class="remove idle" href="#">
+							<a class="remove idle" href="#"> Remove The item from Local
 								<i class="icon-trash with-separator" title="Remove from {{variantData['productName']}}"></i>
 							</a>
 							<span class="loading"><i class="icon-rocket-spinner animate-spin"></i></span>
 						</div>
-						<a class="print" href="#">
+						<a class="print" href="#"> Print the item
 							<i class="icon-3d-printer" title="Print"></i>
 						</a>
 					<% } else { %>
@@ -135,6 +158,9 @@
 	</div>
 </script>
 
+<!-- This template is being used for displaying the files from the local
+storage of the PI and will be used to show up the options to DELETE, DOWNLOAD
+and other options related to the files -->
 <script type="text/template" id="print-file-template">
 	<div class="small-2 large-1 columns left-section">
 		<% if (p.images.thumbnail) { %>
