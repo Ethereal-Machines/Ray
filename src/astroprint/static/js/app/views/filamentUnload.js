@@ -16,6 +16,12 @@ var FilamentUnloadView = Backbone.View.extend({
 
 		if (currentBtnId === "filament-unload-wizard__preheating-progress-section-button") {
 			
+			/*
+				We need to start the Retraction process when the button is clicked
+			*/
+
+			this.retractTapped(); // initializing the retraction process
+
 			currentView.removeClass('active').addClass('hide');
 			this.$el.find("#retraction-in-progress-section").removeClass('hide').addClass('active');
 
@@ -30,5 +36,32 @@ var FilamentUnloadView = Backbone.View.extend({
 			this.$el.find("#filament-unload-wizard__preheating-progress-section").removeClass('hide').addClass('active');
 			
 		}
+	},
+	retractTapped: function() {
+		console.log("Retract Button is being pressed.");
+		this._sendRetractionCommand(-1);
+	},
+	_sendRetractionCommand: function(direction) {
+		var printer_profile = app.printerProfile.toJSON();
+
+		var data = {
+	      command: "extrude",
+	      amount: parseFloat(printer_profile.extrusion_amount * direction),
+	      speed: parseFloat(printer_profile.extrusion_speed)
+	    }
+
+	    $.ajax({
+	      url: API_BASEURL + "printer/tool",
+	      type: "POST",
+	      dataType: "json",
+	      contentType: "application/json; charset=UTF-8",
+	      data: JSON.stringify(data),
+	      success: function() {},
+	      error: function(xhr) {
+	      	console.log("The status code is : " + xhr.status);
+	      	console.log("Msg form the server : " + xhr.responseText);
+	      	console.log("Status text : " + xhr.statusText);
+	      }
+	    });
 	}
 });

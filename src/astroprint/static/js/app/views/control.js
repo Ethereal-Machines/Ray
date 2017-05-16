@@ -499,6 +499,10 @@ var ExtrusionControlView = Backbone.View.extend({
   _sendExtrusionCommand: function(direction)
   {
     // this is the data to be send to the server in the POST request
+
+    console.log("Extrusion length: " + this.$('input[name="extrusion-length"]').val() * direction);
+    console.log("Extrusion speed: " + this.$('input[name="extrusion-speed"]').val());
+
     var data = {
       command: "extrude",
       amount: parseFloat(this.$('input[name="extrusion-length"]').val() * direction),

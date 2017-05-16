@@ -20,7 +20,12 @@ var FilamentLoadView = Backbone.View.extend({
 			this.$el.find("#insert-filament-section").removeClass('hide').addClass('active');
 
 		} else if (currentBtnId === "insert-filament-section-button") {
+			/*
+				We need to start the extrusion process as soon as this next button is pressed.
 
+			*/
+			this.extrudeTapped(); // initializing the extrusion process
+			
 			currentView.removeClass('active').addClass('hide');
 			this.$el.find("#extruding-in-progress-section").removeClass('hide').addClass('active');
 
@@ -33,7 +38,35 @@ var FilamentLoadView = Backbone.View.extend({
 
 			currentView.removeClass('active').addClass('hide');
 			this.$el.find("#filament-load-wizard__preheating-progress-section").removeClass('hide').addClass('active');
-			
+
 		}
+	},
+	extrudeTapped: function() {
+		console.log("Extrude button is being pressed.");
+		this._sendExtrusionCommand(1);
+	},
+	_sendExtrusionCommand: function(direction) {
+
+		var printer_profile = app.printerProfile.toJSON();
+
+		var data = {
+	      command: "extrude",
+	      amount: parseFloat(printer_profile.extrusion_amount * direction),
+	      speed: parseFloat(printer_profile.extrusion_speed)
+	    }
+
+	    $.ajax({
+	      url: API_BASEURL + "printer/tool",
+	      type: "POST",
+	      dataType: "json",
+	      contentType: "application/json; charset=UTF-8",
+	      data: JSON.stringify(data),
+	      success: function() {},
+	      error: function(xhr) {
+	      	console.log("The status code is : " + xhr.status);
+	      	console.log("Msg form the server : " + xhr.responseText);
+	      	console.log("Status text : " + xhr.statusText);
+	      }
+	    });
 	}
 });
