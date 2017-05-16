@@ -19,8 +19,8 @@ var PreheatingView = Backbone.View.extend({
     this.listenTo(app.socketData, 'change:temps', this.tempUpdateAlert);
 
     // setting the templates for displaying the dynamic temperatures
-    this.template1 = _.template('<span><%= tempObj.extruder.actual %> &deg;C/ <%= tempObj.extruder.target %> &deg;C</span>');
-    this.template2 = _.template('<span><%= tempObj.bed.actual %> &deg;C/ <%= tempObj.bed.target %> &deg;C</span>');
+    this.template1 = _.template('<span><%= Math.min(Math.round(tempObj.extruder.actual)) %> &deg;C/ <%= Math.min(Math.round(tempObj.extruder.target)) %> &deg;C</span>');
+    this.template2 = _.template('<span><%= Math.min(Math.round(tempObj.bed.actual)) %> &deg;C/ <%= Math.min(Math.round(tempObj.bed.target)) %> &deg;C</span>');
 	},
 	render: function() {
 		// Displaying the temperature when the real time data is available
@@ -52,23 +52,32 @@ var PreheatingView = Backbone.View.extend({
 	updateProgressBar: function() {
 
 		var progressBar1,
-		progressBar2;
+		progressBar2,
+		extruderTarget,
+		extruderActual,
+		bedTarget,
+		bedActual;
 
 		progressBar1 = $('#extruder-progress-bar');
 		progressBar2 = $('#bed-progress-bar');
 
-		if (this.updatedTemp.extruder.actual > this.updatedTemp.extruder.target) {
-			this.extruderPercentage = Math.round(((this.updatedTemp.extruder.target/this.updatedTemp.extruder.actual)*100));
+		extruderActual = this.updatedTemp.extruder.actual;
+		extruderTarget = this.updatedTemp.extruder.target;
+		bedActual = this.updatedTemp.bed.actual;
+		bedTarget = this.updatedTemp.bed.target;
+
+		if (extruderActual > extruderTarget) {
+			this.extruderPercentage = Math.min(Math.round(((extruderTarget/extruderActual)*100)));
 		} else {
-			this.extruderPercentage = Math.round(((this.updatedTemp.extruder.actual/this.updatedTemp.extruder.target)*100));
+			this.extruderPercentage = Math.min(Math.round(((extruderActual/extruderTarget)*100)));
 		}
 
 		progressBar1.val(this.extruderPercentage);
 
-		if (this.updatedTemp.bed.actual > this.updatedTemp.bed.target) {
-			this.bedPercentage = Math.round(((this.updatedTemp.bed.target/this.updatedTemp.bed.actual)*100));
+		if (bedActual > bedTarget) {
+			this.bedPercentage = Math.min(Math.round(((bedTarget/bedActual)*100)));
 		} else {
-			this.bedPercentage = Math.round(((this.updatedTemp.bed.actual/this.updatedTemp.bed.target)*100));
+			this.bedPercentage = Math.min(Math.round(((bedActual/bedTarget)*100)));
 		}
 
 		progressBar2.val(this.bedPercentage);
