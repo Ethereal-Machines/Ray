@@ -34,7 +34,7 @@ var FilamentLoadView = Backbone.View.extend({
 
 			// Killing the ajax command sent from the previous step on click of the NEXT button
 			console.log(this.xhr);
-			this.xhrResponse.abort();
+			// this.xhrResponse.abort();
 			currentView.removeClass('active').addClass('hide');
 			this.$el.find("#filament-load-wizard__finish-section").removeClass('hide').addClass('active');
 
@@ -46,36 +46,35 @@ var FilamentLoadView = Backbone.View.extend({
 		}
 	},
 	extrudeTapped: function() {
-		console.log("Extrude button is being pressed.");
-		this._sendExtrusionCommand(1);
+		this._sendExtrusionCommand(1, handleData);
 	},
-	_sendExtrusionCommand: function(direction) {
+	_sendExtrusionCommand: function(direction, handleData) {
+
+		console.log("Filament Loading starts");
 
 		var self = this;
 
 		var printer_profile = app.printerProfile.toJSON();
 
 		var data = {
-	      command: "extrude",
-	      amount: parseFloat(printer_profile.extrusion_amount * direction),
-	      speed: parseFloat(printer_profile.extrusion_speed)
-	    }
+      command: "extrude",
+      amount: parseFloat(printer_profile.extrusion_amount * direction),
+      speed: parseFloat(printer_profile.extrusion_speed)
+	  }
 
-	    $.ajax({
-	      url: API_BASEURL + "printer/tool",
-	      type: "POST",
-	      dataType: "json",
-	      contentType: "application/json; charset=UTF-8",
-	      data: JSON.stringify(data),
-	      success: function(xhr) {
-	      	self.xhrResponse = xhr;
-	      },
-	      error: function(xhr) {
-	      	self.xhrResponse = xhr;
-	      	console.log("The status code is : " + xhr.status);
-	      	console.log("Msg form the server : " + xhr.responseText);
-	      	console.log("Status text : " + xhr.statusText);
-	      }
-	    });
+    $.ajax({
+      url: API_BASEURL + "printer/tool",
+      type: "POST",
+      dataType: "json",
+      contentType: "application/json; charset=UTF-8",
+      data: JSON.stringify(data),
+      success: function() {},
+      error: function(xhr) {
+      	self.xhrResponse = xhr;
+      	console.log("The status code is : " + xhr.status);
+      	console.log("Msg form the server : " + xhr.responseText);
+      	console.log("Status text : " + xhr.statusText);
+      }
+    });
 	}
 });
