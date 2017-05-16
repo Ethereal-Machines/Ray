@@ -4,61 +4,56 @@
 	<a href="#utilities">Back</a>
 </nav>
 <div class="container">
-	<div id="manual-container">
-		<script type="text/template" id="xyz-controls-template">
-			<h1 align="center">Template for Manual Control</h1>
-			<!-- "#xy-controls" -->
-			<div class="small-12 medium-7 columns" id="xy-controls" align="center">
-		        <h2 class="bold">Horizontal</h2>
-		        <div class="control_bg_xy" align="center">
-		          <button class="control_btn_y_plus">Y+</button><br/>
-		          <button class="control_btn_x_minus">X-</button> <button class="home_z">HOME</button> <button class="control_btn_x_plus">X+</button><br/>
-		          <button class="control_btn_y_minus">Y-</button>
-		        </div>
-      		</div>
-			
-			<!-- "#z-controls" -->
-      		<div class="small-12 medium-5 columns" id="z-controls">
-		        <h2 class="bold" align="center">Vertical</h2>
-		        <center>
-		          <button class="control_btn_z_plus">Z+</button><br/>
-		          <button class="home_z">HOME</button><br/>
-		          <button class="control_btn_z_minus">Z-</button>
-		        </center>
-			</div>
-			
-			<!-- "#distance-control" -->
-			<div class="small-12 columns" id="distance-control">
-		        <center>
-		          <ul class="button-group radius">
-		            <li><button class="small bold secondary" data-value="0.1">0.1</button></li>
-		            <li><button class="small bold secondary" data-value="1">1</button></li>
-		            <li><button class="small bold success" data-value="10">10</button></li>
-		            <li><button class="small bold secondary" data-value="100">100</button></li>
-		          </ul>
-		        </center>
-			</div>
-
-		</script>
-	</div>
-	<div id="preheat-container"></div>
-	<div id="filament-container">
-		<script type="text/template" id="filament-template">
-			<h2 class="bold" align="center"><i class="icon-extruder"></i> Filament Extruder</h2>
-	        <div class="small-12 medium-7 columns">
-	          <div class="row extruder-switch closer"></div>
+	<div id="manual-container"></div>
+	
+	<script type="text/template" id="xyz-controls-template">
+		<h1 align="center">Template for Manual Control</h1>
+		<!-- "#xy-controls" -->
+		<div class="small-12 medium-7 columns" id="xy-controls" align="center">
+	        <h2 class="bold">Horizontal</h2>
+	        <div class="control_bg_xy" align="center">
+	          <button class="control_btn_y_plus">Y+</button><br/>
+	          <button class="control_btn_x_minus">X-</button> <button class="home_z">HOME</button> <button class="control_btn_x_plus">X+</button><br/>
+	          <button class="control_btn_y_minus">Y-</button>
 	        </div>
-	        <div class="small-12 medium-5 columns">
-	          <div class="row closer">
-	            <div class="small-6 columns">
-	              <button class="small radius expand success extrude">Extrude</button>
-	            </div>
-	            <div class="small-6 columns">
-	              <button class="small radius expand success retract">Retract</button>
-	            </div>
-	          </div>
-	        </div>
-		</script>
-	</div>
-	<div id="level-bed"></div>
+  		</div>
+		
+		<!-- "#z-controls" -->
+  		<div class="small-12 medium-5 columns" id="z-controls">
+	        <h2 class="bold" align="center">Vertical</h2>
+	        <center>
+	          <button class="control_btn_z_plus">Z+</button><br/>
+	          <button class="home_z">HOME</button><br/>
+	          <button class="control_btn_z_minus">Z-</button>
+	        </center>
+		</div>
+		
+		<!-- "#distance-control" -->
+		<div class="small-12 columns" id="distance-control">
+	        <center>
+	          <ul class="button-group radius">
+	            <li><button class="small bold secondary" data-value="0.1">0.1</button></li>
+	            <li><button class="small bold secondary" data-value="1">1</button></li>
+	            <li><button class="small bold success" data-value="10">10</button></li>
+	            <li><button class="small bold secondary" data-value="100">100</button></li>
+	          </ul>
+	        </center>
+		</div>
+	</script>
+	<script type="text/template" id="filament-template">
+		<h2 class="bold" align="center"><i class="icon-extruder"></i> Filament Extruder</h2>
+        <div class="small-12 medium-7 columns">
+          <div class="row extruder-switch closer"></div>
+        </div>
+        <div class="small-12 medium-5 columns">
+          <div class="row closer">
+            <div class="small-6 columns">
+              <button class="small radius expand success extrude">Extrude</button>
+            </div>
+            <div class="small-6 columns">
+              <button class="small radius expand success retract">Retract</button>
+            </div>
+          </div>
+        </div>
+	</script>
 </div>

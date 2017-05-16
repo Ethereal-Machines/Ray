@@ -574,26 +574,21 @@ var ControlView = Backbone.View.extend({
     'click .back-to-print button': 'resumePrinting',
     'show': 'render'
   }, // 'back-to-print' class is used to resume the printing
-  template: [],
+  template: null,
   tempView: null,
   distanceControl: null,
   xyControlView: null,
   zControlView: null,
   extrusionView: null,
   fanView: null,
-  initialize: function()
+  initialize: function(options)
   {
     /*
       Since the views will access the DOM, we have to initialize as well as
       render the templates before initializing any other instances of different
       views.
     */
-    this.template.push(_.template( this.$("#xyz-controls-template").html() ));
-    this.template.push(_.template( this.$("#filament-template").html() ));
-    this.$('#manual-container').html(this.template[0]);
-    this.$('#filament-container').html(this.template[1]);
-
-
+ 
     // here we have created the new instances for all the views on the #control-page
 
     // this.tempView = new TempView(); /* Comment-change#1 */
@@ -627,6 +622,22 @@ var ControlView = Backbone.View.extend({
 
     // this.extrusionView.render(); /* Comment-change#1 */
     // this.tempView.render(); /* Comment-change#1 */
+    console.log(this.buttonName);
+
+    if (this.buttonName === "Manual_Controls_Button") {
+      this.template = _.template( this.$("#xyz-controls-template").html() ); 
+      this.$('#manual-container').html(this.template);
+    } else if (this.buttonName === "Filament_Button"){
+      this.template = _.template( this.$("#filament-template").html() );
+      this.$('#filament-container').html(this.template);
+    } else if (this.buttonName === "Level_Bed_Button") {
+      this.template = _.template( this.$("#xyz-controls-template").html() ); 
+      this.$('#manual-container').html(this.template);
+    } 
+
+    this.distanceControl = new DistanceControl();
+    this.xyControlView = new XYControlView({distanceControl: this.distanceControl});
+    this.zControlView = new ZControlView({distanceControl: this.distanceControl});
   },
   resumePrinting: function(e)
   {
