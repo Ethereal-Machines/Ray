@@ -15,13 +15,17 @@ var TempBarView = Backbone.View.extend({
   target: 0,
   actual: 0,
   events: {
-    'touchstart .temp-target span.target-value': 'onTouchStart',
+    // 'touchstart .temp-target span.target-value': 'onTouchStart',
     'mousedown .temp-target span.target-value': 'onTouchStart',
-    'touchmove': 'onTouchMove',
-    'mousemove': 'onTouchMove',
-    'touchend .temp-target': 'onTouchEnd',
-    'mouseup .temp-target': 'onTouchEnd',
-    'mouseout .temp-target': 'onTouchEnd',
+
+    /* Removing all the touch based or mouse over events */
+    // 'touchmove': 'onTouchMove',
+    // 'mousemove': 'onTouchMove',
+    // 'touchend .temp-target': 'onTouchEnd',
+    // 'mouseup .temp-target': 'onTouchEnd',
+    // 'mouseout .temp-target': 'onTouchEnd',
+
+    // when the pencil icon is clicked it will reveal the input box to enter the new value
     'click .temp-target a.temp-edit': 'onEditClicked',
     'change .temp-target input': 'onTempFieldChanged',
     'blur .temp-target input': 'onTempFieldBlur'
@@ -110,6 +114,10 @@ var TempBarView = Backbone.View.extend({
   },
   _sendToolCommand: function(command, type, temp, successCb, errorCb)
   {
+
+    // console.log(command);
+    // console.log(type);
+    // console.log(temp);
     if (temp == this.lastSent) return;
 
     var data = {

@@ -85,7 +85,7 @@ var AstroBoxApp = Backbone.View.extend({
     * It will be included in the new app
     */
     this.connectionView = new ConnectionView({socket: this.socketData});
-    // console.log(this.connectionView);
+    console.log(this.socketData);
 
     /*
     * This is the Modal for the printer profile

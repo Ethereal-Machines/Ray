@@ -33,6 +33,7 @@ var FilamentLoadView = Backbone.View.extend({
 		} else if (currentBtnId === "extruding-in-progress-section-button") {
 
 			// Killing the ajax command sent from the previous step on click of the NEXT button
+			console.log(this.xhr);
 			this.xhrResponse.abort();
 			currentView.removeClass('active').addClass('hide');
 			this.$el.find("#filament-load-wizard__finish-section").removeClass('hide').addClass('active');
