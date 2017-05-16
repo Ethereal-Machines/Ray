@@ -1,0 +1,64 @@
+<!--
+**********************************
+* Code by Kanishka Mohan Madhuni *
+**********************************
+-->
+
+<div id="preheat-wizard">
+	<nav id="preheat-wizard-nav">
+		<div class="wizard-name">
+			PREHEAT
+		</div>
+		<a href="#" class="back-button">
+			Back
+		</a>
+	</nav>
+
+	<!-- wrapper -->
+	<div class="wrapper">
+		<div id="preheat-wizard__preheating-progress" class="active">
+			<h1 class="preheat-wizard__heading">Heating...</h1>
+			<!-- nozzle-part -->
+			<div class="preheat-wizard__nozzle-container">
+				<div class="preheat-wizard__nozzle-container__img-temp-container">
+					<div class="nozzle-img">
+						<img src="../../img/ethereal-astroprint/nozzle.svg" alt="Nozzle" width="64" height="64">
+					</div>
+					<div class="nozzle-temp-progress">
+						<p class="temp-msg">Extruder Temperature</p>
+						<p class="temp-value"> -- &deg;C/ -- &deg;C</p>
+					</div>
+				</div>
+				<div class="preheat-wizard__nozzle-container__progress-container">
+					<progress max="100" value="0" id="extruder-progress-bar"></progress>
+				</div>
+			</div>
+			
+			<!-- bed-part -->
+			<div class="preheat-wizard__bed-container">
+				<div class="preheat-wizard__bed-container__img-temp-container">
+					<div class="bed-img">
+						<img src="../../img/ethereal-astroprint/nozzle.svg" alt="Bed" width="64" height="64">
+					</div>
+					<div class="bed-temp-progress">
+						<p class="temp-msg">Bed Temperature</p>
+						<p class="temp-value"> -- &deg;C/ -- &deg;C</p>
+					</div>
+				</div>
+				<div class="preheat-wizard__bed-container__progress-container">
+					<progress max="100" value="0" id="bed-progress-bar"></progress>
+				</div>
+			</div>
+		</div>
+
+		<div id="preheat-wizard__finish-section" class="hide">
+			<div class="finish-icon-container">
+				<img src="../../img/ethereal-astroprint/finish-icon.svg" alt="Finish icon" width="80" height="80">
+			</div>
+			<h2 class="finish-msg">Heating Complete</h2>
+			<a href="#control">
+				<button type="button" class="finish-section-button next-button" id="preheat-wizard__finish-section__finish-button">FINISH</button>
+			</a>
+		</div>
+	</div>
+</div>
