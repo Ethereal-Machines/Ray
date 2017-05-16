@@ -166,7 +166,7 @@ default_settings = {
 		"hotspotOnlyOffline": True,
 	},
 	"network": {
-		"manager": "debianNetworkManager",
+		"manager": "FedoraDev",
 		"interface": 'wlan0'
 	},
 	"software": {
