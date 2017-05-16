@@ -1,0 +1,71 @@
+/**********************************
+* Code by Kanishka Mohan Madhuni *
+**********************************/
+
+/* Common Styles goes here */
+
+#print-from-storage-view {
+	/*text-align: center;*/
+}
+
+/* Styles for the Navigation Wizard goes here */
+
+.choose-storage__heading {
+	font-size: 22px;
+	font-weight: 500px;
+	margin: 0;
+	padding: 14px 0 17px;
+	text-align: center;
+}
+
+.choose-storage {
+	list-style: none;
+	display: flex;
+	flex-direction: row;
+	margin: 0;
+	padding: 0 32px;
+	width: 100%;
+}
+
+.choose-storage__item {
+	width: 360px;
+	height: 336px;
+	border-radius: 10px;
+	background-color: #BBB;
+	position: relative;
+}
+
+.choose-storage__item--external {
+	margin-right: 8px;
+}
+
+.choose-storage__item--internal {
+	margin-left: 8px;
+}
+
+.choose-storage__item a {
+	display: block;
+	width: 100%;
+	height: 100%;
+	color: black;
+	text-decoration: none;
+}
+
+.choose-storage__item a:hover {
+	color: black;
+	text-decoration: none;
+}
+
+.choose-storage__item__img-heading-container {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 100%;
+	text-align: center;
+}
+
+.choose-storage__item__sub-heading {
+	padding: 36px 0;
+	margin: 0;
+}
