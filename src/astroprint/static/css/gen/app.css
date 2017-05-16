@@ -1,3 +1,136 @@
+* {
+	box-sizing: border-box;
+}
+
 .hide {
 	display: none;
+}
+
+#filament-load-wizard__preheating-progress-section,
+#filament-unload-wizard__preheating-progress-section,
+#insert-filament-section,
+#retraction-in-progress-section,
+#extruding-in-progress-section,
+#filament-load-wizard__finish-section,
+#filament-unload-wizard__finish-section{
+	margin: 0 auto;
+	text-align: center;
+}
+
+#filament-load-view,
+#filament-unload-view {
+	width: 640px;
+	height: 360px;
+	margin: 0 auto;
+	border: 1px solid black;
+}
+
+#filament-load-wizard-nav,
+#filament-unload-wizard-nav {
+	display: flex;
+	flex-direction: row;
+	width: 100%;
+	height: 48px;
+	background-color: #2E2E2E;
+	color: #FFFFFF;
+	justify-content: space-between;
+}
+
+.wrapper {
+	max-width: 450px;
+	margin: 0 auto;
+}
+
+.wizard-name {
+	width: 70%;
+	text-align: left;
+}
+.cancel-button {
+	width: 30%;
+	text-align:center;
+	background-color: #808080;
+	color: #FFFFFF;
+	text-decoration: none;
+}
+
+.wizard-name,
+.cancel-button {
+	font-size: 20px;
+	padding: 16px 24px 12px;
+}
+
+.steps-count {
+	text-align: center;
+	margin: 0 auto;
+	font-size: 20px;
+	padding: 20px 0 8px;
+}
+
+.steps-progress {
+	height: 24px;
+	margin: 0 auto 24px;
+	background-image: url("../../img/ethereal-astroprint/step-1.svg");
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+.filament-img-temp-container {
+	width: 227px;
+	margin: 0 auto;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+}
+
+.temp-msg {
+	font-size: 15px;
+	margin: 0;
+	padding: 10px 0;
+}
+
+.temp-value {
+	font-size: 22px;
+	margin: 0;
+	padding: 0 0 10px 15px;
+}
+
+.filament-img {
+	width: 64px;
+	height: 64px;
+}
+
+progress[value] {
+	-webkit-appearance: none;
+	appearance: none;
+	width: 380px;
+	height: 24px;
+	margin: 8px auto 40px;
+}
+
+.next-button {
+	width: 240px;
+	height: 48px;
+	font-size: 22px;
+	text-align: center;
+	margin: 0 auto;
+}
+
+.next-button a {
+	text-decoration: none;
+	color: black;
+}
+
+.instruction-heading {
+	font-size: 18px;
+	margin: 46px 0 14px;
+}
+
+.instruction-msg {
+	font-size: 18px;
+	margin-bottom: 40px;
+}
+
+.finish-msg {
+	font-size: 22px;
+	margin: 9px 0 28px;
 }

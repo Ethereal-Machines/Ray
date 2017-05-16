@@ -15,7 +15,7 @@ var FilamentUnloadView = Backbone.View.extend({
 		var currentBtnId = $(currentBtn).attr('id');
 
 		if (currentBtnId === "filament-unload-wizard__preheating-progress-section-button") {
-
+			
 			currentView.removeClass('active').addClass('hide');
 			this.$el.find("#retraction-in-progress-section").removeClass('hide').addClass('active');
 
