@@ -1,0 +1,22 @@
+<nav id="home-nav">
+	<div id="home-nav-container">
+		<div class="printer-name">
+			Printer's Name
+		</div>
+		<ul class="home-nav-container__icon-list">
+			<li class="home-nav-container__icon-list__icon-item"><img src="{{ url_for('static', filename='img/home-page/update-icon.svg') }}" alt="" width="56" height="56"></li>
+			<li class="home-nav-container__icon-list__icon-item"><img src="{{ url_for('static', filename='img/home-page/usb-icon.svg') }}" alt="" width="56" height="56"></li>
+			<li class="home-nav-container__icon-list__icon-item"><img src="{{ url_for('static', filename='img/home-page/wifi-icon.svg') }}" alt="" width="56" height="56"></li>
+			<li class="home-nav-container__icon-list__icon-item"><img src="{{ url_for('static', filename='img/home-page/power-icon.svg') }}" alt="" width="56" height="56"></li>
+		</ul>
+	</div>
+</nav>
+
+{% block homenav %}{% endblock %}
+
+<footer id="home-footer">
+	<div id="footer-container">
+		<img src="{{ url_for('static', filename='img/home-page/ready-icon.svg') }}" alt="" width="56" height="56" class="footer-container__status-icon">
+		<span class="footer-container__status-msg">Ready to Print</span>
+	</div>
+</footer>
