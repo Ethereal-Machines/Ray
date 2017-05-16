@@ -18,8 +18,7 @@ var TempBarView = Backbone.View.extend({
     'change .temp-target input': 'onTempFieldChanged',
     'blur .temp-target input': 'onTempFieldBlur'
   },
-  initialize: function(params)
-  {
+  initialize: function(params){
     this.scale = params.scale;
     this.type = params.type;
   },
