@@ -360,167 +360,164 @@ var ZControlView = MovementControlView.extend({
 // We will need to map the below JS with our new UI
 
 /* Comment-change#1 */
-// var ExtrusionControlView = Backbone.View.extend({
-//   el: '#extrusion-control',
-//   template: null,
-//   events: {
-//     /* below 2 events will be fired when the user clicks the extrude or retract*/
-//     'click .extrude': 'extrudeTapped',
-//     'click .retract': 'retractTapped',
-//     'change .extrusion-length': 'lengthChanged',
-//     'change .extrusion-speed': 'speedChanged',
-//     'keydown input.back-to-select': 'onKeyDownBackToSelect'
-//   },
-//   initialize: function()
-//   {
-//     // console.log(this.$("#extruder-switch-template").html());
-//     this.template = _.template( this.$("#extruder-switch-template").html() );
-//   },
-//   render: function()
-//   {
-//     // getting the printer profile
-//     var printer_profile = app.printerProfile.toJSON();
+var ExtrusionControlView = Backbone.View.extend({
+  el: '#extrusion-control',
+  template: null,
+  events: {
+    /* below 2 events will be fired when the user clicks the extrude or retract*/
+    'click .extrude': 'extrudeTapped',
+    'click .retract': 'retractTapped',
+    'change .extrusion-length': 'lengthChanged',
+    'change .extrusion-speed': 'speedChanged',
+    'keydown input.back-to-select': 'onKeyDownBackToSelect'
+  },
+  initialize: function()
+  {
+    // getting the subtemplate to be attached in the parent template
+    this.template = _.template( this.$("#extruder-switch-template").html() );
+    this.render(); // calling the 'render' function of the View
+  },
+  render: function()
+  {
+    // getting the printer profile
+    var printer_profile = app.printerProfile.toJSON();
 
-//     // console.log(printer_profile);
+    // attaching the child template to the parent template
+    this.$('.row.extruder-switch').html(this.template());
 
-//     // attaching the template to the HTML
-//     this.$('.row.extruder-switch').html(this.template({
-//       profile: printer_profile
-//     }));
+    if (printer_profile.extruder_count > 1) {
+      /*
+      * if extruder count is more than 1, then we are going to add
+      * another event to the event list and also added the event handler function
+      * "extruderChanged"
+      */
+      this.events['change .extruder-number'] = "extruderChanged";
+    }
 
-//     if (printer_profile.extruder_count > 1) {
-//       /*
-//       * if extruder count is more than 1, then we are going to add
-//       * another event to the event list and also added the event handler function
-//       * "extruderChanged"
-//       */
-//       this.events['change .extruder-number'] = "extruderChanged";
-//     }
+    this.delegateEvents(this.events);
+  },
 
-//     this.delegateEvents(this.events);
-//   },
+  /* Below function is the callback when the extrude button is tapped */
+  extrudeTapped: function()
+  {
+    if (this._checkAmount()) { // checking the value of extrude amount
+      // sending the POST request to the server for starting the extrusion
+      this._sendExtrusionCommand(1);
+    }
+  },
 
-//   /* Below function is the callback when the extrude button is tapped */
-//   extrudeTapped: function()
-//   {
-//     if (this._checkAmount()) { // checking the value of extrude amount
-//       // sending the POST request to the server for starting the extrusion
-//       this._sendExtrusionCommand(1);
-//     }
-//   },
+  /* Below function is the callback when the retract button is tapped */
+  retractTapped: function()
+  {
+    if (this._checkAmount()) { // checking the value of the extrude amount
+      // sending the POST request to the server for starting the retraction
+      this._sendExtrusionCommand(-1);
+    }
+  },
 
-//   /* Below function is the callback when the retract button is tapped */
-//   retractTapped: function()
-//   {
-//     if (this._checkAmount()) { // checking the value of the extrude amount
-//       // sending the POST request to the server for starting the retraction
-//       this._sendExtrusionCommand(-1);
-//     }
-//   },
+  // This function is reponsible to get the value from the UI if the 
+  // Other option is selected for AMOUT
+  lengthChanged: function(e)
+  {
+    var elem = $(e.target);
+    if (elem.val() == 'other') {
+      elem.addClass('hide');
+      this.$('.other-length').removeClass('hide').find('input').focus().select();
+    } else {
+      this.$('input[name="extrusion-length"]').val(elem.val());
+    }
+  },
 
-//   // This function is reponsible to get the value from the UI if the 
-//   // Other option is selected for AMOUT
-//   lengthChanged: function(e)
-//   {
-//     var elem = $(e.target);
-//     if (elem.val() == 'other') {
-//       elem.addClass('hide');
-//       this.$('.other-length').removeClass('hide').find('input').focus().select();
-//     } else {
-//       this.$('input[name="extrusion-length"]').val(elem.val());
-//     }
-//   },
+  // if Other option is selected for SPEED
+  speedChanged: function(e)
+  {
+    var elem = $(e.target);
 
-//   // if Other option is selected for SPEED
-//   speedChanged: function(e)
-//   {
-//     var elem = $(e.target);
+    if (elem.val() == 'other') {
+      elem.addClass('hide');
+      this.$('.other-speed').removeClass('hide').find('input').focus().select();
+    } else {
+      this.$('input[name="extrusion-speed"]').val(elem.val());
+    }
+  },
 
-//     if (elem.val() == 'other') {
-//       elem.addClass('hide');
-//       this.$('.other-speed').removeClass('hide').find('input').focus().select();
-//     } else {
-//       this.$('input[name="extrusion-speed"]').val(elem.val());
-//     }
-//   },
+  /* Callback function in case we have more than 1 extruder */
+  extruderChanged: function(e)
+  {
+    this._sendChangeToolCommand($(e.target).val())
+  },
 
-//   /* Callback function in case we have more than 1 extruder */
-//   extruderChanged: function(e)
-//   {
-//     this._sendChangeToolCommand($(e.target).val())
-//   },
-//   /*
-//     In case while selecting the 'Other' options from the SPEED or AMOUNT, we didn't enter
-//     any custom value and pressed the ESC key, then the below function is responsible to
-//     set the things back to the default.
-//   */
-//   onKeyDownBackToSelect: function(e)
-//   {
-//     if (e.keyCode == 27) { //ESC Key
-//       var target = $(e.currentTarget);
-//       console.log(target);
-//       var select = target.closest('div.select-with-text').find('select');
+  /*
+    In case while selecting the 'Other' options from the SPEED or AMOUNT, we didn't enter
+    any custom value and pressed the ESC key, then the below function is responsible to
+    set the things back to the default.
+  */
+  onKeyDownBackToSelect: function(e)
+  {
+    if (e.keyCode == 27) { //ESC Key
+      var target = $(e.currentTarget);
+      console.log(target);
+      var select = target.closest('div.select-with-text').find('select');
 
-//       //Find out the default value. Middle one
-//       var defaultValue = select.find('option[default]').val();
+      //Find out the default value. Middle one
+      var defaultValue = select.find('option[default]').val();
 
-//       target.closest('.row').addClass('hide');
-//       target.val(defaultValue);
-//       select.removeClass('hide').val(defaultValue);
-//     }
-//   },
+      target.closest('.row').addClass('hide');
+      target.val(defaultValue);
+      select.removeClass('hide').val(defaultValue);
+    }
+  },
 
-//   // function to send the POST request when tool changes
-//   _sendChangeToolCommand: function(tool)
-//   {
-//     var data = {
-//       command: "select",
-//       tool: 'tool'+tool
-//     }
+  // function to send the POST request when tool changes
+  _sendChangeToolCommand: function(tool)
+  {
+    var data = {
+      command: "select",
+      tool: 'tool'+tool
+    }
 
-//     $.ajax({
-//       url: API_BASEURL + "printer/tool",
-//       type: "POST",
-//       dataType: "json",
-//       contentType: "application/json; charset=UTF-8",
-//       data: JSON.stringify(data)
-//     });
-//   },
-//   _checkAmount: function()
-//   {
-//     // console.log(this.$el.find('input[name="extrusion-length"]').val());
-//     // this is checking the value of exturedAmount from the input
-//     return !isNaN(this.$el.find('input[name="extrusion-length"]').val());
-//   },
+    $.ajax({
+      url: API_BASEURL + "printer/tool",
+      type: "POST",
+      dataType: "json",
+      contentType: "application/json; charset=UTF-8",
+      data: JSON.stringify(data)
+    });
+  },
+  _checkAmount: function()
+  {
+    // this is checking the value of exturedAmount from the input
+    return !isNaN(this.$el.find('input[name="extrusion-length"]').val());
+  },
 
-//   /* This function will send the POST request to the server for starting
-//   the extrusion process 
-//   */
-//   _sendExtrusionCommand: function(direction)
-//   {
-//     // this is the data to be send to the server in the POST request
-//     var data = {
-//       command: "extrude",
-//       amount: parseFloat(this.$('input[name="extrusion-length"]').val() * direction),
-//       speed: parseFloat(this.$('input[name="extrusion-speed"]').val())
-//     }
+  /* This function will send the POST request to the server for starting
+  the extrusion process 
+  */
+  _sendExtrusionCommand: function(direction)
+  {
+    // this is the data to be send to the server in the POST request
+    var data = {
+      command: "extrude",
+      amount: parseFloat(this.$('input[name="extrusion-length"]').val() * direction),
+      speed: parseFloat(this.$('input[name="extrusion-speed"]').val())
+    }
 
-//     // this value will only come if there will be more than 1 extruder
-//     var extruder = this.$('select.extruder-number').val();
+    // this value will only come if there will be more than 1 extruder
+    var extruder = this.$('select.extruder-number').val();
 
-//     if (extruder) {
-//       data['tool'] = 'tool'+extruder;
-//     }
+    if (extruder) {
+      data['tool'] = 'tool'+extruder;
+    }
 
-//     $.ajax({
-//       url: API_BASEURL + "printer/tool",
-//       type: "POST",
-//       dataType: "json",
-//       contentType: "application/json; charset=UTF-8",
-//       data: JSON.stringify(data)
-//     });
-//   }
-// });
+    $.ajax({
+      url: API_BASEURL + "printer/tool",
+      type: "POST",
+      dataType: "json",
+      contentType: "application/json; charset=UTF-8",
+      data: JSON.stringify(data)
+    });
+  }
+});
 
 /*###############
 ## FAN CONTROL ##
@@ -630,24 +627,40 @@ var ControlView = Backbone.View.extend({
     /* Added conditions to render the particular Utility based on the click from Utility page */
 
     if (this.buttonName === "Manual_Controls_Button") {
-      this.setTemplate(this.$("#xyz-controls-template").html()); 
+
+      this.setTemplate(this.$("#xyz-controls-template").html(), null);
+      this.distanceControl = new DistanceControl();
+      this.xyControlView = new XYControlView({distanceControl: this.distanceControl});
+      this.zControlView = new ZControlView({distanceControl: this.distanceControl});
+
     } else if (this.buttonName === "Filament_Button"){
-      this.setTemplate(this.$("#filament-template").html());
+
+      this.setTemplate(this.$("#filament-template").html(), {profile: app.printerProfile.toJSON()});
+      this.extrusionView = new ExtrusionControlView();
+
     } else if (this.buttonName === "Level_Bed_Button") {
-      this.setTemplate( "<h1 align='center'> No template for the Automatic Bed Levling </h1>"); 
+
+      this.setTemplate( "<h1 align='center'> No template for the Automatic Bed Levling </h1>", null);
+
     } else {
-      this.setTemplate( "<h1 align='center'> No template for the Preheating </h1>");
+
+      this.setTemplate( "<h1 align='center'> No template for the Preheating </h1>", null);
+
     }
 
     /* Initializing the Views when the selected template has been rendered */
-    this.distanceControl = new DistanceControl();
-    this.xyControlView = new XYControlView({distanceControl: this.distanceControl});
-    this.zControlView = new ZControlView({distanceControl: this.distanceControl});
+
   },
-  // function to set the template of Control View
-  setTemplate: function(template) {
+  /*
+    function to set the template of Control View.
+    The 'params' argument is the JSON object which we want to use in the template/child template.
+    We will need to pass the model object in the parent object itself if we want to catch the
+    values in the 'child' template
+  */
+
+  setTemplate: function(template, params) {
     this.template = _.template(template); 
-    this.$('#manual-container').html(this.template);
+    this.$('#manual-container').html(this.template(params));
   },
   resumePrinting: function(e)
   {
