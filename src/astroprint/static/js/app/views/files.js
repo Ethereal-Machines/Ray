@@ -77,12 +77,14 @@ var PrintFileInfoDialog = Backbone.View.extend({
   onPrintClicked: function(e)
   {
     this.print_file_view.printClicked(e);
-    this.$el.foundation('reveal', 'close');
+    // this.$el.foundation('reveal', 'close');
+    this.$el.css('display', 'none');
   },
   onDownloadClicked: function(e)
   {
     this.print_file_view.downloadClicked(e);
-    this.$el.foundation('reveal', 'close');
+    // this.$el.foundation('reveal', 'close');
+    this.$el.css('display', 'none');
   },
   hideModel: function() {
     this.$el.css('display', 'none');
@@ -105,6 +107,8 @@ var PrintFileView = Backbone.View.extend({
   {
     var print_file = this.print_file.toJSON();
 
+    console.log(print_file);
+
     if (print_file.local_filename) {
       this.$el.removeClass('remote');
     } else {
@@ -117,6 +121,8 @@ var PrintFileView = Backbone.View.extend({
 
     this.$el.empty();
     this.downloadProgress = null;
+
+    /* Adding the template to the div, passing the details*/
     this.$el.html(this.template({
       p: print_file,
       time_format: app.utils.timeFormat,
