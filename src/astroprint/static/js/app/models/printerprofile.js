@@ -15,7 +15,7 @@
 		'cancel_gcode': null,
 		'invert_z': false,
 		// below two properties have been added for the extrusion process
-		'extrusion_amount': 900,
+		'extrusion_amount': 100,
 		'extrusion_speed': 2
 	}
 });
