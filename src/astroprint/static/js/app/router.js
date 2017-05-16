@@ -188,7 +188,7 @@ var AppRouter = Backbone.Router.extend({
           */
 
           /* Comment-change#1 */
-          // this.controlView.tempView.resetBars();
+          this.controlView.tempView.resetBars();
         }
       }
 

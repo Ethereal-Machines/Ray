@@ -119,6 +119,49 @@
 	</script>
 	<script type="text/template" id="auto-bed-level-template"></script>
 	<script type="text/template" id="pre-heat-template">
+		{%- macro temp_control(class, label) %}
+		    <div class="temp-control-cont {{class}}">
+		      <!-- here we show the rising temperature -->
+		      <span class="current-temp-top bold">- -</span>
+		      <div class="temp-bar">
+		        <!-- here the 'bed' or 'nozzle' label will display based on the bar we are on -->
+		        <label class="bold">{{label}}</label>
+
+		        <!-- this is the movable bar, which moves slowly slowly on the 
+		          temp rise -->
+		        <div class="current-temp">
+		          <div class="triangle_left"></div>
+		          <div class="triangle_right"></div>
+		        </div>
+
+		        <div class="temp-target radius bold">
+		          <a class="temp-edit"><i class="icon-pencil"></i></a>
+		          <span class="target-value">- -</span>
+		          <input type="number" class="hide"/>
+		        </div>
+		      </div>
+		      <button class="temp-off secondary small radius expand">OFF</button>
+		    </div>
+		{%- endmacro %}
+
+		<div class="medium-12 large-5 columns" id="temp-control">
+		<div class="row">
+		  <div class="small-4 columns" align="center">
+		    {{ temp_control('nozzle', 'Nozzle')}}
+		  </div>
+		  <div class="small-4 columns fan-control">
+		    <div class="fan-control-push" align="center">
+		      Current Temp (&deg;C)
+		    </div>
+		    <h2 class="bold">Fans <span class="fan_icon"></span></h2>
+		    <button class="radius small success expand fan-on">ON</button>
+		    <button class="radius small secondary expand fan-off">OFF</button>
+		  </div>
+		  <div class="small-4 columns" align="center">
+		    {{ temp_control('bed', 'Bed')}}
+		  </div>
+		</div>
+		</div>
 		
 	</script>
 </div>
