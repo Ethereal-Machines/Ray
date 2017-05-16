@@ -9,47 +9,112 @@
 	<a href="#utilities" class="back-button">Back</a>
 </nav>
 
-<div class="wrapper">
+<div class="default-container">
 	<div id="manual-container"></div>
 
 	<script type="text/template" id="xyz-controls-template">
-		<h1>Template for Manual Control</h1>
-		<!-- "#xy-controls" -->
 		<div class="" id="xy-controls">
-      <h2 class="">Horizontal</h2>
-      <div class="control_bg_xy">
-        <button class="control_btn_y_plus">Y+</button><br/>
-        <button class="control_btn_x_minus">X-</button> <button class="home_z">HOME</button> <button class="control_btn_x_plus">X+</button><br/>
-        <button class="control_btn_y_minus">Y-</button>
-      </div>
+
+			<table class="control_bg_xy">
+				<tr>
+					<td></td>
+					<td class="y-plus">
+						<button class="control_btn_y_plus">
+							<img class="control-btn-img" src="../static/img/manual-controls/manual-y-plus.svg" alt="" width="80.88px" height="82px">
+						</button>
+					</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td class="x-minus">
+						<button class="control_btn_x_minus">
+							<img class="control-btn-img" src="../static/img/manual-controls/manual-x-plus.svg" alt="" width="80.88px" height="82px">
+						</button>
+					</td>
+					<td class="xy-home">
+						<button class="home_z">
+							<img class="control-btn-img" src="../static/img/manual-controls/manual-home.svg" alt="" width="80.88px" height="82px">
+						</button>
+					</td>
+					<td class="x-plus">
+						<button class="control_btn_x_plus">
+							<img class="control-btn-img" src="../static/img/manual-controls/manual-x-minus.svg" alt="" width="80.88px" height="82px">
+						</button>
+					</td>
+				</tr>
+				<tr>
+					<td></td>
+					<td class="y-minus">
+						<button class="control_btn_y_minus">
+							<img class="control-btn-img" src="../static/img/manual-controls/manual-y-minus.svg" alt="" width="80.88px" height="82px">
+						</button>
+					</td>
+					<td></td>
+				</tr>
+			</table>
+
+			<div class="distance-control-container">
+	      <!-- distance control for x-axis -->
+				<div class="distance-control">
+					<span class="axis">X</span>
+		      <select class="lenght-picker x-length-changed">
+					  <option value="0.1">0.1 mm</option>
+					  <option value="5" selected default>5 mm</option>
+					  <option value="10">10 mm</option>
+					</select>
+				</div>
+				<!-- distance control for y-axis -->
+				<div class="distance-control">
+					<span class="axis">Y</span>
+					<select class="lenght-picker y-length-changed">
+					  <option value="0.1">0.1 mm</option>
+					  <option value="5" selected default>5 mm</option>
+					  <option value="10">10 mm</option>
+					</select>
+				</div>
+			</div>
 		</div><!-- end of "#xy-controls" -->
 		
 		<!-- "#z-controls" -->
 		<div class="" id="z-controls">
-      <h2 class="">Vertical</h2>
-      <button class="control_btn_z_plus">Z+</button><br/>
-      <button class="home_z">HOME</button><br/>
-      <button class="control_btn_z_minus">Z-</button>
+
+			<table class="control_bg_z">
+				<tr>
+					<td>
+						<button class="control_btn_z_plus">
+							<img class="control-btn-img" src="../static/img/manual-controls/manual-z-plus.svg" alt="" width="80.88px" height="82px">
+						</button>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<button class="home_z">
+							<img class="control-btn-img" src="../static/img/manual-controls/manual-home.svg" alt="" width="80.88px" height="82px">
+						</button>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<button class="control_btn_z_minus">
+							<img class="control-btn-img" src="../static/img/manual-controls/manual-z-minus.svg" alt="" width="80.88px" height="82px">
+						</button>
+					</td>
+				</tr>
+			</table>
+
+			<div class="distance-control-container">
+	      <!-- distance control for z-axis -->
+				<div class="distance-control">
+					<span class="axis">Z</span>
+					<select class="lenght-picker z-length-changed">
+					  <option value="0.1">0.1 mm</option>
+					  <option value="5" selected default>5 mm</option>
+					  <option value="10">10 mm</option>
+					</select>
+				</div>
+			</div>
 		</div><!-- end of "z-controls" -->
-		
-		<!-- "#distance-control" -->
-		<div class="" id="distance-control">
-      <select class="x-length-changed">
-			  <option value="0.1">0.1 mm</option>
-			  <option value="5" selected default>5 mm</option>
-			  <option value="10">10 mm</option>
-			</select>
-			<select class="y-length-changed">
-			  <option value="0.1">0.1 mm</option>
-			  <option value="5" selected default>5 mm</option>
-			  <option value="10">10 mm</option>
-			</select>
-			<select class="z-length-changed">
-			  <option value="0.1">0.1 mm</option>
-			  <option value="5" selected default>5 mm</option>
-			  <option value="10">10 mm</option>
-			</select>
-		</div><!-- end of "#distance-control" -->
+
 	</script>
 
 	<script type="text/template" id="filament-template">
