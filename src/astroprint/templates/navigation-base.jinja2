@@ -14,9 +14,19 @@
 
 {% block homenav %}{% endblock %}
 
-<footer id="home-footer">
-	<div id="footer-container">
-		<img src="{{ url_for('static', filename='img/home-page/ready-icon.svg') }}" alt="" width="56" height="56" class="footer-container__status-icon">
-		<span class="footer-container__status-msg">Ready to Print</span>
-	</div>
-</footer>
+<div class="power-off-modal hide">
+	<ul class="power-off-modal__button-container">
+		<li class="power-off-modal__button">
+			<button class="power-off-button" type="button">
+				<img src="{{ url_for('static', filename='img/home-page/power-off-icon.svg') }}" alt="" width="72" height="72">
+				<h2>Power Off</h2>
+			</button>
+		</li>
+		<li class="power-off-modal__button">
+			<button class="restart-button" type="button">
+				<img src="{{ url_for('static', filename='img/home-page/restart-icon.svg') }}" alt="" width="72" height="72">
+				<h2>Restart</h2>
+			</button>
+		</li>
+	</ul>
+</div>
