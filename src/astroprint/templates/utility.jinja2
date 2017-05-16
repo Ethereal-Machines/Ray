@@ -1,25 +1,38 @@
-<div class="utility-button">
-	<a href="#control">
-		<img src="/static/CSS_Utilities/Preheat-Button.png"   class="Preheat_Button" alt="">
-	</a>
-</div>
-<div class="utility-button">
-	<a href="#control">
-		<img src="/static/CSS_Utilities/Manual-Controls-Button.png" class="Manual_Controls_Button" alt="">
-	</a>
-</div>
-<div class="utility-button">
-	<a href="#control">
-		<img src="/static/CSS_Utilities/Filament-Button.png" class="Filament_Button"  alt="">
-	</a>
-</div>
-<div class="utility-button">
-	<a href="#control">
-		<img src="/static/CSS_Utilities/Level-Bed-Button.png" class="Level_Bed_Button" alt="">
-	</a>
-</div>
-<div class="utility-button">
-	<a href="#print-from-storage">
-		<img src="/static/CSS_Utilities/Print-From-Storage-Icon.png" class="Print_From_Storage_Icon" alt="">
-	</a>
-</div>
+{% extends 'navigation-base.jinja2' %}
+
+{% block homenav %}
+	<ul id="utility-page-links">
+		<li class="utility-page-links__link-item utility-button">
+			<a href="#control" class="control-link Filament_Button">
+				<div class="control-link__img-heading-container">
+					<img src="{{ url_for('static', filename='img/utility-page/filament-icon.svg') }}" alt="Filament Icon" width="96" height="96">
+					<h2>Filament</h2>
+				</div>
+			</a>
+		</li>
+		<li class="utility-page-links__link-item utility-button">
+			<a href="#control" class="control-link Manual_Controls_Button">
+				<div class="control-link__img-heading-container">
+					<img src="{{ url_for('static', filename='img/utility-page/manual-icon.svg') }}" alt="Manual Icon" width="96" height="96">
+					<h2>Manual</h2>
+				</div>
+			</a>
+		</li>
+		<li class="utility-page-links__link-item utility-button">
+			<a href="#control" class="control-link Level_Bed_Button">
+				<div class="control-link__img-heading-container">
+					<img src="{{ url_for('static', filename='img/utility-page/level-bed-icon.svg') }}" alt="Level Bed Icon" width="96" height="96">
+					<h2>Level Bed</h2>
+				</div>
+			</a>
+		</li>
+		<li class="utility-page-links__link-item utility-button">
+			<a href="#control" class="control-link Preheat_Button">
+				<div class="control-link__img-heading-container">
+					<img src="{{ url_for('static', filename='img/utility-page/preheat-icon.svg') }}" alt="Preheat Icon" width="96" height="96">
+					<h2>Pre Heat</h2>
+				</div>
+			</a>
+		</li>
+	</ul>
+{% endblock %}
