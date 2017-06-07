@@ -67,7 +67,7 @@ from astroprint.webrtc import webRtcManager
 from astroprint.printerprofile import printerProfileManager
 from astroprint.variant import variantManager
 from astroprint.discovery import DiscoveryManager
-
+from astroprint.about import info
 UI_API_KEY = None
 VERSION = None
 
@@ -161,9 +161,10 @@ def index():
 			cameraManager= cm.name,
 			wsToken= create_ws_token(userManager.findUser(loggedUsername).publicKey if loggedUsername else None)
 		)
-@app.route("/about", methods=['GET'])
+
+@app.route("/about")
 def about():
-	return "HELLO"
+	return info()
 			
 @app.route("/discovery.xml")
 def discoveryXml():

@@ -345,5 +345,3 @@ def clearLogs():
 @restricted_access
 def getSysmteInfo():
 	return jsonify( softwareManager.systemInfo )
-
-@api.route("/settings/about", methods=['GET'])
