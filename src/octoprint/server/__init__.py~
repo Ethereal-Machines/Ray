@@ -161,7 +161,7 @@ def index():
 			cameraManager= cm.name,
 			wsToken= create_ws_token(userManager.findUser(loggedUsername).publicKey if loggedUsername else None)
 		)
-@app.route("/about")
+@app.route("/about", methods=['GET'])
 def about():
 	return "HELLO"
 			
