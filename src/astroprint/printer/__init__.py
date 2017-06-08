@@ -592,6 +592,10 @@ class Printer(object):
 	def home(self, axes):
 		raise NotImplementedError()
 
+	##Ethereal Automatic Bed Levelling
+	def autoBedLevel(self):
+		raise NotImplementedError()
+	
 	def fan(self, tool, speed):
 		raise NotImplementedError()
 

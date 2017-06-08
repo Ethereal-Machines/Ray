@@ -176,6 +176,10 @@ class PrinterMarlin(Printer):
 	def home(self, axes):
 		self.commands(["G91", "G28 %s" % " ".join(map(lambda x: "%s0" % x.upper(), axes)), "G90"])
 
+	##Ethereal Automatic Bed Levelling
+	def autoBedLevel(self):
+		self.commands(["G28", "G29"])
+
 	def extrude(self, tool, amount, speed=None):
 		if self._comm:
 			if speed:
