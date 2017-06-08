@@ -280,6 +280,10 @@ class PrinterVirtual(Printer):
 
 	def home(self, axes):
 		self._logger.info('Home - Axes: %s', ', '.join(axes))
+	
+	#Ethereal Automatic Bed Levelling
+	def autoBedLevel(self):
+		self._logger.info('Levelling Bed Automatically')
 
 	def fan(self, tool, speed):
 		self._logger.info('Fan - Tool: %s, Speed: %s', tool, speed)
