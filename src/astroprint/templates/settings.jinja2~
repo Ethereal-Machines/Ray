@@ -1,8 +1,8 @@
-<div class="row heading">
+<!--div class="row heading">
   <div class="small-12 title-heading">
     <h1 class="bold">Settings</h1>
   </div>
-</div>
+</div-->
 
 <div class="row collapse container">
   <div class="hide-for-small-only medium-5  large-4 columns">
@@ -21,7 +21,7 @@
         <li class="software-update"><a href="#settings/software-update">Update</a></li>
         <li class="software-advanced dotted"><a href="#settings/software-advanced">Advanced</a></li>
 			<li class="heading bold">About</li>
-			 <li class="about"><a href="/settings/about">About</a></li>    
+			 <li class="about"> <a href="/about"> About</a></li>    
       </ul>
     </div>
   </div>
