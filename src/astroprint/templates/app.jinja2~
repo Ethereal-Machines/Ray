@@ -15,18 +15,15 @@
 {% endblock %}
 
 {% block content %}
-  <div id="app"
+  <div id=""
     class=
-       "{%- if online -%} online {%- else -%} offline {%- endif %}
-      {%- if serialLogActive %} serial-log {%- endif %}
-      {%- if user_email %} user-logged {%- else %} no-user {%- endif %}
-      off-canvas-wrap" data-offcanvas>
-    <div class="inner-wrap">
+       "Group_1" data-offcanvas>
+    <div class="">
     <!-- Navbar code edited -->
-      <nav class="tab-bar et-tob-bar">
-        <section class="left">
+      <nav class="et-top-bar">
+        <section class="">
           <!--a class="left-off-canvas-toggle menu-icon" href="#"><span></span></a-->
-			 <h1 class="title hide-for-small"><a href="#">Ethereal Machines</h1>      
+			 <h1 class="Printer_s-Name"><a href="#">Ethereal Machines</h1>      
         </section>
         <section class="middle tab-bar-section">
           <!--span class="top-logo-small show-for-small"><a href="#"><i class="icon-rocket"></i></a></span-->
@@ -41,7 +38,7 @@
           </div-->
           <!--ul class="right show-for-large-up"><li><a class="launch-ap" href="#">My AstroPrint Cloud</a></li></ul-->
         </section>
-        <section class="right-small">
+        <section class="">
           <a class="turn-off" title="Device Shutdown"><i class="icon-off"></i></a>
         </section>
       </nav>

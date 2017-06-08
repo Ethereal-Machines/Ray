@@ -5,17 +5,17 @@
 	</div>
 </div-->
 
-<div id="app-container" class="row et-home" >
-	<div class="alert-box warning serial-log radius">
+<div id="" class="" >
+	<!--div class="alert-box warning serial-log radius">
 		Your serial log is <b>enabled</b>. This will produce a large amount of data - <a href="#settings/software-advanced">Disable here</a>
-	</div>
+	</div-->
 	{% if checkSoftware %}
-		<div class="alert-box alert new-release radius hide">
+		<!--div class="alert-box alert new-release radius hide">
 			<i class="icon-download-cloud"></i> <b>New software version</b> <span class="version-label"></span> is available for download - <a href="#" class="check button success radius">More info</a>
 			<a href="#" class="close">&times;</a>
-		</div>
+		</div-->
 	{% endif %}
-	<ul class="small-block-grid-2 large-block-grid-2">
+	<ul class="">
 		<!--li>
 			<span class="upload-btn expand">
 				<div class="app-image">
@@ -57,16 +57,16 @@
 				<h1 class="bold">Camera</h1>
 		</li-->
 		<li>
-			<a href="#settings"><div class="app-image">
-				<img src="/static/img/Settingsicon.png" alt="settings icon"/>
-				<div class="overlay"><div class="contain"><h4 class="bold">Launch</h4></div></div></div>
+			<a href="#settings"><div class="">
+				<img src="/static/img/Settings-icon.png" class="Settings_Icon" alt="settings icon"/>
+				<!--div class="overlay"><div class="contain"><h4 class="bold">Launch</h4></div></div></div-->
 			</a>
 				<!--h1 class="bold">Settings</h1-->
 		</li>
 		<!-- Add Utility here  -->
 		<li>
-			<a href="#settings"><div class="app-image">
-				<img src="/static/img/UtilitiesIcon.png" alt="settings icon"/>
+			<a href="#settings"><div class="">
+				<img src="/static/img/Utilities-Icon.png" class="Utilities_Icon" alt="settings icon"/>
 				<div class="overlay"><div class="contain"><h4 class="bold">Launch</h4></div></div></div>
 			</a>
 				<!--h1 class="bold">Utility</h1-->
