@@ -1,3 +1,8 @@
 .et-home{
-margin-top:20px;
+	position: relative;
+margin-top:20px !important;
+}
+.top-bar{
+background-color: black !important;
+color: white !important; 
 }
