@@ -9,6 +9,9 @@
   {% assets filters="scss", output="css/gen/app.css", "css/scss/app.scss" %}
     <link rel="stylesheet" type="text/css" href="{{ ASSET_URL }}" />
   {% endassets %}
+
+   <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/gen/style.css') }}" />
+  
 {% endblock %}
 
 {% block content %}
@@ -19,13 +22,15 @@
       {%- if user_email %} user-logged {%- else %} no-user {%- endif %}
       off-canvas-wrap" data-offcanvas>
     <div class="inner-wrap">
+    <!-- Navbar code edited -->
       <nav class="tab-bar">
-        <section class="left-small">
-          <a class="left-off-canvas-toggle menu-icon" href="#"><span></span></a>
+        <section class="left">
+          <!--a class="left-off-canvas-toggle menu-icon" href="#"><span></span></a-->
+			 <h1 class="title hide-for-small"><a href="#">Ethereal Machines</h1>      
         </section>
         <section class="middle tab-bar-section">
-          <span class="top-logo-small show-for-small"><a href="#"><i class="icon-rocket"></i></a></span>
-          <h1 class="title hide-for-small"><a href="#"><img src="/img/astrobox_logo_medium.png"/></a></h1>
+          <!--span class="top-logo-small show-for-small"><a href="#"><i class="icon-rocket"></i></a></span-->
+         
           <div id="connection-view">
             <a href="#settings/internet-connection" class="offline" data-title="Not connected to the internet">
               <img src="/img/no-internet-icon.png" />
@@ -34,7 +39,7 @@
             <i class="icon-3d-printer printer"></i>
             <i class="icon-exchange server"></i>
           </div>
-          <ul class="right show-for-large-up"><li><a class="launch-ap" href="#">My AstroPrint Cloud</a></li></ul>
+          <!--ul class="right show-for-large-up"><li><a class="launch-ap" href="#">My AstroPrint Cloud</a></li></ul-->
         </section>
         <section class="right-small">
           <a class="turn-off" title="Device Shutdown"><i class="icon-off"></i></a>
@@ -91,7 +96,6 @@
             <li class="camera"><a href="#camera" title="Camera"><i class="icon-videocam-1"></i></a></li>
             <li class="settings"><a href="#settings" title="Settings"><i class="icon-cog"></i></a></li>
           </ul>
-          <p> <a href="/about"> About </a> </p>
         </div>
       </div>
       <a class="exit-off-canvas"></a>
