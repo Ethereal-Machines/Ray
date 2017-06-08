@@ -1,8 +1,16 @@
+/**
+Created by punit 
+
+*/
+
 .et-home{
 	position: relative;
 margin-top:20px !important;
 }
-.top-bar{
+.et-top-bar{
 background-color: black !important;
 color: white !important; 
+}
+.et-top-bar a{
+color: white;
 }
