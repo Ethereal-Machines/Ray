@@ -50,7 +50,7 @@ margin-top:20px !important;
 .Connectvity_Offline {
   background-image: url("/static/ConnectvityOffline.png");
   position: absolute;
-  left: 630px;
+  left: 628px;
   top: 0px;
   width: 48px;
   height: 48px;
@@ -140,6 +140,42 @@ margin-top:20px !important;
   /*z-index: 2;  //remove this comment and add z-index:2 @last
 */}
 
+.Update_Icon {
+  background-image: url("/static/CSS_Settings/Update-Icon.png");
+  position: absolute;
+  left: 408px;
+  top: 272px;
+  width: 376px;
+  height: 192px;
+  z-index: 11;
+}
+.About_Icon {
+  background-image: url("/static/CSS_Settings/About-Icon.png");
+  position: absolute;
+  left: 16px;
+  top: 272px;
+  width: 376px;
+  height: 192px;
+  z-index: 10;
+}
+.Connectivity_Icon {
+  background-image: url("/static/CSS_Settings/Connectivity-Icon.png");
+  position: absolute;
+  left: 408px;
+  top: 64px;
+  width: 376px;
+  height: 192px;
+  z-index: 9;
+}
+.General_Icon {
+  background-image: url("/static/CSS_Settings/General-Icon.png");
+  position: absolute;
+  left: 16px;
+  top: 64px;
+  width: 376px;
+  height: 192px;
+  z-index: 8;
+}
 
 
 

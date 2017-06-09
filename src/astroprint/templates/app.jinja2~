@@ -29,7 +29,7 @@
           <!--span class="top-logo-small show-for-small"><a href="#"><i class="icon-rocket"></i></a></span-->
          
           <div id="connection-view">
-            <a href="#settings/internet-connection" class="offline Connectvity_Offline" data-title="Not connected to the internet">
+            <a href="#settings/internet-connection" class=" Connectvity_Offline" data-title="Not connected to the internet">
               <!--img src="/img/no-internet-icon.png" / -->
             </a>
             <!--i class="icon-rocket astroprint"></i>
