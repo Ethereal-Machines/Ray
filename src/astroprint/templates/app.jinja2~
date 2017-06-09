@@ -23,19 +23,19 @@
       <nav class="et-top-bar">
         <section class="">
           <!--a class="left-off-canvas-toggle menu-icon" href="#"><span></span></a-->
-			 <p class="Printer_s_Name"><a href="#">Ethereal Machines</p>      
+			 <p class="Printer_s_Name"><a href="#">Printer's Name</p>      
         </section>
         <section class="middle tab-bar-section">
           <!--span class="top-logo-small show-for-small"><a href="#"><i class="icon-rocket"></i></a></span-->
          
-          <!--div id="connection-view">
-            <a href="#settings/internet-connection" class="offline" data-title="Not connected to the internet">
-              <img src="/img/no-internet-icon.png" />
+          <div id="connection-view">
+            <a href="#settings/internet-connection" class="offline Connectvity_Offline" data-title="Not connected to the internet">
+              <!--img src="/img/no-internet-icon.png" / -->
             </a>
-            <i class="icon-rocket astroprint"></i>
+            <!--i class="icon-rocket astroprint"></i>
             <i class="icon-3d-printer printer"></i>
-            <i class="icon-exchange server"></i>
-          </div-->
+            <i class="icon-exchange server"></i-->
+          </div>
           <!--ul class="right show-for-large-up"><li><a class="launch-ap" href="#">My AstroPrint Cloud</a></li></ul-->
         </section>
         <section class="">
