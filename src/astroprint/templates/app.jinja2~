@@ -23,7 +23,7 @@
       <nav class="et-top-bar">
         <section class="">
           <!--a class="left-off-canvas-toggle menu-icon" href="#"><span></span></a-->
-			 <h1 class="Printer_s-Name"><a href="#">Ethereal Machines</h1>      
+			 <p class="Printer_s_Name"><a href="#">Ethereal Machines</p>      
         </section>
         <section class="middle tab-bar-section">
           <!--span class="top-logo-small show-for-small"><a href="#"><i class="icon-rocket"></i></a></span-->
@@ -39,7 +39,7 @@
           <!--ul class="right show-for-large-up"><li><a class="launch-ap" href="#">My AstroPrint Cloud</a></li></ul-->
         </section>
         <section class="">
-          <a class="turn-off" title="Device Shutdown"><i class="icon-off"></i></a>
+          <a class="turn-off Power_Button" title="Device Shutdown"></a>
         </section>
       </nav>
       <aside class="left-off-canvas-menu">
@@ -69,9 +69,9 @@
         </div>
         <div class="copy" align="center">Powered by <a href="https://www.astroprint.com">AstroPrint&reg;</a><br/>{{version}}</div>
       </aside>
-      <div id="main">
+      <div id="main ">
         <div class="row">
-          <div id="view-container" class="small-12 columns">
+          <div id="view-container" class="small-12 columns Background">
             <div id="home-view" class="app-view hide"> {%- include 'home.jinja2' -%} </div>
             <div id="files-view" class="app-view hide"> {%- include 'files.jinja2' -%} </div>
             <div id="control-view" class="app-view hide"> {%- include 'control.jinja2' -%} </div>
