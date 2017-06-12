@@ -18,7 +18,7 @@ var SettingsPage = Backbone.View.extend({
 /***********************
 * Printer - Connection
 ************************/
-
+/*
 var PrinterConnectionView = SettingsPage.extend({
   el: '#printer-connection',
   template: _.template( $("#printer-connection-settings-page-template").html() ),
@@ -122,7 +122,7 @@ var PrinterConnectionView = SettingsPage.extend({
 /***********************
 * Printer - Profile
 ************************/
-
+/*
 var PrinterProfileView = SettingsPage.extend({
   el: '#printer-profile',
   template: _.template( $("#printer-profile-settings-page-template").html() ),
@@ -230,7 +230,7 @@ var PrinterProfileView = SettingsPage.extend({
 /*************************
 * Network - Network Name
 **************************/
-
+/*
 var NetworkNameView = SettingsPage.extend({
   el: '#network-name',
   template: _.template( $("#network-name-settings-page-template").html() ),
@@ -319,7 +319,7 @@ var NetworkNameView = SettingsPage.extend({
 /*************************
 * Camera - Image/Video
 **************************/
-
+/*
 var CameraVideoStreamView = SettingsPage.extend({
   el: '#video-stream',
   template: _.template( $("#video-stream-settings-page-template").html() ),
@@ -371,7 +371,7 @@ var CameraVideoStreamView = SettingsPage.extend({
                       } else {
                         this.refreshPluggedCamera();
                         //this.saveData();
-                      }*/
+                      }*//*
                     } else {
                       //setting default settings
                       this.settings.size = this.settingsSizeDefault;
@@ -553,7 +553,7 @@ var CameraVideoStreamView = SettingsPage.extend({
 /*************************
 * Network - Connection
 **************************/
-
+/*
 var InternetConnectionView = SettingsPage.extend({
   el: '#internet-connection',
   template: _.template( $("#internet-connection-settings-page-template").html() ),
@@ -898,7 +898,7 @@ var WiFiNetworksDialog = Backbone.View.extend({
 /*************************
 * Network - Wifi Hotspot
 **************************/
-
+/*
 var WifiHotspotView = SettingsPage.extend({
   el: '#wifi-hotspot',
   template: _.template( $("#wifi-hotspot-settings-page-template").html() ),
@@ -995,7 +995,7 @@ var WifiHotspotView = SettingsPage.extend({
 /********************
 * Software - Update
 *********************/
-
+/*
 var SoftwareUpdateView = SettingsPage.extend({
   el: '#software-update',
   events: {
@@ -1109,7 +1109,7 @@ var SoftwareUpdateDialog = Backbone.View.extend({
 /************************
 * Software - Advanced
 *************************/
-
+/*
 var SoftwareAdvancedView = SettingsPage.extend({
   el: '#software-advanced',
   template: _.template( $("#software-advanced-content-template").html() ),
@@ -1325,7 +1325,7 @@ var ResetConfirmDialog = Backbone.View.extend({
 
 
 /******************************************/
-
+/*
 var SettingsMenu = Backbone.View.extend({
   el: '#settings-side-bar',
   subviews: null,
@@ -1341,7 +1341,7 @@ var SettingsMenu = Backbone.View.extend({
     this.subviews[page].show();
   }
 });
-/*
+
 var SettingsView = Backbone.View.extend({
   el: '#settings-view',
   menu: null,
@@ -1362,4 +1362,5 @@ var SettingsView = Backbone.View.extend({
   onShow: function() {
     this.subviews['printer-connection'].show();
   }
-});*/
+});
+*/
