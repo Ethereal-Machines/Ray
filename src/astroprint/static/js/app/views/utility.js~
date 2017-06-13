@@ -1,6 +1,7 @@
 /***
 Created by Punit Kumar
 */
+/*
 var UtilityPage = Backbone.View.extend({
   parent: null,
   initialize: function(params) {
@@ -10,12 +11,11 @@ var UtilityPage = Backbone.View.extend({
     this.parent.$el.find('.utility-page').addClass('hide');
     this.$el.removeClass('hide');
   }
-});
+});*/
 var UtilityView = Backbone.View.extend({
   el: '#utility-view',
   menu: null,
   subviews: null,
-  initialize: function() {
     this.subviews = {
      
     };
@@ -24,4 +24,4 @@ var UtilityView = Backbone.View.extend({
   onShow: function() {
     //this.subviews['printer-connection'].show();
   }
-});
+});  

@@ -122,8 +122,7 @@ var AppRouter = Backbone.Router.extend({
     }
 
     this.selectView(this.utilityView);
-    //this.utilityView.menu.changeActive(page || 'printer-connection');
-    //app.selectQuickNav('utility');
+  
   },
   terminal: function()
   {

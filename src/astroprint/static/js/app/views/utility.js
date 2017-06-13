@@ -14,15 +14,6 @@ var UtilityPage = Backbone.View.extend({
 });*/
 var UtilityView = Backbone.View.extend({
   el: '#utility-view',
-  menu: null,
-  subviews: null,
-  initialize: function() {
-    this.subviews = {
-     
-    };
-   // this.menu = new SettingsMenu({subviews: this.subviews});
-  },
-  onShow: function() {
-    //this.subviews['printer-connection'].show();
-  }
-});
+  	initialize: function() {},
+	onShow: function() {}
+});  
