@@ -22,7 +22,7 @@ var AppRouter = Backbone.Router.extend({
     "control": "control",
     "printing": "printing",
     "settings": "settings",
-    "utility": "utility",
+    "utilities": "utilities",
     "settings/:page": "settings",
     "gcode-terminal": "terminal",
     "camera": "camera",
@@ -115,7 +115,7 @@ var AppRouter = Backbone.Router.extend({
     this.settingsView.menu.changeActive(page || 'printer-connection');
     app.selectQuickNav('settings');
   },
-   utility: function()
+   utilities: function()
   {
     if (!this.utilityView) {
       this.utilityView = new UtilityView();
