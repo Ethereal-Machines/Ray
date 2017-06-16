@@ -1,4 +1,4 @@
-.Group_1 {
+/*.Group_1 {
   position: absolute;
   left: 0px;
   top: 0px;
@@ -14,10 +14,10 @@
   width: 48px;
   height: 48px;
   z-index: 12;
-}
+}*/
 .Preheat_Button {
-  background-image: url("Preheat Button.png");
-  position: absolute;
+ /* background-image: url("/static/CSS_Utilities/Preheat-Button.png");
+  */position: absolute;
   left: 344px;
   top: 264px;
   width: 216px;
@@ -25,8 +25,8 @@
   z-index: 11;
 }
 .Manual_Controls_Button {
-  background-image: url("Manual Controls Button.png");
-  position: absolute;
+ /* background-image: url("/static/CSS_Utilities/Manual-Controls-Button.png");
+  */position: absolute;
   left: 568px;
   top: 264px;
   width: 216px;
@@ -34,7 +34,7 @@
   z-index: 10;
 }
 .Filament_Button {
-  background-image: url("Filament Button.png");
+  background-image: url("/static/CSS_Utilities/Filament-Button.png");
   position: absolute;
   left: 568px;
   top: 64px;
@@ -43,7 +43,7 @@
   z-index: 9;
 }
 .Level_Bed_Button {
-  background-image: url("Level Bed Button.png");
+  background-image: url("/static/CSS_Utilities/Level-Bed-Button.png");
   position: absolute;
   left: 344px;
   top: 64px;
@@ -52,14 +52,14 @@
   z-index: 8;
 }
 .Print_From_Storage_Icon {
-  background-image: url("Print From Storage Icon.png");
-  position: absolute;
+  /*background-image: url("/static/CSS_Utilities/Print-From-Storage-Icon.png");
+  */position: absolute;
   left: 16px;
   top: 64px;
   width: 320px;
   height: 391px;
   z-index: 7;
-}
+}/*
 .Connectvity_Offline {
   background-image: url("Connectvity Offline.png");
   position: absolute;
@@ -108,4 +108,4 @@
   width: 800px;
   height: 480px;
   z-index: 2;
-}
+}*/

@@ -1,17 +1,25 @@
-<ul class="">		
-		<li>
-			<a href="#"><div class="">
-				<img src="/static/img/Settings-icon.png" class="Settings_Icon" alt="settings icon"/>
-				<!--div class="overlay"><div class="contain"><h4 class="bold">Launch</h4></div></div></div-->
-			</a>
-				<!--h1 class="bold">Settings</h1-->
-		</li>
-		<!-- Add Utility here  -->
-		<li>
-			<a href="#"><div class="">
-				<img src="/static/img/Utilities-Icon.png" class="Utilities_Icon" alt="settings icon"/>
-				<!--div class="overlay"><div class="contain"><h4 class="bold">Launch</h4></div></div></div-->
-			</a>
-				<!--h1 class="bold">Utility</h1-->
-		</li>
-	</ul>	
+<div>
+<a href="">
+<img src="/static/CSS_Utilities/Preheat-Button.png"   class="Preheat_Button" alt="">
+</a>
+</div>
+<div >
+<a href="">
+<img src="/static/CSS_Utilities/Manual-Controls-Button.png" class="Manual_Controls_Button" alt="">
+</a>
+</div>
+<div >
+<a href="">
+<img src="/static/CSS_Utilities/Filament-Button.png" class="Filament_Button"  alt="">
+</a>
+</div>
+<div >
+<a href="">
+<img src="/static/CSS_Utilities/Level-Bed-Button.png" class="Level_Bed_Button" alt="">
+</a>
+</div>
+<div >
+<a href="">
+<img src="/static/CSS_Utilities/Print-From-Storage-Icon.png" class="Print_From_Storage_Icon" alt="">
+</a>
+</div>

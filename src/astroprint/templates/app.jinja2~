@@ -11,7 +11,9 @@
   {% endassets %}
 
    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/style.css') }}" />
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/CSS_Utilities.css') }}" />
      <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/CSS_settings.css') }}" />
+
 {% endblock %}
 
 {% block content %}

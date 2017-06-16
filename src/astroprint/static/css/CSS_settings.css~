@@ -7,10 +7,10 @@
   z-index: 12;
 }*/
 .Update_Icon {
-  background-image: url("Update Icon.png");
+  background-image: url("/static/CSS_Settings/Update-Icon.png");
   position: absolute;
-  left: 408px;
-  top: 272px;
+  left: 406px;
+  top: 270px;
   width: 376px;
   height: 192px;
   z-index: 11;
@@ -18,8 +18,8 @@
 .About_Icon {
   background-image: url("/static/CSS_Settings/About-Icon.png");
   position: absolute;
-  left: 16px;
-  top: 272px;
+  left: 18px;
+  top: 270px;
   width: 376px;
   height: 192px;
   z-index: 10;
@@ -27,8 +27,8 @@
 .Connectivity_Icon {
   background-image: url("/static/CSS_Settings/Connectivity-Icon.png");
   position: absolute;
-  left: 408px;
-  top: 64px;
+  left: 406px;
+  top: 66px;
   width: 376px;
   height: 192px;
   z-index: 9;
@@ -36,12 +36,58 @@
 .General_Icon {
   background-image: url("/static/CSS_Settings/General-Icon.png");
   position: absolute;
-  left: 16px;
-  top: 64px;
+  left: 18px;
+  top: 66px;
   width: 376px;
   height: 192px;
   z-index: 8;
-}/*
+}
+.Preheat_Button {
+  background-image: url("/static/CSS_settings/Preheat-Button.png");
+  position: absolute;
+  left: 344px;
+  top: 264px;
+  width: 216px;
+  height: 191px;
+  z-index: 11;
+}
+.Manual_Controls_Button {
+  background-image: url("/static/CSS_settings/Manual-Controls-Button.png");
+  position: absolute;
+  left: 568px;
+  top: 264px;
+  width: 216px;
+  height: 191px;
+  z-index: 10;
+}
+.Filament_Button {
+  background-image: url("/static/CSS_settings/Filament-Button.png");
+  position: absolute;
+  left: 568px;
+  top: 64px;
+  width: 216px;
+  height: 191px;
+  z-index: 9;
+}
+.Level_Bed_Button {
+  background-image: url("/static/CSS_settings/Level-Bed-Button.png");
+  position: absolute;
+  left: 344px;
+  top: 64px;
+  width: 216px;
+  height: 191px;
+  z-index: 8;
+}
+.Print_From_Storage_Icon {
+  background-image: url("/static/CSS_settings/Print-From-Storage-Icon.png");
+  position: absolute;
+  left: 16px;
+  top: 64px;
+  width: 320px;
+  height: 391px;
+  z-index: 7;
+}
+/*
 .Back_Icon {
   background-image: url("Back Icon.png");
   position: absolute;
@@ -81,7 +127,8 @@
   left: 60.414px;
   top: 9.442px;
   z-index: 4;
-}/*
+}
+/*
 .Top_Bar {
   background-image: url("Top Bar.png");
   position: absolute;
@@ -91,7 +138,7 @@
   height: 48px;
   z-index: 3;
 }
-.Background {*/
+.Background {
   background-image: url("Background.png");
   position: absolute;
   left: 0px;
@@ -100,3 +147,4 @@
   height: 480px;
   z-index: 2;
 }*/
+
