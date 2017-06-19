@@ -15,6 +15,7 @@ var AppRouter = Backbone.Router.extend({
   suppliesView: null,
   helpView: null,
   utilityView: null,
+  aboutView: null,
   routes: {
     "": "home",
     "files": "files",
@@ -23,6 +24,7 @@ var AppRouter = Backbone.Router.extend({
     "printing": "printing",
     "settings": "settings",
     "utilities": "utilities",
+    "about":"about",
     "settings/:page": "settings",
     "gcode-terminal": "terminal",
     "camera": "camera",
@@ -122,6 +124,16 @@ var AppRouter = Backbone.Router.extend({
     }
 
     this.selectView(this.utilityView);
+  
+  },
+  /*about added*/
+     about: function()
+  {
+    if (!this.aboutView) {
+      this.aboutView = new AboutView();
+    }
+
+    this.selectView(this.aboutView);
   
   },
   terminal: function()
