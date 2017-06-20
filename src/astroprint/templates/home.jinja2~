@@ -71,6 +71,9 @@
 			</a>
 				<!--h1 class="bold">Utility</h1-->
 		</li>
+		<li>
+					<img src="/static/Bottombar.png" class="Bottom_bar " alt="settings icon"/>		
+		</li>
 		<!--li class="gcode-terminal-app-icon">
 			<a href="#gcode-terminal"><div class="app-image">
 				<img src="/static/img/gcode-terminal-icon.png" alt="settings icon"/>
