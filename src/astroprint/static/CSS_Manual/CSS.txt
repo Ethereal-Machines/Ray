@@ -1,0 +1,174 @@
+.Layer_1 {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 800px;
+  height: 480px;
+  z-index: 20;
+}
+.Back_buton {
+  background-image: url("Back buton.png");
+  position: absolute;
+  left: 648px;
+  top: 0px;
+  width: 152px;
+  height: 64px;
+  z-index: 19;
+}
+.Manual_Controls {
+  font-size: 24px;
+  font-family: "Roboto";
+  color: rgb(255, 255, 255);
+  line-height: 1.125;
+  position: absolute;
+  left: 30.016px;
+  top: 45.969px;
+  z-index: 18;
+}
+.Top_Bar {
+  background-image: url("Top Bar.png");
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 800px;
+  height: 64px;
+  z-index: 17;
+}
+.X__ {
+  background-image: url("X -.png");
+  position: absolute;
+  left: 117px;
+  top: 201px;
+  width: 81px;
+  height: 80px;
+  z-index: 16;
+}
+.X__ {
+  background-image: url("X +.png");
+  position: absolute;
+  left: 348px;
+  top: 201px;
+  width: 82px;
+  height: 80px;
+  z-index: 15;
+}
+.Y__ {
+  background-image: url("Y +.png");
+  position: absolute;
+  left: 233px;
+  top: 115px;
+  width: 81px;
+  height: 81px;
+  z-index: 14;
+}
+.Y__ {
+  background-image: url("Y -.png");
+  position: absolute;
+  left: 233px;
+  top: 286px;
+  width: 81px;
+  height: 81px;
+  z-index: 13;
+}
+.Z__ {
+  background-image: url("Z +.png");
+  position: absolute;
+  left: 616px;
+  top: 115px;
+  width: 81px;
+  height: 81px;
+  z-index: 12;
+}
+.Z__ {
+  background-image: url("Z -.png");
+  position: absolute;
+  left: 616px;
+  top: 286px;
+  width: 81px;
+  height: 81px;
+  z-index: 11;
+}
+.Z_Home {
+  background-image: url("Z Home.png");
+  position: absolute;
+  left: 611px;
+  top: 196px;
+  width: 91px;
+  height: 90px;
+  z-index: 10;
+}
+.XY_Home {
+  background-image: url("XY Home.png");
+  position: absolute;
+  left: 228px;
+  top: 196px;
+  width: 91px;
+  height: 90px;
+  z-index: 9;
+}
+.Path_2479___Path_2482 {
+  background-image: url("Path 2479 + Path 2482.png");
+  position: absolute;
+  left: 90px;
+  top: 415px;
+  width: 630px;
+  height: 34px;
+  z-index: 8;
+}
+._200_mm {
+  font-size: 19px;
+  font-family: "Roboto";
+  color: rgb(0, 0, 0);
+  line-height: 1.421;
+  position: absolute;
+  left: 337.141px;
+  top: 445.433px;
+  z-index: 7;
+}
+._175_mm {
+  font-size: 19px;
+  font-family: "Roboto";
+  color: rgb(0, 0, 0);
+  line-height: 1.421;
+  position: absolute;
+  left: 636.422px;
+  top: 445.324px;
+  z-index: 6;
+}
+._150_mm {
+  font-size: 19px;
+  font-family: "Roboto";
+  color: rgb(0, 0, 0);
+  line-height: 1.421;
+  position: absolute;
+  left: 118.422px;
+  top: 445.433px;
+  z-index: 5;
+}
+.Z_Container {
+  background-image: url("Z Container.png");
+  position: absolute;
+  left: 540px;
+  top: 80px;
+  width: 234px;
+  height: 334px;
+  z-index: 4;
+}
+.XY_Container {
+  background-image: url("XY Container.png");
+  position: absolute;
+  left: 27px;
+  top: 80px;
+  width: 498px;
+  height: 336px;
+  z-index: 3;
+}
+.BG {
+  background-image: url("BG.png");
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 800px;
+  height: 480px;
+  z-index: 2;
+}
