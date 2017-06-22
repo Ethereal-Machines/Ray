@@ -48,13 +48,15 @@ class EventSender(object):
 
         if payload['type'] == 'error':
             data['error'] = True
-            data['message'] = payload['reason'] if 'reason' in payload else 'Problem downloading'
+            data['message'] = payload['reason'] \
+                if 'reason' in payload else 'Problem downloading'
 
         elif payload['type'] == 'cancelled':
             data['cancelled'] = True
 
         else:
-            data['progress'] = 100 if payload['type'] == 'success' else payload['progress']
+            data['progress'] = 100 \
+                if payload['type'] == 'success' else payload['progress']
 
         self.sendUpdate('print_file_download', data)
 
