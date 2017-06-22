@@ -11,73 +11,75 @@ from copy import deepcopy
 from octoprint.events import eventManager, Events
 
 class EventSender(object):
-	def __init__(self, socket):
-		self._logger = logging.getLogger(__name__)
-		self._socket = socket
-		self._lastSent = {
-			'temp_update': None,
-			'status_update': None,
-			'printing_progress': None,
-			'print_capture': None,
-			'print_file_download': None
-		}
+    def __init__(self, socket):
+        self._logger = logging.getLogger(__name__)
+        self._socket = socket
+        self._lastSent = {
+            'temp_update': None,
+            'status_update': None,
+            'printing_progress': None,
+            'print_capture': None,
+            'print_file_download': None
+        }
 
-		em = eventManager()
+        em = eventManager()
 
-		#register for print_capture events
-		em.subscribe(Events.CAPTURE_INFO_CHANGED, self._onCaptureInfoChanged)
-		em.subscribe(Events.CLOUD_DOWNLOAD, self._onDownload)
+        #register for print_capture events
+        em.subscribe(Events.CAPTURE_INFO_CHANGED, self._onCaptureInfoChanged)
+        em.subscribe(Events.CLOUD_DOWNLOAD, self._onDownload)
 
-	def __del__(self):
-		self.cleanup()
+    def __del__(self):
+        self.cleanup()
 
-	def cleanup(self):
-		em = eventManager()
+    def cleanup(self):
+        em = eventManager()
 
-		em.unsubscribe(Events.CAPTURE_INFO_CHANGED, self._onCaptureInfoChanged)
-		em.unsubscribe(Events.CLOUD_DOWNLOAD, self._onDownload)
+        em.unsubscribe(Events.CAPTURE_INFO_CHANGED, self._onCaptureInfoChanged)
+        em.unsubscribe(Events.CLOUD_DOWNLOAD, self._onDownload)
 
-	def _onCaptureInfoChanged(self, event, payload):
-		self.sendUpdate('print_capture', payload)
+    def _onCaptureInfoChanged(self, event, payload):
+        self.sendUpdate('print_capture', payload)
 
-	def _onDownload(self, event, payload):
-		data = {
-			'id': payload['id'],
-			'selected': False
-		}
+    def _onDownload(self, event, payload):
+        data = {
+            'id': payload['id'],
+            'selected': False
+        }
 
-		if payload['type'] == 'error':
-			data['error'] = True
-			data['message'] = payload['reason'] if 'reason' in payload else 'Problem downloading'
+        if payload['type'] == 'error':
+            data['error'] = True
+            data['message'] = payload['reason'] \
+                if 'reason' in payload else 'Problem downloading'
 
-		elif payload['type'] == 'cancelled':
-			data['cancelled'] = True
+        elif payload['type'] == 'cancelled':
+            data['cancelled'] = True
 
-		else:
-			data['progress'] = 100 if payload['type'] == 'success' else payload['progress']
+        else:
+            data['progress'] = 100 \
+                if payload['type'] == 'success' else payload['progress']
 
-		self.sendUpdate('print_file_download', data)
+        self.sendUpdate('print_file_download', data)
 
-	def sendLastUpdate(self, event):
-		if event in self._lastSent:
-			self._send(event, self._lastSent[event])
+    def sendLastUpdate(self, event):
+        if event in self._lastSent:
+            self._send(event, self._lastSent[event])
 
-	def sendUpdate(self, event, data):
-		if self._lastSent[event] != data and self._send(event, data):
-			self._lastSent[event] = deepcopy(data) if data else None
+    def sendUpdate(self, event, data):
+        if self._lastSent[event] != data and self._send(event, data):
+            self._lastSent[event] = deepcopy(data) if data else None
 
-	def _send(self, event, data):
-		try:
-			self._socket.send(json.dumps({
-				'type': 'send_event',
-				'data': {
-					'eventType': event,
-					'eventData': data
-				}
-			}))
+    def _send(self, event, data):
+        try:
+            self._socket.send(json.dumps({
+                'type': 'send_event',
+                'data': {
+                    'eventType': event,
+                    'eventData': data
+                }
+            }))
 
-			return True
+            return True
 
-		except Exception as e:
-			self._logger.error( 'Error sending [%s] event: %s' % (event, e) )
-			return False
+        except Exception as e:
+            self._logger.error( 'Error sending [%s] event: %s' % (event, e) )
+            return False
