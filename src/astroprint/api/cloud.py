@@ -212,37 +212,32 @@ def design_download(print_file_id):
 @api.route("/astroprint/print-files/<string:print_file_id>/download", methods=["DELETE"])
 @restricted_access
 def cancel_design_download(print_file_id):
-	if downloadManager().cancelDownload(print_file_id):
-		return jsonify(SUCCESS)
+    if downloadManager().cancelDownload(print_file_id):
+        return jsonify(SUCCESS)
 
-	else:
-		return abort(404)
+    else:
+        return abort(404)
 
 @api.route("/astroprint/print-jobs/<string:print_job_id>/add-reason", methods=["PUT"])
 @restricted_access
 def update_cancel_reason(print_job_id):
-	if not "application/json" in request.headers["Content-Type"]:
-		return abort(400)
+    if not "application/json" in request.headers["Content-Type"]:
+        return abort(400)
 
-	data = request.json
+    data = request.json
 
-	#get reason
-	reason = {}
-	if 'reason' in data:
-		reason['reason_id'] = data['reason']
+    #get reason
+    reason = {}
+    if 'reason' in data:
+        reason['reason_id'] = data['reason']
 
-	if 'other_text' in data:
-		reason['other_text'] = data['other_text']
+    if 'other_text' in data:
+        reason['other_text'] = data['other_text']
 
-	if reason:
-		if not astroprintCloud().updateCancelReason(print_job_id, reason):
-			return abort(500)
-		else:
-			return jsonify(SUCCESS)
-	else:
-		return abort(400)
-
-
-
-
-
+    if reason:
+        if not astroprintCloud().updateCancelReason(print_job_id, reason):
+            return abort(500)
+        else:
+            return jsonify(SUCCESS)
+    else:
+        return abort(400)
