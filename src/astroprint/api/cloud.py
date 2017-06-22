@@ -10,7 +10,6 @@ from flask import request, jsonify, abort
 from flask.ext.login import current_user
 from requests import ConnectionError
 
-from octoprint.settings import settings
 from octoprint.server import restricted_access, SUCCESS
 from octoprint.server.api import api
 from octoprint.events import eventManager, Events
