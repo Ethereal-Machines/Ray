@@ -362,273 +362,306 @@ def read_ws_token(token):
 
 
 class Server():
-	def __init__(self, configfile=None, basedir=None, host="0.0.0.0", port=5000, debug=False, allowRoot=False, logConf=None):
-		self._configfile = configfile
-		self._basedir = basedir
-		self._host = host
-		self._port = port
-		self._debug = debug
-		self._allowRoot = allowRoot
-		self._logConf = logConf
-		self._ioLoop = None
+    def __init__(
+        self, configfile=None, basedir=None, host="0.0.0.0", port=5000,
+            debug=False, allowRoot=False, logConf=None):
+        self._configfile = configfile
+        self._basedir = basedir
+        self._host = host
+        self._port = port
+        self._debug = debug
+        self._allowRoot = allowRoot
+        self._logConf = logConf
+        self._ioLoop = None
 
-	def stop(self):
-		if self._ioLoop:
-			self._ioLoop.stop()
-			self._ioLoop = None
+    def stop(self):
+        if self._ioLoop:
+            self._ioLoop.stop()
+            self._ioLoop = None
 
-	def run(self):
-		if not self._allowRoot:
-			self._checkForRoot()
+    def run(self):
+        if not self._allowRoot:
+            self._checkForRoot()
 
-		global userManager
-		global eventManager
-		global loginManager
-		global debug
-		global softwareManager
-		global discoveryManager
-		global VERSION
-		global UI_API_KEY
+        global userManager
+        global eventManager
+        global loginManager
+        global debug
+        global softwareManager
+        global discoveryManager
+        global VERSION
+        global UI_API_KEY
 
-		from tornado.wsgi import WSGIContainer
-		from tornado.httpserver import HTTPServer
-		from tornado.ioloop import IOLoop
-		from tornado.web import Application, FallbackHandler
+        from tornado.wsgi import WSGIContainer
+        from tornado.httpserver import HTTPServer
+        from tornado.ioloop import IOLoop
+        from tornado.web import Application, FallbackHandler
 
-		from astroprint.printfiles.watchdogs import UploadCleanupWatchdogHandler
+        from astroprint.printfiles.watchdogs import UploadCleanupWatchdogHandler
 
-		debug = self._debug
+        debug = self._debug
 
-		# first initialize the settings singleton and make sure it uses given configfile and basedir if available
-		self._initSettings(self._configfile, self._basedir)
-		s = settings()
+        # first initialize the settings singleton and make sure it
+        # uses given configfile and basedir if available
+        self._initSettings(self._configfile, self._basedir)
+        s = settings()
 
-		if not s.getBoolean(['api', 'regenerate']) and s.getString(['api', 'key']):
-			UI_API_KEY = s.getString(['api', 'key'])
-		else:
-			UI_API_KEY = ''.join('%02X' % ord(z) for z in uuid.uuid4().bytes)
+        if not s.getBoolean(['api', 'regenerate']) and s.getString(['api', 'key']):
+            UI_API_KEY = s.getString(['api', 'key'])
+        else:
+            UI_API_KEY = ''.join('%02X' % ord(z) for z in uuid.uuid4().bytes)
 
-		# then initialize logging
-		self._initLogging(self._debug, self._logConf)
-		logger = logging.getLogger(__name__)
+        # then initialize logging
+        self._initLogging(self._debug, self._logConf)
+        logger = logging.getLogger(__name__)
 
-		if s.getBoolean(["accessControl", "enabled"]):
-			userManagerName = s.get(["accessControl", "userManager"])
-			try:
-				clazz = util.getClass(userManagerName)
-				userManager = clazz()
-			except AttributeError, e:
-				logger.exception("Could not instantiate user manager %s, will run with accessControl disabled!" % userManagerName)
+        if s.getBoolean(["accessControl", "enabled"]):
+            userManagerName = s.get(["accessControl", "userManager"])
+            try:
+                clazz = util.getClass(userManagerName)
+                userManager = clazz()
+            except AttributeError, e:
+                logger.exception(
+                    "Could not instantiate user manager %s, will run "
+                    "with accessControl disabled!" % userManagerName)
 
-		softwareManager = swManager()
-		VERSION = softwareManager.versionString
+        softwareManager = swManager()
+        VERSION = softwareManager.versionString
 
-		logger.info("Starting AstroBox (%s) - Commit (%s)" % (VERSION, softwareManager.commit))
+        logger.info("Starting AstroBox (%s) - Commit (%s)" % (
+            VERSION, softwareManager.commit))
 
-		from astroprint.migration import migrateSettings
-		migrateSettings()
+        from astroprint.migration import migrateSettings
+        migrateSettings()
 
-		eventManager = events.eventManager()
-		printer = printerManager(printerProfileManager().data['driver'])
+        eventManager = events.eventManager()
+        printer = printerManager(printerProfileManager().data['driver'])
 
-		#Start some of the managers here to make sure there are no thread collisions
-		from astroprint.network.manager import networkManager
-		from astroprint.boxrouter import boxrouterManager
+        # Start some of the managers here to make sure there are
+        # no thread collisions
+        from astroprint.network.manager import networkManager
+        from astroprint.boxrouter import boxrouterManager
 
-		networkManager()
-		boxrouterManager()
+        networkManager()
+        boxrouterManager()
 
-		# configure timelapse
-		#octoprint.timelapse.configureTimelapse()
+        # configure timelapse
+        #octoprint.timelapse.configureTimelapse()
 
-		app.wsgi_app = ReverseProxied(app.wsgi_app)
+        app.wsgi_app = ReverseProxied(app.wsgi_app)
 
-		app.secret_key = boxrouterManager().boxId
-		loginManager = LoginManager()
-		loginManager.session_protection = "strong"
-		loginManager.user_callback = load_user
-		if userManager is None:
-			loginManager.anonymous_user = users.DummyUser
-			principals.identity_loaders.appendleft(users.dummy_identity_loader)
-		loginManager.init_app(app)
+        app.secret_key = boxrouterManager().boxId
+        loginManager = LoginManager()
+        loginManager.session_protection = "strong"
+        loginManager.user_callback = load_user
+        if userManager is None:
+            loginManager.anonymous_user = users.DummyUser
+            principals.identity_loaders.appendleft(users.dummy_identity_loader)
+        loginManager.init_app(app)
 
-		# setup command triggers
-		events.CommandTrigger(printer)
-		if self._debug:
-			events.DebugEventListener()
+        # setup command triggers
+        events.CommandTrigger(printer)
+        if self._debug:
+            events.DebugEventListener()
 
-		if networkManager().isOnline():
-			softwareManager.checkForcedUpdate()
+        if networkManager().isOnline():
+            softwareManager.checkForcedUpdate()
 
-		if self._host is None:
-			self._host = s.get(["server", "host"])
-		if self._port is None:
-			self._port = s.getInt(["server", "port"])
+        if self._host is None:
+            self._host = s.get(["server", "host"])
+        if self._port is None:
+            self._port = s.getInt(["server", "port"])
 
-		app.debug = self._debug
+        app.debug = self._debug
 
-		from octoprint.server.api import api
+        from octoprint.server.api import api
 
-		app.register_blueprint(api, url_prefix="/api")
+        app.register_blueprint(api, url_prefix="/api")
 
-		boxrouterManager() # Makes sure the singleton is created here. It doesn't need to be stored
-		self._router = SockJSRouter(self._createSocketConnection, "/sockjs")
+        # Makes sure the singleton is created here. It doesn't need to be stored
+        boxrouterManager()
+        self._router = SockJSRouter(self._createSocketConnection, "/sockjs")
 
-		discoveryManager = DiscoveryManager()
+        discoveryManager = DiscoveryManager()
 
-		def access_validation_factory(validator):
-			"""
-			Creates an access validation wrapper using the supplied validator.
+        def access_validation_factory(validator):
+            """
+            Creates an access validation wrapper using the supplied validator.
 
-			:param validator: the access validator to use inside the validation wrapper
-			:return: an access validation wrapper taking a request as parameter and performing the request validation
-			"""
-			def f(request):
-				"""
-				Creates a custom wsgi and Flask request context in order to be able to process user information
-				stored in the current session.
+            :param validator: the access validator to use inside the validation
+            wrapper
+            :return: an access validation wrapper taking a request as parameter
+            and performing the request validation
+            """
+            def f(request):
+                """
+                Creates a custom wsgi and Flask request context in order to be
+                able to process user information stored in the current session.
 
-				:param request: The Tornado request for which to create the environment and context
-				"""
-				wsgi_environ = tornado.wsgi.WSGIContainer.environ(request)
-				with app.request_context(wsgi_environ):
-					app.session_interface.open_session(app, request)
-					loginManager.reload_user()
-					validator(request)
-			return f
+                :param request: The Tornado request for which to create
+                the environment and context
+                """
+                wsgi_environ = tornado.wsgi.WSGIContainer.environ(request)
+                with app.request_context(wsgi_environ):
+                    app.session_interface.open_session(app, request)
+                    loginManager.reload_user()
+                    validator(request)
+            return f
 
-		self._tornado_app = Application(self._router.urls + [
-			#(r"/downloads/timelapse/([^/]*\.mpg)", LargeResponseHandler, {"path": s.getBaseFolder("timelapse"), "as_attachment": True}),
-			(r"/downloads/files/local/([^/]*\.(gco|gcode))", LargeResponseHandler, {"path": s.getBaseFolder("uploads"), "as_attachment": True}),
-			(r"/downloads/logs/([^/]*)", LargeResponseHandler, {"path": s.getBaseFolder("logs"), "as_attachment": True, "access_validation": access_validation_factory(admin_validator)}),
-			#(r"/downloads/camera/current", UrlForwardHandler, {"url": s.get(["webcam", "snapshot"]), "as_attachment": True, "access_validation": access_validation_factory(user_validator)}),
-			(r".*", FallbackHandler, {"fallback": WSGIContainer(app.wsgi_app)})
-		])
-		self._server = HTTPServer(self._tornado_app, max_buffer_size=1048576 * s.getInt(['server', 'maxUploadSize']))
-		self._server.listen(self._port, address=self._host)
+        self._tornado_app = Application(self._router.urls + [
+            #(r"/downloads/timelapse/([^/]*\.mpg)",
+            #   LargeResponseHandler,
+            #   {"path": s.getBaseFolder("timelapse"),
+            #   "as_attachment": True}),
+            (r"/downloads/files/local/([^/]*\.(gco|gcode))",
+                LargeResponseHandler,
+                {"path": s.getBaseFolder("uploads"), "as_attachment": True}),
+            (r"/downloads/logs/([^/]*)",
+                LargeResponseHandler,
+                {"path": s.getBaseFolder("logs"),
+                 "as_attachment": True,
+                 "access_validation": access_validation_factory(admin_validator)}),
+            #(r"/downloads/camera/current",
+            #   UrlForwardHandler,
+            #   {"url": s.get(["webcam", "snapshot"]),
+            #   "as_attachment": True,
+            #   "access_validation": access_validation_factory(user_validator)}),
+            (r".*",
+                FallbackHandler,
+                {"fallback": WSGIContainer(app.wsgi_app)})
+        ])
+        self._server = HTTPServer(
+            self._tornado_app,
+            max_buffer_size=1048576 * s.getInt(['server', 'maxUploadSize']))
+        self._server.listen(self._port, address=self._host)
 
-		logger.info("Listening on http://%s:%d" % (self._host, self._port))
+        logger.info("Listening on http://%s:%d" % (self._host, self._port))
 
-		eventManager.fire(events.Events.STARTUP)
-		if s.getBoolean(["serial", "autoconnect"]):
-			(port, baudrate) = s.get(["serial", "port"]), s.getInt(["serial", "baudrate"])
-			connectionOptions = printer.getConnectionOptions()
-			if port in connectionOptions["ports"]:
-				printer.connect(port, baudrate)
+        eventManager.fire(events.Events.STARTUP)
+        if s.getBoolean(["serial", "autoconnect"]):
+            (port, baudrate) = s.get(["serial", "port"]), s.getInt(["serial", "baudrate"])
+            connectionOptions = printer.getConnectionOptions()
+            if port in connectionOptions["ports"]:
+                printer.connect(port, baudrate)
 
-		# start up watchdogs
-		observer = Observer()
-		observer.schedule(UploadCleanupWatchdogHandler(), s.getBaseFolder("uploads"))
-		observer.start()
+        # start up watchdogs
+        observer = Observer()
+        observer.schedule(
+            UploadCleanupWatchdogHandler(), s.getBaseFolder("uploads"))
+        observer.start()
 
-		try:
-			self._ioLoop = IOLoop.instance()
-			self._ioLoop.start()
+        try:
+            self._ioLoop = IOLoop.instance()
+            self._ioLoop.start()
 
-		except SystemExit:
-			pass
+        except SystemExit:
+            pass
 
-		except:
-			logger.fatal("Please report this including the stacktrace below in AstroPrint's bugtracker. Thanks!")
-			logger.exception("Stacktrace follows:")
+        except:
+            logger.fatal("Please report this including the stacktrace below "
+                         "in AstroPrint's bugtracker. Thanks!")
+            logger.exception("Stacktrace follows:")
 
-		finally:
-			observer.stop()
-			self.cleanup()
+        finally:
+            observer.stop()
+            self.cleanup()
 
-		observer.join()
-		logger.info('Good Bye!')
+        observer.join()
+        logger.info('Good Bye!')
 
-	def _createSocketConnection(self, session):
-		global userManager, eventManager
-		return PrinterStateConnection(userManager, eventManager, session)
+    def _createSocketConnection(self, session):
+        global userManager, eventManager
+        return PrinterStateConnection(userManager, eventManager, session)
 
-	def _checkForRoot(self):
-		return
-		if "geteuid" in dir(os) and os.geteuid() == 0:
-			exit("You should not run OctoPrint as root!")
+    def _checkForRoot(self):
+        return
+        if "geteuid" in dir(os) and os.geteuid() == 0:
+            exit("You should not run OctoPrint as root!")
 
-	def _initSettings(self, configfile, basedir):
-		settings(init=True, basedir=basedir, configfile=configfile)
+    def _initSettings(self, configfile, basedir):
+        settings(init=True, basedir=basedir, configfile=configfile)
 
-	def _initLogging(self, debug, logConf=None):
-		defaultConfig = {
-			"version": 1,
-			"formatters": {
-				"simple": {
-					"format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
-				}
-			},
-			"handlers": {
-				"console": {
-					"class": "logging.StreamHandler",
-					"level": "DEBUG",
-					"formatter": "simple",
-					"stream": "ext://sys.stdout"
-				},
-				"file": {
-					"class": "logging.handlers.TimedRotatingFileHandler",
-					"level": "DEBUG",
-					"formatter": "simple",
-					"when": "D",
-					"backupCount": 5,
-					"filename": os.path.join(settings().getBaseFolder("logs"), "astrobox.log")
-				},
-				"serialFile": {
-					"class": "logging.handlers.RotatingFileHandler",
-					"level": "DEBUG",
-					"formatter": "simple",
-					"maxBytes": 2 * 1024 * 1024, # let's limit the serial log to 2MB in size
-					"filename": os.path.join(settings().getBaseFolder("logs"), "serial.log")
-				}
-			},
-			"loggers": {
-				"SERIAL": {
-					"level": "CRITICAL",
-					"handlers": ["serialFile"],
-					"propagate": False
-				}
-			},
-			"root": {
-				"level": "INFO",
-				"handlers": ["console", "file"]
-			}
-		}
+    def _initLogging(self, debug, logConf=None):
+        defaultConfig = {
+            "version": 1,
+            "formatters": {
+                "simple": {
+                    "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+                }
+            },
+            "handlers": {
+                "console": {
+                    "class": "logging.StreamHandler",
+                    "level": "DEBUG",
+                    "formatter": "simple",
+                    "stream": "ext://sys.stdout"
+                },
+                "file": {
+                    "class": "logging.handlers.TimedRotatingFileHandler",
+                    "level": "DEBUG",
+                    "formatter": "simple",
+                    "when": "D",
+                    "backupCount": 5,
+                    "filename": os.path.join(
+                        settings().getBaseFolder("logs"), "astrobox.log")
+                },
+                "serialFile": {
+                    "class": "logging.handlers.RotatingFileHandler",
+                    "level": "DEBUG",
+                    "formatter": "simple",
+                    # let's limit the serial log to 2MB in size
+                    "maxBytes": 2 * 1024 * 1024,
+                    "filename": os.path.join(
+                        settings().getBaseFolder("logs"), "serial.log")
+                }
+            },
+            "loggers": {
+                "SERIAL": {
+                    "level": "CRITICAL",
+                    "handlers": ["serialFile"],
+                    "propagate": False
+                }
+            },
+            "root": {
+                "level": "INFO",
+                "handlers": ["console", "file"]
+            }
+        }
 
-		if debug:
-			defaultConfig["root"]["level"] = "DEBUG"
+        if debug:
+            defaultConfig["root"]["level"] = "DEBUG"
 
-		if logConf is None:
-			logConf = os.path.join(settings().settings_dir, "logging.yaml")
+        if logConf is None:
+            logConf = os.path.join(settings().settings_dir, "logging.yaml")
 
-		configFromFile = {}
-		if os.path.exists(logConf) and os.path.isfile(logConf):
-			import yaml
-			with open(logConf, "r") as f:
-				configFromFile = yaml.safe_load(f)
+        configFromFile = {}
+        if os.path.exists(logConf) and os.path.isfile(logConf):
+            import yaml
+            with open(logConf, "r") as f:
+                configFromFile = yaml.safe_load(f)
 
-		config = util.dict_merge(defaultConfig, configFromFile)
-		logging.config.dictConfig(config)
+        config = util.dict_merge(defaultConfig, configFromFile)
+        logging.config.dictConfig(config)
 
-		if settings().getBoolean(["serial", "log"]):
-			# enable debug logging to serial.log
-			serialLogger = logging.getLogger("SERIAL")
-			serialLogger.setLevel(logging.DEBUG)
-			serialLogger.debug("Enabling serial logging")
+        if settings().getBoolean(["serial", "log"]):
+            # enable debug logging to serial.log
+            serialLogger = logging.getLogger("SERIAL")
+            serialLogger.setLevel(logging.DEBUG)
+            serialLogger.debug("Enabling serial logging")
 
-	def cleanup(self):
-		global discoveryManager
+    def cleanup(self):
+        global discoveryManager
 
-		downloadManager().shutdown()
-		printerManager().rampdown()
-		discoveryManager.shutdown()
-		discoveryManager = None
-		boxrouterManager().shutdown()
-		cameraManager().shutdown()
+        downloadManager().shutdown()
+        printerManager().rampdown()
+        discoveryManager.shutdown()
+        discoveryManager = None
+        boxrouterManager().shutdown()
+        cameraManager().shutdown()
 
-		from astroprint.network.manager import networkManagerShutdown
-		networkManagerShutdown()
+        from astroprint.network.manager import networkManagerShutdown
+        networkManagerShutdown()
 
 if __name__ == "__main__":
-	octoprint = Server()
-	octoprint.run()
+    octoprint = Server()
+    octoprint.run()
