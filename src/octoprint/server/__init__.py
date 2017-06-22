@@ -73,276 +73,290 @@ VERSION = None
 
 @app.route('/astrobox/identify', methods=['GET'])
 def box_identify():
-	br = boxrouterManager()
-	nm = networkManager()
+    br = boxrouterManager()
+    nm = networkManager()
 
-	return Response(json.dumps({
-		'id': br.boxId,
-		'name': nm.getHostname(),
-		'version': VERSION
-	}),
-	headers= {
-		'Access-Control-Allow-Origin': '*'
-	} if settings().getBoolean(['api', 'allowCrossOrigin']) else None)
+    return Response(json.dumps({
+        'id': br.boxId,
+        'name': nm.getHostname(),
+        'version': VERSION
+    }),
+    headers= {
+        'Access-Control-Allow-Origin': '*'
+    } if settings().getBoolean(['api', 'allowCrossOrigin']) else None)
+
 
 @app.route("/")
 def index():
-	s = settings()
-	loggedUsername = s.get(["cloudSlicer", "loggedUser"])
+    s = settings()
+    loggedUsername = s.get(["cloudSlicer", "loggedUser"])
 
-	if (s.getBoolean(["server", "firstRun"])):
-		swm = swManager()
+    if (s.getBoolean(["server", "firstRun"])):
+        swm = swManager()
 
-		# we need to get the user to sign into their AstroPrint account
-		return render_template(
-			"setup.jinja2",
-			debug= debug,
-			uiApiKey= UI_API_KEY,
-			version= VERSION,
-			commit= swm.commit,
-			variantData= variantManager().data,
-			astroboxName= networkManager().getHostname(),
-			checkSoftware= swm.shouldCheckForNew,
-			settings= s,
-			wsToken= create_ws_token(userManager.findUser(loggedUsername).publicKey if loggedUsername else None)
-		)
+        # we need to get the user to sign into their AstroPrint account
+        wstoken = create_ws_token(
+                userManager.findUser(loggedUsername).publicKey if loggedUsername else None)
+        return render_template(
+            "setup.jinja2",
+            debug=debug,
+            uiApiKey=UI_API_KEY,
+            version=VERSION,
+            commit=swm.commit,
+            variantData=variantManager().data,
+            astroboxName=networkManager().getHostname(),
+            checkSoftware=swm.shouldCheckForNew,
+            settings=s,
+            wsToken=wstoken,
+        )
 
-	elif softwareManager.updatingRelease or softwareManager.forceUpdateInfo:
-		return render_template(
-			"updating.jinja2",
-			uiApiKey= UI_API_KEY,
-			showForceUpdate=  softwareManager.forceUpdateInfo != None,
-			releaseInfo= softwareManager.updatingRelease or softwareManager.forceUpdateInfo,
-			lastCompletionPercent= softwareManager.lastCompletionPercent,
-			lastMessage= softwareManager.lastMessage,
-			variantData= variantManager().data,
-			astroboxName= networkManager().getHostname(),
-			wsToken= create_ws_token(userManager.findUser(loggedUsername).publicKey if loggedUsername else None)
-		)
+    elif softwareManager.updatingRelease or softwareManager.forceUpdateInfo:
+        return render_template(
+            "updating.jinja2",
+            uiApiKey=UI_API_KEY,
+            showForceUpdate=softwareManager.forceUpdateInfo != None,
+            releaseInfo=softwareManager.updatingRelease or softwareManager.forceUpdateInfo,
+            lastCompletionPercent=softwareManager.lastCompletionPercent,
+            lastMessage=softwareManager.lastMessage,
+            variantData=variantManager().data,
+            astroboxName=networkManager().getHostname(),
+            wsToken=create_ws_token(userManager.findUser(loggedUsername).publicKey if loggedUsername else None)
+        )
 
-	elif loggedUsername and (current_user is None or not current_user.is_authenticated or current_user.get_id() != loggedUsername):
-		if current_user.is_authenticated:
-			logout_user()
+    elif loggedUsername and (current_user is None or not current_user.is_authenticated or current_user.get_id() != loggedUsername):
+        if current_user.is_authenticated:
+            logout_user()
 
-		return render_template(
-			"locked.jinja2",
-			username= loggedUsername,
-			uiApiKey= UI_API_KEY,
-			astroboxName= networkManager().getHostname(),
-			variantData= variantManager().data
-		)
+        return render_template(
+            "locked.jinja2",
+            username=loggedUsername,
+            uiApiKey=UI_API_KEY,
+            astroboxName=networkManager().getHostname(),
+            variantData=variantManager().data
+        )
 
-	else:
-		pm = printerManager()
-		nm = networkManager()
-		swm = swManager()
-		cm = cameraManager()
+    else:
+        pm = printerManager()
+        nm = networkManager()
+        swm = swManager()
+        cm = cameraManager()
 
-		paused = pm.isPaused()
-		printing = pm.isPrinting()
-		online = nm.isOnline()
+        paused = pm.isPaused()
+        printing = pm.isPrinting()
+        online = nm.isOnline()
 
-		return render_template(
-			"app.jinja2",
-			user_email= loggedUsername,
-			show_bad_shutdown= swm.wasBadShutdown and not swm.badShutdownShown,
-			version= VERSION,
-			commit= swm.commit,
-			printing= printing,
-			paused= paused,
-			online= online,
-			print_capture= cm.timelapseInfo if printing or paused else None,
-			printer_profile= printerProfileManager().data,
-			uiApiKey= UI_API_KEY,
-			astroboxName= nm.getHostname(),
-			variantData= variantManager().data,
-			checkSoftware= swm.shouldCheckForNew,
-			serialLogActive= s.getBoolean(['serial', 'log']),
-			cameraManager= cm.name,
-			wsToken= create_ws_token(userManager.findUser(loggedUsername).publicKey if loggedUsername else None)
-		)
+        return render_template(
+            "app.jinja2",
+            user_email=loggedUsername,
+            show_bad_shutdown=swm.wasBadShutdown and not swm.badShutdownShown,
+            version=VERSION,
+            commit=swm.commit,
+            printing=printing,
+            paused=paused,
+            online=online,
+            print_capture=cm.timelapseInfo if printing or paused else None,
+            printer_profile=printerProfileManager().data,
+            uiApiKey=UI_API_KEY,
+            astroboxName=nm.getHostname(),
+            variantData=variantManager().data,
+            checkSoftware=swm.shouldCheckForNew,
+            serialLogActive=s.getBoolean(['serial', 'log']),
+            cameraManager=cm.name,
+            wsToken=create_ws_token(userManager.findUser(loggedUsername).publicKey if loggedUsername else None)
+        )
+
 
 @app.route("/about")
 def about():
-	return info()
-			
+    return info()
+
+
 @app.route("/discovery.xml")
 def discoveryXml():
-	response = make_response( discoveryManager.getDiscoveryXmlContents() )
-	response.headers['Content-Type'] = 'application/xml'
-	return response
+    response = make_response( discoveryManager.getDiscoveryXmlContents() )
+    response.headers['Content-Type'] = 'application/xml'
+    return response
+
 
 @app.route("/robots.txt")
 def robotsTxt():
-	return send_from_directory(app.static_folder, "robots.txt")
+    return send_from_directory(app.static_folder, "robots.txt")
+
 
 @app.route("/favicon.ico")
 def favion():
-	return send_from_directory(app.static_folder, "favicon.ico")
+    return send_from_directory(app.static_folder, "favicon.ico")
+
 
 @app.route("/apple-touch-icon.png")
 def apple_icon():
-	return send_from_directory(app.static_folder, "apple-touch-icon.png")
+    return send_from_directory(app.static_folder, "apple-touch-icon.png")
+
 
 @app.route('/img/<path:path>')
 def static_proxy_images(path):
-	return app.send_static_file(os.path.join('img', path))
+    return app.send_static_file(os.path.join('img', path))
+
 
 @app.route('/font/<path:path>')
 def static_proxy_fonts(path):
-	return app.send_static_file(os.path.join('font', path))
+    return app.send_static_file(os.path.join('font', path))
+
 
 @app.route('/camera/snapshot', methods=["GET"])
 @restricted_access
 def camera_snapshot():
-	cameraMgr = cameraManager()
-	pic_buf = cameraMgr.get_pic(text=request.args.get('text'))
-	if pic_buf:
-		return Response(pic_buf, mimetype='image/jpeg')
-	else:
-		return 'Camera not ready', 404
+    cameraMgr = cameraManager()
+    pic_buf = cameraMgr.get_pic(text=request.args.get('text'))
+    if pic_buf:
+        return Response(pic_buf, mimetype='image/jpeg')
+    else:
+        return 'Camera not ready', 404
 
 
 @app.route("/status", methods=["GET"])
 @restricted_access
 def getStatus():
-	printer = printerManager()
-	cm = cameraManager()
+    printer = printerManager()
+    cm = cameraManager()
 
-	fileName = None
+    fileName = None
 
-	if printer.isPrinting():
-		currentJob = printer.getCurrentJob()
-		fileName = currentJob["file"]["name"]
+    if printer.isPrinting():
+        currentJob = printer.getCurrentJob()
+        fileName = currentJob["file"]["name"]
 
-	return Response(
-		json.dumps({
-			'id': boxrouterManager().boxId,
-			'name': networkManager().getHostname(),
-			'printing': printer.isPrinting(),
-			'fileName': fileName,
-			'printerModel': None,
-			'material': None,
-			'operational': printer.isOperational(),
-			'paused': printer.isPaused(),
-			'camera': cm.isCameraConnected(),
-			#'printCapture': cm.timelapseInfo,
-			'remotePrint': True,
-			'capabilities': ['remotePrint'] + cm.capabilities
-		}),
-		mimetype= 'application/json',
-		headers= {
-			'Access-Control-Allow-Origin': '*'
-		} if settings().getBoolean(['api', 'allowCrossOrigin']) else None
-	)
+    return Response(
+        json.dumps({
+            'id': boxrouterManager().boxId,
+            'name': networkManager().getHostname(),
+            'printing': printer.isPrinting(),
+            'fileName': fileName,
+            'printerModel': None,
+            'material': None,
+            'operational': printer.isOperational(),
+            'paused': printer.isPaused(),
+            'camera': cm.isCameraConnected(),
+            #'printCapture': cm.timelapseInfo,
+            'remotePrint': True,
+            'capabilities': ['remotePrint'] + cm.capabilities
+        }),
+        mimetype='application/json',
+        headers={
+            'Access-Control-Allow-Origin': '*'
+        } if settings().getBoolean(['api', 'allowCrossOrigin']) else None
+    )
+
 
 @app.route("/wsToken", methods=['GET'])
 def getWsToken():
-	publicKey = None
-	userLogged = settings().get(["cloudSlicer", "loggedUser"])
+    publicKey = None
+    userLogged = settings().get(["cloudSlicer", "loggedUser"])
 
-	if userLogged:
-		if current_user.is_anonymous or current_user.get_name() != userLogged:
-			abort(401, "Unauthorized Access")
+    if userLogged:
+        if current_user.is_anonymous or current_user.get_name() != userLogged:
+            abort(401, "Unauthorized Access")
 
-		user = userManager.findUser(userLogged)
-		if user:
-			publicKey = user.publicKey
-		else:
-			abort(403, 'Invalid Logged User')
+        user = userManager.findUser(userLogged)
+        if user:
+            publicKey = user.publicKey
+        else:
+            abort(403, 'Invalid Logged User')
 
-	return Response(
-		json.dumps({
-		'ws_token': create_ws_token(publicKey)
-		}),
-		headers= {
-			'Access-Control-Allow-Origin': '*'
-		} if settings().getBoolean(['api', 'allowCrossOrigin']) else None
-	)
+    return Response(json.dumps({
+        'ws_token': create_ws_token(publicKey)}),
+        headers={
+            'Access-Control-Allow-Origin': '*'
+        } if settings().getBoolean(['api', 'allowCrossOrigin']) else None
+    )
+
 
 @app.route("/accessKeys", methods=["POST"])
 def getAccessKeys():
-	from astroprint.cloud import astroprintCloud
+    from astroprint.cloud import astroprintCloud
 
-	publicKey = None
-	email = request.values.get('email', None)
-	accessKey = request.values.get('accessKey', None)
+    publicKey = None
+    email = request.values.get('email', None)
+    accessKey = request.values.get('accessKey', None)
 
-	userLogged = settings().get(["cloudSlicer", "loggedUser"])
-	####
-	# - nobody logged: None
-	# - any log: email
+    userLogged = settings().get(["cloudSlicer", "loggedUser"])
+    ####
+    # - nobody logged: None
+    # - any log: email
 
-	if email and accessKey:#somebody is logged in the remote client
-		if userLogged:#Somebody logged in Astrobox
-			if userLogged == email:#I am the user logged
-				online = networkManager().isOnline()
+    if email and accessKey:#somebody is logged in the remote client
+        if userLogged:#Somebody logged in Astrobox
+            if userLogged == email:#I am the user logged
+                online = networkManager().isOnline()
 
-				if online:
-					publicKey = astroprintCloud().get_public_key(email, accessKey)
+                if online:
+                    publicKey = astroprintCloud().get_public_key(email, accessKey)
 
-					if not publicKey:
-						abort(403)
+                    if not publicKey:
+                        abort(403)
 
-				else:
-					user = userManager.findUser(email)
-					if user.get_private_key() != accessKey:
-						abort(403)
+                else:
+                    user = userManager.findUser(email)
+                    if user.get_private_key() != accessKey:
+                        abort(403)
 
-			else:#I am NOT the logged user
-				abort(403)
+            else:#I am NOT the logged user
+                abort(403)
 
-	else:#nodody is logged in the remote client
-		if userLogged:
-			abort(401)
+    else:#nodody is logged in the remote client
+        if userLogged:
+            abort(401)
 
-	return Response(
-		json.dumps({
-			'api_key': UI_API_KEY,
-			'ws_token': create_ws_token(publicKey)
-		}),
-		mimetype= 'application/json',
-		headers= {
-			'Access-Control-Allow-Origin': '*'
-		} if settings().getBoolean(['api', 'allowCrossOrigin']) else None
-	)
+    return Response(
+        json.dumps({
+            'api_key': UI_API_KEY,
+            'ws_token': create_ws_token(publicKey)
+        }),
+        mimetype= 'application/json',
+        headers= {
+            'Access-Control-Allow-Origin': '*'
+        } if settings().getBoolean(['api', 'allowCrossOrigin']) else None
+    )
 
 
 @identity_loaded.connect_via(app)
 def on_identity_loaded(sender, identity):
-	user = load_user(identity.id)
-	if user is None:
-		return
+    user = load_user(identity.id)
+    if user is None:
+        return
 
-	identity.provides.add(UserNeed(user.get_name()))
-	if user.is_user():
-		identity.provides.add(RoleNeed("user"))
-	if user.is_admin():
-		identity.provides.add(RoleNeed("admin"))
+    identity.provides.add(UserNeed(user.get_name()))
+    if user.is_user():
+        identity.provides.add(RoleNeed("user"))
+    if user.is_admin():
+        identity.provides.add(RoleNeed("admin"))
+
 
 def load_user(id):
-	if userManager is not None:
-		return userManager.findUser(id)
-	return users.DummyUser()
+    if userManager is not None:
+        return userManager.findUser(id)
+    return users.DummyUser()
 
-def create_ws_token(public_key= None):
-	from itsdangerous import URLSafeTimedSerializer
 
-	s = URLSafeTimedSerializer(UI_API_KEY)
-	return s.dumps({ 'public_key': public_key })
+def create_ws_token(public_key=None):
+    from itsdangerous import URLSafeTimedSerializer
+
+    s = URLSafeTimedSerializer(UI_API_KEY)
+    return s.dumps({ 'public_key': public_key })
+
 
 def read_ws_token(token):
-	if not token:
-		return None
+    if not token:
+        return None
 
-	from itsdangerous import URLSafeTimedSerializer, BadSignature
+    from itsdangerous import URLSafeTimedSerializer, BadSignature
 
-	s = URLSafeTimedSerializer(UI_API_KEY)
+    s = URLSafeTimedSerializer(UI_API_KEY)
 
-	try:
-		return s.loads(token, max_age= 10)
-	except BadSignature as e:
-		return None
+    try:
+        return s.loads(token, max_age= 10)
+    except BadSignature as e:
+        return None
 
 #~~ startup code
 
