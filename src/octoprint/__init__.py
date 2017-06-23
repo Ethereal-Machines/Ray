@@ -8,6 +8,7 @@ from signal import signal, SIGTERM, SIGINT
 astrobox = None
 
 #~~ main class
+__version__ = '0.10.8.1'
 
 class Main(Daemon):
     def __init__(
