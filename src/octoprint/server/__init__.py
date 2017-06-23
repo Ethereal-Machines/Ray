@@ -26,14 +26,23 @@ OK = ("", 200)
 
 debug = False
 
-app = Flask("octoprint", template_folder="../astroprint/templates", static_folder='../astroprint/static')
+app = Flask(
+    "octoprint",
+    template_folder="../astroprint/templates",
+    static_folder='../astroprint/static'
+)
+
 app.config.from_object('astroprint.settings')
 
-app_config_file = os.path.join(os.path.realpath(os.path.dirname(__file__)+'/../../../local'), "application.cfg")
+app_config_file = os.path.join(
+    os.path.realpath(os.path.dirname(__file__)+'/../../../local'),
+    "application.cfg"
+)
+
 if os.path.isfile(app_config_file):
-	app.config.from_pyfile(app_config_file, silent=True)
+    app.config.from_pyfile(app_config_file, silent=True)
 elif platform == "linux2" and os.path.isfile('/etc/astrobox/application.cfg'):
-	app.config.from_pyfile('/etc/astrobox/application.cfg', silent=True)
+    app.config.from_pyfile('/etc/astrobox/application.cfg', silent=True)
 
 assets = Environment(app)
 Compress(app)
@@ -48,8 +57,13 @@ principals = Principal(app)
 admin_permission = Permission(RoleNeed("admin"))
 user_permission = Permission(RoleNeed("user"))
 
-# only import the octoprint stuff down here, as it might depend on things defined above to be initialized already
-from octoprint.server.util import LargeResponseHandler, ReverseProxied, restricted_access, PrinterStateConnection, admin_validator, UrlForwardHandler, user_validator
+# only import the octoprint stuff down here
+# as it might depend on things defined above to be initialized already
+from octoprint.server.util import user_validator
+from octoprint.server.util import LargeResponseHandler, ReverseProxied
+from octoprint.server.util import restricted_access, PrinterStateConnection
+from octoprint.server.util import admin_validator, UrlForwardHandler
+
 from astroprint.printer.manager import printerManager
 from octoprint.settings import settings
 import octoprint.util as util
@@ -96,7 +110,8 @@ def index():
 
         # we need to get the user to sign into their AstroPrint account
         wstoken = create_ws_token(
-                userManager.findUser(loggedUsername).publicKey if loggedUsername else None)
+                userManager.findUser(loggedUsername).publicKey \
+            if loggedUsername else None)
         return render_template(
             "setup.jinja2",
             debug=debug,
@@ -123,7 +138,10 @@ def index():
             wsToken=create_ws_token(userManager.findUser(loggedUsername).publicKey if loggedUsername else None)
         )
 
-    elif loggedUsername and (current_user is None or not current_user.is_authenticated or current_user.get_id() != loggedUsername):
+    elif (
+        loggedUsername and (current_user is None or \
+                            not current_user.is_authenticated or \
+                            current_user.get_id() != loggedUsername)):
         if current_user.is_authenticated:
             logout_user()
 
@@ -162,7 +180,9 @@ def index():
             checkSoftware=swm.shouldCheckForNew,
             serialLogActive=s.getBoolean(['serial', 'log']),
             cameraManager=cm.name,
-            wsToken=create_ws_token(userManager.findUser(loggedUsername).publicKey if loggedUsername else None)
+            wsToken=create_ws_token(
+                userManager.findUser(loggedUsername).publicKey \
+                if loggedUsername else None)
         )
 
 
@@ -290,7 +310,8 @@ def getAccessKeys():
                 online = networkManager().isOnline()
 
                 if online:
-                    publicKey = astroprintCloud().get_public_key(email, accessKey)
+                    publicKey = astroprintCloud().get_public_key(
+                        email, accessKey)
 
                     if not publicKey:
                         abort(403)
@@ -299,8 +320,8 @@ def getAccessKeys():
                     user = userManager.findUser(email)
                     if user.get_private_key() != accessKey:
                         abort(403)
-
-            else:#I am NOT the logged user
+            #I am NOT the logged user
+            else:
                 abort(403)
 
     else:#nodody is logged in the remote client
