@@ -9,105 +9,107 @@ import json
 from astroprint.boxrouter.handlers.requesthandler import RequestHandler
 
 class BoxRouterMessageHandler(object):
-	def __init__(self, weakRefBoxRouter, wsClient):
-		self._weakRefBoxRouter = weakRefBoxRouter
-		self._weakWs = weakref.ref(wsClient)
-		self._logger = logging.getLogger(__name__)
-		self._subscribers = 0
+    ''' Message handler for messages coming from the cloud via websocket '''
 
-	def auth(self, msg):
-		router = self._weakRefBoxRouter()
-		if router:
-			return router.processAuthenticate(msg['data'] if 'data' in msg else None)
-		else:
-			return None
+    def __init__(self, weakRefBoxRouter, wsClient):
+        self._weakRefBoxRouter = weakRefBoxRouter
+        self._weakWs = weakref.ref(wsClient)
+        self._logger = logging.getLogger(__name__)
+        self._subscribers = 0
 
-	def set_temp(self, msg):
-		from astroprint.printer.manager import printerManager
+    def auth(self, msg):
+        router = self._weakRefBoxRouter()
+        if router:
+            return router.processAuthenticate(msg['data'] if 'data' in msg else None)
+        else:
+            return None
 
-		printer = printerManager()
+    def set_temp(self, msg):
+        from astroprint.printer.manager import printerManager
 
-		if printer.isOperational():
-			payload = msg['payload']
-			printer.setTemperature(payload['target'] or 0.0, payload['value'] or 0.0)
+        printer = printerManager()
 
-		return None
+        if printer.isOperational():
+            payload = msg['payload']
+            printer.setTemperature(payload['target'] or 0.0, payload['value'] or 0.0)
 
-	def update_subscribers(self, msg):
-		wsClient = self._weakWs()
+        return None
 
-		if wsClient:
-			self._subscribers += int(msg['data'])
+    def update_subscribers(self, msg):
+        wsClient = self._weakWs()
 
-			if self._subscribers > 0:
-				wsClient.registerEvents()
-			else:
-				self._subscribers = 0
-				wsClient.unregisterEvents()
+        if wsClient:
+            self._subscribers += int(msg['data'])
 
-		return None
+            if self._subscribers > 0:
+                wsClient.registerEvents()
+            else:
+                self._subscribers = 0
+                wsClient.unregisterEvents()
 
-	def force_event(self, msg):
-		wsClient = self._weakWs()
+        return None
 
-		if wsClient and wsClient._eventSender:
-			wsClient._eventSender.sendLastUpdate(msg['data'])
+    def force_event(self, msg):
+        wsClient = self._weakWs()
 
-		return None
+        if wsClient and wsClient._eventSender:
+            wsClient._eventSender.sendLastUpdate(msg['data'])
 
-	def request(self, msg):
-		wsClient = self._weakWs()
+        return None
 
-		if wsClient:
-			handler = RequestHandler(wsClient)
-			response = None
+    def request(self, msg):
+        wsClient = self._weakWs()
 
-			try:
-				request = msg['data']['type']
-				reqId = msg['reqId']
-				clientId = msg['clientId']
-				data = msg['data']['payload']
+        if wsClient:
+            handler = RequestHandler(wsClient)
+            response = None
 
-				method  = getattr(handler, request, None)
-				if method:
-					def sendResponse(result):
-						if result is None:
-							result = {'success': True}
+            try:
+                request = msg['data']['type']
+                reqId = msg['reqId']
+                clientId = msg['clientId']
+                data = msg['data']['payload']
 
-						wsClient.send(json.dumps({
-							'type': 'req_response',
-							'reqId': reqId,
-							'data': result
-						}))
+                method  = getattr(handler, request, None)
+                if method:
+                    def sendResponse(result):
+                        if result is None:
+                            result = {'success': True}
 
-					method(data, clientId, sendResponse)
+                        wsClient.send(json.dumps({
+                            'type': 'req_response',
+                            'reqId': reqId,
+                            'data': result
+                        }))
 
-				else:
-					response = {
-						'error': True,
-						'message': 'This Box does not recognize the request type [%s]' % request
-					}
+                    method(data, clientId, sendResponse)
 
-			except Exception as e:
-				message = 'Error sending [%s] response: %s' % (request, e)
-				self._logger.error( message , exc_info= True)
-				response = {'error': True, 'message': message }
+                else:
+                    response = {
+                        'error': True,
+                        'message': 'This Box does not recognize the request type [%s]' % request
+                    }
 
-			if response:
-				wsClient.send(json.dumps({
-					'type': 'req_response',
-					'reqId': reqId,
-					'data': response
-				}))
+            except Exception as e:
+                message = 'Error sending [%s] response: %s' % (request, e)
+                self._logger.error( message , exc_info= True)
+                response = {'error': True, 'message': message }
 
-			#else:
-				# this means that the handler is asynchronous
-				# and will respond when done
-				# we should probably have a timeout here too
-				# even though there's already one at the boxrouter
+            if response:
+                wsClient.send(json.dumps({
+                    'type': 'req_response',
+                    'reqId': reqId,
+                    'data': response
+                }))
 
-	def response_from_client(self, msg):
-		router = self._weakRefBoxRouter()
+            #else:
+                # this means that the handler is asynchronous
+                # and will respond when done
+                # we should probably have a timeout here too
+                # even though there's already one at the boxrouter
 
-		if router:
-			router.completeClientRequest(msg['reqId'], msg['data'])
+    def response_from_client(self, msg):
+        router = self._weakRefBoxRouter()
+
+        if router:
+            router.completeClientRequest(msg['reqId'], msg['data'])
