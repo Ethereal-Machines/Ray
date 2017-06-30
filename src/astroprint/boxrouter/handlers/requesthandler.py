@@ -212,9 +212,9 @@ class RequestHandler(object):
                 'message': '%s::%s is not supported' % (handlerClass, command)
             })
 
-# Printer Command Group Handler
 
 class PrinterCommandHandler(object):
+    ''' Printer command group Handler '''
     def connect(self, data, clientId, done):
         done(printerManager().connect())
 
