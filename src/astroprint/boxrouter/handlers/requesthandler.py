@@ -5,12 +5,10 @@ __license__ = 'GNU Affero General Public License http://www.gnu.org/licenses/agp
 import os
 import logging
 import threading
-import weakref
 import base64
 import json
 
 from octoprint.events import eventManager, Events
-from octoprint.settings import settings
 
 from astroprint.camera import cameraManager
 from astroprint.cloud import astroprintCloud
