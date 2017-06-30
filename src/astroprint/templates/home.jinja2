@@ -1,21 +1,22 @@
-<div class="row heading">
+<!-- Row heading Removed -->
+<!--div class="row heading">
 	<div class="small-12 title-heading">
-		<h1 class="bold">{{astroboxName}}</h1>
+		<h1 class="bold"><a href="/">Ethereal Machines</a></h1>
 	</div>
-</div>
+</div-->
 
-<div id="app-container" class="row">
-	<div class="alert-box warning serial-log radius">
+<div id="" class="" >
+	<!--div class="alert-box warning serial-log radius">
 		Your serial log is <b>enabled</b>. This will produce a large amount of data - <a href="#settings/software-advanced">Disable here</a>
-	</div>
+	</div-->
 	{% if checkSoftware %}
-		<div class="alert-box alert new-release radius hide">
+		<!--div class="alert-box alert new-release radius hide">
 			<i class="icon-download-cloud"></i> <b>New software version</b> <span class="version-label"></span> is available for download - <a href="#" class="check button success radius">More info</a>
 			<a href="#" class="close">&times;</a>
-		</div>
+		</div-->
 	{% endif %}
-	<ul class="small-block-grid-3 large-block-grid-6">
-		<li>
+	<ul class="">
+		<!--li>
 			<span class="upload-btn expand">
 				<div class="app-image">
 					<img src="/static/img/upload-icon.png" alt="file upload icon"/>
@@ -54,15 +55,25 @@
 				<div class="overlay"><div class="contain"><h4 class="bold">Launch</h4></div></div></div>
 			</a>
 				<h1 class="bold">Camera</h1>
-		</li>
+		</li-->
 		<li>
-			<a href="#settings"><div class="app-image">
-				<img src="/static/img/settings-icon.png" alt="settings icon"/>
-				<div class="overlay"><div class="contain"><h4 class="bold">Launch</h4></div></div></div>
+			<a href="#settings"><div class="">
+				<img src="/static/img/Settings-icon.png" class="Settings_Icon" alt="settings icon"/>
+				<!--div class="overlay"><div class="contain"><h4 class="bold">Launch</h4></div></div></div-->
 			</a>
-				<h1 class="bold">Settings</h1>
+				<!--h1 class="bold">Settings</h1-->
 		</li>
-		<li class="gcode-terminal-app-icon">
+		<!-- Add Utility here  -->
+		<li>
+			<a href="#utilities"><div class="">
+				<img src="/static/img/Utilities-Icon.png" class="Utilities_Icon" alt="settings icon"/>
+				<!--div class="overlay"><div class="contain"><h4 class="bold">Launch</h4></div></div></div-->
+						<img src="/static/Bottombar.png" class="Bottom_bar " alt="settings icon"/>					
+			</a>
+				<!--h1 class="bold">Utility</h1-->
+		</li>
+	
+		<!--li class="gcode-terminal-app-icon">
 			<a href="#gcode-terminal"><div class="app-image">
 				<img src="/static/img/gcode-terminal-icon.png" alt="settings icon"/>
 				<div class="overlay"><div class="contain"><h4 class="bold">Launch</h4></div></div></div>
@@ -75,15 +86,15 @@
 				<div class="overlay"><div class="contain"><h4 class="bold">Get Help</h4></div></div></div>
 			</a>
 				<h1 class="bold">Help</h1>
-		</li>
+		</li-->
 		{% if variantData['suppliesLink'] %}
-		<li>
+		<!--li>
 			<a href="{{variantData['suppliesLink']}}"><div class="app-image">
 				<img src="/static/img/supplies-icon.png" alt="supplies icon"/>
 				<div class="overlay"><div class="contain"><h4 class="bold">Shop</h4></div></div></div>
 			</a>
 				<h1 class="bold">Supplies</h1>
-		</li>
+		</li-->
 		{% endif %}
 	</ul>
 </div>

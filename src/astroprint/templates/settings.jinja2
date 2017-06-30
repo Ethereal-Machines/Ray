@@ -1,11 +1,26 @@
-<div class="row heading">
+<!--div class="row heading">
   <div class="small-12 title-heading">
     <h1 class="bold">Settings</h1>
   </div>
+</div-->
+<div class="General_Icon">
+
+</div>
+<a href="#about" >
+<div class="About_Icon ">
+
+</div>
+</a>
+<div class="Update_Icon">
+
+</div>
+
+<div class="Connectivity_Icon ">
+
 </div>
 
 <div class="row collapse container">
-  <div class="hide-for-small-only medium-5  large-4 columns">
+  <!--div class="hide-for-small-only medium-5  large-4 columns">
     <div id="settings-side-bar">
       <ul class="side-nav">
         <li class="heading bold">3D Printer</li>
@@ -20,12 +35,14 @@
         <li class="heading bold">Software</li>
         <li class="software-update"><a href="#settings/software-update">Update</a></li>
         <li class="software-advanced dotted"><a href="#settings/software-advanced">Advanced</a></li>
+			<li class="heading bold">About</li>
+			 <li class="about"> <a href="/about"> About</a></li>    
       </ul>
     </div>
-  </div>
+  </div-->
   <div class="small-12 medium-7 large-8 columns">
 
-    <div class="show-for-small zebra">
+    <!--div class="show-for-small zebra">
       <a href="#settings/printer-connection"><h1 class="bold" align="center">3D Printer Connection</h1></a>
     </div>
     <div id="printer-connection" class="settings-page">
@@ -37,7 +54,7 @@
         </div>
       </div>
       <form></form>
-    </div>
+    </div-->
 
     <script type="text/template" id="printer-connection-settings-page-template">
       <div class="row">
@@ -570,6 +587,23 @@
         <span class="button success radius loading"><i class="icon-rocket-spinner animate-spin"></i> Checking...</span>
       </div>
     </div>
+
+<div class="show-for-small zebra">
+      <a href="#settings/about"><h1 class="bold" align="center">3D Printer Profile</h1></a>
+    </div>
+    <div id="about" class="settings-page hide" align="center">
+      <h4 align="center">
+      Put About Code Here
+      </h4>
+    
+    </div>
+        <script type="text/template" id="about-settings-page-template">
+			<h4 align="center">
+      	Put About Code Here
+      	</h4>        
+        </script>
+
+    
     <div id="software-update-modal" class="reveal-modal medium radius" data-reveal>
       <div class="content"></div>
       <a class="close-reveal-modal">&#215;</a>
@@ -585,7 +619,7 @@
     </script>
 
     <script type="text/template" id="software-update-modal-content">
-      <h2 class="bold">
+      <h2 class="bold"><img src="astrobox.png" alt="" />
         <% if (data.update_available && !data.is_current) { %> Update <% } else { %> No Updates <% } %> Available
       </h2>
       <% if (data.update_available) { %>

@@ -1,0 +1,111 @@
+/*.Group_1 {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 800px;
+  height: 480px;
+  z-index: 13;
+}
+.Back_Icon {
+  background-image: url("Back Icon.png");
+  position: absolute;
+  left: 8px;
+  top: 0px;
+  width: 48px;
+  height: 48px;
+  z-index: 12;
+}*/
+.Preheat_Button {
+ /* background-image: url("/static/CSS_Utilities/Preheat-Button.png");
+  */position: absolute;
+  left: 344px;
+  top: 264px;
+  width: 216px;
+  height: 191px;
+  z-index: 11;
+}
+.Manual_Controls_Button {
+ /* background-image: url("/static/CSS_Utilities/Manual-Controls-Button.png");
+  */position: absolute;
+  left: 568px;
+  top: 264px;
+  width: 216px;
+  height: 191px;
+  z-index: 10;
+}
+.Filament_Button {
+  /*background-image: url("/static/CSS_Utilities/Filament-Button.png");*/
+  position: absolute;
+  left: 568px;
+  top: 64px;
+  width: 216px;
+  height: 191px;
+  z-index: 9;
+}
+.Level_Bed_Button {
+ /* background-image: url("/static/CSS_Utilities/Level-Bed-Button.png");*/
+  position: absolute;
+  left: 344px;
+  top: 64px;
+  width: 216px;
+  height: 191px;
+  z-index: 8;
+}
+.Print_From_Storage_Icon {
+  /*background-image: url("/static/CSS_Utilities/Print-From-Storage-Icon.png");
+  */position: absolute;
+  left: 16px;
+  top: 64px;
+  width: 320px;
+  height: 391px;
+  z-index: 7;
+}/*
+.Connectvity_Offline {
+  background-image: url("Connectvity Offline.png");
+  position: absolute;
+  left: 672px;
+  top: 0px;
+  width: 48px;
+  height: 48px;
+  z-index: 6;
+}
+.Power_Button {
+  background-image: url("Power Button.png");
+  position: absolute;
+  left: 736px;
+  top: 0px;
+  width: 48px;
+  height: 48px;
+  z-index: 5;
+}
+.Printer_s_Name {
+  font-size: 26.667px;
+  font-family: "Roboto";
+  color: rgb(255, 255, 255);
+  line-height: 1.2;
+  -moz-transform: matrix( 0.93659267584527,0,0,0.9375,0,0);
+  -webkit-transform: matrix( 0.93659267584527,0,0,0.9375,0,0);
+  -ms-transform: matrix( 0.93659267584527,0,0,0.9375,0,0);
+  position: absolute;
+  left: 59.918px;
+  top: 9.512px;
+  z-index: 4;
+}
+.Top_Bar {
+  background-image: url("Top Bar.png");
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 800px;
+  height: 48px;
+  z-index: 3;
+}
+.Background {
+  background-image: url("Background.png");
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 800px;
+  height: 480px;
+  z-index: 2;
+}*/

@@ -9,9 +9,10 @@ from astroprint.boxrouter import boxrouterManager
 
 @api.route("/boxrouter", methods=["POST"])
 def connect_boxrouter():
-	br = boxrouterManager()
+    ''' Connect to boxrouter '''
+    br = boxrouterManager()
 
-	if br.boxrouter_connect():
-		return jsonify()
-	else:
-		return abort(400)
+    if br.boxrouter_connect():
+        return jsonify()
+    else:
+        return abort(400)
