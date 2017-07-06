@@ -276,7 +276,8 @@ class Session(object):
         if self._created is None:
             self._created = concurrent.futures.Future()
         if self.is_created:
-            logger.info('session for %s w/ id %s already created', self.cxn.url, self.id)
+            logger.info(
+                'session for %s w/ id %s already created', self.cxn.url, self.id)
         else:
             cb = functools.partial(self._on_create_done)
             f = self.send_message({'janus': 'create'})
@@ -426,7 +427,7 @@ class Session(object):
             return False
         f.set_exception(ex)
         return True
-    
+
     def _drain_txn_q(self):
         while self.txn_q:
             txn_id, raw = self.txn_q.pop()
@@ -573,7 +574,7 @@ class Session(object):
             logger.info('no plugin w/ id %s to receive message', plugin_id)
         else:
             plugin.on_message.send(plugin, message=data, sdp=jsep)
-    
+
     def _on_media_message(self, message):
         pass
 
@@ -729,7 +730,7 @@ class Plugin(object):
 class Event(object):
     """
     Pipe backed event.
-    
+
     http://lat.sk/2015/02/passive-waiting-on-multiple-events-in-python-3-select/
     """
 
@@ -739,7 +740,7 @@ class Event(object):
     def __del__(self):
         os.close(self._rfd)
         os.close(self._wfd)
-        
+
     @classmethod
     def any(cls, events, timeout=None):
         rfds, _, _ = select.select([e._rfd for e in events], [], [], timeout)
@@ -766,7 +767,7 @@ class Event(object):
             os.write(self._wfd, b'1')
 
     # file-like
-    
+
     def fileno(self):
         return self._rfd
 
@@ -798,7 +799,7 @@ class KeepAlive(threading.Thread):
 
     # Number of seconds between keep alive message sent to `Session`.
     beat_period = 20
-    
+
     # Number of seconds before giving up on a connection attempt.
     connect_timeout = 60
 
@@ -846,7 +847,7 @@ class KeepAlive(threading.Thread):
     @property
     def is_stopped(self):
         return not self.is_alive()
-        
+
     # threading.Thread
 
     def run(self):
@@ -909,7 +910,7 @@ class KeepAlive(threading.Thread):
         logger.debug('exiting keep-alive for %s', self.session)
 
     # `Session` events
-    
+
     def _on_connected(self, session):
         self.reconnect_timeout = self.init_reconnect_timeout
         self.beat_at = 0
