@@ -2,6 +2,7 @@
 *.tar.gz
 *.7z
 *.pyc
+*.py~
 *.pyo
 *.zip
 *.exe
