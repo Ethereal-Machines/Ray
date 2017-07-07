@@ -204,8 +204,8 @@ class CameraManager(object):
             self._cameraInactivity = CameraInactivity(s.get(["camera", "inactivitySecs"]), self._onInactive)
         else:
             self._cameraInactivity = None
-
-        self.reScan(False) # We don't broadcast here because printer manager is not initialized yet
+        # We don't broadcast here because printer manager is not initialized yet
+        self.reScan(False)
 
     def reScan(self, broadcastChange = True):
         r = self._doReScan()
@@ -284,7 +284,8 @@ class CameraManager(object):
         if not selectedFile:
             return False
 
-        timelapseId = astroprintCloud().startPrintCapture(os.path.split(selectedFile["filename"])[1])
+        timelapseId = astroprintCloud().startPrintCapture(
+            os.path.split(selectedFile["filename"])[1])
         if timelapseId:
             self.timelapseInfo = {
                 'id': timelapseId,
@@ -296,7 +297,8 @@ class CameraManager(object):
             if freq == 'layer':
                 # send first pic and subscribe to layer change events
                 self.addPhotoToTimelapse(timelapseId)
-                self._eventManager.subscribe(Events.LAYER_CHANGE, self._onLayerChange)
+                self._eventManager.subscribe(
+                    Events.LAYER_CHANGE, self._onLayerChange)
 
             else:
                 try:
@@ -308,7 +310,8 @@ class CameraManager(object):
                 self.timelapseWorker = TimelapseWorker(self, timelapseId, freq)
                 self.timelapseWorker.start()
 
-            self._eventManager.fire(Events.CAPTURE_INFO_CHANGED, self.timelapseInfo)
+            self._eventManager.fire(
+                Events.CAPTURE_INFO_CHANGED, self.timelapseInfo)
 
             return True
 
@@ -321,7 +324,8 @@ class CameraManager(object):
                     self.pause_timelapse();
 
                 # subscribe to layer change events
-                self._eventManager.subscribe(Events.LAYER_CHANGE, self._onLayerChange)
+                self._eventManager.subscribe(
+                    Events.LAYER_CHANGE, self._onLayerChange)
             else:
                 try:
                     freq = float(freq)
@@ -329,12 +333,14 @@ class CameraManager(object):
                     return False
 
                 # if subscribed to layer change events, unsubscribe here
-                self._eventManager.unsubscribe(Events.LAYER_CHANGE, self._onLayerChange)
+                self._eventManager.unsubscribe(
+                    Events.LAYER_CHANGE, self._onLayerChange)
 
                 if freq == 0:
                     self.pause_timelapse()
                 elif not self.timelapseWorker:
-                    self.timelapseWorker = TimelapseWorker(self, self.timelapseInfo['id'], freq)
+                    self.timelapseWorker = TimelapseWorker(
+                        self, self.timelapseInfo['id'], freq)
                     self.timelapseWorker.start()
                 elif self.timelapseWorker.isPaused():
                     self.timelapseWorker.timelapseFreq = freq
@@ -343,7 +349,8 @@ class CameraManager(object):
                     self.timelapseWorker.timelapseFreq = freq
 
             self.timelapseInfo['freq'] = freq
-            self._eventManager.fire(Events.CAPTURE_INFO_CHANGED, self.timelapseInfo)
+            self._eventManager.fire(
+                Events.CAPTURE_INFO_CHANGED, self.timelapseInfo)
 
             return True
 
@@ -382,7 +389,8 @@ class CameraManager(object):
             if self.timelapseWorker.isPaused():
                 self.timelapseWorker.resume()
                 self.timelapseInfo['paused'] = False
-                self._eventManager.fire(Events.CAPTURE_INFO_CHANGED, self.timelapseInfo)
+                self._eventManager.fire(
+                    Events.CAPTURE_INFO_CHANGED, self.timelapseInfo)
 
             return True
 

@@ -18,167 +18,181 @@ from astroprint.webrtc import webRtcManager
 #
 
 class GStreamerManager(V4L2Manager):
-	name = 'gstreamer'
+    name = 'gstreamer'
 
-	def __init__(self):
-		self._apPipeline = None
-		self.pipeline = None
-		self.cameraInfo = None
-		self._openCameraCondition = Condition()
+    def __init__(self):
+        self._apPipeline = None
+        self.pipeline = None
+        self.cameraInfo = None
+        self._openCameraCondition = Condition()
 
-		self._logger = logging.getLogger(__name__)
+        self._logger = logging.getLogger(__name__)
 
-		super(GStreamerManager, self).__init__()
+        super(GStreamerManager, self).__init__()
 
-	@property
-	def _gstreamerProcessRunning(self):
-		return self._apPipeline and self._apPipeline.processRunning
+    @property
+    def _gstreamerProcessRunning(self):
+        return self._apPipeline and self._apPipeline.processRunning
 
-	def _doOpenCamera(self):
-		with self._openCameraCondition:
-			if self._apPipeline is None:
-				try:
-					self._apPipeline = AstroPrintPipeline('/dev/video%d' % self.number_of_video_device, self._settings['size'], self._settings['source'], self._settings['encoding'], self._onApPipelineFataError)
-				except Exception as e:
-					self._logger.error('Failed to open camera: %s' % e, exc_info= True)
-					return False
+    def _doOpenCamera(self):
+        with self._openCameraCondition:
+            if self._apPipeline is None:
+                try:
+                    self._apPipeline = AstroPrintPipeline(
+                        '/dev/video%d' % \
+                        self.number_of_video_device,
+                        self._settings['size'],
+                        self._settings['source'],
+                        self._settings['encoding'],
+                        self._onApPipelineFataError
+                    )
+                except Exception as e:
+                    self._logger.error(
+                        'Failed to open camera: %s' % e, exc_info= True)
+                    return False
 
-			self._apPipeline.startProcess()
+            self._apPipeline.startProcess()
 
-			return True
+            return True
 
-	def _doCloseCamera(self):
-		if self._apPipeline:
-			self._apPipeline.stopProcess()
+    def _doCloseCamera(self):
+        if self._apPipeline:
+            self._apPipeline.stopProcess()
 
-		return True
+        return True
 
-	def isCameraOpened(self):
-		return self._apPipeline and self._apPipeline.processRunning
+    def isCameraOpened(self):
+        return self._apPipeline and self._apPipeline.processRunning
 
-	def _onApPipelineFataError(self):
-		self._logger.error('AstroPrint Pipeline Fatal Error called')
-		self._haltCamera()
+    def _onApPipelineFataError(self):
+        self._logger.error('AstroPrint Pipeline Fatal Error called')
+        self._haltCamera()
 
-	def _freeApPipeline(self):
-		if self._apPipeline:
-			self._apPipeline.stop()
-			self._apPipeline = None
+    def _freeApPipeline(self):
+        if self._apPipeline:
+            self._apPipeline.stop()
+            self._apPipeline = None
 
-	def _haltCamera(self):
-		self.close_camera()
-		webRtcManager().closeAllSessions()
+    def _haltCamera(self):
+        self.close_camera()
+        webRtcManager().closeAllSessions()
 
-	def _doReScan(self):
-		if super(GStreamerManager, self)._doReScan():
-			self._logger.info("Found camera %s, encoding: %s and size: %s. Source used: %s" % (self.cameraInfo['name'], self._settings['encoding'] , self._settings['size'], self._settings['source']))
-			self._freeApPipeline()
+    def _doReScan(self):
+        if super(GStreamerManager, self)._doReScan():
+            self._logger.info(
+                "Found camera %s, encoding: %s and size: %s. Source used: %s" % \
+                (self.cameraInfo['name'],
+                 self._settings['encoding'] ,
+                 self._settings['size'],
+                 self._settings['source'])
+            )
+            self._freeApPipeline()
 
-			return True
+            return True
 
-		return False
+        return False
 
-	def _doStartVideoStream(self, doneCallback= None):
-		if self.isVideoStreaming():
-			if doneCallback:
-				doneCallback(True)
+    def _doStartVideoStream(self, doneCallback= None):
+        if self.isVideoStreaming():
+            if doneCallback:
+                doneCallback(True)
 
-		if not self._gstreamerProcessRunning:
-			if not self.open_camera():
-				if doneCallback:
-					doneCallback(False)
-				return
+        if not self._gstreamerProcessRunning:
+            if not self.open_camera():
+                if doneCallback:
+                    doneCallback(False)
+                return
 
-		self._apPipeline.startVideo(doneCallback)
+        self._apPipeline.startVideo(doneCallback)
 
-	def _doStopVideoStream(self, doneCallback= None):
-		if not self._gstreamerProcessRunning or not self.isVideoStreaming():
-			if doneCallback:
-				doneCallback(True)
+    def _doStopVideoStream(self, doneCallback= None):
+        if not self._gstreamerProcessRunning or not self.isVideoStreaming():
+            if doneCallback:
+                doneCallback(True)
 
-		else:
-			result = self._apPipeline.stopVideo()
+        else:
+            result = self._apPipeline.stopVideo()
 
-			if doneCallback:
-				doneCallback(result)
+            if doneCallback:
+                doneCallback(result)
 
 
-	def settingsChanged(self, cameraSettings):
-		super(GStreamerManager, self).settingsChanged(cameraSettings)
+    def settingsChanged(self, cameraSettings):
+        super(GStreamerManager, self).settingsChanged(cameraSettings)
 
-		##When a change in settup is saved, the camera must be shouted down
-		##(Janus included, of course)
+        ##When a change in settup is saved, the camera must be shouted down
+        ##(Janus included, of course)
 
-		eventManager().fire(Events.GSTREAMER_EVENT, {
-			'message': 'Your camera settings have been changed. Please reload to restart your video.'
-		})
-		##
+        eventManager().fire(Events.GSTREAMER_EVENT, {
+            'message': 'Your camera settings have been changed. Please reload to restart your video.'
+        })
+        ##
 
-		self._haltCamera()
-		self.reScan()
+        self._haltCamera()
+        self.reScan()
 
-	def _doGetPic(self, done, text=None):
-		if self.isCameraConnected():
-			if not self._gstreamerProcessRunning:
-				if not self.open_camera():
-					done(None)
-					return
+    def _doGetPic(self, done, text=None):
+        if self.isCameraConnected():
+            if not self._gstreamerProcessRunning:
+                if not self.open_camera():
+                    done(None)
+                    return
 
-			self._apPipeline.takePhoto(done, text)
-			return
+            self._apPipeline.takePhoto(done, text)
+            return
 
-		done(None)
+        done(None)
 
-	def shutdown(self):
-		self._logger.info('Shutting Down GstreamerManager')
-		self._freeApPipeline()
-		self._haltCamera()
-		webRtcManager().shutdown()
+    def shutdown(self):
+        self._logger.info('Shutting Down GstreamerManager')
+        self._freeApPipeline()
+        self._haltCamera()
+        webRtcManager().shutdown()
 
-	def isVideoStreaming(self):
-		if self._gstreamerProcessRunning:
-			waitForDone = Event()
-			respCont = [None]
+    def isVideoStreaming(self):
+        if self._gstreamerProcessRunning:
+            waitForDone = Event()
+            respCont = [None]
 
-			def onDone(isPlaying):
-				if not waitForDone.is_set():
-					respCont[0] = isPlaying
+            def onDone(isPlaying):
+                if not waitForDone.is_set():
+                    respCont[0] = isPlaying
 
-			self._apPipeline.isVideoPlaying(onDone)
-			waitForDone.wait(1.0)
+            self._apPipeline.isVideoPlaying(onDone)
+            waitForDone.wait(1.0)
 
-			return respCont[0] is True
+            return respCont[0] is True
 
-		else:
-			return False
+        else:
+            return False
 
-	def startLocalVideoSession(self, sessionId):
-		return webRtcManager().startLocalSession(sessionId)
+    def startLocalVideoSession(self, sessionId):
+        return webRtcManager().startLocalSession(sessionId)
 
-	def closeLocalVideoSession(self, sessionId):
-		return webRtcManager().closeLocalSession(sessionId)
+    def closeLocalVideoSession(self, sessionId):
+        return webRtcManager().closeLocalSession(sessionId)
 
-	@property
-	def capabilities(self):
-		return ['videoStreaming', 'videoformat-' + self._settings['encoding']]
+    @property
+    def capabilities(self):
+        return ['videoStreaming', 'videoformat-' + self._settings['encoding']]
 
-	@property
-	def _desiredSettings(self):
-		return {
-			'busSource': [
-				{'value': 'USB', 'label': 'USB Camera'},
-				{'value': 'raspicam', 'label': 'Raspicam'}
-			],
-			'frameSizes': [
-				{'value': '640x480', 'label': 'Low (640 x 480)'},
-				{'value': '1280x720', 'label': 'High (1280 x 720)'}
-			],
-			'cameraOutput': [
-				{'value': 'x-raw', 'label': 'Raw Video'}
-			],
-			'fps': [],
-			'videoEncoding': [
-				{'value': 'h264', 'label': 'H.264'},
-				{'value': 'vp8', 'label': 'VP8'}
-			]
-		}
+    @property
+    def _desiredSettings(self):
+        return {
+            'busSource': [
+                {'value': 'USB', 'label': 'USB Camera'},
+                {'value': 'raspicam', 'label': 'Raspicam'}
+            ],
+            'frameSizes': [
+                {'value': '640x480', 'label': 'Low (640 x 480)'},
+                {'value': '1280x720', 'label': 'High (1280 x 720)'}
+            ],
+            'cameraOutput': [
+                {'value': 'x-raw', 'label': 'Raw Video'}
+            ],
+            'fps': [],
+            'videoEncoding': [
+                {'value': 'h264', 'label': 'H.264'},
+                {'value': 'vp8', 'label': 'VP8'}
+            ]
+        }
