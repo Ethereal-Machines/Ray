@@ -9,6 +9,7 @@
 *.gcode
 *.swp
 *.sublime*
+*.html~
 darwin-Cura-*
 win32-Cura-*
 linux-Cura-*
