@@ -7,7 +7,6 @@ This is an adaptation of the Octoprint Discovery plugin:
     https://github.com/foosel/OctoPrint/blob/3d5fdf2a917833808f132212b76ad3c6c5768419/src/octoprint/plugins/discovery/__init__.py
 """
 
-import os
 import time
 import threading
 import logging
@@ -106,16 +105,15 @@ class DiscoveryManager(object):
         <presentationURL>{presentationUrl}</presentationURL>
     </device>
     </root>""".format(
-    friendlyName=friendlyName,
-    manufacturer=vendor,
-    manufacturerUrl=vendorUrl,
-    modelName=modelName,
-    modelDescription=modelDescription,
-    modelUrl=modelLink,
-    serialNumber=self.get_uuid(),
-    uuid=self.get_uuid(),
-    presentationUrl=flask.url_for("index", _external=True)
-    )
+        friendlyName=friendlyName,
+        manufacturer=vendor,
+        manufacturerUrl=vendorUrl,
+        modelName=modelName,
+        modelDescription=modelDescription,
+        modelUrl=modelLink,
+        serialNumber=self.get_uuid(),
+        uuid=self.get_uuid(),
+        presentationUrl=flask.url_for("index", _external=True))
 
     def _ssdp_register(self):
         """
@@ -127,7 +125,7 @@ class DiscoveryManager(object):
 
         time_since_last_unregister = time.time() - self._ssdp_last_unregister
 
-        if time_since_last_unregister < ( self._ssdp_notify_timeout + 1 ):
+        if time_since_last_unregister < (self._ssdp_notify_timeout + 1):
             wait_seconds = (self._ssdp_notify_timeout + 1) - \
                 time_since_last_unregister
             self.logger.info(
@@ -135,7 +133,7 @@ class DiscoveryManager(object):
                 wait_seconds)
             time.sleep(wait_seconds)
 
-            #Make sure that the network is still after the wait
+            # Make sure that the network is still after the wait
             if not networkManager().isOnline():
                 return
 
@@ -258,7 +256,8 @@ class DiscoveryManager(object):
                 self.error_code = code
                 self.error_message = message
 
-        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
+        sock = socket.socket(
+            socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
         sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         sock.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_TTL, 2)
         sock.bind(('', self.__class__.ssdp_multicast_port))
@@ -270,7 +269,8 @@ class DiscoveryManager(object):
             socket.inet_aton('0.0.0.0')
         )
 
-        self.logger.info(u"Registered {} for SSDP".format(self.get_instance_name()))
+        self.logger.info(
+            u"Registered {} for SSDP".format(self.get_instance_name()))
 
         self._ssdp_notify(alive=True)
 
