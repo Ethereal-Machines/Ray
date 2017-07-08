@@ -6,8 +6,11 @@ __copyright__ = "Copyright (C) 2017 3DaGoGo, Inc - Released under terms of the A
 # singleton
 _instance = None
 
-# This object is recreated when the driver is changed in the printer profile page.
-# DO NOT store a reference to the result of printerManager in any persistant object.
+# This object is recreated when the driver is changed in the
+# printer profile page.
+# DO NOT store a reference to the result of
+# printerManager in any persistant object.
+
 
 def printerManager(driver=None):
     global _instance
