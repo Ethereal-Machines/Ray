@@ -16,6 +16,7 @@ from astroprint.printfiles import FileDestinations
 from octoprint.events import eventManager, Events
 from octoprint.settings import settings
 
+
 class PrinterVirtual(Printer):
     driverName = 'virtual'
     allowTerminal = True
@@ -39,7 +40,7 @@ class PrinterVirtual(Printer):
             with open(seettings_file, "r") as f:
                 config = yaml.safe_load(f)
 
-            def merge_dict(a,b):
+            def merge_dict(a, b):
                 for key in b:
                     if isinstance(b[key], dict):
                         merge_dict(a[key], b[key])
@@ -57,13 +58,14 @@ class PrinterVirtual(Printer):
         self._logger = logging.getLogger(__name__)
         super(PrinterVirtual, self).__init__()
 
-
     def selectFile(self, filename, sd, printAfterSelect=False):
-        if not super(PrinterVirtual, self).selectFile(filename, sd, printAfterSelect):
+        if not super(PrinterVirtual, self).selectFile(
+                     filename, sd, printAfterSelect):
             return False
 
         if sd:
-            raise('Printing from SD card is not supported for the Virtual Driver')
+            raise(
+                'Printing from SD card is not supported for the Virtual Driver')
 
         if not os.path.exists(filename) or not os.path.isfile(filename):
             raise IOError("File %s does not exist" % filename)
@@ -112,7 +114,7 @@ class PrinterVirtual(Printer):
             "origin": self._currentFile['origin']
         })
 
-        #First we simulate heatup
+        # First we simulate heatup
         self.setTemperature("tool0", 210)
         self.setTemperature("bed", 60)
         self.mcHeatingUpUpdate(True)
@@ -169,7 +171,7 @@ class PrinterVirtual(Printer):
                 self._temperatureChanger = TempsChanger(self)
                 self._temperatureChanger.start()
 
-                #set initial temps
+                # set initial temps
                 self.setTemperature('tool0', 25)
                 self.setTemperature('bed', 25)
 
@@ -278,7 +280,7 @@ class PrinterVirtual(Printer):
     def getTotalConsumedFilament(self):
         return sum(
             [self._printJob._consumedFilament[k] \
-             for k in self._printJob._consumedFilament.keys()]) \
+                for k in self._printJob._consumedFilament.keys()]) \
             if self._printJob else 0
 
     def jog(self, axis, amount):
@@ -296,7 +298,8 @@ class PrinterVirtual(Printer):
         self._logger.info('Fan - Tool: %s, Speed: %s', tool, speed)
 
     def extrude(self, tool, amount, speed=None):
-        self._logger.info('Extrude - Tool: %s, Amount: %s, Speed: %s', tool, amount, speed)
+        self._logger.info(
+            'Extrude - Tool: %s, Amount: %s, Speed: %s', tool, amount, speed)
 
     def changeTool(self, tool):
         self._logger.info('Change tool to %s', tool)
@@ -328,9 +331,11 @@ class PrinterVirtual(Printer):
             # printing done, put those cpu cycles to good use
             self._fileManager.resumeAnalysis()
         elif self._comm is not None and newState == self.STATE_PRINTING:
-            self._fileManager.pauseAnalysis() # do not analyse gcode while printing
+            # do not analyse gcode while printing
+            self._fileManager.pauseAnalysis()
 
-        self._stateMonitor.setState({"text": self.getStateString(), "flags": self._getStateFlags()})
+        self._stateMonitor.setState(
+            {"text": self.getStateString(), "flags": self._getStateFlags()})
 
     def printJobCancelled(self):
         # reset progress, height, print time
@@ -347,8 +352,8 @@ class TempsChanger(threading.Thread):
     def __init__(self, manager):
         self._stopped = False
         self._manager = manager
-        self._targets = {};
-        self._actuals = {};
+        self._targets = {}
+        self._actuals = {}
 
         super(TempsChanger, self).__init__()
 
@@ -376,7 +381,7 @@ class TempsChanger(threading.Thread):
             self._actuals[type] = 0
 
     def _updateTemps(self):
-        data = { "time": int(time.time()) }
+        data = {"time": int(time.time())}
 
         for t in self._targets.keys():
             data[t] = {
