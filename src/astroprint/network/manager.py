@@ -5,39 +5,31 @@ __license__ = 'GNU Affero General Public License http://www.gnu.org/licenses/agp
 # singleton
 _instance = None
 
+
 def networkManager():
-	global _instance
+    global _instance
+    if _instance is None:
+        # we can't use a map as some of the import
+        # from the driver instances only
+        # exists in their environments
+        from octoprint.settings import settings
+        driver = settings().get(['network', 'manager'])
+        if driver == 'debianNetworkManager':
+            from astroprint.network.debian import DebianNetworkManager
+            _instance = DebianNetworkManager()
+        elif driver == 'manual':
+            from astroprint.network.manual import ManualNetworkManager
+            _instance = ManualNetworkManager()
+        elif driver == 'MacDev':
+            from astroprint.network.mac_dev import MacDevNetworkManager
+            _instance = MacDevNetworkManager()
+        else:
+            raise Exception('Invalid network manager: %s' % driver)
+    return _instance
 
-	if _instance is None:
-		from octoprint.settings import settings
-
-		# we can't use a map as some of the import from the driver instances only
-		# exists in their environments
-
-		driver = settings().get(['network', 'manager'])
-
-		if driver == 'debianNetworkManager':
-			from astroprint.network.debian import DebianNetworkManager
-
-			_instance = DebianNetworkManager()
-
-		elif driver == 'manual':
-			from astroprint.network.manual import ManualNetworkManager
-
-			_instance = ManualNetworkManager()
-
-		elif driver == 'MacDev':
-			from astroprint.network.mac_dev import MacDevNetworkManager
-
-			_instance = MacDevNetworkManager()
-
-		else:
-			raise Exception('Invalid network manager: %s' % driver)
-
-	return _instance
 
 def networkManagerShutdown():
-	global _instance;
+    global _instance
 
-	_instance.shutdown()
-	_instance = None
+    _instance.shutdown()
+    _instance = None
