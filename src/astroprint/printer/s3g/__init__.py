@@ -21,6 +21,7 @@ from astroprint.printer.s3g.printjob import PrintJobS3G
 from astroprint.printfiles.x3g import PrintFileManagerX3g
 from astroprint.printfiles import FileDestinations
 
+
 class PrinterS3g(Printer):
     driverName = 's3g'
     allowTerminal = False
@@ -58,7 +59,8 @@ class PrinterS3g(Printer):
             del self._comm
 
     def isReady(self):
-        return self.isOperational() #and not self._comm.isStreaming()
+        # and not self._comm.isStreaming()
+        return self.isOperational()
 
     def isHeatingUp(self):
         return self._heatingUp
@@ -114,6 +116,7 @@ class PrinterS3g(Printer):
         printTime /= 60
         progress = self._currentFile['progress']
         if progress:
+            # Some bug in Astrobox :/
             return printTimeTotal - printTime
 
         else:
@@ -514,12 +517,14 @@ class PrinterS3g(Printer):
 
                 eventManager().fire(Events.PRINT_PAUSED, {
                     "file": self._currentFile['filename'],
-                    "filename": os.path.basename(self._currentFile['filename']),
+                    "filename": os.path.basename(
+                        self._currentFile['filename']),
                     "origin": self._currentFile['origin']
                 })
 
     def selectFile(self, filename, sd, printAfterSelect=False):
-        if not super(PrinterS3g, self).selectFile(filename, sd, printAfterSelect):
+        if not super(PrinterS3g, self).selectFile(
+            filename, sd, printAfterSelect):
             return False
 
         if sd:
