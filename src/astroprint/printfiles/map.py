@@ -8,9 +8,10 @@ from astroprint.printfiles.gcode import PrintFileManagerGcode
 from astroprint.printfiles.x3g import PrintFileManagerX3g
 
 printFileManagerMap = {
-	PrintFileManagerGcode.name: PrintFileManagerGcode,
-	PrintFileManagerX3g.name: PrintFileManagerX3g
+    PrintFileManagerGcode.name: PrintFileManagerGcode,
+    PrintFileManagerX3g.name: PrintFileManagerX3g
 }
 
-#flatten the list of all supported extension
-SUPPORTED_EXTENSIONS = list(itertools.chain(*[printFileManagerMap[c].SUPPORTED_EXTENSIONS for c in printFileManagerMap]))
+# flatten the list of all supported extension
+SUPPORTED_EXTENSIONS = list(
+    itertools.chain(*[printFileManagerMap[c].SUPPORTED_EXTENSIONS for c in printFileManagerMap]))

@@ -11,11 +11,12 @@ from Queue import Queue
 # singleton
 _instance = None
 
+
 def downloadManager():
-	global _instance
-	if _instance is None:
-		_instance = DownloadManager()
-	return _instance
+    global _instance
+    if _instance is None:
+        _instance = DownloadManager()
+    return _instance
 
 # download item is:
 
@@ -27,136 +28,154 @@ def downloadManager():
 # successCb 	: callback to report success
 # errorCb 		: callback to report errors
 
+
 class DownloadWorker(threading.Thread):
-	def __init__(self, manager):
-		self._daemon = True
-		self._manager = manager
-		self._activeRequest = None
-		self._canceled = False
-		self.activeDownload = False
+    def __init__(self, manager):
+        self._daemon = True
+        self._manager = manager
+        self._activeRequest = None
+        self._canceled = False
+        self.activeDownload = False
 
-		super(DownloadWorker, self).__init__()
+        super(DownloadWorker, self).__init__()
 
-	def run(self):
-		downloadQueue = self._manager.queue
+    def run(self):
+        downloadQueue = self._manager.queue
 
-		while True:
-			item = downloadQueue.get()
-			if item == 'shutdown':
-				return
+        while True:
+            item = downloadQueue.get()
+            if item == 'shutdown':
+                return
 
-			printFileId = item['printFileId']
-			printFileName = item['printFileName']
-			progressCb = item['progressCb']
-			successCb = item['successCb']
-			errorCb = item['errorCb']
-			destFile = item['destFile']
+            printFileId = item['printFileId']
+            printFileName = item['printFileName']
+            progressCb = item['progressCb']
+            successCb = item['successCb']
+            errorCb = item['errorCb']
+            destFile = item['destFile']
 
-			self._manager._logger.info('Download started for %s' % printFileId)
+            self._manager._logger.info('Download started for %s' % printFileId)
+            self.activeDownload = printFileId
+            try:
+                # Perform download here
+                r = requests.get(
+                    item['downloadUrl'], stream=True, timeout=(10.0, 60.0))
+                self._activeRequest = r
+                if r.status_code == 200:
+                    content_length = float(r.headers['Content-Length'])
+                    downloaded_size = 0.0
+                    with open(destFile, 'wb') as fd:
+                        # download 100kb at a time
+                        for chunk in r.iter_content(100000):
+                            # check right after reading
+                            if self._canceled:
+                                break
+                            downloaded_size += len(chunk)
+                            fd.write(chunk)
+                            progressCb(
+                                2 + round(
+                                    (downloaded_size / content_length) * 98.0, 1))
+                            # check again before going to read next chunk
+                            if self._canceled:
+                                break
 
-			self.activeDownload = printFileId
+                    if self._canceled:
+                        self._manager._logger.warn(
+                            'Download canceled for %s' % printFileId)
+                        errorCb(destFile, 'cancelled')
 
-			try:
-				#Perform download here
-				r = requests.get(item['downloadUrl'], stream= True, timeout= (10.0, 60.0))
-				self._activeRequest = r
+                    else:
+                        fileInfo = {
+                            'id': printFileId,
+                            'printFileName': printFileName,
+                            'info': item['printFileInfo']
+                        }
 
-				if r.status_code == 200:
-					content_length = float(r.headers['Content-Length']);
-					downloaded_size = 0.0
+                        successCb(destFile, fileInfo)
+                        self._manager._logger.info(
+                            'Download completed for %s' % printFileId)
 
-					with open(destFile, 'wb') as fd:
-						for chunk in r.iter_content(100000): #download 100kb at a time
-							if self._canceled: #check right after reading
-								break
+                else:
+                    r.close()
+                    self._manager._logger.error(
+                        'Download failed for %s' % printFileId)
+                    errorCb(
+                        destFile,
+                        'The device is unable to download the print file'
+                    )
 
-							downloaded_size += len(chunk)
-							fd.write(chunk)
-							progressCb(2 + round((downloaded_size / content_length) * 98.0, 1))
+            except requests.exceptions.RequestException as e:
+                self._manager._logger.error(
+                    'Download connection exception for %s: %s' % \
+                    (printFileId, e))
+                errorCb(
+                    destFile,
+                    'Connection Error while downloading the print file')
 
-							if self._canceled: #check again before going to read next chunk
-								break
+            except Exception as e:
+                if "'NoneType' object has no attribute 'recv'" == str(e):
+                    # This is due to a problem in the underlying library
+                    # when calling r.close in the cancel routine
+                    self._manager._logger.warn(
+                        'Download canceled for %s' % printFileId)
+                    errorCb(destFile, 'cancelled')
+                else:
+                    self._manager._logger.error(
+                        'Download exception for %s: %s' % (printFileId, e))
+                    errorCb(
+                        destFile,
+                        'The device is unable to download the print file'
+                    )
 
-					if self._canceled:
-						self._manager._logger.warn('Download canceled for %s' % printFileId)
-						errorCb(destFile, 'cancelled')
+            self.activeDownload = False
+            self._canceled = False
+            self._activeRequest = None
+            downloadQueue.task_done()
 
-					else:
-						fileInfo = {
-							'id': printFileId,
-							'printFileName': printFileName,
-							'info': item['printFileInfo']
-						}
+    def cancel(self):
+        if self.activeDownload:
+            if self._activeRequest:
+                self._activeRequest.close()
 
-						successCb(destFile, fileInfo)
-						self._manager._logger.info('Download completed for %s' % printFileId)
-
-				else:
-					r.close()
-					self._manager._logger.error('Download failed for %s' % printFileId)
-					errorCb(destFile, 'The device is unable to download the print file')
-
-			except requests.exceptions.RequestException as e:
-				self._manager._logger.error('Download connection exception for %s: %s' % (printFileId, e))
-				errorCb(destFile, 'Connection Error while downloading the print file')
-
-			except Exception as e:
-				if "'NoneType' object has no attribute 'recv'" == str(e):
-					#This is due to a problem in the underlying library when calling r.close in the cancel routine
-					self._manager._logger.warn('Download canceled for %s' % printFileId)
-					errorCb(destFile, 'cancelled')
-				else:
-					self._manager._logger.error('Download exception for %s: %s' % (printFileId, e))
-					errorCb(destFile, 'The device is unable to download the print file')
-
-			self.activeDownload = False
-			self._canceled = False
-			self._activeRequest = None
-			downloadQueue.task_done()
-
-	def cancel(self):
-		if self.activeDownload:
-			if self._activeRequest:
-				self._activeRequest.close()
-
-			self._manager._logger.warn('Download canceled requested for %s' % self.activeDownload)
-			self._canceled = True
+            self._manager._logger.warn(
+                'Download canceled requested for %s' % self.activeDownload)
+            self._canceled = True
 
 
 class DownloadManager(object):
-	_maxWorkers = 3
+    _maxWorkers = 3
 
-	def __init__(self):
-		self._logger = logging.getLogger(__name__)
-		self.queue = Queue()
+    def __init__(self):
+        self._logger = logging.getLogger(__name__)
+        self.queue = Queue()
 
-		self._workers = []
-		for i in range(self._maxWorkers):
-			w = DownloadWorker(self)
-			self._workers.append( w )
-			w.start()
+        self._workers = []
+        for i in range(self._maxWorkers):
+            w = DownloadWorker(self)
+            self._workers.append(w)
+            w.start()
 
-	def isDownloading(self, printFileId):
-		for w in self._workers:
-			if w.activeDownload == printFileId:
-				return True
+    def isDownloading(self, printFileId):
+        for w in self._workers:
+            if w.activeDownload == printFileId:
+                return True
 
-		return False
+        return False
 
-	def startDownload(self, item):
-		self.queue.put(item)
+    def startDownload(self, item):
+        self.queue.put(item)
 
-	def cancelDownload(self, printFileId):
-		for w in self._workers:
-			if w.activeDownload == printFileId:
-				w.cancel()
-				return True
+    def cancelDownload(self, printFileId):
+        for w in self._workers:
+            if w.activeDownload == printFileId:
+                w.cancel()
+                return True
 
-		return False
+        return False
 
-	def shutdown(self):
-		self._logger.info('Shutting down Download Manager...')
-		for w in self._workers:
-			self.queue.put('shutdown')
-			if w.activeDownload:
-				w.cancel()
+    def shutdown(self):
+        self._logger.info('Shutting down Download Manager...')
+        for w in self._workers:
+            self.queue.put('shutdown')
+            if w.activeDownload:
+                w.cancel()
