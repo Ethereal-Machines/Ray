@@ -4,27 +4,28 @@ __license__ = 'GNU Affero General Public License http://www.gnu.org/licenses/agp
 
 import logging
 
+
 def migrateSettings():
-	from octoprint.settings import settings
+    from octoprint.settings import settings
 
-	logger = logging.getLogger(__name__)
-	logger.info('Checking for settings migrations...')
-	migrationsDone = 0;
+    logger = logging.getLogger(__name__)
+    logger.info('Checking for settings migrations...')
+    migrationsDone = 0
 
-	s = settings()
+    s = settings()
 
-	#Migration to add the reboot action
-	actions = s.get(['system', 'actions'])
+    # Migration to add the reboot action
+    actions = s.get(['system', 'actions'])
 
-	if 'reboot' not in [a["action"] for a in actions]:
-		actions.append({
-			'action': 'reboot',
-			'command': 'reboot'
-		})
-		s.set(['system', 'actions'], actions, True)
-		migrationsDone += 1
+    if 'reboot' not in [a["action"] for a in actions]:
+        actions.append({
+            'action': 'reboot',
+            'command': 'reboot'
+        })
+        s.set(['system', 'actions'], actions, True)
+        migrationsDone += 1
 
-	if migrationsDone > 0:
-		s.save()
+    if migrationsDone > 0:
+        s.save()
 
-	logger.info('Performed %d settings migrations.' % migrationsDone)
+    logger.info('Performed %d settings migrations.' % migrationsDone)
