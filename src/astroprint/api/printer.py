@@ -16,6 +16,17 @@ from octoprint.server.api import api
 
 from astroprint.printer.manager import printerManager
 
+#~~ Printer information
+
+@api.route("/printerInfo", methods=["GET"])
+def printInfo():
+    pm = printerManager()
+    result = {}
+    data = pm.getCurrentData()
+    result.update({"data": data})
+    return jsonify(result)
+
+
 #~~ Printer
 
 

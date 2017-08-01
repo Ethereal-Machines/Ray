@@ -185,7 +185,7 @@ class AstroPrintCloud(object):
             try:
                 # Get credentials to upload the file
                 r = requests.get(
-                    "%s/designs/upload/params?key=%s" % \
+                    "%s/files/upload_credentials?key=%s" % \
                     (self.apiHost, s3_key), auth=self.hmacAuth)
                 data = r.json()
             except:
@@ -205,11 +205,10 @@ class AstroPrintCloud(object):
                 signature = binascii.b2a_base64(hashed.digest())[:-1]
 
                 redirect_url = \
-                    "%s/design/uploaded?public_key=%s&req=%s&sig=%s" % (
-                        self.apiHost.replace('api', 'cloud'),
-                        publicKey,
-                        quote_plus(request),
-                        quote_plus(signature))
+                    "%s/files/file_redirect?remote_key=%s" % (
+                        self.apiHost.replace('api', 'www'),
+                        s3_key
+                    )
 
                 # url, post parameters, redirect Url
                 return {
@@ -231,12 +230,15 @@ class AstroPrintCloud(object):
     def get_private_key(self, email, password):
 
         r = requests.post(
-            "%s/%s" % (self.apiHost, 'auth/privateKey'),
+            "%s/%s" % (self.apiHost, 'auth/privateKey/'),
             data={
                 "email": email,
                 "password": password
             },
-            headers={'User-Agent': self._sm.userAgent}
+            headers={
+                'User-Agent': self._sm.userAgent,
+                'X-API-Key': self.settings.get(['api', 'key'])
+            }
         )
 
         try:
@@ -251,7 +253,7 @@ class AstroPrintCloud(object):
 
     def get_public_key(self, email, private_key):
         r = requests.post(
-            "%s/%s" % (self.apiHost, 'auth/publicKey'),
+            "%s/%s" % (self.apiHost, 'auth/publicKey/'),
             data={
                 "email": email,
                 "private_key": private_key
@@ -304,7 +306,7 @@ class AstroPrintCloud(object):
 
         try:
             r = requests.get(
-                '%s/print-files/%s' % (self.apiHost, print_file_id),
+                '%s/files/print_files/%s' % (self.apiHost, print_file_id),
                 auth=self.hmacAuth
             )
             data = r.json()
@@ -538,7 +540,7 @@ class AstroPrintCloud(object):
         if self.cloud_enabled():
             try:
                 r = requests.get(
-                    "%s/print-files?format=%s" % \
+                    "%s/files/print_files?format=%s" % \
                     (self.apiHost, printerManager().fileManager.fileFormat),
                     auth=self.hmacAuth
                 )
