@@ -15,7 +15,7 @@
   height: 282px;
   z-index: 22;
 }
-.Back_buton {
+.Back_buton_about {
   background-image: url("/static/CSS_About/Backbuton.png");
   position: absolute;
   left: 648px;

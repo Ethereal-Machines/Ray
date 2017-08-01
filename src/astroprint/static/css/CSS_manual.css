@@ -1,0 +1,174 @@
+.Layer_1 {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 800px;
+  height: 480px;
+  z-index: 20;
+}
+.Back_buton_manual {
+  background-image: url("/static/CSS_Manual/Backbuton.png") !important;
+  position: absolute !important;
+  left: 648px !important;
+  top: 0px !important;
+  width: 152px !important;
+  height: 64px !important;
+  z-index: 29 !important;
+}
+.Manual_Controls {
+  font-size: 24px;
+  font-family: "Roboto";
+  color: rgb(255, 255, 255);
+  line-height: 1.125;
+  position: absolute;
+  left: 30.016px;
+  top: 45.969px;
+  z-index: 18;
+}
+.Top_Bar {
+  background-image: url("/static/CSS_Manual/TopBar.png");
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 800px;
+  height: 64px;
+  z-index: 17;
+}
+.X2 {
+  background-image: url("/static/CSS_Manual/X-.png");
+  position: absolute;
+  left: 117px;
+  top: 201px;
+  width: 81px;
+  height: 80px;
+  z-index: 16;
+}
+.X1 {
+  background-image: url("/static/CSS_Manual/X+.png");
+  position: absolute;
+  left: 348px;
+  top: 201px;
+  width: 82px;
+  height: 80px;
+  z-index: 15;
+}
+.Y1 {
+  background-image: url("/static/CSS_Manual/Y+.png");
+  position: absolute;
+  left: 233px;
+  top: 115px;
+  width: 81px;
+  height: 81px;
+  z-index: 14;
+}
+.Y2 {
+  background-image: url("/static/CSS_Manual/Y-.png");
+  position: absolute;
+  left: 233px;
+  top: 286px;
+  width: 81px;
+  height: 81px;
+  z-index: 13;
+}
+.Z1 {
+  background-image: url("/static/CSS_Manual/Z+.png");
+  position: absolute;
+  left: 616px;
+  top: 115px;
+  width: 81px;
+  height: 81px;
+  z-index: 12;
+}
+.Z2 {
+  background-image: url("/static/CSS_Manual/Z-.png");
+  position: absolute;
+  left: 616px;
+  top: 286px;
+  width: 81px;
+  height: 81px;
+  z-index: 11;
+}
+.Z_Home {
+  background-image: url("/static/CSS_Manual/ZHome.png");
+  position: absolute;
+  left: 611px;
+  top: 196px;
+  width: 91px;
+  height: 90px;
+  z-index: 10;
+}
+.XY_Home {
+  background-image: url("/static/CSS_Manual/XYHome.png");
+  position: absolute;
+  left: 228px;
+  top: 196px;
+  width: 91px;
+  height: 90px;
+  z-index: 9;
+}
+.Path {
+  background-image: url("/static/CSS_Manual/Path.png");
+  position: absolute;
+  left: 90px;
+  top: 415px;
+  width: 630px;
+  height: 34px;
+  z-index: 8;
+}
+._200_mm {
+  font-size: 19px;
+  font-family: "Roboto";
+  color: rgb(0, 0, 0);
+  line-height: 1.421;
+  position: absolute;
+  left: 337.141px;
+  top: 420.433px;
+  z-index: 7;
+}
+._175_mm {
+  font-size: 19px;
+  font-family: "Roboto";
+  color: rgb(0, 0, 0);
+  line-height: 1.421;
+  position: absolute;
+  left: 636.422px;
+  top: 420.324px;
+  z-index: 6;
+}
+._150_mm {
+  font-size: 19px;
+  font-family: "Roboto";
+  color: rgb(0, 0, 0);
+  line-height: 1.421;
+  position: absolute;
+  left: 118.422px;
+  top: 420.433px;
+  z-index: 5;
+}
+.Z_Container {
+  background-image: url("/static/CSS_Manual/ZContainer.png");
+  position: absolute;
+  left: 540px;
+  top: 80px;
+  width: 234px;
+  height: 334px;
+  z-index: 4;
+}
+.XY_Container {
+  background-image: url("/static/CSS_Manual/XYContainer.png");
+  position: absolute;
+  left: 27px;
+  top: 80px;
+  width: 498px;
+  height: 336px;
+  z-index: 3;
+}
+.BG {
+  background-image: url("/static/CSS_Manual/BG.png");
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 800px;
+  height: 480px;
+  z-index: 2;
+}
