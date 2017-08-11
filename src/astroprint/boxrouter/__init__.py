@@ -277,7 +277,7 @@ class AstroprintBoxRouter(object):
 
                             self._ws = AstroprintBoxRouterClient(self._address, self)
                             self._ws.connect()
-                            self._ws.send({'type': 'ping'})
+                            self.send({'type': 'ping'})
                             self.connected = True
 
                         except Exception as e:
