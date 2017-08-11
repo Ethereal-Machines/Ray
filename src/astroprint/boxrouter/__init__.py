@@ -495,3 +495,8 @@ class AstroprintBoxRouter(object):
                     'privateKey': self._privateKey
                 }
             }
+
+    def pong_to_browser(self):
+        ''' Return pong message to browser '''
+        data = {'type': 'pong_to_browser'}
+        self.send(data)
