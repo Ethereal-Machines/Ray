@@ -277,7 +277,7 @@ class AstroprintBoxRouter(object):
 
                             self._ws = AstroprintBoxRouterClient(self._address, self)
                             self._ws.connect()
-                            self._ws.send(json.dumps({'type': 'ping'}))
+                            self._ws.send({'type': 'ping'})
                             self.connected = True
 
                         except Exception as e:
@@ -431,6 +431,8 @@ class AstroprintBoxRouter(object):
         })
 
     def send(self, data):
+        if data.get('box_id') is None:
+            data['box_id'] = self.boxId
         if self._ws and self.connected:
             self._ws.send(json.dumps(data))
             return True
