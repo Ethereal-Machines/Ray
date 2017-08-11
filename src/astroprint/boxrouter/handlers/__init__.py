@@ -28,7 +28,7 @@ class BoxRouterMessageHandler(object):
         ''' Respond to ping message from web browser '''
         router = self._weakRefBoxRouter()
         if router:
-            return router.pong_to_browser(msg['data'] if 'data' in msg else None)
+            return router.pong_to_browser()
         else:
             return None
 
