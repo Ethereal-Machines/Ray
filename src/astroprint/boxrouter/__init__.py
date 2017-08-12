@@ -496,7 +496,7 @@ class AstroprintBoxRouter(object):
                 }
             }
 
-    def pong_to_browser(self):
+    def pong_to_browser(self, data):
         ''' Return pong message to browser '''
-        data = {'type': 'pong_to_browser'}
+        data['type'] = 'pong_to_browser'
         self.send(data)
