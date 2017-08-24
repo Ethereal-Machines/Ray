@@ -230,7 +230,7 @@ class AstroPrintCloud(object):
     def get_private_key(self, email, password):
 
         r = requests.post(
-            "%s/%s" % (self.apiHost, 'auth/privateKey/'),
+            "%s/%s" % (self.apiHost, 'api/privateKey/'),
             data={
                 "email": email,
                 "password": password
@@ -253,7 +253,7 @@ class AstroPrintCloud(object):
 
     def get_public_key(self, email, private_key):
         r = requests.post(
-            "%s/%s" % (self.apiHost, 'auth/publicKey/'),
+            "%s/%s" % (self.apiHost, 'api/publicKey/'),
             data={
                 "email": email,
                 "private_key": private_key
@@ -273,7 +273,7 @@ class AstroPrintCloud(object):
 
     def get_login_key(self):
         r = requests.get(
-            "%s/%s" % (self.apiHost, 'auth/loginKey'),
+            "%s/%s" % (self.apiHost, 'api/loginKey'),
             headers={'User-Agent': self._sm.userAgent},
             auth=self.hmacAuth
         )
