@@ -76,7 +76,7 @@ class BoxRouterMessageHandler(object):
                 request = msg['data']['type']
                 reqId = msg['reqId']
                 clientId = msg['clientId']
-                socket_id = msg['socket_id']
+                user_id = msg['user_id']
                 data = msg['data']['payload']
 
                 method  = getattr(handler, request, None)
@@ -88,7 +88,7 @@ class BoxRouterMessageHandler(object):
                         wsClient.send(json.dumps({
                             'type': 'req_response',
                             'reqId': reqId,
-                            'socket_id': socket_id,
+                            'user_id': user_id,
                             'data': result
                         }))
 
