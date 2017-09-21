@@ -1,10 +1,10 @@
 {% extends 'base.jinja2' %}
 
 {% block css %}
-  {% assets filters="scss", output="css/gen/setup.css",
-    "css/scss/setup.scss" %}
-    <link rel="stylesheet" type="text/css" href="{{ ASSET_URL }}" />
-  {% endassets %}
+  /*{% assets filters="scss", output="css/gen/setup.css",*/
+    /*"css/scss/setup.scss" %}*/
+    /*<link rel="stylesheet" type="text/css" href="{{ ASSET_URL }}" />*/
+  /*{% endassets %}*/
 {% endblock %}
 
 {% block content %}
@@ -358,12 +358,23 @@
     var WS_TOKEN = "{{ wsToken }}";
     var shareOptions = {{ variantData['share'] | tojson | safe }}
   </script>
-  {% assets filters="closure_js", output="js/gen/setup.js",
-    "js/lib/jquery.js", "js/lib/underscore.js", "js/lib/backbone.js", "js/lib/sockjs.js", "js/lib/fastclick.js", "js/lib/foundation/foundation.js", "js/lib/foundation/foundation.abide.js", "js/lib/foundation/foundation.reveal.js",
-    "js/lib/jquery.noty.js", "js/lib/jquery.noty.top.js", "js/lib/sockjs.js",
-    "js/setup/setup.js" -%}
-      <script type="text/javascript" src="{{ ASSET_URL }}"></script>
-  {%- endassets %}
+  /*{% assets filters="closure_js", output="js/gen/setup.js",*/
+    /*"js/lib/jquery.js", "js/lib/underscore.js", "js/lib/backbone.js", "js/lib/sockjs.js", "js/lib/fastclick.js", "js/lib/foundation/foundation.js", "js/lib/foundation/foundation.abide.js", "js/lib/foundation/foundation.reveal.js",*/
+    /*"js/lib/jquery.noty.js", "js/lib/jquery.noty.top.js", "js/lib/sockjs.js",*/
+    /*"js/setup/setup.js" -%}*/
+      /*<script type="text/javascript" src="{{ ASSET_URL }}"></script>*/
+  /*{%- endassets %}*/
+<script type="text/javascript" src="js/lib/jquery.js"></script>
+<script type="text/javascript" src="js/lib/underscore.js"></script>
+<script type="text/javascript" src="js/lib/backbone.js"></script>
+<script type="text/javascript" src="js/lib/sockjs.js"></script>
+<script type="text/javascript" src="js/lib/fastclick.js"></script>
+<script type="text/javascript" src="js/lib/foundation/foundation.js"></script>
+<script type="text/javascript" src="js/lib/foundation/foundation.abide.js"></script>
+<script type="text/javascript" src="js/lib/foundation/foundation.reveal.js"></script>
+<script type="text/javascript" src="js/lib/noty.js"></script>
+<script type="text/javascript" src="js/lib/noty.top.js"></script>
+<script type="text/javascript" src="js/lib/setup.js"></script>
   <script type="text/javascript">
     $(document).foundation();
   </script>
