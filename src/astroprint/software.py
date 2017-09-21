@@ -35,7 +35,7 @@ from octoprint.events import eventManager, Events
 
 from astroprint.boxrouter import boxrouterManager
 
-if platformStr != 'darwin':
+if platformStr != 'darwin' and os.environ.get('DEV') is None:
     import apt.debfile
     import apt.progress.base
     import apt_pkg
