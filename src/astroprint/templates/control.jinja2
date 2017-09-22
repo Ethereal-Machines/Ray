@@ -1,182 +1,181 @@
-<div class="Back_buton_manual">
+<nav>
+	<i class="back-icon"><</i>
+	<span>Screen Name</span>
+	<a href="#utilities">Back</a>
+</nav>
+<div class="links-container">
+	<a href="#filament-load-wizard">Load Filament</a>
+	<a href="#filament-unload-wizard">Unload Filament</a>
 </div>
-<p class="Manual_Controls">Manual Controls</p>
-<div class="XY_Container">
-</div>
-<div class="XY_Home">
+<div class="container">
+	<div id="manual-container"></div>
+	<script type="text/template" id="xyz-controls-template">
+		<h1 align="center">Template for Manual Control</h1>
+		<!-- "#xy-controls" -->
+		<div class="small-12 medium-7 columns" id="xy-controls" align="center">
+	        <h2 class="bold">Horizontal</h2>
+	        <div class="control_bg_xy" align="center">
+	          <button class="control_btn_y_plus">Y+</button><br/>
+	          <button class="control_btn_x_minus">X-</button> <button class="home_z">HOME</button> <button class="control_btn_x_plus">X+</button><br/>
+	          <button class="control_btn_y_minus">Y-</button>
+	        </div>
+  		</div><!-- end of "#xy-controls" -->
+		
+		<!-- "#z-controls" -->
+  		<div class="small-12 medium-5 columns" id="z-controls">
+	        <h2 class="bold" align="center">Vertical</h2>
+	        <center>
+	          <button class="control_btn_z_plus">Z+</button><br/>
+	          <button class="home_z">HOME</button><br/>
+	          <button class="control_btn_z_minus">Z-</button>
+	        </center>
+		</div><!-- end of "z-controls" -->
+		
+		<!-- "#distance-control" -->
+		<div class="small-12 columns" id="distance-control">
+				<center>
+	        <select class="x-length-changed">
+					  <option value="0.1">0.1 mm</option>
+					  <option value="1">1 mm</option>
+					  <option value="10" selected default>10 mm</option>
+					  <option value="100">100 mm</option>
+					</select>
+					<select class="y-length-changed">
+					  <option value="0.1">0.1 mm</option>
+					  <option value="1">1 mm</option>
+					  <option value="10" selected default>10 mm</option>
+					  <option value="100">100 mm</option>
+					</select>
+					<select class="z-length-changed">
+					  <option value="0.1">0.1 mm</option>
+					  <option value="1">1 mm</option>
+					  <option value="10" selected default>10 mm</option>
+					  <option value="100">100 mm</option>
+					</select>
+				</center>
+		</div><!-- end of "#distance-control" -->
+	</script>
+	<script type="text/template" id="filament-template">
+		<div class="small-12 columns" id="extrusion-control">
+	        <h2 class="bold"><i class="icon-extruder"></i> Filament Extruder</h2>
+	        <div class="small-12 medium-7 columns">
+				<div class="row extruder-switch closer"></div>
+	        </div>
+	        <div class="small-12 medium-5 columns">
+	          <div class="row closer">
+	            <div class="small-6 columns">
+	              <button class="small radius expand success extrude">Extrude</button>
+	            </div>
+	            <div class="small-6 columns">
+	              <button class="small radius expand success retract">Retract</button>
+	            </div>
+	          </div>
+	        </div>
+	        <script type="text/template" id="extruder-switch-template">
 
-</div>
-<div class="X1">
-</div>
-<div class="X2">
-</div>
-<div class="Y1">
-</div>
-<div class="Y2">
-</div>
-<div class="Z_Container">
-</div>
-<div class="Z_Home">
-</div>
-<div class="Z1">
-</div>
-<div class="Z2">
-</div>
-<div class="Path">
+	          <!-- If the extruder count > 1 then the below HTML will be visible
+	            with no. of nozzles option. If no of extruder will be only 1, this option
+	            will not be visible
+	          -->
+	          <% if (profile.extruder_count > 1) { %>
+	            <div class="small-3 columns">
+	              <label class="bold">Nozzle</label>
+	              <select class="extruder-number">
+	                <% for(var i=0; i<profile.extruder_count; i++) { %>
+	                  <option value="<%= i %>"><%= i+1 %></option>
+	                <% } %>
+	              </select>
+	            </div>
+	          <% } %>
+	          
+	          <!-- The below divs with heading "Amount" and "Speed" will always show -->
+				<div class="<% if (profile.extruder_count > 1) { %> small-4 <% } else { %> small-6 <% } %>columns select-with-text">
+				<label class="bold">Amount</label>
+				<select class="extrusion-length">
+				  <option value="10" selected default>10 mm</option>
+				  <option value="50">50 mm</option>
+				  <option value="100">100 mm</option>
+				  <option value="200">200 mm</option>
+				  <option value="other">Other...</option>
+				</select>
 
-</div>
-<p class="_200_mm">200 mm</p>
-<p class="_175_mm">175 mm</p>
-<p class="_150_mm">150 mm</p>
-<div class="row">
-  <!--h1 class="bold" align="center">Printer Controls</h1-->
-  <!--div class="row back-to-print panel callout radius">
-    <div class="small-12 medium-4 large-3 columns">
-      <div class="loading-button expand">
-        <button class="radius tiny expand"><i class="icon-play"></i> Resume Printing</button>
-        <span class="radius button tiny expand loading"><i class="icon-rocket-spinner animate-spin"></i> Resuming...</span>
-      </div>
-    </div>
-    <div class="small-12 medium-8 large-9 columns hide-for-small">
-      Printing paused: <div class="filename bold"></div>
-    </div>
-  </div-->
-  <div class="medium-12 large-7 columns">
-    <div class="row">
-      <!--div class="small-12 medium-7 columns" id="xy-controls" align="center">
-        <h2 class="bold">Horizontal</h2>
-        <div class="control_bg_xy" align="center">
-          <button class="control_btn_y_plus"></button><br/>
-          <button class="control_btn_x_minus"></button> <button class="home_z"></button> <button class="control_btn_x_plus"></button><br/>
-          <button class="control_btn_y_minus"></button>
-        </div>
-      </div-->
-      <!--div class="small-12 medium-5 columns" id="z-controls">
-        <h2 class="bold" align="center">Vertical</h2>
-        <center>
-          <button class="control_btn_z_plus"></button><br/>
-          <button class="home_z"></button><br/>
-          <button class="control_btn_z_minus"></button>
-        </center>
-      </div-->
-      <!--div class="small-12 columns" id="distance-control">
-        <center>
-          <ul class="button-group radius">
-            <li><button class="small bold secondary" data-value="0.1">0.1</button></li>
-            <li><button class="small bold secondary" data-value="1">1</button></li>
-            <li><button class="small bold success" data-value="10">10</button></li>
-            <li><button class="small bold secondary" data-value="100">100</button></li>
-          </ul>
-        </center>
-      </div-->
-      <div class="small-12 columns" id="extrusion-control">
-        <!--h2 class="bold"><i class="icon-extruder"></i> Filament Extruder</h2-->
-        <div class="small-12 medium-7 columns">
-          <div class="row extruder-switch closer"></div>
-        </div>
-        <!--div class="small-12 medium-5 columns">
-          <div class="row closer">
-            <div class="small-6 columns">
-              <button class="small radius expand success extrude">Extrude</button>
-            </div>
-            <div class="small-6 columns">
-              <button class="small radius expand success retract">Retract</button>
-            </div>
-          </div>
-        </div-->
-        <script type="text/template" id="extruder-switch-template">
-          <% if (profile.extruder_count > 1) { %>
-            <!--div class="small-3 columns">
-              <label class="bold">Nozzle</label>
-              <select class="extruder-number">
-                <% for(var i=0; i<profile.extruder_count; i++) { %>
-                  <option value="<%= i %>"><%= i+1 %></option>
-                <% } %>
-              </select>
-            </div-->
-          <% } %>
+				<!-- Bleow block is kept .hide by default -->
+				<div class="row collapse other-length hide">
+				  <div class="small-8 columns">
+				    <input type="number" value="10" class="expand back-to-select" name="extrusion-length"/>
+				  </div>
+				  <div class="small-4 columns">
+				    <span class="postfix radius">mm</span>
+				  </div>
+				</div>
+				</div>
 
-          <!--div class="<% if (profile.extruder_count > 1) { %> small-4 <% } else { %> small-6 <% } %>columns select-with-text">
-            <label class="bold">Amount</label>
-            <select class="extrusion-length">
-              <option value="10" selected default>10 mm</option>
-              <option value="50">50 mm</option>
-              <option value="100">100 mm</option>
-              <option value="200">200 mm</option>
-              <option value="other">Other...</option>
-            </select>
-            <div class="row collapse other-length hide">
-              <div class="small-8 columns">
-                <input type="number" value="10" class="expand back-to-select" name="extrusion-length"/>
-              </div>
-              <div class="small-4 columns">
-                <span class="postfix radius">mm</span>
-              </div>
-            </div>
-          </div>
+				<div class="<% if (profile.extruder_count > 1) { %> small-5 <% } else { %> small-6 <% } %>columns select-with-text">
+				<label class="bold">Speed</label>
+				<select class="extrusion-speed">
+				  <option value="50">Fast (50 mm/s)</option>
+				  <option value="2" selected default>Normal (2 mm/s)</option>
+				  <option value="0.5">Slow (0.5 mm/s)</option>
+				  <option value="other">Other...</option>
+				</select>
 
-          <div class="<% if (profile.extruder_count > 1) { %> small-5 <% } else { %> small-6 <% } %>columns select-with-text">
-            <label class="bold">Speed</label>
-            <select class="extrusion-speed">
-              <option value="50">Fast (50 mm/s)</option>
-              <option value="2" selected default>Normal (2 mm/s)</option>
-              <option value="0.5">Slow (0.5 mm/s)</option>
-              <option value="other">Other...</option>
-            </select>
-            <div class="row collapse other-speed hide">
-              <div class="small-7 columns">
-                <input type="number" value="2" class="expand back-to-select" name="extrusion-speed"/>
-              </div>
-              <div class="small-5 columns">
-                <span class="postfix radius">mm/s</span>
-              </div>
-            </div>
-          </div-->
-        </script>
-      </div>
-    </div>
-  </div>
+				<!-- Below block is kept .hide by default -->
+				<div class="row collapse other-speed hide">
+				  <div class="small-7 columns">
+				    <input type="number" value="2" class="expand back-to-select" name="extrusion-speed"/>
+				  </div>
+				  <div class="small-5 columns">
+				    <span class="postfix radius">mm/s</span>
+				  </div>
+				</div>
+				</div>
+	        </script>
+      	</div>
+	</script>
+	<script type="text/template" id="auto-bed-level-template"></script>
+	<script type="text/template" id="pre-heat-template">
+		{%- macro temp_control(class, label) %}
+		    <div class="temp-control-cont {{class}}">
+		      <!-- here we show the rising temperature -->
+		      <span class="current-temp-top bold">- -</span>
+		      <div class="temp-bar">
+		        <!-- here the 'bed' or 'nozzle' label will display based on the bar we are on -->
+		        <label class="bold">{{label}}</label>
 
-  {%- macro temp_control(class, label) %}
-    <div class="temp-control-cont {{class}}">
-      <span class="current-temp-top bold">- -</span>
-      <div class="temp-bar">
-        <label class="bold">{{label}}</label>
-        <div class="current-temp">
-          <div class="triangle_left"></div>
-          <div class="triangle_right"></div>
-        </div>
-        <div class="temp-target radius bold">
-          <a class="temp-edit"><i class="icon-pencil"></i></a>
-          <span class="target-value">- -</span>
-          <input type="number" class="hide"/>
-        </div>
-      </div>
-      <button class="temp-off secondary small radius expand">OFF</button>
-    </div>
-  {%- endmacro %}
+		        <!-- this is the movable bar, which moves slowly slowly on the 
+		          temp rise -->
+		        <div class="current-temp">
+		          <div class="triangle_left"></div>
+		          <div class="triangle_right"></div>
+		        </div>
 
-  <!--div class="medium-12 large-5 columns" id="temp-control">
-    <div class="row">
-      <div class="small-4 columns" align="center">
-        {{ temp_control('nozzle', 'Nozzle')}}
-      </div>
-      <div class="small-4 columns fan-control">
-        <div class="fan-control-push" align="center">
-          Current Temp (&deg;C)
-        </div>
-        <h2 class="bold">Fans <span class="fan_icon"></span></h2>
-        <button class="radius small success expand fan-on">ON</button>
-        <button class="radius small secondary expand fan-off">OFF</button>
-      </div>
-      <div class="small-4 columns" align="center">
-        {{ temp_control('bed', 'Bed')}}
-      </div>
-    </div>
-  </div-->
+		        <div class="temp-target radius bold">
+		          <a class="temp-edit"><i class="icon-pencil"></i></a>
+		          <span class="target-value">- -</span>
+		          <input type="number" class="hide"/>
+		        </div>
+		      </div>
+		      <button class="temp-off secondary small radius expand">OFF</button>
+		    </div>
+		{%- endmacro %}
 
-  <div class="no-connection-overlay">
-    <i class="icon-usb"></i>
-    <b>Please, connect a 3D Printer via USB.</b>
-  </div>
+		<div class="medium-12 large-5 columns" id="temp-control">
+			<div class="row">
+			  <div class="small-4 columns" align="center">
+			    {{ temp_control('nozzle', 'Nozzle')}}
+			  </div>
+			  <div class="small-4 columns fan-control">
+			    <div class="fan-control-push" align="center">
+			      Current Temp (&deg;C)
+			    </div>
+			    <h2 class="bold">Fans <span class="fan_icon"></span></h2>
+			    <button class="radius small success expand fan-on">ON</button>
+			    <button class="radius small secondary expand fan-off">OFF</button>
+			  </div>
+			  <div class="small-4 columns" align="center">
+			    {{ temp_control('bed', 'Bed')}}
+			  </div>
+			</div><!-- end of '.row' -->
+		</div><!-- end of "#temp-control" -->
+	</script>
 </div>

@@ -1,0 +1,46 @@
+<div id="filament-unload-wizard">
+	<nav id="filament-unload-wizard-nav">
+		<div class="wizard-name">
+			Filament Unload Wizard
+		</div>
+		<a href="#" class="cancel-button">
+			Cancel
+		</a>
+	</nav>
+	<div class="wrapper">
+		<div class="steps-count">1/3</div>
+		<div class="steps-progress"></div>
+
+		<div id="filament-unload-wizard__preheating-progress-section" class="active">
+			<div class="filament-img-temp-container">
+				<div class="filament-img">
+					<img src="../../img/ethereal-astroprint/nozzle.svg" alt="Filament" width="64" height="64">
+				</div>
+				<div class="temp-progress">
+					<h3 class="temp-msg">Heating Extruder...</h3>
+					<p class="temp-value">200 &deg;C/220 &deg;C</p>
+				</div>
+			</div>
+			<div class="progress-bar-container">
+				<progress max="100" value="70"></progress>
+			</div>
+			<button type="button" id="filament-unload-wizard__preheating-progress-section-button" class="next-button" name="Next">NEXT</button>
+		</div>
+		<div id="retraction-in-progress-section" class="hide">
+			<h2 class="instruction-heading">Filament is now being retracted from the host end...</h2>
+			<p class="instruction-msg">Gently pull the filament out from the feeder once the filament end has reached the feeder
+			</p>
+			<button type="button" id="retraction-in-progress-section-button" class="next-button">NEXT</button>
+		</div>
+		<div id="filament-unload-wizard__finish-section" class="hide">
+			<div class="finish-icon-container">
+				<img src="../../img/ethereal-astroprint/finish-icon.svg" alt="Finish icon" width="80" height="80">
+			</div>
+			<h2 class="finish-msg">Filament Load Complete!</h2>
+			<a href="#control">
+				<button type="button" id="filament-unload-wizard__finish-button" class="finish-section-button next-button">FINISH</button>
+			</a>
+		</div>
+	</div>
+	<div class="cancel-filament-load-model hide"></div>
+</div>

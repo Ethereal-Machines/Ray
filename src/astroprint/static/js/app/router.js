@@ -8,6 +8,9 @@ var AppRouter = Backbone.Router.extend({
   homeView: null,
   filesView: null,
   controlView: null,
+  // adding filament-wizard views
+  filamentLoadView: null,
+  filamentUnloadView: null,
   settingsView: null,
   printingView: null,
   terminalView: null,
@@ -21,6 +24,9 @@ var AppRouter = Backbone.Router.extend({
     "files": "files",
     "file-info/:fileId": "fileInfo",
     "control": "control",
+    // adding routes for the filament-wizards
+    "filament-load-wizard": "filamentLoad",
+    "filament-unload-wizard": "filamentUnload",
     "printing": "printing",
     "settings": "settings",
     "utilities": "utilities",
@@ -98,6 +104,24 @@ var AppRouter = Backbone.Router.extend({
 
     this.selectView(this.controlView);
     app.selectQuickNav('control');
+  },
+  /*
+    adding function to handle the routing for 'filament-load' & 'filament-unload'
+    wizard
+  */
+  filamentLoad: function() {
+    if (!this.filamentLoadView) {
+      this.filamentLoadView = new FilamentLoadView();
+    }
+
+    this.selectView(this.filamentLoadView);
+  },
+  filamentUnload: function() {
+    if (!this.filamentUnloadView) {
+      this.filamentUnloadView = new FilamentUnloadView();
+    }
+
+    this.selectView(this.filamentUnloadView);
   },
   printing: function()
   {
@@ -181,6 +205,13 @@ var AppRouter = Backbone.Router.extend({
         currentView.trigger('hide');
 
         if (targetId == 'control-view') {
+
+          /* 
+          * below function call is commented because the
+          * functionality is disabled for some time
+          */
+
+          /* Comment-change#1 */
           this.controlView.tempView.resetBars();
         }
       }
