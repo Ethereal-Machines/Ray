@@ -16,6 +16,7 @@ var PrintFileInfoDialog = Backbone.View.extend({
   },
   initialize: function(params)
   {
+    console.log("PrintFileInfoDialog is being initialized");
     this.file_list_view = params.file_list_view;
   },
   render: function()
@@ -83,33 +84,49 @@ var PrintFileInfoDialog = Backbone.View.extend({
 var FileUploadFiles = FileUploadCombined.extend({
   progressBar: null,
   buttonContainer: null,
-  initialize: function(options)
+  initialize: function(options) // got the call from line 160 with the object as arguments
   {
+    console.log("FileUploadFiles is being initialized");
+    console.log(options);
+
     this.progressBar = options.progressBar;
     this.buttonContainer = options.buttonContainer;
 
+    // we are calling the FileUploadCombined's initialize method provide that the options parameter
+    // and also binding the current object 'this' to that function
     FileUploadCombined.prototype.initialize.call(this, options);
   },
   started: function(data)
   {
+    console.log('FileUploadFiles.started function is being called');
     if (data.files && data.files.length > 0) {
-      this.buttonContainer.hide();
-      this.progressBar.show();
+
+      // when the submit button is clicked to upload the file
+
+      this.buttonContainer.hide(); // hiding the ButtonContainer
+      this.progressBar.show(); // Showing the progress bar in place of Button Container
+
+      // we are initializing the FileUploadCombined's started function by applying 'call' method
+      // such that binding the current object 'this' to the function
       FileUploadCombined.prototype.started.call(this, data);
     }
   },
   progress: function(progress, message)
   {
+    console.log('FileUploadFiles.progress function is being called');
     var intPercent = Math.round(progress);
 
     this.progressBar.find('.meter').css('width', intPercent+'%');
     if (!message) {
+      // displaying the percentage of completion over the progress bar
       message = "Uploading ("+intPercent+"%)";
+      console.log(message);
     }
     this.progressBar.find('.progress-message span').text(message);
   },
   onError: function(type, error)
   {
+    console.log('FileUploadFiles.onError function is being called');
     var message = error;
 
     switch(error) {
@@ -131,29 +148,35 @@ var FileUploadFiles = FileUploadCombined.extend({
     this.resetUploadArea();
     console.error(error);
   },
+  // this function is being called from the uploader.js file as .promise call
   onPrintFileUploaded: function()
-  {
+  { 
+    // this function is resetting the Upload Area
     this.resetUploadArea();
   },
   resetUploadArea: function()
   {
+    console.log('FileUploadFiles.resetUploadArea function is being called');
     this.progressBar.hide();
     this.buttonContainer.show();
     this.progress(0);
   }
 });
 
+// 1st Object which got initialized through FilesView object
 var UploadView = Backbone.View.extend({
-  uploadBtn: null,
-  progressBar: null,
-  buttonContainer: null,
+  uploadBtn: null, // this will be the new instance of 'FileUploadFiles' and have the access to progress bar and the upload button container
+  progressBar: null, // this will be the '.upload-progress' bar showing the process of uploading
+  buttonContainer: null, // container for the upload button on the top
   initialize: function(options)
   {
-    this.progressBar = this.$('.upload-progress');
-    this.buttonContainer = this.$('.upload-buttons');
+    console.log("UploadView is being initialized");
+    this.progressBar = this.$('.upload-progress'); // accessing the progress bar
+    this.buttonContainer = this.$('.upload-buttons'); // upload buttons container
 
+    // initializing the new object with access to the progress bar and button container
     this.uploadBtn = new FileUploadFiles({
-      el: "#files-view .file-upload-view .file-upload",
+      el: "#files-view .file-upload-view .file-upload", // button to choose the files from browser
       progressBar: this.$('.upload-progress'),
       buttonContainer: this.$('.file-upload-button'),
       dropZone: options.dropZone
@@ -185,6 +208,7 @@ var PrintFileView = Backbone.View.extend({
   downloadProgress: null,
   initialize: function(options)
   {
+    console.log("PrintFileView is being initialized");
     this.list = options.list;
     this.print_file = options.print_file;
   },
@@ -211,18 +235,25 @@ var PrintFileView = Backbone.View.extend({
     }));
 
     this.delegateEvents({
+      // 'infoClicked function will display the informations regarding the files being clicked'
       'click .left-section, .middle-section': 'infoClicked',
+      // handeling the event when Print button is clicked
       'click a.print': 'printClicked',
+      // hadeling the event when Download button is clicked
       'click a.download': 'downloadClicked',
+      // handeling the event when the CancelDownload button is clicked
       'click a.dw-cancel': 'cancelDownloadClicked'
     });
   },
+  // callback funtion to handle the Info Button clicked event
   infoClicked: function(evt)
   {
     if (evt) evt.preventDefault();
 
     this.list.info_dialog.open(this);
   },
+
+  // callback function to handle the Dowload button clicked event
   downloadClicked: function(evt)
   {
     if (evt) evt.preventDefault();
@@ -232,6 +263,8 @@ var PrintFileView = Backbone.View.extend({
         noty({text: "There was an error starting the download.", timeout: 3000});
       });
   },
+
+  // callback function to handle the Cancel Download button clicked event
   cancelDownloadClicked: function(evt)
   {
     evt.preventDefault();
@@ -244,6 +277,8 @@ var PrintFileView = Backbone.View.extend({
         noty({text: "Unable to cancel download.", timeout: 3000});
       });
   },
+
+  // callback function to handle the Print button clicked event
   printClicked: function (evt)
   {
     if (evt) evt.preventDefault();
@@ -292,6 +327,7 @@ var StorageControlView = Backbone.View.extend({
   selected: null,
   initialize: function(options)
   {
+    console.log("StorageControlView is being initialized");
     this.print_file_view = options.print_file_view;
   },
   selectStorage: function(storage)
@@ -330,6 +366,7 @@ var PrintFilesListView = Backbone.View.extend({
     'click .list-header button.sync': 'forceSync'
   },
   initialize: function(options) {
+    console.log("PrintFilesListView is being initialized");
     this.file_list = new PrintFileCollection();
     this.info_dialog = new PrintFileInfoDialog({file_list_view: this});
     this.storage_control_view = new StorageControlView({
@@ -455,6 +492,7 @@ var PrintFilesListView = Backbone.View.extend({
           if (!print_file_view.downloadProgress) {
             var progress = progressContainer.find('.download-progress');
 
+            // using jquery-circle-progress Plugin to display the progress
             print_file_view.downloadProgress = progress.circleProgress({
               value: 0,
               animation: false,
@@ -551,18 +589,49 @@ var FilesView = Backbone.View.extend({
   },
   initialize: function(options)
   {
+    /*
+      options parameter is being passed through the "router.js" file while initializing the
+      the FilesView Object. It contains two properties which are below:
+        {forceSync: false, syncCompleted: f}
+    */
+    // console.log("FilesView is being initialized");
+    // console.log(this.$el);
+    // console.log(this.$el.find('.design-list'));
+    // console.log(options);
+
+    // Initializing the UploadView object and passing the params
     this.uploadView = new UploadView({
+      // This div is having the buttons for Uploading the files from the local machine's memory
       el: this.$el.find('.file-upload-view'),
+      // passing the current element "#files-view"
       dropZone: this.$el
     });
+
+    // Initializing the PrintFilesListView and passing the params
     this.printFilesListView = new PrintFilesListView({
+      /*
+        this element 'design-list' containes the Local and Cloud storage options as well as the 
+        container to show up all the files
+      */
       el: this.$el.find('.design-list'),
-      forceSync: options.forceSync,
-      syncCompleted: options.syncCompleted
+      forceSync: options.forceSync, // taking the values from the options parameter
+      syncCompleted: options.syncCompleted // taking the values from the options parameter
     });
+
+    // console.log(this.printFilesListView);
+    /*
+      Tell an 'object' to listen to a particular event on an 'other' object.
+      ----> object.listenTo(other, event, callback) <----
+      The callback will always be called with object as context.
+
+      So basically it will keep track of changing the driver property on the app.printProfile
+      object and once that event happes, it will run the call back function 'onDriverChanged'
+    */
 
     this.listenTo(app.printerProfile, 'change:driver', this.onDriverChanged);
   },
+
+  // this method is being called on the 'uploader.js' file to refresh the files view
   refreshPrintFiles: function()
   {
     var promise = $.Deferred();
@@ -576,15 +645,36 @@ var FilesView = Backbone.View.extend({
 
     return promise;
   },
+
+  /*
+  This function is being called from the 'router.js' file when the '#file-info/:fileId'
+  is being re-directed. The router will pass the file-id to the function which is being
+  clicked.
+  */
   fileInfo: function(fileId)
   {
+    console.log("I am FilesView.fileInfo function being called");
+
+    /*
+      ---> _.find(list, predicate) <---
+      list --> can be an array of items or collection
+      predicate --> will be a function
+
+      Looks through each value in the list, returning the first one that passes a truth test (predicate), or undefined if no value passes the test.
+    */
+
+    // displaying the file-information when the particular FILE-ID is being provided
     var view = _.find(this.printFilesListView.print_file_views, function(v) {
       return v.print_file.get('id') == fileId;
     });
 
     this.printFilesListView.storage_control_view.selectStorage('cloud');
+
+    // passing the view and calling the callback function to show the file info view
     this.showFileInfoView(view);
   },
+
+  // displaying the file information when the FILE NAME is being provided
   fileInfoByName: function(name)
   {
     var view = _.find(this.printFilesListView.print_file_views, function(v) {
@@ -603,6 +693,8 @@ var FilesView = Backbone.View.extend({
   {
     this.printFilesListView.refresh(false);
   },
+
+  // this function is the callback function for the event is Driver changes
   onDriverChanged: function()
   {
     this.uploadView.render();
