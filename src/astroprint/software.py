@@ -35,7 +35,7 @@ from octoprint.events import eventManager, Events
 
 from astroprint.boxrouter import boxrouterManager
 
-if platformStr != 'darwin':
+if platformStr != 'darwin' and os.environ.get('DEV') is None:
     import apt.debfile
     import apt.progress.base
     import apt_pkg
@@ -449,7 +449,7 @@ class SoftwareManager(object):
 
         try:
             r = requests.post(
-                '%s/astrobox/software/check' % apiHost, data=json.dumps({
+                '%s/api/softwarecheck/' % apiHost, data=json.dumps({
                     'current': [
                         self.data['version']['major'],
                         self.data['version']['minor'],
@@ -483,7 +483,7 @@ class SoftwareManager(object):
     def updateSoftwareVersion(self, data):
         try:
             r = requests.get(
-                '%s/astrobox/software/release/%s' % \
+                '%s/api/release/%s' % \
                 (self._settings.get(
                     ['cloudSlicer', 'apiHost']),
                     data['release_id']),
@@ -601,7 +601,7 @@ class SoftwareManager(object):
 
         # send the file to the server
         r = requests.post(
-            '%s/astrobox/software/logs' % \
+            '%s/api/uploadlogs/' % \
             (self._settings.get(['cloudSlicer', 'apiHost'])),
             data={'ticket': ticketNo, 'message': message, 'boxId': boxId},
             files={'file': (zipFilename, zipf)},

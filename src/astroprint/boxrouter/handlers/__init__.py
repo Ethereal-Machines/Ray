@@ -24,6 +24,14 @@ class BoxRouterMessageHandler(object):
         else:
             return None
 
+    def ping_from_browser(self, msg):
+        ''' Respond to ping message from web browser '''
+        router = self._weakRefBoxRouter()
+        if router:
+            return router.pong_to_browser(msg)
+        else:
+            return {'type': 'error'}
+
     def set_temp(self, msg):
         from astroprint.printer.manager import printerManager
 
@@ -68,6 +76,7 @@ class BoxRouterMessageHandler(object):
                 request = msg['data']['type']
                 reqId = msg['reqId']
                 clientId = msg['clientId']
+                user_id = msg['user_id']
                 data = msg['data']['payload']
 
                 method  = getattr(handler, request, None)
@@ -79,6 +88,7 @@ class BoxRouterMessageHandler(object):
                         wsClient.send(json.dumps({
                             'type': 'req_response',
                             'reqId': reqId,
+                            'user_id': user_id,
                             'data': result
                         }))
 

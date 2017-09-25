@@ -23,6 +23,9 @@ def networkManager():
         elif driver == 'MacDev':
             from astroprint.network.mac_dev import MacDevNetworkManager
             _instance = MacDevNetworkManager()
+        elif driver == 'FedoraDev':
+            from astroprint.network.fedora_dev import FedoraDevNetworkManager
+            _instance = FedoraDevNetworkManager()
         else:
             raise Exception('Invalid network manager: %s' % driver)
     return _instance
