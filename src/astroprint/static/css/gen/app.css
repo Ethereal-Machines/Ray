@@ -134,3 +134,19 @@ progress[value] {
 	font-size: 22px;
 	margin: 9px 0 28px;
 }
+
+/* Adding Styling to show up the dialog box */
+#print-file-info {
+	z-index: 1000;
+	position: absolute;
+	top: 50px;
+	left: 30%;
+}
+
+#print-file-info .dlg-content {
+	width: 400px;
+	text-align: center;
+	border: 1px solid black;
+	background-color: rgba(0, 0, 0, 0.87);
+	color: white;
+}

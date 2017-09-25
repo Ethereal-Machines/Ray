@@ -248,6 +248,8 @@ var AppRouter = Backbone.Router.extend({
     } else {
       var promise = $.Deferred();
 
+      // Creating the new instance of FilesView object passing the arguments
+      console.log(syncCloud);
       this.filesView = new FilesView({forceSync: syncCloud, syncCompleted: function(success) {
         if (success) {
           promise.resolve()

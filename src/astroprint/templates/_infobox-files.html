@@ -1,0 +1,56 @@
+<div id="confirm-print-model">
+	<!-- navigation bar -->
+	<nav id="confirm-print-nav">
+		<div class="wizard-name"></div>
+		<a href="#" class="back-button">Cancel</a>
+	</nav>
+	
+	<!-- file-details container -->
+	<div class="file-details">
+		<div class="file-format-img-container">
+			<img src="" alt="File Format" class="file-format-img" width="75.6" height="75.6">
+		</div>
+		<h2 class="file-name"><%= p.printFileName ? p.printFileName : p.name %></h2>
+		<div class="file-sub-name">
+			<%= p.printFileName ? p.printFileName : p.name %>
+		</div>
+	</div>
+
+	<!-- print-info container -->
+	<div class="print-info">
+		<% if (p.info) { %>
+			<div class="print-info__item">
+				<img src="" alt="Time-icon" class="print-info__item__icon" width="48" height="48">
+				<div class="time-heading">
+					<h3>Print Time</h3>
+					<% if (p.info.print_time) { %>
+						<p class="print-info__item__data"><%= time_format(p.info.print_time) %></p>
+					<% } %>
+				</div>
+			</div><!-- end of 'print-info__item' -->
+			<div class="print-info__item">
+				<img src="" alt="material-item" class="print-info__item__icon" width="48" height="48">
+				<div class="">
+					<h3>Number of Layers</h3>
+					<% if (p.info.layer_count) { %>
+						<p class="print-info__item__data"><%= p.info.layer_count %></p>
+					<% } %>
+				</div>
+			</div><!-- end of 'print-info__item' -->
+		<% } else { %>
+			<div class="print-info__no-details">
+				Analyzing G-Code
+			</div>
+		<% } %>
+	</div>
+
+	<!-- print-actions container -->
+	<div class="actions">
+		<% if (p.local_filename) { %>
+			<div class="loading-button">
+				<a href="#" class="remove idle">DELETE</a>
+				<a href="#" class="print">PRINT</a>
+			</div>
+		<% } %>
+	</div>
+</div>
