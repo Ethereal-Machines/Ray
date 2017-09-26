@@ -131,12 +131,12 @@ margin-top:20px !important;
   z-index: 3;
 }
 .Background {
-  background-image: url("/static/Background.png") !important;
+  /*background-image: url("/static/Background.png") !important;
   position: absolute;
   left: 0px;
   top: 0px;
   width: 800px;
-  height: 480px;
+  height: 480px;*/
   /*z-index: 2;  //remove this comment and add z-index:2 @last
 */}
 

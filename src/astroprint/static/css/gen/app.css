@@ -146,7 +146,6 @@ progress[value] {
 #print-file-info .dlg-content {
 	width: 400px;
 	text-align: center;
-	border: 1px solid black;
-	background-color: rgba(0, 0, 0, 0.87);
-	color: white;
+	background-color: white;
+	color: black;
 }

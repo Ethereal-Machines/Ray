@@ -1,50 +1,13 @@
-<div class="row heading">
-	<div class="small-12 title-heading">
-		<h1 class="bold">File Manager</h1>
-	</div>
-</div>
+
+<!-- navigation bar -->
+<nav id="internal-storage-nav">
+	<div class="wizard-name">Browse</div>
+	<a href="#utilities" class="internal-storage-nav__cancel-button">Cancel</a>
+</nav>
 
 <div class="design-list">
-
-	<!-- the 'StorageControlView' access 'list-header' div-->
-	<div class="row list-header">
-		<div class="small-12 medium-7 large-8 columns">
-			<h3 class="bold">Printable Files</h3>
-			{%- if user_email %}
-				<div class="loading-button sync">
-					<button class="tiny success radius sync"><i class="icon-refresh"></i> Sync</button>
-					<span class="tiny success button radius disabled loading"><i class="icon-refresh animate-spin"></i> Sync</span>
-				</div>
-			{%- endif %}
-		</div>
-		<div class="small-12 medium-5 large-4 columns">
-			<ul class="button-group radius even-2 storage">
-			  <li><a href="#" class="button small secondary local">Local</a></li>
-			  <li><a href="#" class="button small secondary cloud">Cloud</a></li>
-			</ul>
-		</div>
-	</div>
-
-<!-- 
-	This is the dialog box which opens up when we click the filemanger and
-	the files are being loaded from the local memory to display 
--->
-	<div class="row">
-		<div class="small-12 columns">
-      <div class="local-loading" align="center">
-        <i class="icon-refresh animate-spin"></i>
-        Loading files...
-      </div>
-
-      <!-- 
-				This div 'design-list-container' contains all the files name with
-				printing options
-       -->
-			<div class="design-list-container"></div>
-		</div>
-	</div>
+	<div class="design-list-container"></div>
 </div>
-
 
 <!-- 
 *********************
@@ -54,7 +17,6 @@
 
 <div id="print-file-info" class="reveal-modal xlarge" data-reveal>
 	<div class="dlg-content"></div>
-	<a class="close-reveal-modal">&#215;</a>
 </div>
 
 <!-- Template for the "#print-file-info" div -->
@@ -62,8 +24,8 @@
 	<div id="confirm-print-model">
 		<!-- navigation bar -->
 		<nav id="confirm-print-nav">
-			<div class="wizard-name"></div>
-			<a href="#" class="back-button">Cancel</a>
+			<div class="wizard-name">Browse</div>
+			<a href="#files" class="back-button">Back</a>
 		</nav>
 		
 		<!-- file-details container -->
@@ -123,12 +85,11 @@
 ****************************
  -->
 
-
 <!-- This template is being used for displaying the files from the local
 storage of the PI and will be used to show up the options to DELETE, DOWNLOAD
 and other options related to the files -->
 <script type="text/template" id="print-file-template">
-	<div class="small-2 large-1 columns left-section">
+	<div class="left-section">
 		<% if (p.images.thumbnail) { %>
 			<div class="thumb-container">
 				<img src="<%= p.images.thumbnail %>"/>
@@ -137,8 +98,8 @@ and other options related to the files -->
 			<i class="icon-3d-object"></i>
 		<% } %>
 	</div>
-	<div class="small-8 large-10 columns middle-section">
-    <h3 class="bold"> <%= p.name %></h3>
+	<div class="middle-section">
+    <h3 class="middle-section__heading"> <%= p.name %></h3>
     <%= size_format(p.size) %>
 		<% if (p.info) { %>
 			<% if (p.info.print_time) { %>
@@ -151,7 +112,7 @@ and other options related to the files -->
       · <i class="icon-calendar" title="Time Added"></i> <span data-localtime-format="d MMM, yyyy (h:mm a)"><%= new Date(p.uploaded_on * 1000).toISOString() %></span>
     <% } %>
 	</div>
-	<div class="small-2 large-1 columns right-section">
+	<div class="right-section">
 		<div class="print-file-options">
 			<% if (p.local_filename) { %>
 				<div class="loading-button print">

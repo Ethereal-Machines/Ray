@@ -16,7 +16,8 @@ var PrintFileInfoDialog = Backbone.View.extend({
   print_file_view: null,
   events: {
     'click .actions a.remove': 'onDeleteClicked',
-    'click .actions a.print': 'onPrintClicked'
+    'click .actions a.print': 'onPrintClicked',
+    'click .back-button': 'hideModel'
   },
   initialize: function(params)
   {
@@ -82,6 +83,11 @@ var PrintFileInfoDialog = Backbone.View.extend({
   {
     this.print_file_view.downloadClicked(e);
     this.$el.foundation('reveal', 'close');
+  },
+  hideModel: function() {
+    console.log("Back button is clicked");
+    console.log(this.$el);
+    this.$el.css('opacity', '0');
   }
 });
 
@@ -124,10 +130,6 @@ var PrintFileView = Backbone.View.extend({
       'click .left-section, .middle-section': 'infoClicked',
       // handeling the event when Print button is clicked
       'click a.print': 'printClicked',
-      // hadeling the event when Download button is clicked
-      'click a.download': 'downloadClicked',
-      // handeling the event when the CancelDownload button is clicked
-      'click a.dw-cancel': 'cancelDownloadClicked'
     });
   },
   // callback funtion to handle the Info Button clicked event
@@ -135,34 +137,10 @@ var PrintFileView = Backbone.View.extend({
   {
     if (evt) evt.preventDefault();
 
+    $("#print-file-info").css('opacity', '1');
+
     this.list.info_dialog.open(this);
   },
-
-  // callback function to handle the Dowload button clicked event
-  downloadClicked: function(evt)
-  {
-    if (evt) evt.preventDefault();
-
-    $.getJSON('/api/astroprint/print-files/'+this.print_file.get('id')+'/download')
-      .fail(function(){
-        noty({text: "There was an error starting the download.", timeout: 3000});
-      });
-  },
-
-  // callback function to handle the Cancel Download button clicked event
-  cancelDownloadClicked: function(evt)
-  {
-    evt.preventDefault();
-
-    $.ajax({
-      url: '/api/astroprint/print-files/'+this.print_file.get('id')+'/download',
-      method: 'DELETE'
-    })
-      .fail(function() {
-        noty({text: "Unable to cancel download.", timeout: 3000});
-      });
-  },
-
   // callback function to handle the Print button clicked event
   printClicked: function (evt)
   {
