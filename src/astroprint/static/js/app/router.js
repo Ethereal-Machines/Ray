@@ -13,6 +13,7 @@ var AppRouter = Backbone.Router.extend({
   filamentUnloadView: null,
   // adding print-from-storage view
   printFromStorageView: null,
+  preheatingView: null,
   settingsView: null,
   printingView: null,
   terminalView: null,
@@ -31,6 +32,8 @@ var AppRouter = Backbone.Router.extend({
     "filament-unload-wizard": "filamentUnload",
     // adding routes for the print-from-storage
     "print-from-storage": "printFromStorage",
+    // adding routes for the preheating view
+    "preheating": "preHeating",
     "printing": "printing",
     "settings": "settings",
     "utilities": "utilities",
@@ -136,6 +139,19 @@ var AppRouter = Backbone.Router.extend({
     }
 
     this.selectView(this.printFromStorageView);
+  },
+  /*
+    adding function to handle the routing for 'preheating'
+  */
+  preHeating: function() {
+    var self = this;
+    if(!this.preheatingView) {
+      this.preheatingView = new PreheatingView({
+        updatedTemp: this.updatedTemp
+      });
+    }
+
+    this.selectView(this.preheatingView);
   },
   printing: function()
   {
