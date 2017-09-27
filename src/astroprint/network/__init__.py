@@ -15,7 +15,7 @@ class NetworkManager(object):
     def isAstroprintReachable(self):
         try:
             urllib2.urlopen(
-                "%s/check" % settings().get(['cloudSlicer', 'apiHost']),
+                "%s/api/check/" % settings().get(['cloudSlicer', 'apiHost']),
                 timeout=1
             )
             return True
