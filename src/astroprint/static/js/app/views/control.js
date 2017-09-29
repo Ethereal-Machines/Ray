@@ -111,10 +111,21 @@ var ControlView = Backbone.View.extend({
   updateTemps: function(s, value){
     this.value = value;
     if (!this.$el.hasClass('hide')) {
-      this.tempView.updateBars(value);
+      if (this.tempView !== null) {
+        this.tempView.updateBars(value);
+      }
+    }
+
+    // Updating the Acutal and target temperature on the filament load and unload wizard
+    if (this.filamentLoadPreheatView !== null) {
+      this.filamentLoadPreheatView.updateBars(value);
+    }
+
+    if (this.filamentUnloadPreheatView !==null) {
+      this.filamentUnloadPreheatView.updateBars(value);
     }
   },
-  render: function(){
+  render: function() {
     this.onPausedChanged(app.socketData, app.socketData.get('paused'));
     this.changeTemplate();
   },

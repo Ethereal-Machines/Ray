@@ -2,6 +2,11 @@
 * Code by Kanishka Mohan Madhuni *
 **********************************/
 
+var TempFilamentLoadPreheatView = Backbone.View.extend({
+  el: '#filament-load-wizard__temp-control',
+  nozzleTempBar: null,
+  initialize: function(){ 
+
 var TempFilamentLoadPreheat = TempBarView.extend({
   containerDimensions: null,
   scale: null, // array of the values coming from the printer profile
@@ -31,9 +36,7 @@ var TempFilamentLoadPreheat = TempBarView.extend({
 var TempFilamentLoadPreheatView = Backbone.View.extend({
   el: '#filament-load-wizard__temp-control',
   nozzleTempBar: null,
-  initialize: function()
-  { 
-  	console.log("Yo Bro I am working fine yo");
+  initialize: function(){ 
     // creating the new instance for controlling the nozzle temp-bar
     this.nozzleTempBar = new TempBarVerticalView({
       scale: [0, app.printerProfile.get('max_nozzle_temp')],
@@ -49,8 +52,7 @@ var TempFilamentLoadPreheatView = Backbone.View.extend({
     this.nozzleTempBar.setMax(profile.max_nozzle_temp);
   },
   // this function is responsible for setting the nozzle and bed temperature
-  updateBars: function(value)
-  {
+  updateBars: function(value){
     if (value.extruder) {
       this.nozzleTempBar.setTemps(value.extruder.actual, value.extruder.target);
     }
@@ -61,7 +63,6 @@ var TempFilamentUnloadPreheatView = Backbone.View.extend({
   el: '#filament-unload-wizard__temp-control',
   nozzleTempBar: null,
   initialize: function(){ 
-  	console.log("Yo Bro I am working fine yo");
     // creating the new instance for controlling the nozzle temp-bar
     this.nozzleTempBar = new TempBarVerticalView({
       scale: [0, app.printerProfile.get('max_nozzle_temp')],
