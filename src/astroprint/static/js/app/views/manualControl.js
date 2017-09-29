@@ -14,9 +14,9 @@ var DistanceControl = Backbone.View.extend({
     'change .z-length-changed': 'zSelectedDistance'
   },
   /* Below we have set the default values for the x, y and z distance selector */
-  xSelected: 10,
-  ySelected: 10,
-  zSelected: 10,
+  xSelected: 5,
+  ySelected: 5,
+  zSelected: 5,
 
   /* Below functions will be triggered when the distance for the x, y or z get changed */
   xSelectedDistance: function(e) {
