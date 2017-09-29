@@ -11,7 +11,7 @@
   dragging: false,
   lastSent: null,
   events: _.extend(TempBarView.prototype.events, {
-    'click': 'onClicked'
+    // 'click': 'onClicked'
   }),
   setHandle: function(value)
   {
