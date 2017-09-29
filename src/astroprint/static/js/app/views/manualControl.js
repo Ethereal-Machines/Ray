@@ -22,17 +22,17 @@ var DistanceControl = Backbone.View.extend({
   xSelectedDistance: function(e) {
     var elem = $(e.target);
     this.xSelected = elem.val();
-    console.log("The value of the x is being changed to : " + this.xSelected);
+    // console.log("The value of the x is being changed to : " + this.xSelected);
   },
   ySelectedDistance: function(e) {
     var elem = $(e.target);
     this.ySelected = elem.val();
-    console.log("The vlaue of the y is being changed to : " + this.ySelected);
+    // console.log("The vlaue of the y is being changed to : " + this.ySelected);
   },
   zSelectedDistance: function(e) {
     var elem = $(e.target);
     this.zSelected = elem.val();
-    console.log("The value of the z is being changed to : " + this.zSelected);
+    // console.log("The value of the z is being changed to : " + this.zSelected);
   }
 });
 
@@ -115,41 +115,63 @@ var XYControlView = MovementControlView.extend({
     // this functionality will be added to all the buttons once tested on printer
     'mousedown .control_btn_x_plus': 'xPlusTapped',
     'mouseup .control_btn_x_plus': 'xPlusReleased',
-    'click .control_btn_x_minus': 'xMinusTapped',
-    'click .control_btn_y_plus': 'yPlusTapped',
-    'click .control_btn_y_minus': 'yMinusTapped',
+    'mousedown .control_btn_x_minus': 'xMinusTapped',
+    'mouseup .control_btn_x_minus' : 'xMinusReleased',
+    'mousedown .control_btn_y_plus': 'yPlusTapped',
+    'mouseup .control_btn_y_plus': 'yPlusReleased',
+    'mousedown .control_btn_y_minus': 'yMinusTapped',
+    'mouseup .control_btn_y_minus': 'yMinusReleased',
     'click .home_z': 'homeTapped'
   },
   init00: null,
 
   // call back functions for taking care of the click events on the control keys
-  xPlusTapped: function()
-  { 
+  xPlusTapped: function(){ 
     var self = this;
     this.init00 = setInterval(function() {
 
       self.sendJogCommand('x', 1, self.distanceControl.xSelected);
 
-    }, 50);
+    }, 300);
     // this.sendJogCommand('x', 1, this.distanceControl.xSelected);
   },
   xPlusReleased: function() {
     clearInterval(this.init00);
   },
-  xMinusTapped: function()
-  {
-    this.sendJogCommand('x', -1, this.distanceControl.xSelected);
+  xMinusTapped: function() {
+    var self = this;
+    this.init00 = setInterval(function() {
+
+      self.sendJogCommand('x', -1, self.distanceControl.xSelected);
+
+    }, 300);
   },
-  yPlusTapped: function()
-  {
-    this.sendJogCommand('y', 1, this.distanceControl.ySelected);
+  xMinusReleased: function() {
+    clearInterval(this.init00);
   },
-  yMinusTapped: function()
-  {
-    this.sendJogCommand('y', -1, this.distanceControl.ySelected);
+  yPlusTapped: function() {
+    var self = this;
+    this.init00 = setInterval(function() {
+
+      self.sendJogCommand('y', 1, self.distanceControl.ySelected);
+
+    }, 300);
   },
-  homeTapped: function()
-  {
+  yPlusReleased: function() {
+    clearInterval(this.init00);
+  },
+  yMinusTapped: function() {
+    var self = this;
+    this.init00 = setInterval(function() {
+
+      self.sendJogCommand('y', -1, self.distanceControl.ySelected);
+
+    }, 300);
+  },
+  yMinusReleased: function() {
+    clearInterval(this.init00);
+  },
+  homeTapped: function() {
     if (!app.socketData.get('paused')) {
       this.sendHomeCommand(['x', 'y']);
     }
@@ -159,20 +181,37 @@ var XYControlView = MovementControlView.extend({
 var ZControlView = MovementControlView.extend({
   el: '#z-controls',
   events: {
-    'click .control_btn_z_plus': 'zPlusTapped',
-    'click .control_btn_z_minus': 'zMinusTapped',
+    'mousedown .control_btn_z_plus': 'zPlusTapped',
+    'mouseup .control_btn_z_plus': 'zPlusReleased',
+    'mousedown .control_btn_z_minus': 'zMinusTapped',
+    'mouseup .control_btn_z_minus': 'zMinusReleased',
     'click .home_z': 'homeTapped'
   },
-  zPlusTapped: function()
-  {
-    this.sendJogCommand('z', 1, this.distanceControl.zSelected);
+  init00: null,
+  zPlusTapped: function() {
+    var self = this;
+    this.init00 = setInterval(function() {
+
+      self.sendJogCommand('z', 1, self.distanceControl.zSelected);
+
+    }, 300);
   },
-  zMinusTapped: function()
-  {
-    this.sendJogCommand('z', -1 , this.distanceControl.zSelected);
+  zPlusReleased: function() {
+    clearInterval(this.init00);
   },
-  homeTapped: function()
-  {
+  zMinusTapped: function() {
+    var self = this;
+    this.init00 = setInterval(function() {
+
+      self.sendJogCommand('z', -1 , self.distanceControl.zSelected);
+
+    }, 300);
+    // this.sendJogCommand('z', -1 , this.distanceControl.zSelected);
+  },
+  zMinusReleased: function() {
+    clearInterval(this.init00);
+  },
+  homeTapped: function() {
     if (!app.socketData.get('paused')) {
       this.sendHomeCommand('z');
     }
