@@ -7,7 +7,7 @@
 *********************/
 
 var DistanceControl = Backbone.View.extend({
-  el: '#distance-control',
+  el: '.distance-control',
   events: {
     'change .x-length-changed': 'xSelectedDistance',
     'change .y-length-changed': 'ySelectedDistance',
