@@ -147,28 +147,42 @@
 		{%- macro temp_control(class, label) %}
 	    <div class="temp-control-cont {{class}}">
 	      <!-- here we show the rising temperature -->
-	      <span class="current-temp-top">- -</span>
+	      <!-- <span class="current-temp-top">- -</span> -->
 	      <div class="temp-bar">
 	        <!-- here the 'bed' or 'nozzle' label will display based on the bar we are on -->
-	        <label class="">{{label}}</label>
+	        <label class="temp-bar-label">{{label}}</label>
 
 	        <div class="temp-target">
-	          <a class="temp-edit"><i class="icon-pencil"></i></a>
 	          <span class="target-value">- -</span>
-	          <input type="number" class="hide"/>
+	          <input type="number" class="target-value-input hide"/>
+	          <a class="temp-edit"><img src="{{ url_for('static',filename='img/preheating-utility/pencil-edit-button.svg') }}" width="20" height="20"></a>
 	        </div>
 	      </div>
 	    </div>
 		{%- endmacro %}
-		<div class="" id="temp-control">
-			  <div class="">
-			    {{ temp_control('nozzle', 'Nozzle')}}
-			  </div>
-			  <div class="">
-			    {{ temp_control('bed', 'Bed')}}
-			  </div>
-		</div><!-- end of "#temp-control" -->
-		<a href="#preheating">Switch to PREHEATING</a>
+
+		<div id="preheat-control">
+			<ul id="temp-control">
+				<li class="temp-control-items">
+					<img src="{{ url_for('static',filename='img/preheating-utility/extruder-1.svg') }}" width="96" height="96">
+					{{ temp_control('nozzle', 'Extruder 1')}}
+				</li>
+				<li class="temp-control-items">
+					<img src="{{ url_for('static',filename='img/preheating-utility/extruder-2.svg') }}" width="96" height="96">
+					{{ temp_control('nozzle', 'Extruder 2')}}
+				</li>
+				<li class="temp-control-items">
+					<img src="{{ url_for('static',filename='img/preheating-utility/bed-plate.svg') }}" width="96" height="96">
+					{{ temp_control('bed', 'Build Plate')}}
+				</li>
+			</ul>
+
+			<a href="#preheating" id="preheat-control-start-btn" class="next-button">START</a>
+		</div>
+
+
+
+		<!-- <a href="#preheating">Switch to PREHEATING</a> -->
 	</script>
 
 </div>
