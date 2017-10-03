@@ -15,7 +15,7 @@ var UtilityView = Backbone.View.extend({
   */
   getButtonName: function(e) {
     var el = $(e.currentTarget);
-    var className = el.find('img').attr('class');
+    var className = el.find('.control-link').attr('class').substring(13);
     ControlView.prototype.buttonName = className;
   }
 });  
