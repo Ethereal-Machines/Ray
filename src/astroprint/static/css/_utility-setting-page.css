@@ -1,0 +1,80 @@
+/*********************************
+* Code by Kanishka Mohan Madhuni *
+**********************************/
+
+/* Common code goes here */
+
+#settings-page-links,
+#utility-page-links {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	flex-shrink: 0;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	height: 424px;
+}
+
+#utility-page-links a,
+#settings-page-links a {
+	display: block;
+	width: 100%;
+	height: 100%;
+	text-decoration: none;
+	color: black;
+}
+
+#utility-page-links a:hover,
+#settings-page-links a:hover {
+	text-decoration: none;
+	color: black;
+}
+
+.settings-page-links__link-item,
+.utility-page-links__link-item {
+	position: relative;
+	width: 372px;
+	height: 184px;
+	border-radius: 10px;
+	background-color: #BBBBBB;
+}
+
+.settings-page-links__link-item--top-left,
+.utility-page-links__link-item--top-left {
+	margin: 24px 8px 8px 24px;
+}
+
+.settings-page-links__link-item--top-right,
+.utility-page-links__link-item--top-right {
+	margin: 24px 24px 8px 0;
+}
+
+.settings-page-links__link-item--bottom-left,
+.utility-page-links__link-item--bottom-left {
+	margin: 0 8px 24px 24px;
+}
+
+.settings-page-links__link-item--bottom-right,
+.utility-page-links__link-item--bottom-right {
+	margin: 0 24px 24px 0;
+}
+
+.control-link__img-heading-container,
+.setting-link__img-heading-container {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	text-align: center;
+}
+
+.utility-link-heading,
+.setting-link-heading {
+	font-size: 24px;
+	font-weight: 500;
+	text-transform: uppercase;
+	margin: 0;
+	padding: 18px 0;
+}
