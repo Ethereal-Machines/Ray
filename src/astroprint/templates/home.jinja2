@@ -2,29 +2,29 @@
 
 {% block homenav %}
 	<ul id="home-page-links">
-		<li class="home-page-links__link-item">
+		<li class="home-page-links__link-item home-page-links__link-item--left">
 			<a href="#print-from-storage" class="print-from-storage-link">
 				<div class="print-from-storage-link__img-heading-container">
 					<img src="{{ url_for('static', filename='img/home-page/print-storage-icon.svg') }}" alt="" width="96" height="96">
-					<h2>Print From Storage</h2>
+					<h2 class="link-heading link-heading--more-padding">Print From Storage</h2>
 				</div>
 			</a>
 		</li>
-		<li class="home-page-links__link-item">
+		<li class="home-page-links__link-item home-page-links__link-item--right">
 			<ul class="home-page-links__link-item__sub-links">
-				<li class="home-page-links__link-item__sub-links__sub-link-item">
+				<li class="home-page-links__link-item__sub-links__sub-link-item home-page-links__link-item__sub-links__sub-link-item--up">
 					<a href="#settings" class="settings-link">
 						<div class="settings-link__img-heading-container">
 							<img src="{{ url_for('static', filename='img/home-page/settings-icon.svg') }}" alt="" width="96" height="96">
-							<h2>Settings</h2>
+							<h2 class="link-heading link-heading--less-padding">Settings</h2>
 						</div>
 					</a>
 				</li>
-				<li class="home-page-links__link-item__sub-links__sub-link-item">
+				<li class="home-page-links__link-item__sub-links__sub-link-item home-page-links__link-item__sub-links__sub-link-item--down">
 					<a href="#utilities" class="utilities-link">
 						<div class="utilities-link__img-heading-container">
 							<img src="{{ url_for('static', filename='img/home-page/utilities-icon.svg') }}" alt="" width="96" height="96">
-							<h2>Utilities</h2>
+							<h2 class="link-heading link-heading--less-padding">Utilities</h2>
 						</div>
 					</a>
 				</li>
