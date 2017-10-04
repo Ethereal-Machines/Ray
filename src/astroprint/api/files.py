@@ -341,6 +341,17 @@ def copy_from_usb():
     })
 
 
+@api.route("/files/usbinfo")
+@api.route("/files/usbinfo/")
+def usb_file_info():
+    ''' Get file info which is Currently in usb '''
+
+    filename = flask.request.args.get('filename')
+    filepath = flask.request.args.get('filepath')
+    data = _getFileDetails('local', filepath)
+    return flask.jsonify(data)
+
+
 # @api.route("/files/printusb")
 # @api.route("/files/printusb/")
 # def print_from_usb():
