@@ -306,9 +306,9 @@ def deletePrintFile(filename, target):
 def get_files_from_usb():
     s = settings()
     files = s.get(['usb', 'filelist'])
-    d = {}
+    d = []
     for i in range(len(files)):
-        d[i] = files[i]
+        d.append(files[i])
     return flask.jsonify(d)
 
 
