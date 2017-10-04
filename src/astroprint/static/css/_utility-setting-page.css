@@ -4,6 +4,10 @@
 
 /* Common code goes here */
 
+.back-to-home {
+	height: 56px !important;
+}
+
 #settings-page-links,
 #utility-page-links {
 	display: flex;

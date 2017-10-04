@@ -27,14 +27,14 @@
 }
 
 .printer-name {
-	width: 30%;
+	width: 45%;
 	font-size: 26px;
 	padding: 13px 30px;
 }
 
 .home-nav-container__icon-list {
 	justify-content: flex-end;
-	width: 70%;
+	width: 55%;
 	height: 56px;
 }
 
