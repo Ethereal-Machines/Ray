@@ -1,8 +1,13 @@
-/*
- *  (c) AstroPrint Product Team. 3DaGoGo, Inc. (product@astroprint.com)
- *
- *  Distributed under the GNU Affero General Public License http://www.gnu.org/licenses/agpl.html
- */
+/******************************************
+* Code modified by Kanishka Mohan Madhuni *
+*******************************************/
+
+/***********
+* Changes: *
+************
+1) Code for the PrintFileInfoDialog has been changed as per the new UI requirements
+2) Code realted to the Uploading items from the local machines have been removed
+*/
 
 var PrintFileInfoDialog = Backbone.View.extend({
   el: '#print-file-info',
@@ -12,10 +17,11 @@ var PrintFileInfoDialog = Backbone.View.extend({
   events: {
     'click .actions a.remove': 'onDeleteClicked',
     'click .actions a.print': 'onPrintClicked',
-    'click .actions a.download': 'onDownloadClicked'
+    'click .back-button': 'hideModel'
   },
   initialize: function(params)
   {
+    console.log("PrintFileInfoDialog is being initialized");
     this.file_list_view = params.file_list_view;
   },
   render: function()
@@ -71,109 +77,17 @@ var PrintFileInfoDialog = Backbone.View.extend({
   onPrintClicked: function(e)
   {
     this.print_file_view.printClicked(e);
-    this.$el.foundation('reveal', 'close');
+    // this.$el.foundation('reveal', 'close');
+    this.$el.css('display', 'none');
   },
   onDownloadClicked: function(e)
   {
     this.print_file_view.downloadClicked(e);
-    this.$el.foundation('reveal', 'close');
-  }
-});
-
-var FileUploadFiles = FileUploadCombined.extend({
-  progressBar: null,
-  buttonContainer: null,
-  initialize: function(options)
-  {
-    this.progressBar = options.progressBar;
-    this.buttonContainer = options.buttonContainer;
-
-    FileUploadCombined.prototype.initialize.call(this, options);
+    // this.$el.foundation('reveal', 'close');
+    this.$el.css('display', 'none');
   },
-  started: function(data)
-  {
-    if (data.files && data.files.length > 0) {
-      this.buttonContainer.hide();
-      this.progressBar.show();
-      FileUploadCombined.prototype.started.call(this, data);
-    }
-  },
-  progress: function(progress, message)
-  {
-    var intPercent = Math.round(progress);
-
-    this.progressBar.find('.meter').css('width', intPercent+'%');
-    if (!message) {
-      message = "Uploading ("+intPercent+"%)";
-    }
-    this.progressBar.find('.progress-message span').text(message);
-  },
-  onError: function(type, error)
-  {
-    var message = error;
-
-    switch(error) {
-      //case 'invalid_data':
-      //case 'http_error_400':
-      //break;
-
-      case 'http_error_401':
-        message = 'An AstroPrint account is needed to upload designs';
-        $('#login-modal').foundation('reveal', 'open');
-      break;
-
-      case null:
-        message = 'There was an error uploading your file';
-      break;
-    }
-
-    noty({text: message, timeout: 3000});
-    this.resetUploadArea();
-    console.error(error);
-  },
-  onPrintFileUploaded: function()
-  {
-    this.resetUploadArea();
-  },
-  resetUploadArea: function()
-  {
-    this.progressBar.hide();
-    this.buttonContainer.show();
-    this.progress(0);
-  }
-});
-
-var UploadView = Backbone.View.extend({
-  uploadBtn: null,
-  progressBar: null,
-  buttonContainer: null,
-  initialize: function(options)
-  {
-    this.progressBar = this.$('.upload-progress');
-    this.buttonContainer = this.$('.upload-buttons');
-
-    this.uploadBtn = new FileUploadFiles({
-      el: "#files-view .file-upload-view .file-upload",
-      progressBar: this.$('.upload-progress'),
-      buttonContainer: this.$('.file-upload-button'),
-      dropZone: options.dropZone
-    });
-
-    this.render();
-  },
-  render: function()
-  {
-    var buttonContainer = this.$('.file-upload-button');
-
-    if (app.printerProfile.get('driver') == 's3g') {
-      buttonContainer.find('.extensions').text('stl, x3g');
-      buttonContainer.find('input').attr('accept', '.stl, .x3g');
-    } else {
-      buttonContainer.find('.extensions').text('stl, gcode');
-      buttonContainer.find('input').attr('accept', '.stl, .gcode, .gco');
-    }
-
-    this.uploadBtn.refreshAccept();
+  hideModel: function() {
+    this.$el.css('display', 'none !important');
   }
 });
 
@@ -185,12 +99,15 @@ var PrintFileView = Backbone.View.extend({
   downloadProgress: null,
   initialize: function(options)
   {
+    console.log("PrintFileView is being initialized");
     this.list = options.list;
     this.print_file = options.print_file;
   },
   render: function()
   {
     var print_file = this.print_file.toJSON();
+
+    console.log(print_file);
 
     if (print_file.local_filename) {
       this.$el.removeClass('remote');
@@ -204,6 +121,8 @@ var PrintFileView = Backbone.View.extend({
 
     this.$el.empty();
     this.downloadProgress = null;
+
+    /* Adding the template to the div, passing the details*/
     this.$el.html(this.template({
       p: print_file,
       time_format: app.utils.timeFormat,
@@ -211,39 +130,22 @@ var PrintFileView = Backbone.View.extend({
     }));
 
     this.delegateEvents({
+      // 'infoClicked function will display the informations regarding the files being clicked'
       'click .left-section, .middle-section': 'infoClicked',
+      // handeling the event when Print button is clicked
       'click a.print': 'printClicked',
-      'click a.download': 'downloadClicked',
-      'click a.dw-cancel': 'cancelDownloadClicked'
     });
   },
+  // callback funtion to handle the Info Button clicked event
   infoClicked: function(evt)
   {
     if (evt) evt.preventDefault();
 
+    $("#print-file-info").css('display', 'block');
+
     this.list.info_dialog.open(this);
   },
-  downloadClicked: function(evt)
-  {
-    if (evt) evt.preventDefault();
-
-    $.getJSON('/api/astroprint/print-files/'+this.print_file.get('id')+'/download')
-      .fail(function(){
-        noty({text: "There was an error starting the download.", timeout: 3000});
-      });
-  },
-  cancelDownloadClicked: function(evt)
-  {
-    evt.preventDefault();
-
-    $.ajax({
-      url: '/api/astroprint/print-files/'+this.print_file.get('id')+'/download',
-      method: 'DELETE'
-    })
-      .fail(function() {
-        noty({text: "Unable to cancel download.", timeout: 3000});
-      });
-  },
+  // callback function to handle the Print button clicked event
   printClicked: function (evt)
   {
     if (evt) evt.preventDefault();
@@ -292,6 +194,7 @@ var StorageControlView = Backbone.View.extend({
   selected: null,
   initialize: function(options)
   {
+    console.log("StorageControlView is being initialized");
     this.print_file_view = options.print_file_view;
   },
   selectStorage: function(storage)
@@ -330,6 +233,7 @@ var PrintFilesListView = Backbone.View.extend({
     'click .list-header button.sync': 'forceSync'
   },
   initialize: function(options) {
+    console.log("PrintFilesListView is being initialized");
     this.file_list = new PrintFileCollection();
     this.info_dialog = new PrintFileInfoDialog({file_list_view: this});
     this.storage_control_view = new StorageControlView({
@@ -455,6 +359,7 @@ var PrintFilesListView = Backbone.View.extend({
           if (!print_file_view.downloadProgress) {
             var progress = progressContainer.find('.download-progress');
 
+            // using jquery-circle-progress Plugin to display the progress
             print_file_view.downloadProgress = progress.circleProgress({
               value: 0,
               animation: false,
@@ -544,67 +449,25 @@ var PrintFilesListView = Backbone.View.extend({
 
 var FilesView = Backbone.View.extend({
   el: '#files-view',
-  uploadView: null,
   printFilesListView: null,
   events: {
     'show': 'onShow'
   },
-  initialize: function(options)
-  {
-    this.uploadView = new UploadView({
-      el: this.$el.find('.file-upload-view'),
-      dropZone: this.$el
-    });
+  initialize: function(options){
+    // Initializing the PrintFilesListView and passing the params
     this.printFilesListView = new PrintFilesListView({
       el: this.$el.find('.design-list'),
-      forceSync: options.forceSync,
-      syncCompleted: options.syncCompleted
+      forceSync: options.forceSync, // taking the values from the options parameter
+      syncCompleted: options.syncCompleted // taking the values from the options parameter
     });
 
     this.listenTo(app.printerProfile, 'change:driver', this.onDriverChanged);
   },
-  refreshPrintFiles: function()
-  {
-    var promise = $.Deferred();
-    this.printFilesListView.refresh(true, function(success) {
-      if (success) {
-        promise.resolve();
-      } else {
-        promise.reject('unable_to_refresh');
-      }
-    });
-
-    return promise;
-  },
-  fileInfo: function(fileId)
-  {
-    var view = _.find(this.printFilesListView.print_file_views, function(v) {
-      return v.print_file.get('id') == fileId;
-    });
-
-    this.printFilesListView.storage_control_view.selectStorage('cloud');
-    this.showFileInfoView(view);
-  },
-  fileInfoByName: function(name)
-  {
-    var view = _.find(this.printFilesListView.print_file_views, function(v) {
-      return v.print_file.get('name') == name;
-    });
-
-    this.showFileInfoView(view);
-  },
-  showFileInfoView: function(view)
-  {
-    if (view) {
-      view.infoClicked();
-    }
-  },
-  onShow: function()
-  {
+  onShow: function(){
     this.printFilesListView.refresh(false);
   },
-  onDriverChanged: function()
-  {
+  // this function is the callback function for the event is Driver changes
+  onDriverChanged: function(){
     this.uploadView.render();
     this.printFilesListView.refresh(true);
   }

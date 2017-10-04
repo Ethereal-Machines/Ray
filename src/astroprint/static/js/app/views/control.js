@@ -1,105 +1,31 @@
-/*
- *  (c) 3DaGoGo, Inc. (product@astroprint.com)
- *
- *  Distributed under the GNU Affero General Public License http://www.gnu.org/licenses/agpl.html
- */
+/****************************************
+* Code edited by Kanishka Mohan Madhuni *
+*****************************************/
 
 var TempBarVerticalView = TempBarView.extend({
   containerDimensions: null,
-  scale: null,
+  scale: null, // array of the values coming from the printer profile
   type: null,
   dragging: false,
+  // adding 'value' property to hold the object when the temperature updates
+  value: null,
   events: _.extend(TempBarView.prototype.events, {
-    'click .temp-bar': 'onClicked',
     'click button.temp-off': 'turnOff'
   }),
-  setHandle: function(value)
-  {
+  setHandle: function(value){
     if (!this.dragging) {
-      var position = this._temp2px(value);
       var handle = this.$el.find('.temp-target');
-
-      handle.css({transition: 'top 0.5s'});
-      handle.css({top: position + 'px'});
-      handle.find('span.target-value').text(value);
-      setTimeout(function() {
-        handle.css({transition: ''});
-      }, 800);
+      handle.find('span.target-value').html(value + " &deg;C");
     }
   },
-  onTouchMove: function(e)
-  {
-    if (this.dragging) {
-      e.preventDefault();
-      e.stopPropagation();
-      var target = this.$('.temp-target');
-
-      if (e.type == 'mousemove') {
-        var pageY = e.originalEvent.pageY;
-      } else {
-        var pageY = e.originalEvent.changedTouches[0].clientY + $(document).scrollTop();
-      }
-
-      var newTop = pageY - this.containerDimensions.top - target.innerHeight()/2.0;
-
-      newTop = Math.min(Math.max(newTop, 0), this.containerDimensions.maxTop );
-
-      target.css({top: newTop+'px'});
-      target.find('span.target-value').text(this._px2temp(newTop));
-    }
-  },
-  onClicked: function(e)
-  {
-    e.preventDefault();
-    var target = this.$el.find('.temp-target');
-    var newTop = e.pageY - this.containerDimensions.top - target.innerHeight()/2.0;
-
-    newTop = Math.min( Math.max(newTop, 0), this.containerDimensions.maxTop );
-
-    var temp = this._px2temp(newTop);
-
-    this.setHandle(temp);
-    this._sendToolCommand('target', this.type, temp);
-  },
-  onResize: function()
-  {
-    var container = this.$el.find('.temp-bar');
-    var handle = container.find('.temp-target');
-    var label = container.find('label');
-
-    var height = container.height();
-    var maxTop = height - handle.innerHeight() - label.innerHeight();
-
-    this.containerDimensions = {
-      top: container.offset().top,
-      height: height,
-      maxTop: maxTop,
-      px4degree: maxTop / (this.scale[1] - this.scale[0])
-    };
-  },
-  renderTemps: function(actual, target)
-  {
-    var handleHeight = this.$el.find('.temp-target').innerHeight();
-
+  renderTemps: function(actual, target){
     if (actual !== null) {
-      this.$el.find('.current-temp-top').html(Math.round(actual)+'&deg;');
-      this.$el.find('.current-temp').css({top: (this._temp2px(actual) + handleHeight/2 )+'px'});
+      // this.$el.find('.current-temp-top').html(Math.round(actual)+'&deg;');
     }
-
     if (target !== null) {
       this.setHandle(Math.min(Math.round(target), this.scale[1]));
     }
   },
-  _temp2px: function(temp)
-  {
-    var px = temp * this.containerDimensions.px4degree;
-
-    return this.containerDimensions.maxTop - px;
-  },
-  _px2temp: function(px)
-  {
-    return Math.round( ( (this.containerDimensions.maxTop - px) / this.containerDimensions.px4degree ) );
-  }
 });
 
 var TempView = Backbone.View.extend({
@@ -107,36 +33,38 @@ var TempView = Backbone.View.extend({
   nozzleTempBar: null,
   bedTempBar: null,
   initialize: function()
-  {
+  { 
+    // creating the new instance for controlling the nozzle temp-bar
     this.nozzleTempBar = new TempBarVerticalView({
       scale: [0, app.printerProfile.get('max_nozzle_temp')],
       el: this.$el.find('.temp-control-cont.nozzle'),
       type: 'tool0'
     });
+
+    // creating the new instance for controlling the bed temp-bar
     this.bedTempBar = new TempBarVerticalView({
       scale: [0, app.printerProfile.get('max_bed_temp')],
       el: this.$el.find('.temp-control-cont.bed'),
       type: 'bed'
     });
+
+    this.render();
   },
-  render: function()
-  {
+  render: function(){
     var profile = app.printerProfile.toJSON();
 
+    // here we are setting the nozzleTempBar temperature to the max-nozzle-temp from the 'printerProfile'
     this.nozzleTempBar.setMax(profile.max_nozzle_temp);
 
     if (profile.heated_bed) {
+      // setting the bed temperature to the max-bed-temp form the printerprofile
       this.bedTempBar.setMax(profile.max_bed_temp);
       this.bedTempBar.$el.removeClass('disabled');
     } else {
       this.bedTempBar.$el.addClass('disabled');
     }
   },
-  resetBars: function()
-  {
-    this.nozzleTempBar.onResize();
-    this.bedTempBar.onResize();
-  },
+  // this function is responsible for setting the nozzle and bed temperature
   updateBars: function(value)
   {
     if (value.extruder) {
@@ -149,312 +77,99 @@ var TempView = Backbone.View.extend({
   }
 });
 
-var DistanceControl = Backbone.View.extend({
-  el: '#distance-control',
-  selected: 10,
-  events: {
-    'click button': 'selectDistance'
-  },
-  selectDistance: function(e)
-  {
-    var el = $(e.currentTarget);
-    this.$el.find('.success').removeClass('success').addClass('secondary');
-    el.addClass('success').removeClass('secondary');
-    this.selected = el.attr('data-value');
-  }
-});
-
-var MovementControlView = Backbone.View.extend({
-  distanceControl: null,
-  printerProfile: null,
-  initialize: function(params)
-  {
-    this.distanceControl = params.distanceControl;
-  },
-  sendJogCommand: function(axis, multiplier, distance)
-  {
-    if (typeof distance === "undefined")
-      distance = 10;
-
-    var data = {
-      "command": "jog"
-    }
-    data[axis] = distance * multiplier;
-
-    $.ajax({
-      url: API_BASEURL + "printer/printhead",
-      type: "POST",
-      dataType: "json",
-      contentType: "application/json; charset=UTF-8",
-      data: JSON.stringify(data)
-    });
-  },
-  sendHomeCommand: function(axis)
-  {
-    var data = {
-      "command": "home",
-      "axes": axis
-    }
-
-    $.ajax({
-      url: API_BASEURL + "printer/printhead",
-      type: "POST",
-      dataType: "json",
-      contentType: "application/json; charset=UTF-8",
-      data: JSON.stringify(data)
-    });
-  }
-});
-
-var XYControlView = MovementControlView.extend({
-  el: '#xy-controls',
-  events: {
-    'click .control_btn_x_plus': 'xPlusTapped',
-    'click .control_btn_x_minus': 'xMinusTapped',
-    'click .control_btn_y_plus': 'yPlusTapped',
-    'click .control_btn_y_minus': 'yMinusTapped',
-    'click .home_z': 'homeTapped'
-  },
-  xPlusTapped: function()
-  {
-    this.sendJogCommand('x', 1, this.distanceControl.selected);
-  },
-  xMinusTapped: function()
-  {
-    this.sendJogCommand('x', -1, this.distanceControl.selected);
-  },
-  yPlusTapped: function()
-  {
-    this.sendJogCommand('y', 1, this.distanceControl.selected);
-  },
-  yMinusTapped: function()
-  {
-    this.sendJogCommand('y', -1, this.distanceControl.selected);
-  },
-  homeTapped: function()
-  {
-    if (!app.socketData.get('paused')) {
-      this.sendHomeCommand(['x', 'y']);
-    }
-  }
-});
-
-var ZControlView = MovementControlView.extend({
-  el: '#z-controls',
-  events: {
-    'click .control_btn_z_plus': 'zPlusTapped',
-    'click .control_btn_z_minus': 'zMinusTapped',
-    'click .home_z': 'homeTapped'
-  },
-  zPlusTapped: function()
-  {
-    this.sendJogCommand('z', 1, this.distanceControl.selected);
-  },
-  zMinusTapped: function()
-  {
-    this.sendJogCommand('z', -1 , this.distanceControl.selected);
-  },
-  homeTapped: function()
-  {
-    if (!app.socketData.get('paused')) {
-      this.sendHomeCommand('z');
-    }
-  }
-});
-
 var ExtrusionControlView = Backbone.View.extend({
-  el: '#extrusion-control',
-  template: null,
-  events: {
-    'click .extrude': 'extrudeTapped',
-    'click .retract': 'retractTapped',
-    'change .extrusion-length': 'lengthChanged',
-    'change .extrusion-speed': 'speedChanged',
-    'keydown input.back-to-select': 'onKeyDownBackToSelect'
-  },
-  initialize: function()
-  {
-    this.template = _.template( this.$("#extruder-switch-template").html() );
-  },
-  render: function()
-  {
-    var printer_profile = app.printerProfile.toJSON();
-
-    this.$('.row.extruder-switch').html(this.template({
-      profile: printer_profile
-    }));
-
-    if (printer_profile.extruder_count > 1) {
-      this.events['change .extruder-number'] = "extruderChanged";
-    }
-
-    this.delegateEvents(this.events);
-  },
-  extrudeTapped: function()
-  {
-    if (this._checkAmount()) {
-      this._sendExtrusionCommand(1);
-    }
-  },
-  retractTapped: function()
-  {
-    if (this._checkAmount()) {
-      this._sendExtrusionCommand(-1);
-    }
-  },
-  lengthChanged: function(e)
-  {
-    var elem = $(e.target);
-
-    if (elem.val() == 'other') {
-      elem.addClass('hide');
-      this.$('.other-length').removeClass('hide').find('input').focus().select();
-    } else {
-      this.$('input[name="extrusion-length"]').val(elem.val());
-    }
-  },
-  speedChanged: function(e)
-  {
-    var elem = $(e.target);
-
-    if (elem.val() == 'other') {
-      elem.addClass('hide');
-      this.$('.other-speed').removeClass('hide').find('input').focus().select();
-    } else {
-      this.$('input[name="extrusion-speed"]').val(elem.val());
-    }
-  },
-  extruderChanged: function(e)
-  {
-    this._sendChangeToolCommand($(e.target).val())
-  },
-  onKeyDownBackToSelect: function(e)
-  {
-    if (e.keyCode == 27) { //ESC Key
-      var target = $(e.currentTarget);
-      var select = target.closest('div.select-with-text').find('select');
-
-      //Find out the default value. Middle one
-      var defaultValue = select.find('option[default]').val();
-
-      target.closest('.row').addClass('hide');
-      target.val(defaultValue);
-      select.removeClass('hide').val(defaultValue);
-    }
-  },
-  _sendChangeToolCommand: function(tool)
-  {
-    var data = {
-      command: "select",
-      tool: 'tool'+tool
-    }
-
-    $.ajax({
-      url: API_BASEURL + "printer/tool",
-      type: "POST",
-      dataType: "json",
-      contentType: "application/json; charset=UTF-8",
-      data: JSON.stringify(data)
-    });
-  },
-  _checkAmount: function()
-  {
-    return !isNaN(this.$el.find('input[name="extrusion-length"]').val());
-  },
-  _sendExtrusionCommand: function(direction)
-  {
-    var data = {
-      command: "extrude",
-      amount: parseFloat(this.$('input[name="extrusion-length"]').val() * direction),
-      speed: parseFloat(this.$('input[name="extrusion-speed"]').val())
-    }
-
-    var extruder = this.$('select.extruder-number').val();
-
-    if (extruder) {
-      data['tool'] = 'tool'+extruder;
-    }
-
-    $.ajax({
-      url: API_BASEURL + "printer/tool",
-      type: "POST",
-      dataType: "json",
-      contentType: "application/json; charset=UTF-8",
-      data: JSON.stringify(data)
-    });
-  }
+  el: "#extrusion-control",
+  initialize: function() {},
+  render: function() {}
 });
 
-var FanControlView = Backbone.View.extend({
-  el: '#temp-control .fan-control',
-  events: {
-    'click button.fan-on': "fanOn",
-    'click button.fan-off': "fanOff"
-  },
-  fanOn: function()
-  {
-    this._setFanSpeed(255);
-    this.$('.fan_icon').addClass('animate-spin');
-  },
-  fanOff: function()
-  {
-    this._setFanSpeed(0);
-    this.$('.fan_icon').removeClass('animate-spin');
-  },
-  _setFanSpeed: function(speed)
-  {
-    var data = {
-      command: "set",
-      tool: 0,
-      speed: speed
-    }
 
-    $.ajax({
-      url: API_BASEURL + "printer/fan",
-      type: "POST",
-      dataType: "json",
-      contentType: "application/json; charset=UTF-8",
-      data: JSON.stringify(data)
-    });
-  }
-});
-
+// This 'view' will initialize all the parent views in the
+// 'control-view' section
+// this 'ControlView' ConstructorFunction will be called through the 'router.js' file
 var ControlView = Backbone.View.extend({
   el: '#control-view',
   events: {
     'click .back-to-print button': 'resumePrinting',
-    'show': 'render'
-  },
+    'show': 'render',
+    'click a.load-filament-link': 'startPreheatingLoad',
+    'click a.unload-filament-link': 'startPreheatingUnload'
+  }, // 'back-to-print' class is used to resume the printing
+  template: null,
   tempView: null,
   distanceControl: null,
   xyControlView: null,
   zControlView: null,
   extrusionView: null,
   fanView: null,
-  initialize: function()
-  {
-    this.tempView = new TempView();
-    this.distanceControl = new DistanceControl();
-    this.xyControlView = new XYControlView({distanceControl: this.distanceControl});
-    this.zControlView = new ZControlView({distanceControl: this.distanceControl});
-    this.extrusionView = new ExtrusionControlView();
-    this.fanView = new FanControlView();
-
+  filamentLoadPreheatView: null,
+  filamentUnloadPreheatView: null,
+  initialize: function(options){
     this.listenTo(app.socketData, 'change:temps', this.updateTemps);
     this.listenTo(app.socketData, 'change:paused', this.onPausedChanged);
   },
-  updateTemps: function(s, value)
-  {
+  updateTemps: function(s, value){
+    this.value = value;
     if (!this.$el.hasClass('hide')) {
-      this.tempView.updateBars(value);
+      if (this.tempView !== null) {
+        this.tempView.updateBars(value);
+      }
+    }
+
+    // Updating the Acutal and target temperature on the filament load and unload wizard
+    if (this.filamentLoadPreheatView !== null) {
+      this.filamentLoadPreheatView.updateBars(value);
+    }
+
+    if (this.filamentUnloadPreheatView !==null) {
+      this.filamentUnloadPreheatView.updateBars(value);
     }
   },
-  render: function()
-  {
+  render: function() {
     this.onPausedChanged(app.socketData, app.socketData.get('paused'));
+    this.changeTemplate();
+  },
+  startPreheatingLoad: function() {
+    this.filamentLoadPreheatView = new TempFilamentLoadPreheatView();
+  },
+  startPreheatingUnload: function() {
+    this.filamentUnloadPreheatView = new TempFilamentUnloadPreheatView();
+  },
+  // function for checking validating and rendering the selected template
+  changeTemplate: function() {
+    /* Added conditions to render the particular Utility based on the click from Utility page */
 
-    this.extrusionView.render();
-    this.tempView.render();
+    if (this.buttonName === "Manual_Controls_Button") {
+
+      this.setTemplate(this.$("#xyz-controls-template").html(), null);
+      this.distanceControl = new DistanceControl();
+      this.xyControlView = new XYControlView({distanceControl: this.distanceControl});
+      this.zControlView = new ZControlView({distanceControl: this.distanceControl});
+
+    } else if (this.buttonName === "Filament_Button"){
+
+      this.setTemplate(this.$("#filament-template").html(), {profile: app.printerProfile.toJSON()});
+      this.extrusionView = new ExtrusionControlView();
+
+    } else if (this.buttonName === "Level_Bed_Button") {
+
+      this.setTemplate( "<h1 align='center'> No template for the Automatic Bed Levling </h1>", null);
+
+    } else if (this.buttonName === "Preheat_Button"){
+
+      this.setTemplate( this.$("#pre-heat-template").html(), null);
+      this.tempView = new TempView();
+    }
+  },
+  /*
+    function to set the template of Control View.
+    The 'params' argument is the JSON object which we want to use in the template/child template.
+    We will need to pass the model object in the parent object itself if we want to catch the
+    values in the 'child' template
+  */
+  setTemplate: function(template, params) {
+    this.template = _.template(template); 
+    this.$('#manual-container').html(this.template(params));
   },
   resumePrinting: function(e)
   {

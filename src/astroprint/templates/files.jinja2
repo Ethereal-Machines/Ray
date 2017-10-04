@@ -1,142 +1,97 @@
-<!--div class="row heading">
-	<div class="small-12 title-heading">
-		<h1 class="bold">File Manager</h1>
-	</div>
-</div-->
 
-<div class="file-upload-view">
-	<div class="row upload-buttons">
-		<div class="small-12 medium-7 large-4 medium-centered columns">
-			<span class="file-upload-button button success radius expand" style="margin-bottom: 10px">
-				<i class="icon-upload-cloud-1"></i> Upload File ( <span class="extensions"></span> )
-				<input class="file-upload" type="file" name="file" accept="">
-			</span>
-		</div>
-	</div>
-	<div class="row upload-progress" style="display:none">
-		<div class="small-12 large-10 large-centered columns">
-			<div class="progress radius">
-				<div class="meter" style="width: 0%"></div>
-			</div>
-			<div class="progress-message" align="center">
-				<i class="icon-rocket-spinner animate-spin"></i> <span></span>
-			</div>
-		</div>
-	</div>
-</div>
-
-<hr/>
+<!-- navigation bar -->
+<nav id="internal-storage-nav">
+	<div class="wizard-name">Browse</div>
+	<a href="#utilities" class="internal-storage-nav__cancel-button">Cancel</a>
+</nav>
 
 <div class="design-list">
-	<div class="row list-header">
-		<div class="small-12 medium-7 large-8 columns">
-			<h3 class="bold">Printable Files</h3>
-			{%- if user_email %}
-				<div class="loading-button sync">
-					<button class="tiny success radius sync"><i class="icon-refresh"></i> Sync</button>
-					<span class="tiny success button radius disabled loading"><i class="icon-refresh animate-spin"></i> Sync</span>
-				</div>
-			{%- endif %}
-		</div>
-		<div class="small-12 medium-5 large-4 columns">
-			<ul class="button-group radius even-2 storage">
-			  <li><a href="#" class="button small secondary local">Local</a></li>
-			  <li><a href="#" class="button small secondary cloud">Cloud</a></li>
-			</ul>
-		</div>
-	</div>
-
-	<div class="row">
-		<div class="small-12 columns">
-      <div class="local-loading" align="center">
-        <i class="icon-refresh animate-spin"></i>
-        Loading files...
-      </div>
-			<div class="design-list-container"></div>
-		</div>
-	</div>
+	<div class="design-list-container"></div>
 </div>
+
+<!-- 
+*********************
+* 'print-file-info' *
+*********************
+ -->
 
 <div id="print-file-info" class="reveal-modal xlarge" data-reveal>
 	<div class="dlg-content"></div>
-	<a class="close-reveal-modal">&#215;</a>
 </div>
 
+<!-- Template for the "#print-file-info" div -->
+<!-- "#print-file-info" div displays all the information about the currently selected file -->
+<!-- This div will reveal when we use to click the item in the file list -->
 <script type="text/template" id="printfile-info-template">
-  <h2 class="bold"><%= p.printFileName ? p.printFileName : p.name %></h2>
-	<div class="modal-content">
-		<div class="row">
-			<% if (p.images.square) { %>
-				<div class="small-12 medium-5 large-4 columns">
-					<div class="photo-container">
-						<img src="<%= p.images.square %>"/>
+	<div id="confirm-print-model">
+		<!-- navigation bar -->
+		<nav id="confirm-print-nav">
+			<div class="wizard-name">Browse</div>
+			<a href="#files" class="back-button">Back</a>
+		</nav>
+		
+		<!-- file-details container -->
+		<div class="file-details">
+			<div class="file-format-img-container">
+				<img src="" alt="File Format" class="file-format-img" width="75.6" height="75.6">
+			</div>
+			<h2 class="file-name"><%= p.printFileName ? p.printFileName : p.name %></h2>
+			<div class="file-sub-name">
+				<%= p.printFileName ? p.printFileName : p.name %>
+			</div>
+		</div>
+
+		<!-- print-info container -->
+		<div class="print-info">
+			<% if (p.info) { %>
+				<div class="print-info__item">
+					<img src="" alt="Time-icon" class="print-info__item__icon" width="48" height="48">
+					<div class="time-heading">
+						<h3>Print Time</h3>
+						<% if (p.info.print_time) { %>
+							<p class="print-info__item__data"><%= time_format(p.info.print_time) %></p>
+						<% } %>
 					</div>
+				</div><!-- end of 'print-info__item' -->
+				<div class="print-info__item">
+					<img src="" alt="material-item" class="print-info__item__icon" width="48" height="48">
+					<div class="">
+						<h3>Number of Layers</h3>
+						<% if (p.info.layer_count) { %>
+							<p class="print-info__item__data"><%= p.info.layer_count %></p>
+						<% } %>
+					</div>
+				</div><!-- end of 'print-info__item' -->
+			<% } else { %>
+				<div class="print-info__no-details">
+					Analyzing G-Code
 				</div>
 			<% } %>
-			<div class="small-12<%= p.images.square ? ' medium-7 large-8' : '' %> columns">
-				<div class="actions">
-					<% if (p.local_filename) { %>
-						<div class="loading-button">
-							<a class="remove idle" href="#">
-								<i class="icon-trash with-separator" title="Remove from {{variantData['productName']}}"></i>
-							</a>
-							<span class="loading"><i class="icon-rocket-spinner animate-spin"></i></span>
-						</div>
-						<a class="print" href="#">
-							<i class="icon-3d-printer" title="Print"></i>
-						</a>
-					<% } else { %>
-						<a class="download" href="#">
-							<i class="icon-download-cloud" title="Download to {{variantData['productName']}}"></i>
-						</a>
-						<a class="print" href="#">
-							<i class="icon-3d-printer" title="Print"></i>
-						</a>
-					<% } %>
+		</div>
+
+		<!-- print-actions container -->
+		<div class="actions">
+			<% if (p.local_filename) { %>
+				<div class="loading-button">
+					<a href="#" class="remove idle">DELETE</a>
+					<a href="#" class="print">PRINT</a>
 				</div>
-				<div class="print-settings">
-					<% if (p.local_only) { %>
-						This file is <b>only</b> stored on this {{variantData['productName']}}
-					<% } else { %>
-						<a class="success label round" href="<%= p.printer.info_link %>" target="_astroprint"><%= p.printer.name %> <i class="icon-link-ext"></i></a>
-						/
-						<a class="success label round"href="<%= p.material.info_link %>" target="_astroprint"><%= p.material.name %> <i class="icon-link-ext"></i></a>
-						/
-						<% if (p.settings.info_link) { %>
-							<a class="success label round" href="<%= p.settings.info_link %>" target="_astroprint"><%= p.settings.name %> <i class="icon-link-ext"></i></a>
-						<% } else { %>
-							<span class="success label round"><%= p.settings.name %></span>
-						<% }
-					} %>
-				</div>
-				<div class="print-info">
-					<% if (p.info) { %>
-            <% if (p.info.print_time) { %>
-              <h4 class="bold hl"><i class="icon-stopwatch"></i> <%= time_format(p.info.print_time) %></h4>
-            <% } %>
-            <% if (p.info.filament_volume) { %>
-              <b>Filament Used:</b> <span class="hl"><%= p.info.filament_volume ? (p.info.filament_volume/1000).toFixed(2) : '--' %></span> cm<sup>3</sup> / <span class="hl"><%= p.info.filament_length ? (p.info.filament_length/10).toFixed(2) : '--' %></span> cm<br/>
-            <% } %>
-						<% if (p.info.size) { %>
-							<b>Model Size:</b> <span class="hl"><%= p.info.size.x.toFixed(2) %></span> x <span class="hl"><%= p.info.size.y.toFixed(2) %></span> x <span class="hl"><%= p.info.size.z.toFixed(2) %></span> mm<br/>
-						<% } %>
-						<% if (p.info.layer_height) { %>
-							<b>Layer Height:</b> <span class="hl"><%= p.info.layer_height %></span> mm<br/>
-						<% } %>
-						<% if (p.info.layer_count) { %>
-							<b>Number of Layers:</b> <span class="hl"><%= p.info.layer_count %></span><br/>
-						<% } %>
-					<% } else { %>
-						<i class="icon-rocket-spinner animate-spin"></i> Analyzing G-Code
-					<% } %>
-				</div>
-			</div>
+			<% } %>
 		</div>
 	</div>
 </script>
 
+<!-- 
+****************************
+* End of 'print-file-info' *
+****************************
+ -->
+
+<!-- This template is being used for displaying the files from the local
+storage of the PI and will be used to show up the options to DELETE, DOWNLOAD
+and other options related to the files -->
 <script type="text/template" id="print-file-template">
-	<div class="small-2 large-1 columns left-section">
+	<div class="left-section">
 		<% if (p.images.thumbnail) { %>
 			<div class="thumb-container">
 				<img src="<%= p.images.thumbnail %>"/>
@@ -145,8 +100,8 @@
 			<i class="icon-3d-object"></i>
 		<% } %>
 	</div>
-	<div class="small-8 large-10 columns middle-section">
-    <h3 class="bold"> <%= p.name %></h3>
+	<div class="middle-section">
+    <h3 class="middle-section__heading"> <%= p.name %></h3>
     <%= size_format(p.size) %>
 		<% if (p.info) { %>
 			<% if (p.info.print_time) { %>
@@ -159,7 +114,7 @@
       · <i class="icon-calendar" title="Time Added"></i> <span data-localtime-format="d MMM, yyyy (h:mm a)"><%= new Date(p.uploaded_on * 1000).toISOString() %></span>
     <% } %>
 	</div>
-	<div class="small-2 large-1 columns right-section">
+	<div class="right-section">
 		<div class="print-file-options">
 			<% if (p.local_filename) { %>
 				<div class="loading-button print">

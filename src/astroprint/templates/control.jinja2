@@ -1,182 +1,188 @@
-<div class="Back_buton_manual">
-</div>
-<p class="Manual_Controls">Manual Controls</p>
-<div class="XY_Container">
-</div>
-<div class="XY_Home">
+<!--
+*****************************************
+* Code edited by Kanishka Mohan Madhuni *
+*****************************************
+-->
 
-</div>
-<div class="X1">
-</div>
-<div class="X2">
-</div>
-<div class="Y1">
-</div>
-<div class="Y2">
-</div>
-<div class="Z_Container">
-</div>
-<div class="Z_Home">
-</div>
-<div class="Z1">
-</div>
-<div class="Z2">
-</div>
-<div class="Path">
+<nav id="controls-nav">
+	<div class="wizard-name">Utility Section</div>
+	<a href="#utilities" class="back-button">Back</a>
+</nav>
 
-</div>
-<p class="_200_mm">200 mm</p>
-<p class="_175_mm">175 mm</p>
-<p class="_150_mm">150 mm</p>
-<div class="row">
-  <!--h1 class="bold" align="center">Printer Controls</h1-->
-  <!--div class="row back-to-print panel callout radius">
-    <div class="small-12 medium-4 large-3 columns">
-      <div class="loading-button expand">
-        <button class="radius tiny expand"><i class="icon-play"></i> Resume Printing</button>
-        <span class="radius button tiny expand loading"><i class="icon-rocket-spinner animate-spin"></i> Resuming...</span>
-      </div>
-    </div>
-    <div class="small-12 medium-8 large-9 columns hide-for-small">
-      Printing paused: <div class="filename bold"></div>
-    </div>
-  </div-->
-  <div class="medium-12 large-7 columns">
-    <div class="row">
-      <!--div class="small-12 medium-7 columns" id="xy-controls" align="center">
-        <h2 class="bold">Horizontal</h2>
-        <div class="control_bg_xy" align="center">
-          <button class="control_btn_y_plus"></button><br/>
-          <button class="control_btn_x_minus"></button> <button class="home_z"></button> <button class="control_btn_x_plus"></button><br/>
-          <button class="control_btn_y_minus"></button>
-        </div>
-      </div-->
-      <!--div class="small-12 medium-5 columns" id="z-controls">
-        <h2 class="bold" align="center">Vertical</h2>
-        <center>
-          <button class="control_btn_z_plus"></button><br/>
-          <button class="home_z"></button><br/>
-          <button class="control_btn_z_minus"></button>
-        </center>
-      </div-->
-      <!--div class="small-12 columns" id="distance-control">
-        <center>
-          <ul class="button-group radius">
-            <li><button class="small bold secondary" data-value="0.1">0.1</button></li>
-            <li><button class="small bold secondary" data-value="1">1</button></li>
-            <li><button class="small bold success" data-value="10">10</button></li>
-            <li><button class="small bold secondary" data-value="100">100</button></li>
-          </ul>
-        </center>
-      </div-->
-      <div class="small-12 columns" id="extrusion-control">
-        <!--h2 class="bold"><i class="icon-extruder"></i> Filament Extruder</h2-->
-        <div class="small-12 medium-7 columns">
-          <div class="row extruder-switch closer"></div>
-        </div>
-        <!--div class="small-12 medium-5 columns">
-          <div class="row closer">
-            <div class="small-6 columns">
-              <button class="small radius expand success extrude">Extrude</button>
-            </div>
-            <div class="small-6 columns">
-              <button class="small radius expand success retract">Retract</button>
-            </div>
-          </div>
-        </div-->
-        <script type="text/template" id="extruder-switch-template">
-          <% if (profile.extruder_count > 1) { %>
-            <!--div class="small-3 columns">
-              <label class="bold">Nozzle</label>
-              <select class="extruder-number">
-                <% for(var i=0; i<profile.extruder_count; i++) { %>
-                  <option value="<%= i %>"><%= i+1 %></option>
-                <% } %>
-              </select>
-            </div-->
-          <% } %>
+<div class="default-container">
+	<div id="manual-container"></div>
 
-          <!--div class="<% if (profile.extruder_count > 1) { %> small-4 <% } else { %> small-6 <% } %>columns select-with-text">
-            <label class="bold">Amount</label>
-            <select class="extrusion-length">
-              <option value="10" selected default>10 mm</option>
-              <option value="50">50 mm</option>
-              <option value="100">100 mm</option>
-              <option value="200">200 mm</option>
-              <option value="other">Other...</option>
-            </select>
-            <div class="row collapse other-length hide">
-              <div class="small-8 columns">
-                <input type="number" value="10" class="expand back-to-select" name="extrusion-length"/>
-              </div>
-              <div class="small-4 columns">
-                <span class="postfix radius">mm</span>
-              </div>
-            </div>
-          </div>
+	<script type="text/template" id="xyz-controls-template">
+		<div class="" id="xy-controls">
 
-          <div class="<% if (profile.extruder_count > 1) { %> small-5 <% } else { %> small-6 <% } %>columns select-with-text">
-            <label class="bold">Speed</label>
-            <select class="extrusion-speed">
-              <option value="50">Fast (50 mm/s)</option>
-              <option value="2" selected default>Normal (2 mm/s)</option>
-              <option value="0.5">Slow (0.5 mm/s)</option>
-              <option value="other">Other...</option>
-            </select>
-            <div class="row collapse other-speed hide">
-              <div class="small-7 columns">
-                <input type="number" value="2" class="expand back-to-select" name="extrusion-speed"/>
-              </div>
-              <div class="small-5 columns">
-                <span class="postfix radius">mm/s</span>
-              </div>
-            </div>
-          </div-->
-        </script>
-      </div>
-    </div>
-  </div>
+			<table class="control_bg_xy">
+				<tr>
+					<td></td>
+					<td class="y-plus">
+						<button class="control_btn_y_plus">
+							<img class="control-btn-img" src="../static/img/manual-controls/manual-y-plus.svg" alt="" width="80.88px" height="82px">
+						</button>
+					</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td class="x-minus">
+						<button class="control_btn_x_minus">
+							<img class="control-btn-img" src="../static/img/manual-controls/manual-x-plus.svg" alt="" width="80.88px" height="82px">
+						</button>
+					</td>
+					<td class="xy-home">
+						<button class="home_z">
+							<img class="control-btn-img" src="../static/img/manual-controls/manual-home.svg" alt="" width="80.88px" height="82px">
+						</button>
+					</td>
+					<td class="x-plus">
+						<button class="control_btn_x_plus">
+							<img class="control-btn-img" src="../static/img/manual-controls/manual-x-minus.svg" alt="" width="80.88px" height="82px">
+						</button>
+					</td>
+				</tr>
+				<tr>
+					<td></td>
+					<td class="y-minus">
+						<button class="control_btn_y_minus">
+							<img class="control-btn-img" src="../static/img/manual-controls/manual-y-minus.svg" alt="" width="80.88px" height="82px">
+						</button>
+					</td>
+					<td></td>
+				</tr>
+			</table>
 
-  {%- macro temp_control(class, label) %}
-    <div class="temp-control-cont {{class}}">
-      <span class="current-temp-top bold">- -</span>
-      <div class="temp-bar">
-        <label class="bold">{{label}}</label>
-        <div class="current-temp">
-          <div class="triangle_left"></div>
-          <div class="triangle_right"></div>
-        </div>
-        <div class="temp-target radius bold">
-          <a class="temp-edit"><i class="icon-pencil"></i></a>
-          <span class="target-value">- -</span>
-          <input type="number" class="hide"/>
-        </div>
-      </div>
-      <button class="temp-off secondary small radius expand">OFF</button>
-    </div>
-  {%- endmacro %}
+			<div class="distance-control-container">
+	      <!-- distance control for x-axis -->
+				<div class="distance-control">
+					<span class="axis">X</span>
+		      <select class="lenght-picker x-length-changed">
+					  <option value="0.1">0.1 mm</option>
+					  <option value="5" selected default>5 mm</option>
+					  <option value="10">10 mm</option>
+					</select>
+				</div>
+				<!-- distance control for y-axis -->
+				<div class="distance-control">
+					<span class="axis">Y</span>
+					<select class="lenght-picker y-length-changed">
+					  <option value="0.1">0.1 mm</option>
+					  <option value="5" selected default>5 mm</option>
+					  <option value="10">10 mm</option>
+					</select>
+				</div>
+			</div>
+		</div><!-- end of "#xy-controls" -->
+		
+		<!-- "#z-controls" -->
+		<div class="" id="z-controls">
 
-  <!--div class="medium-12 large-5 columns" id="temp-control">
-    <div class="row">
-      <div class="small-4 columns" align="center">
-        {{ temp_control('nozzle', 'Nozzle')}}
-      </div>
-      <div class="small-4 columns fan-control">
-        <div class="fan-control-push" align="center">
-          Current Temp (&deg;C)
-        </div>
-        <h2 class="bold">Fans <span class="fan_icon"></span></h2>
-        <button class="radius small success expand fan-on">ON</button>
-        <button class="radius small secondary expand fan-off">OFF</button>
-      </div>
-      <div class="small-4 columns" align="center">
-        {{ temp_control('bed', 'Bed')}}
-      </div>
-    </div>
-  </div-->
+			<table class="control_bg_z">
+				<tr>
+					<td>
+						<button class="control_btn_z_plus">
+							<img class="control-btn-img" src="../static/img/manual-controls/manual-z-plus.svg" alt="" width="80.88px" height="82px">
+						</button>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<button class="home_z">
+							<img class="control-btn-img" src="../static/img/manual-controls/manual-home.svg" alt="" width="80.88px" height="82px">
+						</button>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<button class="control_btn_z_minus">
+							<img class="control-btn-img" src="../static/img/manual-controls/manual-z-minus.svg" alt="" width="80.88px" height="82px">
+						</button>
+					</td>
+				</tr>
+			</table>
 
-  <div class="no-connection-overlay">
-    <i class="icon-usb"></i>
-    <b>Please, connect a 3D Printer via USB.</b>
-  </div>
+			<div class="distance-control-container">
+	      <!-- distance control for z-axis -->
+				<div class="distance-control">
+					<span class="axis">Z</span>
+					<select class="lenght-picker z-length-changed">
+					  <option value="0.1">0.1 mm</option>
+					  <option value="5" selected default>5 mm</option>
+					  <option value="10">10 mm</option>
+					</select>
+				</div>
+			</div>
+		</div><!-- end of "z-controls" -->
+
+	</script>
+
+	<script type="text/template" id="filament-template">
+		<div class="" id="extrusion-control">
+			<h1 class="extrusion-control__heading">Load/Unload Filament</h1>
+			<ul class="extrusion-control__link-container">
+				<li class="extrusion-control__link-container__link-item">
+					<a href="#filament-load-wizard" class="load-filament-link">
+						<div class="extrusion-control__img-heading-container">
+							<img src="../img/filament-utility/load-filament.svg" alt="Load Filament" width="88px" height="93px">
+							<h2>Load Filament</h2>
+						</div>
+					</a>
+				</li>
+				<li class="extrusion-control__link-container__link-item">
+					<a href="#filament-unload-wizard" class="unload-filament-link">
+						<div class="extrusion-control__img-heading-container">
+							<img src="../img/filament-utility/unload-filament.svg" alt="Unload Filament" width="88px" height="93px">
+							<h2>Unload Filament</h2>
+						</div>
+					</a>
+				</li>
+			</ul>
+		</div>
+	</script>
+
+	<script type="text/template" id="auto-bed-level-template"></script>
+
+	<script type="text/template" id="pre-heat-template">
+		{%- macro temp_control(class, label) %}
+	    <div class="temp-control-cont {{class}}">
+	      <!-- here we show the rising temperature -->
+	      <!-- <span class="current-temp-top">- -</span> -->
+	      <div class="temp-bar">
+	        <!-- here the 'bed' or 'nozzle' label will display based on the bar we are on -->
+	        <label class="temp-bar-label">{{label}}</label>
+
+	        <div class="temp-target">
+	          <span class="target-value">- -</span>
+	          <input type="number" class="target-value-input hide"/>
+	          <a class="temp-edit"><img src="{{ url_for('static',filename='img/preheating-utility/pencil-edit-button.svg') }}" width="20" height="20"></a>
+	        </div>
+	      </div>
+	    </div>
+		{%- endmacro %}
+
+		<div id="preheat-control">
+			<ul id="temp-control">
+				<li class="temp-control-items">
+					<img src="{{ url_for('static',filename='img/preheating-utility/extruder-1.svg') }}" width="96" height="96">
+					{{ temp_control('nozzle', 'Extruder 1')}}
+				</li>
+				<li class="temp-control-items">
+					<img src="{{ url_for('static',filename='img/preheating-utility/extruder-2.svg') }}" width="96" height="96">
+					{{ temp_control('nozzle', 'Extruder 2')}}
+				</li>
+				<li class="temp-control-items">
+					<img src="{{ url_for('static',filename='img/preheating-utility/bed-plate.svg') }}" width="96" height="96">
+					{{ temp_control('bed', 'Build Plate')}}
+				</li>
+			</ul>
+
+			<a href="#preheating" id="preheat-control-start-btn" class="next-button">START</a>
+		</div>
+
+
+
+		<!-- <a href="#preheating">Switch to PREHEATING</a> -->
+	</script>
+
 </div>
