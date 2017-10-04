@@ -25,7 +25,7 @@ def settings(init=False, configfile=None, basedir=None):
 
 default_settings = {
     "serial": {
-        "port": None,
+        "port": '/dev/ttyACM0',
         "baudrate": 115200,
         "autoconnect": True,
         "log": False,
@@ -80,7 +80,8 @@ default_settings = {
         "timelapse": None,
         "timelapse_tmp": None,
         "logs": None,
-        "virtualSd": None
+        "virtualSd": None,
+        "usb": None
     },
     "temperature": {
         "profiles":
