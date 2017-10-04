@@ -80,7 +80,8 @@ default_settings = {
 		"timelapse": None,
 		"timelapse_tmp": None,
 		"logs": None,
-		"virtualSd": None
+		"virtualSd": None,
+        "usb": None,
 	},
 	"temperature": {
 		"profiles":
@@ -173,7 +174,11 @@ default_settings = {
 		"variantFile": None,
 		"useUnreleased": False,
 		"lastCheck": None
-	}
+	},
+    "usb": {
+        "filelist": [],
+        "folder": "/run/media/",
+    },
 }
 
 valid_boolean_trues = [True, "true", "yes", "y", "1"]

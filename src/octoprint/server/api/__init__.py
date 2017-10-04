@@ -65,40 +65,40 @@ def optionsAllowOrigin(request):
 
 @api.before_request
 def beforeApiRequests():
-	"""
-	All requests in this blueprint need to be made supplying an API key. This may be the UI_API_KEY, in which case
-	the underlying request processing will directly take place, or it may be the global or a user specific case. In any
-	case it has to be present and must be valid, so anything other than the above three types will result in denying
-	the request.
-	"""
+    """
+    All requests in this blueprint need to be made supplying an API key. This may be the UI_API_KEY, in which case
+    the underlying request processing will directly take place, or it may be the global or a user specific case. In any
+    case it has to be present and must be valid, so anything other than the above three types will result in denying
+    the request.
+    """
 
-	if request.method == 'OPTIONS' and s().getBoolean(["api", "allowCrossOrigin"]):
-		return optionsAllowOrigin(request)
+    if request.method == 'OPTIONS' and s().getBoolean(["api", "allowCrossOrigin"]):
+        return optionsAllowOrigin(request)
 
-	apikey = getApiKey(request)
-	if apikey is None:
-		# no api key => 401
-		return make_response("No API key provided", 401)
+    apikey = getApiKey(request)
+    if apikey is None:
+        # no api key => 401
+        return make_response("No API key provided", 401)
 
-	if apikey == UI_API_KEY:
-		# ui api key => continue regular request processing
-		return
+    if apikey == UI_API_KEY:
+        # ui api key => continue regular request processing
+        return
 
-	if not s().get(["api", "enabled"]):
-		# api disabled => 401
-		return make_response("API disabled", 401)
+    if not s().get(["api", "enabled"]):
+        # api disabled => 401
+        return make_response("API disabled", 401)
 
-	if apikey == s().get(["api", "key"]):
-		# global api key => continue regular request processing
-		return
+    if apikey == s().get(["api", "key"]):
+        # global api key => continue regular request processing
+        return
 
-	user = getUserForApiKey(apikey)
-	if user is not None:
-		# user specific api key => continue regular request processing
-		return
+    user = getUserForApiKey(apikey)
+    if user is not None:
+        # user specific api key => continue regular request processing
+        return
 
-	# invalid api key => 401
-	return make_response("Invalid API key", 401)
+    # invalid api key => 401
+    return make_response("Invalid API key", 401)
 
 @api.after_request
 def afterApiRequests(resp):

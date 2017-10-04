@@ -3,9 +3,13 @@ __author__ = "Gina Häußge <osd@foosel.net>"
 __author__ = "Daniel Arroyo <daniel@astroprint.com>"
 __license__ = 'GNU Affero General Public License http://www.gnu.org/licenses/agpl.html'
 
-import octoprint.util as util
-import time
 
+import os
+import shutil
+import time
+import octoprint.util as util
+
+import flask
 from flask import request, jsonify, make_response, url_for
 
 from octoprint.events import Events
@@ -15,6 +19,7 @@ from octoprint.server.api import api
 
 from astroprint.printer.manager import printerManager
 from astroprint.printfiles import FileDestinations
+from astroprint.printfiles import usb
 
 #~~ GCODE file handling
 
@@ -296,3 +301,63 @@ def deletePrintFile(filename, target):
 
 	return NO_CONTENT
 
+
+@api.route("/files/usblist")
+@api.route("/files/usblist/")
+def get_files_from_usb():
+    s = settings()
+    files = s.get(['usb', 'filelist'])
+    d = {}
+    for i in range(len(files)):
+        d[i] = files[i]
+    return flask.jsonify(d)
+
+
+@api.route("/files/copyusb")
+@api.route("/files/copyusb/")
+def copy_from_usb():
+    filename = flask.request.args.get('filename')
+    filepath = flask.request.args.get('filepath')
+    if not os.path.exists(filepath):
+        return flask.jsonify({
+            'status': 'failed',
+            'msg': 'File not there, did the user unplug the usb?'
+        })
+
+    # copy the file
+    s = settings()
+    path = s.getBaseFolder("uploads")
+    futurepath = os.path.abspath(os.path.join(path, filename))
+    try:
+        shutil.copy2(filepath, path)
+    except Exception as e:
+        return flask.jsonify({
+            'status': 'failed',
+            'msg': e,
+        })
+    return flask.jsonify({
+            'status': 'success',
+            'msg': 'File copied',
+            'futurepath': futurepath,
+    })
+
+
+# @api.route("/files/printusb")
+# @api.route("/files/printusb/")
+# def print_from_usb():
+    # filename = flask.request.args.get('futurepath')
+    # if not os.path.exists(filepath):
+        # return flask.jsonify({
+                # 'status': 'failed',
+                # 'msg': 'File not there, did the user unplug the usb?'
+        # })
+
+    # # print it
+    # pm = printerManager()
+    # if (not pm.isOperational()) or pm.isPaused() or pm.isPrinting():
+        # return make_response("Printer is either not operational or is busy")
+
+    # return flask.jsonify({
+            # 'status': 'success',
+            # 'msg': 'File copied',
+    # })
