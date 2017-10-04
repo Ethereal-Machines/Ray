@@ -1,0 +1,38 @@
+<!--
+**********************************
+* Code by Kanishka Mohan Madhuni *
+**********************************
+-->
+
+<nav id="home-nav">
+	<div id="home-nav-container">
+		<div class="printer-name">
+			<span class="printer-name__value">Printer's Name</span>
+		</div>
+		<ul class="home-nav-container__icon-list">
+			<li class="home-nav-container__icon-list__icon-item"><img src="{{ url_for('static', filename='img/home-page/update-icon.svg') }}" alt="" width="56" height="56"></li>
+			<li class="home-nav-container__icon-list__icon-item"><img src="{{ url_for('static', filename='img/home-page/usb-icon.svg') }}" alt="" width="56" height="56"></li>
+			<li class="home-nav-container__icon-list__icon-item"><img src="{{ url_for('static', filename='img/home-page/wifi-icon.svg') }}" alt="" width="56" height="56"></li>
+			<li class="home-nav-container__icon-list__icon-item power-button"><img src="{{ url_for('static', filename='img/home-page/power-icon.svg') }}" alt="" width="56" height="56"></li>
+		</ul>
+	</div>
+</nav>
+
+{% block homenav %}{% endblock %}
+
+<div class="power-off-modal hide">
+	<ul class="power-off-modal__button-container">
+		<li class="power-off-modal__button">
+			<button class="power-off-button" type="button">
+				<img src="{{ url_for('static', filename='img/home-page/power-off-icon.svg') }}" alt="" width="72" height="72">
+				<h2 class="power-off-modal__button__heading">Power Off</h2>
+			</button>
+		</li>
+		<li class="power-off-modal__button">
+			<button class="restart-button" type="button">
+				<img src="{{ url_for('static', filename='img/home-page/restart-icon.svg') }}" alt="" width="72" height="72">
+				<h2 class="power-off-modal__button__heading">Restart</h2>
+			</button>
+		</li>
+	</ul>
+</div>

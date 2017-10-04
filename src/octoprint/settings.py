@@ -25,8 +25,8 @@ def settings(init=False, configfile=None, basedir=None):
 
 default_settings = {
 	"serial": {
-		"port": None,
-		"baudrate": 250000,
+		"port": '/dev/ttyACM0',
+		"baudrate": 115200,
 		"autoconnect": True,
 		"log": False,
 		"dsrdtrFlowControl": False,
@@ -44,7 +44,8 @@ default_settings = {
 	"server": {
 		"host": "0.0.0.0",
 		"port": 5000,
-		"firstRun": True,
+		# "firstRun": True,
+		"firstRun": False,
 		"baseUrl": "",
 		"scheme": "",
 		"maxUploadSize": 160, #Size in MB for the max allowed file size
@@ -92,9 +93,9 @@ default_settings = {
 	},
 	"printerParameters": {
 		"movementSpeed": {
-			"x": 6000,
-			"y": 6000,
-			"z": 700,
+			"x": 800,
+			"y": 800,
+			"z": 500,
 			"e": 100
 		},
 		"pauseTriggers": [],

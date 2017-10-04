@@ -1,0 +1,85 @@
+#preheat-control {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+
+#temp-control {
+	list-style: none;
+	padding: 0 80px;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+.temp-control-items {
+	width: 150px;
+	text-align: center;
+}
+
+.temp-bar-label {
+	text-transform: uppercase;
+	display: block;
+	font-size: 20px;
+	padding: 15px 0;
+	color: #95989A;
+}
+
+.temp-target {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	border-bottom: 1px solid gray;
+	padding-bottom: 2px;
+}
+
+.target-value,
+.target-value-input {
+	font-size: 22px;
+	text-align: center;
+	width: 40%;
+	/*border: 1px solid gray;*/
+}
+
+.target-value {
+	border: 3px solid transparent;
+	padding: 1px;
+}
+
+.target-value-input {
+	height: 31px;
+}
+
+.target-value-input:focus {
+	outline: none;
+	border: 3px solid skyblue;
+	padding: 1px;
+}
+
+.temp-edit {
+	width: 20%;
+	text-align: center;
+	display: flex;
+  justify-content: center;
+  align-items: center
+	/*border: 1px solid gray;*/
+}
+
+#preheat-control-start-btn {
+	margin-top: 40px;
+	margin-bottom: 32px;
+	background-color: #eee !important;
+	line-height: 48px;
+	text-decoration: none;
+	color: black;
+}
+
+#preheat-control-start-btn: hover {
+	text-decoration: none;
+	color: black;
+}
+
+##preheat-control-start-btn: focus {
+	color: black;
+}

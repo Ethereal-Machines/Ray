@@ -221,3 +221,10 @@ var FileUploadCombined = FileUploadBase.extend({
   onPrintFileUploaded: function() {},
   onError: function(type, error) {}
 });
+
+
+/*
+  To include this JS file in the app.jinja2
+
+  "js/app/widgets/tempbarview.js", "js/app/widgets/uploader.js"
+*/

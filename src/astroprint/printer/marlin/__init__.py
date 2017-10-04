@@ -197,6 +197,7 @@ class PrinterMarlin(Printer):
     # Ethereal Automatic Bed Levelling
     def autoBedLevel(self):
         self.commands(["G28", "G29"])
+        self.command("B0")
 
     def extrude(self, tool, amount, speed=None):
         if self._comm:

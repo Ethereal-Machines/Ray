@@ -8,6 +8,12 @@ var AppRouter = Backbone.Router.extend({
   homeView: null,
   filesView: null,
   controlView: null,
+  // adding filament-wizard views
+  filamentLoadView: null,
+  filamentUnloadView: null,
+  // adding print-from-storage view
+  printFromStorageView: null,
+  preheatingView: null,
   settingsView: null,
   printingView: null,
   terminalView: null,
@@ -21,6 +27,13 @@ var AppRouter = Backbone.Router.extend({
     "files": "files",
     "file-info/:fileId": "fileInfo",
     "control": "control",
+    // adding routes for the filament-wizards
+    "filament-load-wizard": "filamentLoad",
+    "filament-unload-wizard": "filamentUnload",
+    // adding routes for the print-from-storage
+    "print-from-storage": "printFromStorage",
+    // adding routes for the preheating view
+    "preheating": "preHeating",
     "printing": "printing",
     "settings": "settings",
     "utilities": "utilities",
@@ -99,6 +112,47 @@ var AppRouter = Backbone.Router.extend({
     this.selectView(this.controlView);
     app.selectQuickNav('control');
   },
+  /*
+    adding function to handle the routing for 'filament-load' & 'filament-unload'
+    wizard
+  */
+  filamentLoad: function() {
+    if (!this.filamentLoadView) {
+      this.filamentLoadView = new FilamentLoadView();
+    }
+
+    this.selectView(this.filamentLoadView);
+  },
+  filamentUnload: function() {
+    if (!this.filamentUnloadView) {
+      this.filamentUnloadView = new FilamentUnloadView();
+    }
+
+    this.selectView(this.filamentUnloadView);
+  },
+  /*
+    adding function to handle the routing for 'print-from-storage'
+  */
+  printFromStorage: function() {
+    if(!this.printFromStorageView) {
+      this.printFromStorageView = new PrintFromStorageView();
+    }
+
+    this.selectView(this.printFromStorageView);
+  },
+  /*
+    adding function to handle the routing for 'preheating'
+  */
+  preHeating: function() {
+    var self = this;
+    if(!this.preheatingView) {
+      this.preheatingView = new PreheatingView({
+        updatedTemp: this.updatedTemp
+      });
+    }
+
+    this.selectView(this.preheatingView);
+  },
   printing: function()
   {
     if (!this.printingView) {
@@ -114,8 +168,13 @@ var AppRouter = Backbone.Router.extend({
     }
 
     this.selectView(this.settingsView);
-    this.settingsView.menu.changeActive(page || 'printer-connection');
-    app.selectQuickNav('settings');
+
+    /* 
+      Commenting the below code as per the current SettingView page 
+      This needs to be added later on in the project
+    */
+    // this.settingsView.menu.changeActive(page || 'printer-connection');
+    // app.selectQuickNav('settings');
   },
    utilities: function()
   {
@@ -181,7 +240,14 @@ var AppRouter = Backbone.Router.extend({
         currentView.trigger('hide');
 
         if (targetId == 'control-view') {
-          this.controlView.tempView.resetBars();
+
+          /* 
+          * below function call is commented because the
+          * functionality is disabled for some time
+          */
+
+          /* Comment-change#1 */
+          // this.controlView.tempView.resetBars();
         }
       }
 
@@ -217,6 +283,8 @@ var AppRouter = Backbone.Router.extend({
     } else {
       var promise = $.Deferred();
 
+      // Creating the new instance of FilesView object passing the arguments
+      console.log(syncCloud);
       this.filesView = new FilesView({forceSync: syncCloud, syncCompleted: function(success) {
         if (success) {
           promise.resolve()

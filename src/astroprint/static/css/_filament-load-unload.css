@@ -1,0 +1,54 @@
+#extrusion-control {
+	width: 100%;
+	text-align: center;
+}
+
+.extrusion-control__heading {
+	font-size: 22px;
+	padding: 0 0 19px;
+	margin: -13px 0 0;
+}
+
+.extrusion-control__link-container {
+	list-style: none;
+	padding: 0;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+}
+
+.extrusion-control__link-container__link-item {
+	width: 360px;
+	height: 300px;
+	background-color: #EEEEEE;
+	border-radius: 10px;
+	margin: 0 32px;
+	position: relative;
+}
+
+.extrusion-control__img-heading-container {
+	width: 335px;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+}
+
+.extrusion-control__img-heading-container h2 {
+	font-size: 22px;
+	text-transform: uppercase;
+	margin: 35px 0;
+}
+
+.extrusion-control__link-container__link-item a {
+	width: 100%;
+	height: 100%;
+	display: block;
+	text-decoration: none;
+	color: black;
+}
+
+.extrusion-control__link-container__link-item a: hover {
+	text-decoration: none;
+	color: black;
+}
