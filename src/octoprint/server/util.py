@@ -185,7 +185,7 @@ class PrinterStateConnection(SockJSConnection):
 
 		printer.registerCallback(self)
 		printer.fileManager.registerCallback(self)
-        EtherBoxHandler.registerCallback(self)
+        #EtherBoxHandler.registerCallback(self)
 
 		self._eventManager.fire(Events.CLIENT_OPENED, {"remoteAddress": remoteAddress})
 		for event in PrinterStateConnection.EVENTS:
