@@ -309,7 +309,7 @@ def get_files_from_usb():
     d = []
     for i in range(len(files)):
         d.append(files[i])
-    return flask.jsonify(d)
+    return flask.jsonify({'files': d})
 
 
 @api.route("/files/copyusb")
