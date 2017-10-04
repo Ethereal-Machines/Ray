@@ -178,7 +178,7 @@ default_settings = {
 	},
     "usb": {
         "filelist": [],
-        "folder": "/run/media/",
+        "folder": "/media/pi",
     },
 }
 
