@@ -87,7 +87,8 @@ var PrintFileInfoDialog = Backbone.View.extend({
     this.$el.css('display', 'none');
   },
   hideModel: function() {
-    this.$el.css('display', 'none !important');
+    // this.$el.css('display', 'none !important');
+    this.$el.addClass('hide');
   }
 });
 
@@ -141,7 +142,8 @@ var PrintFileView = Backbone.View.extend({
   {
     if (evt) evt.preventDefault();
 
-    $("#print-file-info").css('display', 'block');
+    // $("#print-file-info").css('display', 'block');
+    $("#print-file-info").removeClass('hide');
 
     this.list.info_dialog.open(this);
   },

@@ -15,7 +15,7 @@
 	<!-- choose-storage -->
 	<ul class="choose-storage">
 		<li class="choose-storage__item choose-storage__item--external">
-			<a href="#files" style="pointer-events: none;">
+			<a href="#external-storage" class="external-storage-button">
 				<div class="choose-storage__item__img-heading-container">
 					<img src="{{ url_for('static', filename='img/print-from-storage/usb-icon.svg') }}" alt="Pen Drive Symbol" width="160" height="160">
 					<h2 class="choose-storage__item__sub-heading">EXTERNAL STORAGE</h2>
@@ -23,7 +23,7 @@
 			</a>
 		</li>
 		<li class="choose-storage__item choose-storage__item--internal">
-			<a href="#files">
+			<a href="#files" class="internal-storage-button">
 				<div class="choose-storage__item__img-heading-container">
 					<img src="{{ url_for('static', filename='img/print-from-storage/hardisk-icon.svg') }}" alt="Hard Disk Symbol" width="160" height="160">
 					<h2 class="choose-storage__item__sub-heading">INTERNAL STORAGE</h2>

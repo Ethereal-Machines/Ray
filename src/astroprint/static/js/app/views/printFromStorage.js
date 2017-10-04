@@ -8,7 +8,8 @@ var PrintFromStorageView = Backbone.View.extend({
     "click .utility-button": "getButtonName",
     'click .power-button': 'onPowerClicked',
     'click .power-off-modal': 'closePowerModal',
-    'click .power-off-modal__button-container': 'noHideModel'
+    'click .power-off-modal__button-container': 'noHideModel',
+    'click .external-storage-button': 'getExternalFileNames'
   },
 	initialize: function() {
 		this.render();
@@ -36,5 +37,46 @@ var PrintFromStorageView = Backbone.View.extend({
   },
   noHideModel: function(e) {
     e.stopPropagation();
+  },
+  getExternalFileNames: function() {
+  	console.log("External storage options is being selected");
+
+  	$.ajax({
+  		url: '/api/files/usblist',
+  		type: 'GET',
+  		success: function(obj) {
+  			// console.log(obj);
+  			new ExternalStorageView(obj);
+
+  		},
+  		error: function(xhr) {
+  			console.log(xhr);
+  		}
+  	});
   }
+});
+
+/* Code for the External Storage View goes here */
+var ExternalStorageView = Backbone.View.extend({
+	el: "#external-storage-view",
+	fileList: null,
+	template: _.template($("#external-storage-file-list").html()),
+	initialize: function(params) {
+		if (params !== undefined) {
+			this.fileList = params;
+			console.log(params);
+		}
+
+		this.render();
+
+	},
+	render: function() {
+
+		if (this.fileList !== null) {
+			this.$(".external-storage-wizard__files-list").html(this.template({
+				fileList: this.fileList
+			}));
+		}
+	}
+
 });
