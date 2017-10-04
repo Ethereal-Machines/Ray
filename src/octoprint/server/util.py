@@ -36,6 +36,7 @@ from astroprint.printfiles.map import SUPPORTED_EXTENSIONS
 from astroprint.printer.manager import printerManager
 from astroprint.camera import cameraManager
 from astroprint.users import ApiUser
+from astroprint.printfiles.watchdogs import EtherBoxHandler
 
 
 def restricted_access(func, apiEnabled=True):
@@ -184,6 +185,7 @@ class PrinterStateConnection(SockJSConnection):
 
 		printer.registerCallback(self)
 		printer.fileManager.registerCallback(self)
+        EtherBoxHandler.registerCallback(self)
 
 		self._eventManager.fire(Events.CLIENT_OPENED, {"remoteAddress": remoteAddress})
 		for event in PrinterStateConnection.EVENTS:

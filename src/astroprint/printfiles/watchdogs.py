@@ -58,6 +58,7 @@ class EtherBoxHandler(FileSystemEventHandler):
         super(EtherBoxHandler).__init__(self, *args, **kwargs)
         self._callbacks = []
 
+    @classmethod
     def registerCallback(self, callback):
         ''' Register the sockjs method to send data about usb to frontend '''
         self._callbacks.append(callback)
