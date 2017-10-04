@@ -423,6 +423,7 @@ class MachineCom(object):
             # else:
 
             #reset line counter
+            self._sendCommand("B0")
             self._sendCommand("M110 N0")
 
             #clear the command queue so that it's empty for the print
@@ -1316,6 +1317,7 @@ class MachineCom(object):
             self._callback.mcPrintjobDone()
             self._changeState(self.STATE_OPERATIONAL)
             eventManager().fire(Events.PRINT_DONE, payload)
+            self._sendCommand("B0")
             return None
 
         return line
