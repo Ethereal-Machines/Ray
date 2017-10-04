@@ -301,8 +301,8 @@ def deletePrintFile(filename, target):
 	return NO_CONTENT
 
 
-@api.route("/files/usblist")
-@api.route("/files/usblist/")
+@api.route("/usbfiles/usblist")
+@api.route("/usbfiles/usblist/")
 def get_files_from_usb():
     s = settings()
     files = s.get(['usb', 'filelist'])
@@ -312,8 +312,8 @@ def get_files_from_usb():
     return flask.jsonify(d)
 
 
-@api.route("/files/copyusb")
-@api.route("/files/copyusb/")
+@api.route("/usbfiles/copyusb")
+@api.route("/usbfiles/copyusb/")
 def copy_from_usb():
     filename = flask.request.args.get('filename')
     filepath = flask.request.args.get('filepath')
@@ -341,8 +341,8 @@ def copy_from_usb():
     })
 
 
-@api.route("/files/usbinfo")
-@api.route("/files/usbinfo/")
+@api.route("/usbfiles/usbinfo")
+@api.route("/usbfiles/usbinfo/")
 def usb_file_info():
     ''' Get file info which is Currently in usb '''
 
