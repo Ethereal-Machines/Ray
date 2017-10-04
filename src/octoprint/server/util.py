@@ -136,55 +136,55 @@ def getApiKey(request):
 
 
 class PrinterStateConnection(SockJSConnection):
-	EVENTS = [Events.UPDATED_FILES, Events.METADATA_ANALYSIS_FINISHED, Events.SLICING_STARTED, Events.SLICING_DONE, Events.SLICING_FAILED,
-				Events.TRANSFER_STARTED, Events.TRANSFER_DONE, Events.CLOUD_DOWNLOAD, Events.ASTROPRINT_STATUS, Events.SOFTWARE_UPDATE,
-				Events.CAPTURE_INFO_CHANGED, Events.LOCK_STATUS_CHANGED, Events.NETWORK_STATUS, Events.INTERNET_CONNECTING_STATUS,
-				Events.GSTREAMER_EVENT, Events.TOOL_CHANGE]
+    EVENTS = [Events.UPDATED_FILES, Events.METADATA_ANALYSIS_FINISHED, Events.SLICING_STARTED, Events.SLICING_DONE, Events.SLICING_FAILED,
+                Events.TRANSFER_STARTED, Events.TRANSFER_DONE, Events.CLOUD_DOWNLOAD, Events.ASTROPRINT_STATUS, Events.SOFTWARE_UPDATE,
+                Events.CAPTURE_INFO_CHANGED, Events.LOCK_STATUS_CHANGED, Events.NETWORK_STATUS, Events.INTERNET_CONNECTING_STATUS,
+                Events.GSTREAMER_EVENT, Events.TOOL_CHANGE]
 
-	def __init__(self, userManager, eventManager, session):
-		SockJSConnection.__init__(self, session)
+    def __init__(self, userManager, eventManager, session):
+        SockJSConnection.__init__(self, session)
 
-		self._logger = logging.getLogger(__name__)
+        self._logger = logging.getLogger(__name__)
 
-		self._temperatureBacklog = []
-		self._temperatureBacklogMutex = threading.Lock()
-		self._logBacklog = []
-		self._logBacklogMutex = threading.Lock()
-		self._messageBacklog = []
-		self._messageBacklogMutex = threading.Lock()
-		self._emitLock = threading.Lock()
+        self._temperatureBacklog = []
+        self._temperatureBacklogMutex = threading.Lock()
+        self._logBacklog = []
+        self._logBacklogMutex = threading.Lock()
+        self._messageBacklog = []
+        self._messageBacklogMutex = threading.Lock()
+        self._emitLock = threading.Lock()
 
-		self._userManager = userManager
-		self._eventManager = eventManager
+        self._userManager = userManager
+        self._eventManager = eventManager
 
-	def _getRemoteAddress(self, request):
-		forwardedFor = request.headers.get("X-Forwarded-For")
-		if forwardedFor is not None:
-			return forwardedFor.split(",")[0]
-		return request.ip
+    def _getRemoteAddress(self, request):
+        forwardedFor = request.headers.get("X-Forwarded-For")
+        if forwardedFor is not None:
+            return forwardedFor.split(",")[0]
+        return request.ip
 
-	def on_open(self, request):
-		s = settings()
-		loggedUsername = s.get(["cloudSlicer", "loggedUser"])
+    def on_open(self, request):
+        s = settings()
+        loggedUsername = s.get(["cloudSlicer", "loggedUser"])
 
-		if loggedUsername:
-			token = request.arguments.get("token")
-			token = token[0] if token else None
-			tokenContents = octoprint.server.read_ws_token(token)
-			if not tokenContents or tokenContents['public_key'] != self._userManager.findUser(loggedUsername).publicKey:
-				return False
+        if loggedUsername:
+            token = request.arguments.get("token")
+            token = token[0] if token else None
+            tokenContents = octoprint.server.read_ws_token(token)
+            if not tokenContents or tokenContents['public_key'] != self._userManager.findUser(loggedUsername).publicKey:
+                return False
 
-		remoteAddress = self._getRemoteAddress(request)
-		self._logger.info("New connection from client [IP address: %s, Session id: %s]", remoteAddress, self.session.session_id)
+        remoteAddress = self._getRemoteAddress(request)
+        self._logger.info("New connection from client [IP address: %s, Session id: %s]", remoteAddress, self.session.session_id)
 
-		# connected => update the API key, might be necessary if the client was left open while the server restarted
-		self._emit("connected", {"apikey": octoprint.server.UI_API_KEY, "version": octoprint.server.VERSION, "sessionId": self.session.session_id})
-		self.sendEvent(Events.ASTROPRINT_STATUS, boxrouterManager().status)
+        # connected => update the API key, might be necessary if the client was left open while the server restarted
+        self._emit("connected", {"apikey": octoprint.server.UI_API_KEY, "version": octoprint.server.VERSION, "sessionId": self.session.session_id})
+        self.sendEvent(Events.ASTROPRINT_STATUS, boxrouterManager().status)
 
-		printer = printerManager()
+        printer = printerManager()
 
-		printer.registerCallback(self)
-		printer.fileManager.registerCallback(self)
+        printer.registerCallback(self)
+        printer.fileManager.registerCallback(self)
         #EtherBoxHandler.registerCallback(self)
 
         self._eventManager.fire(Events.CLIENT_OPENED, {"remoteAddress": remoteAddress})
