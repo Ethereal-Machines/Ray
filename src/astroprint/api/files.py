@@ -19,7 +19,6 @@ from octoprint.server.api import api
 
 from astroprint.printer.manager import printerManager
 from astroprint.printfiles import FileDestinations
-from astroprint.printfiles import usb
 
 #~~ GCODE file handling
 
