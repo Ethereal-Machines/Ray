@@ -4,8 +4,25 @@
 
 /* Common Styles goes here */
 
-#print-from-storage-view {
-	/*text-align: center;*/
+.internal-storage__heading,
+.external-storage-wizard__heading {
+	font-size: 22px;
+	text-align: center;
+	padding: 14px 0 9px;
+	font-weight: 500;
+	margin: -32px 0 0;
+}
+
+.design-list-container,
+.external-storage-wizard__files-list {
+	list-style: none;
+	margin: 0 auto;
+	padding: 0;
+	display: flex;
+	flex-direction: column;
+	width: 89%;
+	height: 336px;
+	overflow-y: scroll;
 }
 
 /* Styles for the Navigation Wizard goes here */
@@ -68,4 +85,147 @@
 .choose-storage__item__sub-heading {
 	padding: 36px 0;
 	margin: 0;
+}
+
+/* Styling for External Stroage Wizard goes here */
+
+.external-storage-wizard__files-list__file {
+	/*display: flex;*/
+	/*flex-direction: row;*/
+	height: 56px;
+	border-bottom: .5px solid gray;
+}
+
+.external-storage__file-img {
+	float: left;
+}
+
+.external-storage__file-name {
+	line-height: 56px;
+	vertical-align: middle;
+	float: left;
+	padding: 0 17px;
+	font-size: 20px;
+}
+
+/* Styling for Internal Storage Wizard goes here */
+.design-list-container .row {
+	width: 100%;
+	height: 56px;
+	border-bottom: .5px solid gray;
+}
+
+.left-section,
+.middle-section {
+	display: inline-block;
+	float: left;
+	height: 56px;
+}
+
+.middle-section__heading {
+	margin: 0;
+	line-height: 56px;
+	vertical-align: middle;
+	padding: 0 17px;
+}
+
+/* Styling for print-file-info starts here */
+
+#print-file-info {
+	z-index: 1000;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 800px;
+	height: 480px;
+	background-color: white;
+	color: black;
+	text-align: center;
+}
+
+.file-details {
+	margin: -24px auto 27px;
+}
+
+.file-name {
+	font-size: 22px;
+	margin: 0;
+}
+
+.file-date {
+	font-size: 18px;
+	padding-top: 6px;
+}
+
+.print-info {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	height: 104px;
+	align-items: center;
+	width: 584px;
+	margin: 0 auto;
+	background-color: #EEEEEE;
+	border-radius: 10px;
+}
+
+.print-info__item {
+	width: 167px;
+	height: 48px;
+	display: flex;
+	flex-direction: row;
+}
+
+.print-info__item--left {
+	margin-right: 32.5px;
+}
+
+.print-info__item--right {
+	margin-left: 32.5px;
+}
+
+.print-info__item__icon {
+	margin-right: 16px;
+}
+
+.time-heading h3 ,
+.layers-heading h3{
+	font-size: 12px;
+	margin: 0;
+}
+
+.print-info__item__data {
+	font-size: 26px;
+	margin: 0;
+}
+
+.actions {
+	margin: 30px 0 0;
+}
+
+.loading-button {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+}
+
+.loading-button .remove,
+.loading-button .print {
+	width: 304px;
+	height: 56px;
+	background-color: #BBBBBB;
+	font-size: 22px;
+	text-decoration: none;
+	color: black;
+	line-height: 56px;
+	vertical-align: middle;
+}
+
+.remove {
+	margin-right: 16px;
+}
+
+.print {
+	margin-left: 16px;
 }

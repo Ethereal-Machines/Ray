@@ -1,0 +1,37 @@
+<!--
+*********************************
+* Code by Kanishka Mohan Madhuni *
+**********************************
+-->
+
+<div id="external-storage-wizard">
+
+	<!-- nav-bar goes here -->
+	<nav id="external-storage-wizard-nav">
+		<div class="wizard-name">
+			Browse - External Storage
+		</div>
+		<a href="#print-from-storage" class="back-button">
+			Back
+		</a>
+	</nav>
+
+	<!-- heading goes here -->
+	<h1 class="external-storage-wizard__heading">Choose the file you want to print </h1>
+
+	<!-- File list goes here -->
+	
+	<ul class="external-storage-wizard__files-list">
+
+		<script type="text/template" id="external-storage-file-list">
+			<% _.each(fileList, function(file) { %>
+				<li class="external-storage-wizard__files-list__file">
+					<img class="external-storage__file-img" src="{{ url_for('static', filename='img/print-from-storage/file-icon.svg') }}" width="56" height="56" alt="File Img">
+					<span class="external-storage__file-name"><%= file.filename %></span>
+				</li>
+			<% }); %>
+		</script>
+
+	</ul>
+
+</div>

@@ -53,9 +53,9 @@ def _get_gcode_files(directory):
 class EtherBoxHandler(FileSystemEventHandler):
     ''' Watch for USB insertion for print from storage feature '''
 
-    def __init(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         ''' Initiate the object '''
-        super(EtherBoxHandler).__init__(self, *args, **kwargs)
+        super(EtherBoxHandler, self).__init__(*args, **kwargs)
         self._callbacks = []
 
     def registerCallback(self, callback):
@@ -69,7 +69,10 @@ class EtherBoxHandler(FileSystemEventHandler):
         if not gcode_files:
             return
         for callback in self._callbacks:
-            callback.sendEvent("usb_inserted", usb_path)
+            try:
+                callback.sendEvent("usb_inserted", usb_path)
+            except:
+                pass
         s = settings()
         s.set(['usb', 'filelist'], gcode_files)
 
@@ -78,4 +81,7 @@ class EtherBoxHandler(FileSystemEventHandler):
         s.set(['usb', 'filelist'], [])
 
         for callback in self._callbacks:
-            callback.sendEvent("usb_removed", usb_path)
+            try:
+                callback.sendEvent("usb_removed", usb_path)
+            except:
+                pass

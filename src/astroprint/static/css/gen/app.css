@@ -46,7 +46,10 @@ body {
 #filament-unload-wizard-nav,
 #controls-nav,
 #print-from-storage-nav,
-#preheat-wizard-nav {
+#preheat-wizard-nav,
+#external-storage-wizard-nav,
+#internal-storage-nav,
+#confirm-print-nav {
 	display: flex;
 	flex-direction: row;
 	width: 100%;
@@ -156,21 +159,6 @@ progress[value] {
 .finish-msg {
 	font-size: 22px;
 	margin: 9px 0 28px;
-}
-
-/* Adding Styling to show up the dialog box */
-#print-file-info {
-	z-index: 1000;
-	position: absolute;
-	top: 50px;
-	left: 30%;
-}
-
-#print-file-info .dlg-content {
-	width: 400px;
-	text-align: center;
-	background-color: white;
-	color: black;
 }
 
 /* Adding temporary styling for the pencil icon to enter the temperature */

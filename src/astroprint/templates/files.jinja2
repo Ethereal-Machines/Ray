@@ -1,12 +1,15 @@
 
 <!-- navigation bar -->
 <nav id="internal-storage-nav">
-	<div class="wizard-name">Browse</div>
-	<a href="#utilities" class="internal-storage-nav__cancel-button">Cancel</a>
+	<div class="wizard-name">Browse - Internal Storage</div>
+	<a href="#print-from-storage" class="back-button">Back</a>
 </nav>
 
+<!-- heading goes here -->
+<h1 class="internal-storage__heading">Choose the file you want to print </h1>
+
 <div class="design-list">
-	<div class="design-list-container"></div>
+	<ul class="design-list-container"></ul>
 </div>
 
 <!-- 
@@ -15,7 +18,7 @@
 *********************
  -->
 
-<div id="print-file-info" class="reveal-modal xlarge" data-reveal>
+<div id="print-file-info" class="reveal-modal hide" >
 	<div class="dlg-content"></div>
 </div>
 
@@ -26,26 +29,24 @@
 	<div id="confirm-print-model">
 		<!-- navigation bar -->
 		<nav id="confirm-print-nav">
-			<div class="wizard-name">Browse</div>
+			<div class="wizard-name">Browse - Internal Storage</div>
 			<a href="#files" class="back-button">Back</a>
 		</nav>
 		
 		<!-- file-details container -->
 		<div class="file-details">
-			<div class="file-format-img-container">
-				<img src="" alt="File Format" class="file-format-img" width="75.6" height="75.6">
-			</div>
+			<img src="{{ url_for('static', filename='img/print-from-storage/file-icon.svg') }}" alt="File Format" class="file-format-img" width="112" height="112">
 			<h2 class="file-name"><%= p.printFileName ? p.printFileName : p.name %></h2>
-			<div class="file-sub-name">
-				<%= p.printFileName ? p.printFileName : p.name %>
+			<div class="file-date">
+				<%= new Date(p.uploaded_on * 1000).toLocaleDateString() %>
 			</div>
 		</div>
 
 		<!-- print-info container -->
 		<div class="print-info">
 			<% if (p.info) { %>
-				<div class="print-info__item">
-					<img src="" alt="Time-icon" class="print-info__item__icon" width="48" height="48">
+				<div class="print-info__item print-info__item--left">
+					<img src="{{ url_for('static', filename='img/print-from-storage/time-icon.svg') }}" alt="Time-icon" class="print-info__item__icon" width="48" height="48">
 					<div class="time-heading">
 						<h3>Print Time</h3>
 						<% if (p.info.print_time) { %>
@@ -53,9 +54,9 @@
 						<% } %>
 					</div>
 				</div><!-- end of 'print-info__item' -->
-				<div class="print-info__item">
-					<img src="" alt="material-item" class="print-info__item__icon" width="48" height="48">
-					<div class="">
+				<div class="print-info__item print-info__item--right">
+					<img src="{{ url_for('static', filename='img/print-from-storage/time-icon.svg') }}" alt="material-item" class="print-info__item__icon" width="48" height="48">
+					<div class="layers-heading">
 						<h3>Number of Layers</h3>
 						<% if (p.info.layer_count) { %>
 							<p class="print-info__item__data"><%= p.info.layer_count %></p>
@@ -97,12 +98,12 @@ and other options related to the files -->
 				<img src="<%= p.images.thumbnail %>"/>
 			</div>
 		<% } else { %>
-			<i class="icon-3d-object"></i>
+			<img class="icon-3d-object" src="../static/img/print-from-storage/file-icon.svg" width="56" height="56"></img>
 		<% } %>
 	</div>
 	<div class="middle-section">
     <h3 class="middle-section__heading"> <%= p.name %></h3>
-    <%= size_format(p.size) %>
+    <!-- <%= size_format(p.size) %>
 		<% if (p.info) { %>
 			<% if (p.info.print_time) { %>
 				· <i class="icon-stopwatch" title="Print Time"></i> <b><%= time_format(p.info.print_time) %></b>
@@ -112,9 +113,9 @@ and other options related to the files -->
 		<% } %>
     <% if (p.uploaded_on) { %>
       · <i class="icon-calendar" title="Time Added"></i> <span data-localtime-format="d MMM, yyyy (h:mm a)"><%= new Date(p.uploaded_on * 1000).toISOString() %></span>
-    <% } %>
+    <% } %> -->
 	</div>
-	<div class="right-section">
+	<!-- <div class="right-section">
 		<div class="print-file-options">
 			<% if (p.local_filename) { %>
 				<div class="loading-button print">
@@ -136,5 +137,5 @@ and other options related to the files -->
         </div>
 			<% } %>
 		</div>
-	</div>
+	</div> -->
 </script>

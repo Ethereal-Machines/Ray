@@ -44,7 +44,7 @@ default_settings = {
     "server": {
         "host": "0.0.0.0",
         "port": 5000,
-        "firstRun": True,
+        "firstRun": False,
         "baseUrl": "",
         "scheme": "",
         "maxUploadSize": 160, #Size in MB for the max allowed file size
