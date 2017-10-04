@@ -419,6 +419,7 @@ class Server():
         from tornado.web import Application, FallbackHandler
 
         from astroprint.printfiles.watchdogs import UploadCleanupWatchdogHandler
+        from astroprint.printfiles.watchdogs import EtherBoxHandler
 
         debug = self._debug
 
@@ -569,6 +570,9 @@ class Server():
         observer = Observer()
         observer.schedule(
             UploadCleanupWatchdogHandler(), s.getBaseFolder("uploads"))
+        observer.schedule(
+            EtherBoxHandler(), s.get(['usb', 'folder']), recursive=True)
+            #EtherBoxHandler(), s.getBaseFolder("uploads"), recursive=True)
         observer.start()
 
         try:
