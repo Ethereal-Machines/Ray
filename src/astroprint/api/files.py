@@ -356,7 +356,7 @@ def usb_file_info():
 @api.route("/usbfiles/printfile/")
 def printFileCommand():
     filepath = flask.request.args.get('futurepath')
-    if not os.path.exists(filepath)
+    if not os.path.exists(filepath):
         return make_response("File not found %s" % (filepath), 404)
 
     # valid file commands, dict mapping command name to mandatory parameters
