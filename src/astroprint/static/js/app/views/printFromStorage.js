@@ -42,12 +42,10 @@ var PrintFromStorageView = Backbone.View.extend({
   	console.log("External storage options is being selected");
 
   	$.ajax({
-  		url: '/api/files/usblist',
+  		url: '/api/usbfiles/usblist',
   		type: 'GET',
   		success: function(obj) {
-  			// console.log(obj);
   			new ExternalStorageView(obj);
-
   		},
   		error: function(xhr) {
   			console.log(xhr);
@@ -61,11 +59,24 @@ var ExternalStorageView = Backbone.View.extend({
 	el: "#external-storage-view",
 	fileList: null,
 	template: _.template($("#external-storage-file-list").html()),
+	events: {
+    'click .external-storage__file-name': 'copyFileToLocal'
+	},
+	printFileView: null,
+	list: null,
+	print_file: null,
 	initialize: function(params) {
 		if (params !== undefined) {
 			this.fileList = params;
 			console.log(params);
 		}
+
+		this.printFileView = new PrintFileView({
+			list: this.list,
+			print_file: this.print_file
+		});
+
+		console.log(this.printFileView);
 
 		this.render();
 
@@ -77,6 +88,49 @@ var ExternalStorageView = Backbone.View.extend({
 				fileList: this.fileList
 			}));
 		}
-	}
+	},
+	copyFileToLocal: function(e) {
+		e.preventDefault();
+		var target = $(e.target);
+		var targetName = target.text();
+		console.log(target.text());
 
+		var name, fullpath;
+
+		if (this.fileList !== null) {
+			for (var key in this.fileList) {
+				if (this.fileList[key].filename === targetName) {
+					name = this.fileList[key].filename;
+					fullpath = this.fileList[key].fullpath;
+
+					var data = {
+						filename: name,
+						filepath: fullpath
+					}
+
+					console.log(JSON.stringify(data));
+
+					var self = this;
+
+					$.ajax({
+						url: "/api/usbfiles/copyusb",
+						method: "GET",
+						data: data,
+						success: function(data) {
+							console.log(data);
+
+							console.log(data.futurepath);
+							console.log(data.localFileName);
+
+							self.printFileView.printClicked(e, {filename: data.localFileName});
+						},
+						error: function(xhr) {
+							console.log(xhr);
+						}
+					});
+				}
+			}
+		}
+
+	}
 });

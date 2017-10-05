@@ -338,6 +338,7 @@ def copy_from_usb():
             'status': 'success',
             'msg': 'File copied',
             'futurepath': futurepath,
+            'localFileName': filename,
     })
 
 
@@ -356,8 +357,8 @@ def usb_file_info():
 @api.route("/usbfiles/printfile/")
 def usbprintFileCommand():
     filepath = flask.request.args.get('futurepath')
-    if not os.path.exists(filepath):
-        return make_response("File not found %s" % (filepath), 404)
+    #if not os.path.exists(filepath):
+    #    return make_response("File not found %s" % (filepath), 404)
 
     # valid file commands, dict mapping command name to mandatory parameters
     valid_commands = {
@@ -383,6 +384,7 @@ def usbprintFileCommand():
         sd = False
         filenameToSelect = printer.fileManager.getAbsolutePath(filename)
         printer.selectFile(filenameToSelect, sd, printAfterLoading)
+        # printer.selectFile(filepath, sd, printAfterLoading)
 
     return NO_CONTENT
 # @api.route("/files/printusb")

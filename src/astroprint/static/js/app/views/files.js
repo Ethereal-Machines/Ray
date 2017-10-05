@@ -35,7 +35,9 @@ var PrintFileInfoDialog = Backbone.View.extend({
   {
     this.print_file_view = print_file_view;
     this.render();
-    this.$el.foundation('reveal', 'open');
+    // this.$el.foundation('reveal', 'open');
+    console.log("I need to open the modal");
+    this.$el.removeClass('hide');
   },
   onDeleteClicked: function(e)
   {
@@ -73,21 +75,20 @@ var PrintFileInfoDialog = Backbone.View.extend({
         }
       });
     }
+
+    this.$el.addClass('hide');
   },
-  onPrintClicked: function(e)
+  onPrintClicked: function(e, params)
   {
-    this.print_file_view.printClicked(e);
-    // this.$el.foundation('reveal', 'close');
-    this.$el.css('display', 'none');
+    this.print_file_view.printClicked(e, null);
+    this.$el.addClass('hide');
   },
   onDownloadClicked: function(e)
   {
     this.print_file_view.downloadClicked(e);
-    // this.$el.foundation('reveal', 'close');
-    this.$el.css('display', 'none');
+    this.$el.addClass('hide');
   },
   hideModel: function() {
-    // this.$el.css('display', 'none !important');
     this.$el.addClass('hide');
   }
 });
@@ -148,11 +149,17 @@ var PrintFileView = Backbone.View.extend({
     this.list.info_dialog.open(this);
   },
   // callback function to handle the Print button clicked event
-  printClicked: function (evt)
+  printClicked: function (evt, params)
   {
     if (evt) evt.preventDefault();
 
-    var filename = this.print_file.get('local_filename');
+    // console.log(params);
+
+    if (params !== null) {
+      var filename = params.filename;
+    } else {
+      var filename = this.print_file.get('local_filename');
+    }
 
     if (filename) {
       //We can't use evt because this can come from another source than the row print button
