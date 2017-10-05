@@ -339,7 +339,7 @@ def copy_from_usb():
             'status': 'success',
             'msg': 'File copied',
             'futurepath': futurepath,
-            'localFileName': filename,
+            'localFileName': secure_filename(filename),
     })
 
 
