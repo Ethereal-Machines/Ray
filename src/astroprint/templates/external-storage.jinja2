@@ -34,4 +34,39 @@
 
 	</ul>
 
+	<!-- external storage confirm print modal -->
+
+	<div class="external-stroage-wizard__confrim-print-modal hide">
+			<!-- navigation bar -->
+			<nav id="external-storage-wizard__confirm-print-nav">
+				<div class="wizard-name">Browse - External Storage</div>
+				<a href="#external-storage" class="back-button back-button--external-storage">Back</a>
+			</nav>
+			
+			<!-- file-details container -->
+			<div class="file-details">
+				<img src="{{ url_for('static', filename='img/print-from-storage/file-icon.svg') }}" alt="File Format" class="file-format-img" width="112" height="112">
+				<h2 class="file-name file-name--external-storage"></h2>
+				<div class="file-date file-date--external-storage">
+					No Content Available
+				</div>
+			</div>
+
+			<!-- print-info container -->
+			<div class="print-info">
+				<div class="print-info__no-details">
+					Analyzing G-Code
+				</div>
+			</div>
+
+			<!-- print-actions container -->
+			<div class="actions">
+				<div class="loading-button">
+					<a href="#" class="remove idle copy--external-storage">COPY</a>
+					<a href="#" class="print print-file--external-storage">PRINT</a>
+				</div>
+			</div>
+
+	</div>
+
 </div>

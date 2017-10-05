@@ -49,7 +49,8 @@ body {
 #preheat-wizard-nav,
 #external-storage-wizard-nav,
 #internal-storage-nav,
-#confirm-print-nav {
+#confirm-print-nav,
+#external-storage-wizard__confirm-print-nav {
 	display: flex;
 	flex-direction: row;
 	width: 100%;

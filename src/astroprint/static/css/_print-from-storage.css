@@ -131,7 +131,8 @@
 
 /* Styling for print-file-info starts here */
 
-#print-file-info {
+#print-file-info,
+.external-stroage-wizard__confrim-print-modal {
 	z-index: 1000;
 	position: absolute;
 	top: 0;
