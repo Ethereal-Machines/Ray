@@ -329,7 +329,7 @@ def copy_from_usb():
     path = s.getBaseFolder("uploads")
     futurepath = os.path.abspath(os.path.join(path, secure_filename(filename)))
     try:
-        shutil.copy2(filepath, path)
+        shutil.copy2(filepath, futurepath)
     except Exception as e:
         return flask.jsonify({
             'status': 'failed',
