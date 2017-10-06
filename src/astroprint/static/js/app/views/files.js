@@ -21,7 +21,7 @@ var PrintFileInfoDialog = Backbone.View.extend({
   },
   initialize: function(params)
   {
-    console.log("PrintFileInfoDialog is being initialized");
+    // console.log("PrintFileInfoDialog is being initialized");
     this.file_list_view = params.file_list_view;
   },
   render: function()
@@ -101,7 +101,7 @@ var PrintFileView = Backbone.View.extend({
   downloadProgress: null,
   initialize: function(options)
   {
-    console.log("PrintFileView is being initialized");
+    // console.log("PrintFileView is being initialized");
     this.list = options.list;
     this.print_file = options.print_file;
   },
@@ -109,7 +109,7 @@ var PrintFileView = Backbone.View.extend({
   {
     var print_file = this.print_file.toJSON();
 
-    console.log(print_file);
+    // console.log(print_file);
 
     if (print_file.local_filename) {
       this.$el.removeClass('remote');
@@ -203,7 +203,7 @@ var StorageControlView = Backbone.View.extend({
   selected: null,
   initialize: function(options)
   {
-    console.log("StorageControlView is being initialized");
+    // console.log("StorageControlView is being initialized");
     this.print_file_view = options.print_file_view;
   },
   selectStorage: function(storage)
@@ -242,7 +242,7 @@ var PrintFilesListView = Backbone.View.extend({
     'click .list-header button.sync': 'forceSync'
   },
   initialize: function(options) {
-    console.log("PrintFilesListView is being initialized");
+    // console.log("PrintFilesListView is being initialized");
     this.file_list = new PrintFileCollection();
     this.info_dialog = new PrintFileInfoDialog({file_list_view: this});
     this.storage_control_view = new StorageControlView({

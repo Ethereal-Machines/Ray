@@ -98,11 +98,14 @@ var ExternalStorageView = Backbone.View.extend({
 
 		this.$(".external-stroage-wizard__confrim-print-modal").removeClass('hide');
 		this.$(".external-stroage-wizard__confrim-print-modal").find('.file-name').text(targetName);
-		this.$(".print-file--external-storage").css('pointer-events', 'none');
+		this.$(".print-file--external-storage").css({'pointer-events': 'none', 'opacity': '.5'});
 
 	},
 	hidePrintModal: function() {
 		this.$(".external-stroage-wizard__confrim-print-modal").addClass('hide');
+		this.$(".print-info__no-details").text("Analyzing G-Code");
+		this.$(".copy--external-storage").css({'pointer-events': 'auto', 'opacity': '1'});
+		this.$(".print-file--external-storage").css({'pointer-events': 'none', 'opacity': '.5'});
 	},
 	copyFileToLocal: function(e) {
 		e.preventDefault();
@@ -132,8 +135,8 @@ var ExternalStorageView = Backbone.View.extend({
 							self.copySuccessData = data;
 
 							self.$(".print-info__no-details").text("Your File Copied Successfully!");
-							self.$(".copy--external-storage").css('pointer-events', 'none');
-							self.$(".print-file--external-storage").css('pointer-events', 'auto');
+							self.$(".copy--external-storage").css({'pointer-events': 'none', 'opacity': '.5'});
+							self.$(".print-file--external-storage").css({'pointer-events': 'auto', 'opacity': '1'});
 
 						},
 						error: function(xhr) {
