@@ -158,7 +158,8 @@
 	padding-top: 6px;
 }
 
-.print-info {
+.print-info--internal-storage,
+.print-info--external-storage {
 	display: flex;
 	flex-direction: row;
 	justify-content: center;

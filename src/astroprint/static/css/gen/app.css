@@ -15,6 +15,7 @@ body {
 	width: 800px;
 	height: 480px;
 	margin: 0 auto;
+	position: relative;
 	/*border: 1px solid grey;*/
 }
 
@@ -50,7 +51,8 @@ body {
 #external-storage-wizard-nav,
 #internal-storage-nav,
 #confirm-print-nav,
-#external-storage-wizard__confirm-print-nav {
+#external-storage-wizard__confirm-print-nav,
+#printing-wizard-nav {
 	display: flex;
 	flex-direction: row;
 	width: 100%;
@@ -70,6 +72,11 @@ body {
 	width: 80%;
 	text-align: left;
 }
+
+.wizard-name--printing {
+	width: 100%;
+}
+
 .cancel-button,
 .back-button {
 	width: 20%;

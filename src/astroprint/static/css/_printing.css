@@ -1,0 +1,143 @@
+#printing-info-container {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	padding: 0 20px;
+}
+
+.print-progress-container {
+	width: 35%;
+	max-width: 224px;
+	height: 224px;
+	margin: 0 auto;
+	border: 1px solid gray;
+	border-width: 10px;
+	border-radius: 50%;
+	position: relative;
+	text-align: center;
+}
+
+.progress {
+	width: 100%;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+.printing-progress {
+	margin: 5px auto;
+	font-size: 16px;
+}
+
+.progress-label {
+	font-size: 60px;
+}
+
+.print-info--printing-wizard {
+	width: 65%;
+}
+
+.printing-wizard__nozzle-container,
+.printing-wizard__bed-container {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	/*justify-content: flex-end;*/
+	align-items: center;
+	margin-bottom: 20px;
+}
+
+.printing-wizard__target-img {
+	margin-right: 8px;
+}
+
+.printing-wizard__progress {
+	margin: 0 8px 0 !important;
+	width: 344px !important;
+	height: 32px !important;
+}
+
+.printing-wizard__time-left,
+.printing-wizard__layer-left {
+	display: flex;
+	justify-content: space-between;
+}
+
+.printing-wizard__layer-left__heading,
+.printing-wizard__time-left__heading {
+  margin: 0;
+  font-size: 18px;
+  vertical-align: middle;
+  line-height: 47px;
+}
+
+.printing-wizard__time-left__value,
+.printing-wizard__layer-left__value {
+	font-size: 40px;
+}
+
+.button-container {
+	display: flex;
+	justify-content: center;
+	margin: 16px 0;
+}
+
+.printing-wizard-btn--left {
+	margin-right: 16px;
+}
+
+.printing-wizard-btn--right {
+	margin-left: 16px;
+}
+
+#cancel-print-modal {
+  background-color: rgba(0, 0, 0, 0.86);
+  color: white;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.modal-body {
+  width: 480px;
+  height: 258px;
+  background-color: white;
+  color: black;
+  border-radius: 10px;
+  margin: 111px auto;
+  padding: 0 32px;
+}
+
+.modal-heading {
+	margin: 0;
+	padding: 15.5px 0 9px;
+	border-bottom: 1px solid #95989A;
+}
+
+.warning-icon {
+	margin: 8px 0;
+}
+
+.warning-msg {
+	margin: 0;
+}
+
+.cancel-btn--no,
+.cancel-btn--yes {
+	width: 200px;
+	height: 40px;
+	font-size: 22px;
+	text-align: center;
+}
+
+.cancel-btn--no {
+	margin-right: 8px;
+}
+
+.cancel-btn--yes {
+	margin-left: 8px;
+}
