@@ -14,71 +14,70 @@
 		</a>
 	</nav>
 
-	<!-- wrapper -->
-	<div class="wrapper">
-		<div id="preheat-wizard__preheating-progress" class="active">
-			<!-- <h1 class="preheat-wizard__heading">Heating...</h1> -->
-			<!-- nozzle-part -->
-			<div class="preheat-wizard__nozzle-container">
-				<div class="preheat-wizard__nozzle-container__img-temp-container">
-					<div class="nozzle-img">
-						<img src="../../img/ethereal-astroprint/nozzle.svg" alt="Nozzle" width="64" height="64">
-					</div>
-					<div class="nozzle-temp-progress">
-						<p class="temp-msg">Extruder Temperature</p>
-						<p class="temp-value"> -- &deg;C/ -- &deg;C</p>
-					</div>
+	<div id="preheat-wizard__preheating-progress" class="active">
+		<!-- <h1 class="preheat-wizard__heading">Heating...</h1> -->
+		<!-- nozzle-part -->
+		<div class="preheat-wizard__nozzle-container">
+			<div class="preheat-wizard__nozzle-container__img-temp-container">
+				<div class="nozzle-img">
+					<img src="../../img/ethereal-astroprint/nozzle.svg" alt="Nozzle" width="64" height="64">
 				</div>
-				<div class="preheat-wizard__nozzle-container__progress-container">
-					<progress max="100" value="0" id="extruder-progress-bar"></progress>
+				<div class="nozzle-temp-progress">
+					<p class="temp-msg">Extruder Temperature</p>
+					<p class="temp-value"> -- &deg;C/ -- &deg;C</p>
 				</div>
 			</div>
-			
-			<!-- bed-part -->
-			<div class="preheat-wizard__bed-container">
-				<div class="preheat-wizard__bed-container__img-temp-container">
-					<div class="bed-img">
-						<img src="../../img/ethereal-astroprint/nozzle.svg" alt="Bed" width="64" height="64">
-					</div>
-					<div class="bed-temp-progress">
-						<p class="temp-msg">Bed Temperature</p>
-						<p class="temp-value"> -- &deg;C/ -- &deg;C</p>
-					</div>
+			<div class="preheat-wizard__nozzle-container__progress-container">
+				<progress max="100" value="0" id="extruder-progress-bar"></progress>
+			</div>
+		</div>
+		
+		<!-- bed-part -->
+		<div class="preheat-wizard__bed-container">
+			<div class="preheat-wizard__bed-container__img-temp-container">
+				<div class="bed-img">
+					<img src="{{ url_for('static',filename='img/preheating-utility/bed-plate.svg') }}" alt="Bed" width="64" height="64">
 				</div>
-				<div class="preheat-wizard__bed-container__progress-container">
-					<progress max="100" value="0" id="bed-progress-bar"></progress>
+				<div class="bed-temp-progress">
+					<p class="temp-msg">Bed Temperature</p>
+					<p class="temp-value"> -- &deg;C/ -- &deg;C</p>
 				</div>
 			</div>
-
-			<!-- Cancel Button -->
-			<button type="button" class="preheat-wizard__cancel-button next-button">Cancel</button>
-
+			<div class="preheat-wizard__bed-container__progress-container">
+				<progress max="100" value="0" id="bed-progress-bar"></progress>
+			</div>
 		</div>
 
-		<div id="preheat-wizard__finish-section" class="hide">
-			<div class="finish-icon-container">
-				<img src="../../img/ethereal-astroprint/finish-icon.svg" alt="Finish icon" width="80" height="80">
-			</div>
-			<h2 class="finish-msg">Heating Complete</h2>
-			<a href="#control">
-				<button type="button" class="finish-section-button next-button" id="preheat-wizard__finish-section__finish-button">FINISH</button>
-			</a>
+		<!-- Cancel Button -->
+		<button type="button" class="preheat-wizard__cancel-button next-button">Cancel</button>
+
+	</div>
+
+	<div id="preheat-wizard__finish-section" class="hide">
+		<div class="finish-icon-container">
+			<img src="{{ url_for('static',filename='img/ethereal-astroprint/finish-icon.svg') }}" alt="Finish icon" width="176" height="176">
 		</div>
+		<h2 class="finish-msg">Heating Complete</h2>
+		<a href="#control">
+			<button type="button" class="finish-section-button next-button" id="preheat-wizard__finish-section__finish-button">FINISH</button>
+		</a>
+	</div>
 
-		<div class="preheat-wizard__confirm-cancel-modal hide">
-			<div class="preheat-wizard__confirm-cancel-modal__inner">
+	<div class="preheat-wizard__confirm-cancel-modal hide">
+		<div class="preheat-wizard__confirm-cancel-modal__inner">
 
-				<h1 class="preheat-wizard__confirm-cancel-modal__modal-heading">Confirm Cancel</h1>
-				<img src="{{ url_for('static', filename='img/preheating-utility/confirm-cancel-icon.svg') }} " width="96" height="96">
-				<p class="preheat-wizard__confirm-cancel-modal__msg">
-					Are you sure you want to cancel preheating?
-				</p>
-				<div class="preheat-wizard__confirm-cancel-modal__button-container">
-					<button class="no-button">NO</button>
-					<button class="yes-button"><a href="#control">YES</a></button>
-				</div>
-
+			<h1 class="preheat-wizard__confirm-cancel-modal__modal-heading">Confirm Cancel</h1>
+			<hr>
+			<img src="{{ url_for('static', filename='img/preheating-utility/confirm-cancel-icon.svg') }} " width="96" height="96">
+			<p class="preheat-wizard__confirm-cancel-modal__msg">
+				Are you sure you want to cancel preheating?
+			</p>
+			<div class="preheat-wizard__confirm-cancel-modal__button-container">
+				<button class="no-button">NO</button>
+				<button class="yes-button"><a href="#control">YES</a></button>
 			</div>
+
 		</div>
 	</div>
+
 </div>
