@@ -90,7 +90,7 @@ class AstroPrintCloud(object):
     def cloud_enabled(self):
         return settings().get(['cloudSlicer', 'apiHost']) and self.hmacAuth
 
-    def signin(self, email, password):
+    def signin(self, machineId, accessCode):
         from octoprint.server import userManager
         from astroprint.network.manager import networkManager
 
@@ -100,29 +100,29 @@ class AstroPrintCloud(object):
         online = networkManager().isOnline()
 
         if online:
-            private_key = self.get_private_key(email, password)
+            private_key = self.get_private_key(machineId, accessCode)
 
             if private_key:
-                public_key = self.get_public_key(email, private_key)
+                public_key = self.get_public_key(machineId, private_key)
 
                 if public_key:
                     # Let's protect the box now:
-                    user = userManager.findUser(email)
+                    user = userManager.findUser(machineId)
 
                     if user:
-                        userManager.changeUserPassword(email, password)
+                        userManager.changeUserPassword(machineId, accessCode)
                         userManager.changeCloudAccessKeys(
-                            email, public_key, private_key)
+                            machineId, public_key, private_key)
                     else:
                         user = userManager.addUser(
-                            email, password, public_key, private_key, True)
+                            machineId, accessCode, public_key, private_key, True)
 
                     userLoggedIn = True
 
         else:
-            user = userManager.findUser(email)
+            user = userManager.findUser(machineId)
             userLoggedIn = user and \
-                user.check_password(userManager.createPasswordHash(password))
+                user.check_password(userManager.createPasswordHash(accessCode))
 
         if userLoggedIn:
             login_user(user, remember=True)
