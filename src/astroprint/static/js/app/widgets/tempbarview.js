@@ -21,6 +21,7 @@ var TempBarView = Backbone.View.extend({
   initialize: function(params){
     this.scale = params.scale;
     this.type = params.type;
+    this.setDefaultValue();
   },
   remove: function()
   {
@@ -43,6 +44,13 @@ var TempBarView = Backbone.View.extend({
       }
     }
   },
+  setDefaultValue: function() {
+    if (this.type === "tool0") {
+      this.setHandle(210);
+    } else if (this.type === "bed") {
+      this.setHandle(70);
+    }
+  },
   onEditClicked: function(e)
   {
     e.preventDefault();
@@ -52,10 +60,14 @@ var TempBarView = Backbone.View.extend({
     var container = target.closest('.temp-target');
     var label = container.find('span.target-value');
     var input = container.find('input');
+    var currentVal = input.val();
 
     label.addClass('hide');
     input.removeClass('hide');
-    input.val(label.text());
+
+    console.log(label.text());
+
+    input.val(currentVal);
     setTimeout(function(){input.focus().select()},100);
   },
   onTempFieldChanged: function(e)
@@ -63,12 +75,26 @@ var TempBarView = Backbone.View.extend({
     var input = $(e.target);
     var value = input.val();
 
-    if (value != this.lastSent && !isNaN(value) ) {
+    if (!isNaN(value) ) {
       value = Math.min(Math.max(value, this.scale[0]), this.scale[1]);
-      this._sendToolCommand('target', this.type, value);
+      // this._sendToolCommand('target', this.type, value);
       input.blur();
 
       this.setHandle(value);
+    }
+  },
+  startPreheating: function(value) {
+    // var input = $(e.target);
+    // var value = input.val();
+
+    var value = value;
+
+    if (value != this.lastSent && !isNaN(value) ) {
+      value = Math.min(Math.max(value, this.scale[0]), this.scale[1]);
+      this._sendToolCommand('target', this.type, value);
+      // input.blur();
+
+      // this.setHandle(value);
     }
   },
   onTempFieldBlur: function(e)
@@ -128,10 +154,11 @@ var TempBarView = Backbone.View.extend({
   },
   setTemps: function(actual, target)
   {
+    // console.log("Set Temps is called");
     var now = new Date().getTime();
 
     if (this.lastSent !== null && this.lastSentTimestamp > (now - this.waitAfterSent) ) {
-      target = this.lastSent;
+      // target = this.lastSent;
     }
 
     if (isNaN(actual)) {
@@ -144,6 +171,8 @@ var TempBarView = Backbone.View.extend({
 
     this.target = target;
     this.actual = actual;
+
+    // console.log("I am also running you BITCH");
     this.renderTemps(actual, target);
   },
 

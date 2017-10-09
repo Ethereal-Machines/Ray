@@ -144,7 +144,7 @@
 	<script type="text/template" id="auto-bed-level-template"></script>
 
 	<script type="text/template" id="pre-heat-template">
-		{%- macro temp_control(class, label) %}
+		{%- macro temp_control(class, label, temp) %}
 	    <div class="temp-control-cont {{class}}">
 	      <!-- here we show the rising temperature -->
 	      <!-- <span class="current-temp-top">- -</span> -->
@@ -154,7 +154,7 @@
 
 	        <div class="temp-target temp-target--preheating-utility">
 	          <span class="target-value">- -</span>
-	          <input type="number" class="target-value-input hide"/>
+	          <input type="number" class="target-value-input hide" value="{{ temp }}" />
 	          <a class="temp-edit"><img src="{{ url_for('static',filename='img/preheating-utility/pencil-edit-button.svg') }}" width="20" height="20"></a>
 	        </div>
 	      </div>
@@ -165,19 +165,19 @@
 			<ul id="temp-control">
 				<li class="temp-control-items">
 					<img src="{{ url_for('static',filename='img/preheating-utility/extruder-1.svg') }}" width="96" height="96">
-					{{ temp_control('nozzle', 'Extruder 1')}}
+					{{ temp_control('nozzle', 'Extruder 1', '210')}}
 				</li>
-				<li class="temp-control-items">
+				<li class="temp-control-items temp-control-items--extruder">
 					<img src="{{ url_for('static',filename='img/preheating-utility/extruder-2.svg') }}" width="96" height="96">
-					{{ temp_control('nozzle', 'Extruder 2')}}
+					{{ temp_control('nozzle', 'Extruder 2', '210')}}
 				</li>
-				<li class="temp-control-items">
+				<li class="temp-control-items temp-control-items--bed">
 					<img src="{{ url_for('static',filename='img/preheating-utility/bed-plate.svg') }}" width="96" height="96">
-					{{ temp_control('bed', 'Build Plate')}}
+					{{ temp_control('bed', 'Build Plate', '70')}}
 				</li>
 			</ul>
 
-			<a href="#preheating" id="preheat-control-start-btn" class="next-button">START</a>
+			<a href="#preheating" id="preheat-control-start-btn" class="next-button next-button--start-preheating">START</a>
 		</div>
 
 

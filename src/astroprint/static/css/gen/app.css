@@ -73,7 +73,8 @@ body {
 	text-align: left;
 }
 
-.wizard-name--printing {
+.wizard-name--printing,
+.wizard-name--preheating {
 	width: 100%;
 }
 
@@ -95,14 +96,13 @@ body {
 
 .steps-count {
 	text-align: center;
-	margin: 0 auto;
+	margin: 22px auto 17px;
 	font-size: 20px;
-	padding: 20px 0 8px;
 }
 
 .steps-progress {
 	height: 24px;
-	margin: 0 auto 24px;
+	margin: 0 auto 16px;
 	background-image: url("../../img/ethereal-astroprint/step-1.svg");
 	background-repeat: no-repeat;
 	background-position: center;
@@ -147,32 +147,11 @@ progress[value] {
 	font-size: 22px;
 	text-align: center;
 	margin: 0 auto;
+	background-color: #BBB;
+	border: 0;
 }
 
 .next-button a {
 	text-decoration: none;
 	color: black;
 }
-
-.instruction-heading {
-	font-size: 18px;
-	margin: 46px 0 14px;
-}
-
-.instruction-msg {
-	font-size: 18px;
-	margin-bottom: 40px;
-}
-
-.finish-msg {
-	font-size: 22px;
-	margin: 9px 0 28px;
-}
-
-/* Adding temporary styling for the pencil icon to enter the temperature */
-/*a.temp-edit {
-	display: block;
-	width: 40px;
-	height: 40px;
-	background-color: black;
-}*/

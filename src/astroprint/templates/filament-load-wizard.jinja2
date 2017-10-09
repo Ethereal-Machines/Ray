@@ -3,44 +3,50 @@
 		<div class="wizard-name">
 			Filament Load Wizard
 		</div>
-		<a href="#" class="cancel-button">
+		<a href="#control" class="cancel-button">
 			Cancel
 		</a>
 	</nav>
 	<div class="wrapper">
-		<div class="steps-count">STEP 1/3</div>
-		<div class="steps-progress"></div>
-		
-		{%- macro temp_control(class, label) %}
+
+		{%- macro temp_control(class, label, temp) %}
 	    <div class="temp-control-cont {{class}}">
 	      <!-- here we show the rising temperature -->
-	      <span class="current-temp-top bold">- -</span>
+	      <!-- <span class="current-temp-top">- -</span> -->
 	      <div class="temp-bar">
 	        <!-- here the 'bed' or 'nozzle' label will display based on the bar we are on -->
-	        <label class="bold">{{label}}</label>
+	        <label class="temp-bar-label">{{label}}</label>
 
-	        <!-- this is the movable bar, which moves slowly slowly on the 
-	          temp rise -->
-	        <div class="current-temp">
-	          <div class="triangle_left"></div>
-	          <div class="triangle_right"></div>
-	        </div>
-
-	        <div class="temp-target radius bold">
-	          <a class="temp-edit"><i class="icon-pencil"></i></a>
+	        <div class="temp-target temp-target--preheating-utility">
 	          <span class="target-value">- -</span>
-	          <input type="number" class="hide"/>
+	          <input type="number" class="target-value-input hide" value="{{ temp }}" />
+	          <a class="temp-edit"><img src="{{ url_for('static',filename='img/preheating-utility/pencil-edit-button.svg') }}" width="20" height="20"></a>
 	        </div>
 	      </div>
 	    </div>
 		{%- endmacro %}
+
 		<div id="filament-load-wizard__temp-control" class="active">
-	    {{ temp_control('nozzle', 'Nozzle')}}
+			
+			<div class="steps-count">Set material temperature</div>
+			<div class="steps-progress"></div>
+
+	    <ul id="filament-load-wizard__temp-control__list">
+				<li class="temp-control-items">
+					<img src="{{ url_for('static',filename='img/preheating-utility/extruder-1.svg') }}" width="96" height="96">
+					{{ temp_control('nozzle', 'Extruder', '170')}}
+				</li>
+			</ul>
+
 		  <button type="button" id="load-select-preheat-temp-button" class="next-button" name="Next">NEXT</button>  
 	  </div>
 
 		<div id="filament-load-wizard__preheating-progress-section" class="hide">
-			<div class="filament-img-temp-container">
+
+			<div class="steps-count">Set material temperature</div>
+			<div class="steps-progress"></div>
+
+			<div class="filament-img-temp-container filament-img-temp-container--load-filament">
 				<div class="filament-img">
 					<img src="../../img/ethereal-astroprint/nozzle.svg" alt="Filament" width="64" height="64">
 				</div>
@@ -52,10 +58,14 @@
 			<div class="progress-bar-container">
 				<progress max="100" value="0"></progress>
 			</div>
-			<button type="button" id="preheating-progress-section-button" class="next-button" name="Next">NEXT</button>
+			<button type="button" id="preheating-progress-section-button" class="next-button next-button--load-filament" name="Next">NEXT</button>
 		</div>
 
 		<div id="insert-filament-section" class="hide">
+
+			<div class="steps-count">Set material temperature</div>
+			<div class="steps-progress"></div>
+
 			<h2 class="instruction-heading">Insert filament end into the feeder</h2>
 			<p class="instruction-msg">Gently push the filament until it is grabbed by the feeder and is visible in the bowden
 			</p>
@@ -63,6 +73,10 @@
 		</div>
 
 		<div id="extruding-in-progress-section" class="hide">
+
+			<div class="steps-count">Set material temperature</div>
+			<div class="steps-progress"></div>
+
 			<h2 class="instruction-heading">Extruding Filament...</h2>
 			<p class="instruction-msg">Press NEXT when the filament starts coming out from the hot end
 			</p>
@@ -70,10 +84,8 @@
 		</div>
 
 		<div id="filament-load-wizard__finish-section" class="hide">
-			<div class="finish-icon-container">
-				<img src="../../img/ethereal-astroprint/finish-icon.svg" alt="Finish icon" width="80" height="80">
-			</div>
-			<h2 class="finish-msg">Filament Load Complete!</h2>
+			<img src="../../img/ethereal-astroprint/finish-icon.svg" alt="Finish icon" width="176" height="176">
+			<h2 class="finish-msg finish-msg--load-filament">Filament Load Complete!</h2>
 			<a href="#control">
 				<button type="button" class="finish-section-button next-button" id="filament-load-wizard__finish-button">FINISH</button>
 			</a>

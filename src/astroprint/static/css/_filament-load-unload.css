@@ -52,3 +52,44 @@
 	text-decoration: none;
 	color: black;
 }
+
+/* Loading-Unloading filament steps styling goes here */
+
+#filament-load-wizard__temp-control,
+#filament-unload-wizard__temp-control {
+	text-align: center;
+}
+
+#filament-load-wizard__temp-control__list,
+#filament-unload-wizard__temp-control__list {
+	list-style: none;
+	display: flex;
+	margin: 10px 0 30px;
+	padding: 0;
+	justify-content: center;
+}
+
+.filament-img-temp-container--load-filament,
+.filament-img-temp-container--unload-filament {
+	margin-bottom: 16px;
+}
+
+.next-button--load-filament,
+.next-button--unload-filament {
+	margin: 40px 0;
+}
+
+.instruction-heading {
+	margin: 64px 0 16px;
+	font-size: 20px;
+}
+
+.instruction-msg {
+	font-size: 18px;
+	margin: 16px 0 90px;
+}
+
+.finish-msg--load-filament,
+.finish-msg--unload-filament {
+	margin: 22px 0 65px;
+}

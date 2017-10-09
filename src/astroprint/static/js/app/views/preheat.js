@@ -64,6 +64,7 @@ var PreheatingView = Backbone.View.extend({
 		this.$(".preheat-wizard__confirm-cancel-modal").addClass('hide');
 	},
 	stopPreheating: function() {
+    
 		var data1 = {
 			command: "target",
 			targets: {
@@ -105,6 +106,7 @@ var PreheatingView = Backbone.View.extend({
     });
 
     this.closeModal();
+
 	},
 	updateProgressBar: function() {
 

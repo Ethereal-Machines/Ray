@@ -13,7 +13,7 @@ var TempBarVerticalView = TempBarView.extend({
     'click button.temp-off': 'turnOff'
   }),
   setHandle: function(value){
-    if (!this.dragging) {
+    if (!this.dragging && value !== 0) {
       var handle = this.$el.find('.temp-target');
       handle.find('span.target-value').html(value + " &deg;C");
     }
@@ -93,7 +93,8 @@ var ControlView = Backbone.View.extend({
     'click .back-to-print button': 'resumePrinting',
     'show': 'render',
     'click a.load-filament-link': 'startPreheatingLoad',
-    'click a.unload-filament-link': 'startPreheatingUnload'
+    'click a.unload-filament-link': 'startPreheatingUnload',
+    'click .next-button--start-preheating': 'triggerPreheating'
   }, // 'back-to-print' class is used to resume the printing
   template: null,
   tempView: null,
@@ -128,6 +129,13 @@ var ControlView = Backbone.View.extend({
   render: function() {
     this.onPausedChanged(app.socketData, app.socketData.get('paused'));
     this.changeTemplate();
+  },
+  triggerPreheating: function(e) {
+    var parent = $(e.target)[0].parentElement;
+    var extruder = $(parent).find('.temp-control-items--extruder').find('.target-value-input').val();
+    var bed = $(parent).find('.temp-control-items--bed').find('.target-value-input').val();
+    this.tempView.nozzleTempBar.startPreheating(extruder);
+    this.tempView.bedTempBar.startPreheating(bed);
   },
   startPreheatingLoad: function() {
     this.filamentLoadPreheatView = new TempFilamentLoadPreheatView();
