@@ -34,7 +34,7 @@
 	    <ul id="filament-load-wizard__temp-control__list">
 				<li class="temp-control-items">
 					<img src="{{ url_for('static',filename='img/preheating-utility/extruder-1.svg') }}" width="96" height="96">
-					{{ temp_control('nozzle', 'Extruder', '170')}}
+					{{ temp_control('nozzle', 'Extruder', '210')}}
 				</li>
 			</ul>
 
@@ -58,7 +58,7 @@
 			<div class="progress-bar-container">
 				<progress max="100" value="0"></progress>
 			</div>
-			<button type="button" id="preheating-progress-section-button" class="next-button next-button--load-filament" name="Next">NEXT</button>
+			<button type="button" id="preheating-progress-section-button" class="next-button next-button--load-filament disable-btn" name="Next">NEXT</button>
 		</div>
 
 		<div id="insert-filament-section" class="hide">

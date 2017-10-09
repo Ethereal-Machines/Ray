@@ -155,3 +155,13 @@ progress[value] {
 	text-decoration: none;
 	color: black;
 }
+
+.disable-btn {
+	pointer-events: none;
+	opacity: .5;
+}
+
+.enable-btn {
+	pointer-events: auto;
+	opacity: 1;
+}
