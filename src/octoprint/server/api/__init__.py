@@ -161,37 +161,32 @@ def apiVersion():
 #@restricted_access
 #@admin_permission.require(403)
 def performSystemAction():
-    if "action" in request.values.keys():
-        action = request.values["action"]
-        available_actions = s().get(["system", "actions"])
-        for availableAction in available_actions:
-            if availableAction["action"] == action:
-                command = availableAction["command"]
-                if command:
-                    logger = logging.getLogger(__name__)
-                    logger.info("Performing command: %s" % command)
+    logger = logging.getLogger(__name__)
+    action = request.get_json().get('action')
+    logger.info("action: %s", action)
+    if action:
+        command = request.get_json().get('command')
+        if command:
+            logger.info("Performing command: %s" % command)
 
-                    def executeCommand(command, logger):
-                        time.sleep(0.5) #add a small delay to make sure the response is sent
-                        try:
-                            p = sarge.run(command, stderr=sarge.Capture())
-                            if p.returncode != 0:
-                                returncode = p.returncode
-                                stderr_text = p.stderr.text
-                                logger.warn("Command failed with return code %i: %s" % (returncode, stderr_text))
-                            else:
-                                logger.info("Command executed sucessfully")
+            def executeCommand(command, logger):
+                time.sleep(0.5) #add a small delay to make sure the response is sent
+                try:
+                    p = sarge.run(command, stderr=sarge.Capture())
+                    if p.returncode != 0:
+                        returncode = p.returncode
+                        stderr_text = p.stderr.text
+                        logger.warn("Command failed with return code %i: %s" % (returncode, stderr_text))
+                    else:
+                        logger.info("Command executed sucessfully")
 
-                        except Exception, e:
-                            logger.warn("Command failed: %s" % e)
+                except Exception, e:
+                    logger.warn("Command failed: %s" % e)
 
-                    executeThread = threading.Thread(target=executeCommand, args=(command, logger))
-                    executeThread.start()
+            executeThread = threading.Thread(target=executeCommand, args=(command, logger))
+            executeThread.start()
 
-                    return OK
-
-                else:
-                    break
+            return OK
 
     return ("Command not found", 404)
 

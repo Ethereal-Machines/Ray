@@ -11,7 +11,8 @@ var HomeView = Backbone.View.extend({
     'click .power-button': 'onPowerClicked',
     'click .power-off-modal': 'closePowerModal',
     'click .power-off-modal__button-container': 'noHideModel',
-    'click .power-off-button': 'doTurnoff'
+    'click .power-off-button': 'doTurnoff',
+    'click .restart-button': 'doRestart'
   },
   initialize: function() {
     this.listenTo(app.printerProfile, 'change:driver', this.onDriverChanged);
@@ -51,17 +52,35 @@ var HomeView = Backbone.View.extend({
     e.stopPropagation();
   },
   doTurnoff: function() {
-    console.log("Turn off button is clicked");
-    console.log(API_BASEURL);
-    var data = {"action": "shutdown"};
+    var data = {"action": "shutdown", "command": "sudo shutdown now"};
     $.ajax({
       url: API_BASEURL + "system",
       type: "POST",
       dataType: 'json',
       contentType: "application/json; charset=UTF-8",
-      data: JSON.stringify(data)
-    })
-    .success(console.log("This is the success part"))
-    .error(console.log("Fail to shutdown"));
+      data: JSON.stringify(data),
+      success: function() {
+        console.log("success!!!!");
+      },
+      error: function(xhr) {
+        console.log(xhr);
+      }
+    });
+  },
+  doRestart: function() {
+    var data = {"action": "restart", "command": "sudo reboot now"};
+    $.ajax({
+      url: API_BASEURL + "system",
+      type: "POST",
+      dataType: 'json',
+      contentType: "application/json; charset=UTF-8",
+      data: JSON.stringify(data),
+      success: function() {
+        console.log("success!!!!");
+      },
+      error: function(xhr) {
+        console.log(xhr);
+      }
+    });
   }
 });
