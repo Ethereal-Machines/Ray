@@ -1,0 +1,32 @@
+#unreachable-view {
+	position: absolute;
+	top: 0;
+	left: 0;
+	background-color: rgba(0, 0, 0, 0.9);
+	z-index: 4000;
+	/*color: white;*/
+	text-align: center;
+}
+
+.panel {
+	position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  border-radius: 10px;
+  padding: 20px;
+  background-color: white;
+  line-height: 1.5;
+}
+
+.panel__options-list {
+	text-align: left !important;
+	padding-left: 80px;
+}
+
+.next-button--unreachable {
+	font-size: 16px;
+	border-radius: 5px;
+	margin: 10px auto !important;
+}

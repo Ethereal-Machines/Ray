@@ -30,6 +30,8 @@ var PrintFileInfoDialog = Backbone.View.extend({
       p: this.print_file_view.print_file.toJSON(),
       time_format: app.utils.timeFormat
     }));
+
+    console.log(this.print_file_view.print_file);
   },
   open: function(print_file_view)
   {

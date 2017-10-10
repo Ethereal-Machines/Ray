@@ -122,6 +122,8 @@ var AstroBoxApp = Backbone.View.extend({
 
     this.rebootModal.open();
   },
+  // this function is responsible for showing the Control view when the prints complete
+  // or cancelled
   reportPrintingChange: function(s, value)
   {
     if (value) {
@@ -137,7 +139,10 @@ var AstroBoxApp = Backbone.View.extend({
       }, {silent: true});
       $('body').removeClass('printing');
       this.$('.quick-nav').show();
-      this.router.navigate("control", {replace: true, trigger: true});
+      // this.router.navigate("control", {replace: true, trigger: true});
+      
+      /* Navigating to the HOME page once the print is completed or cancelled */
+      this.router.navigate("home", {replace: true, trigger: true});
     }
   },
   selectQuickNav: function(tab)

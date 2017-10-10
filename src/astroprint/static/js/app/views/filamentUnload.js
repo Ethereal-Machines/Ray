@@ -44,7 +44,6 @@ var FilamentUnloadView = Backbone.View.extend({
 	  }
 
 	  if (this.extruderPercentage === 100) {
-    	console.log(this.extruderPercentage);
     	this.revealNextBtn();
     }
 	},

@@ -43,6 +43,7 @@ var PrintFromStorageView = Backbone.View.extend({
   		url: '/api/usbfiles/usblist',
   		type: 'GET',
   		success: function(obj) {
+  			console.log(obj);
   			new ExternalStorageView(obj);
   		},
   		error: function(xhr) {

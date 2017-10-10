@@ -1,0 +1,75 @@
+HTTP/1.0 503 Service Unavailable
+Cache-Control: no-cache
+Connection: close
+Content-Type: text/html
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Etherbox is booting up</title>
+	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+	<style>
+		* {
+			-webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+		}
+		
+		body {
+			font-family: 'Open Sans', sans-serif;
+		}
+
+		#booting-panel {
+			width: 800px;
+			height: 480px;
+			background-color: rgba(0, 0, 0, 0.9);
+			text-align: center;
+			position: relative;
+		}
+
+		.booting-panel__content-box {
+			position: absolute;
+			top: 50%;
+		  left: 50%;
+		  transform: translate(-50%, -50%);
+		  width: 600px;
+		  border-radius: 10px;
+		  background-color: white;
+		  padding: 20px;
+		}
+
+		.reload-btn {
+			font-size: 20px;
+	    border-radius: 5px;
+	    width: 240px;
+	    height: 48px;
+	    text-align: center;
+	    margin: 15px auto;
+	    background-color: #BBB;
+	    border: 0;
+	    text-transform: uppercase;
+		}
+
+		h1 {
+			font-size: 30px;
+			font-weight: 500;
+		}
+
+		h2 {
+			font-size: 22px;
+			font-weight: 500;
+		}
+
+	</style>
+</head>
+<body>
+	<div id="booting-panel">
+		<div class="booting-panel__content-box">
+			<h1>Your ETHERBOX is still booting up.</h1>
+			<hr>
+			<h2>Please hit the button below to reload the page.</h2>
+			<button class="reload-btn" onclick="location.reload()">Reconnect</button>
+		</div>
+	</div>
+</body>
+</html>

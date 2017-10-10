@@ -95,3 +95,7 @@
 	cursor: pointer;
 }
 
+.update-icon-img,
+.wifi-icon-img {
+	opacity: .2;
+}

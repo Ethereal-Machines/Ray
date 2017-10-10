@@ -10,7 +10,8 @@ var HomeView = Backbone.View.extend({
     'click .new-release a.close': 'onCloseReleaseInfoClicked',
     'click .power-button': 'onPowerClicked',
     'click .power-off-modal': 'closePowerModal',
-    'click .power-off-modal__button-container': 'noHideModel'
+    'click .power-off-modal__button-container': 'noHideModel',
+    'click .power-off-button': 'doTurnoff'
   },
   initialize: function() {
     this.listenTo(app.printerProfile, 'change:driver', this.onDriverChanged);
@@ -48,5 +49,19 @@ var HomeView = Backbone.View.extend({
   },
   noHideModel: function(e) {
     e.stopPropagation();
+  },
+  doTurnoff: function() {
+    console.log("Turn off button is clicked");
+    console.log(API_BASEURL);
+    var data = {"action": "shutdown"};
+    $.ajax({
+      url: API_BASEURL + "system",
+      type: "POST",
+      dataType: 'json',
+      contentType: "application/json; charset=UTF-8",
+      data: JSON.stringify(data)
+    })
+    .success(console.log("This is the success part"))
+    .error(console.log("Fail to shutdown"));
   }
 });

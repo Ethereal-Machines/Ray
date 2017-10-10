@@ -99,7 +99,7 @@ var PrintingView = Backbone.View.extend({
       //layers
       this.$el.find('.current-layer').text(this.printing_progress.current_layer);
       if (this.printing_progress.layer_count) {
-        this.$el.find('.layer-count').text(this.printing_progress.layer_count);
+        this.$el.find('.layer-count').text(" of " + this.printing_progress.layer_count);
       }
 
       //heating up
@@ -112,13 +112,16 @@ var PrintingView = Backbone.View.extend({
 
     //Paused state
     var pauseBtn = this.$el.find('button.pause-print');
+    var canclBtn = this.$el.find('button.stop-print');
     // var controlBtn = this.$el.find('button.controls');
 
     if (this.paused) {
       pauseBtn.html('Resume Print');
+      canclBtn.removeClass('enable-btn').addClass('disable-btn');
       // controlBtn.show();
     } else {
       pauseBtn.html('Pause Print');
+      canclBtn.removeClass('disable-btn').addClass('enable-btn');
       // controlBtn.hide();
     }
 
@@ -142,6 +145,7 @@ var PrintingView = Backbone.View.extend({
       this.bedBar.setTemps(value.bed.actual, value.bed.target);
 
       this.updateProgressBar();
+
     }
   },
   updateProgressBar: function() {
@@ -184,6 +188,11 @@ var PrintingView = Backbone.View.extend({
   onPausedChanged: function(s, value)
   {
     this.paused = value;
+
+    if (this.printing_progress.layer_count) {
+        this.$el.find('.layer-count').text(this.printing_progress.layer_count);
+    }
+
     this.render();
     // this.photoView.render();
   },
