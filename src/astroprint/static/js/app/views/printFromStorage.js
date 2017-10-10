@@ -9,7 +9,9 @@ var PrintFromStorageView = Backbone.View.extend({
     'click .power-button': 'onPowerClicked',
     'click .power-off-modal': 'closePowerModal',
     'click .power-off-modal__button-container': 'noHideModel',
-    'click .external-storage-button': 'getExternalFileNames'
+    'click .external-storage-button': 'getExternalFileNames',
+    'click .power-off-button': 'doTurnoff',
+    'click .restart-button': 'doRestart'
   },
 	initialize: function() {
 		this.render();
@@ -50,6 +52,38 @@ var PrintFromStorageView = Backbone.View.extend({
   			console.log(xhr);
   		}
   	});
+  },
+  doTurnoff: function() {
+    var data = {"action": "shutdown", "command": "sudo shutdown now"};
+    $.ajax({
+      url: API_BASEURL + "system",
+      type: "POST",
+      dataType: 'json',
+      contentType: "application/json; charset=UTF-8",
+      data: JSON.stringify(data),
+      success: function() {
+        console.log("success!!!!");
+      },
+      error: function(xhr) {
+        console.log(xhr);
+      }
+    });
+  },
+  doRestart: function() {
+    var data = {"action": "restart", "command": "sudo reboot now"};
+    $.ajax({
+      url: API_BASEURL + "system",
+      type: "POST",
+      dataType: 'json',
+      contentType: "application/json; charset=UTF-8",
+      data: JSON.stringify(data),
+      success: function() {
+        console.log("success!!!!");
+      },
+      error: function(xhr) {
+        console.log(xhr);
+      }
+    });
   }
 });
 
