@@ -120,20 +120,50 @@
 	<script type="text/template" id="filament-template">
 		<div class="" id="extrusion-control">
 			<h1 class="extrusion-control__heading">Load/Unload Filament</h1>
+			<ul class="extrusion-control__headings">
+				<li class="extrusion-control__headings__heading extrusion-control__headings__heading--left">
+					<div class="extrusion-control__img-heading-container">
+						<img src="{{ url_for('static',filename='img/preheating-utility/extruder-1.svg') }}" alt="Load Filament" width="64px" height="64px">
+						<h2>Extruder 1</h2>
+					</div>
+				</li>
+				<li class="extrusion-control__headings__heading extrusion-control__headings__heading--right">
+					<div class="extrusion-control__img-heading-container">
+						<img src="{{ url_for('static',filename='img/preheating-utility/extruder-2.svg') }}" alt="Load Filament" width="64px" height="64px">
+						<h2>Extruder 2</h2>
+					</div>
+				</li>
+			</ul>
 			<ul class="extrusion-control__link-container">
 				<li class="extrusion-control__link-container__link-item">
 					<a href="#filament-load-wizard" class="load-filament-link">
 						<div class="extrusion-control__img-heading-container">
-							<img src="../img/filament-utility/load-filament.svg" alt="Load Filament" width="88px" height="93px">
-							<h2>Load Filament</h2>
+							<img src="{{ url_for('static',filename='img/filament-utility/load-filament-1.svg') }}" alt="Load Filament" width="88px" height="93px">
+							<h2>Load</h2>
 						</div>
 					</a>
 				</li>
-				<li class="extrusion-control__link-container__link-item">
+				<li class="extrusion-control__link-container__link-item extrusion-control__link-container__link-item--middle-left">
 					<a href="#filament-unload-wizard" class="unload-filament-link">
 						<div class="extrusion-control__img-heading-container">
-							<img src="../img/filament-utility/unload-filament.svg" alt="Unload Filament" width="88px" height="93px">
-							<h2>Unload Filament</h2>
+							<img src="{{ url_for('static',filename='img/filament-utility/unload-filament-1.svg') }}" alt="Unload Filament" width="88px" height="93px">
+							<h2>Unload</h2>
+						</div>
+					</a>
+				</li>
+				<li class="extrusion-control__link-container__link-item extrusion-control__link-container__link-item--middle-right">
+					<a href="#filament2-load-wizard" class="load-filament-link">
+						<div class="extrusion-control__img-heading-container">
+							<img src="{{ url_for('static',filename='img/filament-utility/load-filament-2.svg') }}" alt="Load Filament" width="88px" height="93px">
+							<h2>Load</h2>
+						</div>
+					</a>
+				</li>
+				<li class="extrusion-control__link-container__link-item extrusion-control__link-container__link-item--last">
+					<a href="#filament2-unload-wizard" class="unload-filament-link">
+						<div class="extrusion-control__img-heading-container">
+							<img src="{{ url_for('static',filename='img/filament-utility/unload-filament-2.svg') }}" alt="Unload Filament" width="88px" height="93px">
+							<h2>Unload</h2>
 						</div>
 					</a>
 				</li>
@@ -163,9 +193,9 @@
 
 		<div id="preheat-control">
 			<ul id="temp-control">
-				<li class="temp-control-items">
+				<li class="temp-control-items temp-control-items--extra">
 					<img src="{{ url_for('static',filename='img/preheating-utility/extruder-1.svg') }}" width="96" height="96">
-					{{ temp_control('nozzle', 'Extruder 1', '210')}}
+					{{ temp_control('nozzle1', 'Extruder 1', '210')}}
 				</li>
 				<li class="temp-control-items temp-control-items--extruder">
 					<img src="{{ url_for('static',filename='img/preheating-utility/extruder-2.svg') }}" width="96" height="96">

@@ -32,6 +32,10 @@ var SocketData = Backbone.Model.extend({
       extruder: {
         actual: null,
         target: null
+      },
+      extra: {
+        actual: null,
+        target: null
       }
     },
     astroprint: {
@@ -147,7 +151,8 @@ var SocketData = Backbone.Model.extend({
             var temps = data.temps[data.temps.length-1];
             this.set('temps', {
               bed: temps.bed,
-              extruder: temps.tool0
+              extruder: temps.tool0,
+              extra: temps.tool1
             });
           }
 

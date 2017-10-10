@@ -43,6 +43,7 @@ var PrintingView = Backbone.View.extend({
     'hide': 'onHide'
   },
   nozzleBar: null,
+  extraBar: null,
   bedBar: null,
   photoView: null,
   printing_progress: null,
@@ -50,6 +51,7 @@ var PrintingView = Backbone.View.extend({
   cancelDialog: null,
   tempObject: null,
   extruderPercentage: null,
+  extraPercentage: null,
   bedPercentage: null,
   initialize: function()
   {
@@ -57,6 +59,11 @@ var PrintingView = Backbone.View.extend({
       scale: [0, app.printerProfile.get('max_nozzle_temp')],
       el: this.$el.find('.temp-bar.nozzle'),
       type: 'tool0'
+    });
+    this.extraBar = new TempBarHorizontalView({
+      scale: [0, app.printerProfile.get('max_nozzle_temp')],
+      el: this.$el.find('.temp-bar.extra'),
+      type: 'tool1'
     });
     this.bedBar = new TempBarHorizontalView({
       scale: [0, app.printerProfile.get('max_bed_temp')],
@@ -128,6 +135,7 @@ var PrintingView = Backbone.View.extend({
     var profile = app.printerProfile.toJSON();
 
     this.nozzleBar.setMax(profile.max_nozzle_temp);
+    this.extraBar.setMax(profile.max_nozzle_temp);
 
     if (profile.heated_bed) {
       this.bedBar.setMax(profile.max_bed_temp);
@@ -140,8 +148,11 @@ var PrintingView = Backbone.View.extend({
 
     this.tempObject = value;
 
+    console.log(this.tempObject);
+
     if (!this.$el.hasClass('hide')) {
       this.nozzleBar.setTemps(value.extruder.actual, value.extruder.target);
+      this.extraBar.setTemps(value.extra.actual, value.extra.target);
       this.bedBar.setTemps(value.bed.actual, value.bed.target);
 
       this.updateProgressBar();
@@ -151,16 +162,22 @@ var PrintingView = Backbone.View.extend({
   updateProgressBar: function() {
     var progressBar1,
     progressBar2,
+    extraProgressBar,
     extruderTarget,
     extruderActual,
+    extraTarget,
+    extraActual,
     bedTarget,
     bedActual;
 
     progressBar1 = $('.printing-wizard__progress--nozzle');
+    extraProgressBar = $('.printing-wizard__progress--extra');
     progressBar2 = $('.printing-wizard__progress--bed');
 
     extruderActual = this.tempObject.extruder.actual;
     extruderTarget = this.tempObject.extruder.target;
+    extraActual = this.tempObject.extra.actual;
+    extraTarget = this.tempObject.extra.target;
     bedActual = this.tempObject.bed.actual;
     bedTarget = this.tempObject.bed.target;
 
@@ -171,6 +188,14 @@ var PrintingView = Backbone.View.extend({
     }
 
     progressBar1.val(this.extruderPercentage);
+
+    if (extraActual > extraTarget) {
+      this.extraPercentage = Math.min(Math.round(((extraTarget/extraActual)*100)));
+    } else {
+      this.extraPercentage = Math.min(Math.round(((extraActual/extraTarget)*100)));
+    }
+
+    extraProgressBar.val(this.extraPercentage);
 
     if (bedActual > bedTarget) {
       this.bedPercentage = Math.min(Math.round(((bedTarget/bedActual)*100)));
@@ -215,6 +240,7 @@ var PrintingView = Backbone.View.extend({
   show: function()
   {
     this.nozzleBar.onResize();
+    this.extraBar.onResize();
     this.bedBar.onResize();
     this.printing_progress = app.socketData.get('printing_progress');
     this.paused = app.socketData.get('paused');

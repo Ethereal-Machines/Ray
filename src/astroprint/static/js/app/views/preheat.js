@@ -5,9 +5,11 @@
 var PreheatingView = Backbone.View.extend({
 	el: "#preheat-view",
 	updatedTemp: null,
+	extraTemplate1: null,
 	template1: null,
 	template2: null,
 	extruderPercentage: null,
+	extraPercentage: null,
 	bedPercentage: null,
 	events: {
 		'click .finish-section-button': 'finishClicked',
@@ -24,11 +26,13 @@ var PreheatingView = Backbone.View.extend({
     this.listenTo(app.socketData, 'change:temps', this.tempUpdateAlert);
 
     // setting the templates for displaying the dynamic temperatures
+    this.extraTemplate1 = _.template('<span><%= Math.min(Math.round(tempObj.extra.actual)) %> &deg;C/ <%= Math.min(Math.round(tempObj.extra.target)) %> &deg;C</span>');
     this.template1 = _.template('<span><%= Math.min(Math.round(tempObj.extruder.actual)) %> &deg;C/ <%= Math.min(Math.round(tempObj.extruder.target)) %> &deg;C</span>');
     this.template2 = _.template('<span><%= Math.min(Math.round(tempObj.bed.actual)) %> &deg;C/ <%= Math.min(Math.round(tempObj.bed.target)) %> &deg;C</span>');
 	},
 	render: function() {
 		// Displaying the temperature when the real time data is available
+		this.$(".extra-temp-progress .temp-value").html(this.extraTemplate1({tempObj: this.updatedTemp}));
 		this.$(".nozzle-temp-progress .temp-value").html(this.template1({tempObj: this.updatedTemp}));
 		this.$(".bed-temp-progress .temp-value").html(this.template2({tempObj: this.updatedTemp}));
 	},
@@ -38,13 +42,15 @@ var PreheatingView = Backbone.View.extend({
 
 		this.updatedTemp = value; // setting the value of current object
 
+		console.log(this.updatedTemp);
+
 		// display for the temperature will not show until we get the object for the current temperature
 		if (this.updatedTemp !== null) {
 	    this.render();
 	    this.updateProgressBar();
     }
 
-    if (this.extruderPercentage === 100 && this.bedPercentage === 100) {
+    if (this.extruderPercentage === 100 && this.extraPercentage === 100 && this.bedPercentage === 100) {
     	currentView.removeClass('active').addClass('hide');;
     	this.$("#preheat-wizard__finish-section").removeClass('hide').addClass('active');
     }
@@ -72,6 +78,13 @@ var PreheatingView = Backbone.View.extend({
 			}
 		};
 
+		var extradata = {
+			command: "target",
+			targets: {
+				tool1: 0
+			}
+		};
+
 		var data2 = {
 			command: "target",
 			target: 0
@@ -83,6 +96,20 @@ var PreheatingView = Backbone.View.extend({
       dataType: "json",
       contentType: "application/json; charset=UTF-8",
       data: JSON.stringify(data1),
+      success: function() {
+      	// console.log("Tool: The request was successfull");
+      },
+      error: function() {
+      	console.log("Tool: There was an error!");
+      }
+    });
+
+    $.ajax({
+      url: API_BASEURL + "printer/" + "tool",
+      type: "POST",
+      dataType: "json",
+      contentType: "application/json; charset=UTF-8",
+      data: JSON.stringify(extradata),
       success: function() {
       	// console.log("Tool: The request was successfull");
       },
@@ -112,16 +139,22 @@ var PreheatingView = Backbone.View.extend({
 
 		var progressBar1,
 		progressBar2,
+		extraProgressBar,
 		extruderTarget,
 		extruderActual,
+		extraTarget,
+		extraActual,
 		bedTarget,
 		bedActual;
 
 		progressBar1 = $('#extruder-progress-bar');
+		extraProgressBar = $('#extra-progress-bar');
 		progressBar2 = $('#bed-progress-bar');
 
 		extruderActual = this.updatedTemp.extruder.actual;
 		extruderTarget = this.updatedTemp.extruder.target;
+		extraActual = this.updatedTemp.extra.actual;
+		extraTarget = this.updatedTemp.extra.target;
 		bedActual = this.updatedTemp.bed.actual;
 		bedTarget = this.updatedTemp.bed.target;
 
@@ -132,6 +165,14 @@ var PreheatingView = Backbone.View.extend({
 		}
 
 		progressBar1.val(this.extruderPercentage);
+
+		if (extraActual > extraTarget) {
+			this.extraPercentage = Math.min(Math.round(((extraTarget/extraActual)*100)));
+		} else {
+			this.extraPercentage = Math.min(Math.round(((extraActual/extraTarget)*100)));
+		}
+
+		extraProgressBar.val(this.extraPercentage);
 
 		if (bedActual > bedTarget) {
 			this.bedPercentage = Math.min(Math.round(((bedTarget/bedActual)*100)));

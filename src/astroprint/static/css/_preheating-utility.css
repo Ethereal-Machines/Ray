@@ -91,15 +91,28 @@
 }
 
 .preheat-wizard__nozzle-container__img-temp-container,
+.preheat-wizard__extra-container__img-temp-container,
 .preheat-wizard__bed-container__img-temp-container {
 	display: flex;
 	justify-content: center;
+}
+
+.preheat-wizard__extra-container {
+	margin-top: -22px;
+}
+
+#extra-progress-bar,
+#extruder-progress-bar,
+#bed-progress-bar {
+	margin-bottom: 10px !important;
+	height: 12px !important;
 }
 
 .preheat-wizard__cancel-button {
 	background-color: #BBB;
 	text-transform: uppercase;
 	border: 0px;
+	margin-top: 20px;
 }
 
 #preheat-wizard__finish-section {

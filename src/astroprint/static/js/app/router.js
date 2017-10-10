@@ -10,7 +10,9 @@ var AppRouter = Backbone.Router.extend({
   controlView: null,
   // adding filament-wizard views
   filamentLoadView: null,
+  filament2LoadView: null,
   filamentUnloadView: null,
+  filament2UnloadView: null,
   // adding print-from-storage view
   printFromStorageView: null,
   // adding external storage view
@@ -32,6 +34,8 @@ var AppRouter = Backbone.Router.extend({
     // adding routes for the filament-wizards
     "filament-load-wizard": "filamentLoad",
     "filament-unload-wizard": "filamentUnload",
+    "filament2-load-wizard": "filamentLoad2",
+    "filament2-unload-wizard": "filamentUnload2",
     // adding routes for the print-from-storage
     "print-from-storage": "printFromStorage",
     // adding routes for the external storage view
@@ -127,12 +131,26 @@ var AppRouter = Backbone.Router.extend({
 
     this.selectView(this.filamentLoadView);
   },
+  filamentLoad2: function() {
+    if (!this.filament2LoadView) {
+      this.filament2LoadView = new Filament2LoadView();
+    }
+
+    this.selectView(this.filament2LoadView);
+  },
   filamentUnload: function() {
     if (!this.filamentUnloadView) {
       this.filamentUnloadView = new FilamentUnloadView();
     }
 
     this.selectView(this.filamentUnloadView);
+  },
+  filamentUnload2: function() {
+    if (!this.filament2UnloadView) {
+      this.filament2UnloadView = new Filament2UnloadView();
+    }
+
+    this.selectView(this.filament2UnloadView);
   },
   /*
     adding function to handle the routing for 'print-from-storage'

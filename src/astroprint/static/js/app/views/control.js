@@ -30,6 +30,7 @@ var TempBarVerticalView = TempBarView.extend({
 
 var TempView = Backbone.View.extend({
   el: '#temp-control',
+  extraTempBar: null,
   nozzleTempBar: null,
   bedTempBar: null,
   initialize: function()
@@ -39,6 +40,12 @@ var TempView = Backbone.View.extend({
       scale: [0, app.printerProfile.get('max_nozzle_temp')],
       el: this.$el.find('.temp-control-cont.nozzle'),
       type: 'tool0'
+    });
+
+    this.extraTempBar = new TempBarVerticalView({
+      scale: [0, app.printerProfile.get('max_nozzle_temp')],
+      el: this.$el.find('.temp-control-cont.nozzle1'),
+      type: 'tool1'
     });
 
     // creating the new instance for controlling the bed temp-bar
@@ -55,6 +62,7 @@ var TempView = Backbone.View.extend({
 
     // here we are setting the nozzleTempBar temperature to the max-nozzle-temp from the 'printerProfile'
     this.nozzleTempBar.setMax(profile.max_nozzle_temp);
+    this.extraTempBar.setMax(profile.max_nozzle_temp);
 
     if (profile.heated_bed) {
       // setting the bed temperature to the max-bed-temp form the printerprofile
@@ -69,6 +77,10 @@ var TempView = Backbone.View.extend({
   {
     if (value.extruder) {
       this.nozzleTempBar.setTemps(value.extruder.actual, value.extruder.target);
+    }
+
+    if (value.extra) {
+      this.extraTempBar.setTemps(value.extra.actual, value.extra.target);
     }
 
     if (value.bed) {
@@ -133,7 +145,10 @@ var ControlView = Backbone.View.extend({
   triggerPreheating: function(e) {
     var parent = $(e.target)[0].parentElement;
     var extruder = $(parent).find('.temp-control-items--extruder').find('.target-value-input').val();
+    var extra = $(parent).find('.temp-control-items--extra').find('.target-value-input').val();
+
     var bed = $(parent).find('.temp-control-items--bed').find('.target-value-input').val();
+    this.tempView.extraTempBar.startPreheating(extra);
     this.tempView.nozzleTempBar.startPreheating(extruder);
     this.tempView.bedTempBar.startPreheating(bed);
   },

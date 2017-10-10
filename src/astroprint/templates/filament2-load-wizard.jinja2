@@ -1,0 +1,102 @@
+<!--
+*****************************************
+* Code edited by Kanishka Mohan Madhuni *
+*****************************************
+-->
+
+<div id="filament-load-wizard">
+	<nav id="filament-load-wizard-nav">
+		<div class="wizard-name">
+			Filament Load Wizard
+		</div>
+		<a href="#control" class="cancel-button">
+			Cancel
+		</a>
+	</nav>
+	<div class="wrapper">
+
+		{%- macro temp_control(class, label, temp) %}
+	    <div class="temp-control-cont {{class}}">
+	      <!-- here we show the rising temperature -->
+	      <!-- <span class="current-temp-top">- -</span> -->
+	      <div class="temp-bar">
+	        <!-- here the 'bed' or 'nozzle' label will display based on the bar we are on -->
+	        <label class="temp-bar-label">{{label}}</label>
+
+	        <div class="temp-target temp-target--preheating-utility">
+	          <span class="target-value">- -</span>
+	          <input type="number" class="target-value-input hide" value="{{ temp }}" />
+	          <a class="temp-edit"><img src="{{ url_for('static',filename='img/preheating-utility/pencil-edit-button.svg') }}" width="20" height="20"></a>
+	        </div>
+	      </div>
+	    </div>
+		{%- endmacro %}
+
+		<div id="filament-load-wizard__temp-control" class="active">
+			
+			<div class="steps-count">Set material temperature</div>
+			<div class="steps-progress"></div>
+
+	    <ul id="filament-load-wizard__temp-control__list">
+				<li class="temp-control-items">
+					<img src="{{ url_for('static',filename='img/preheating-utility/extruder-1.svg') }}" width="96" height="96">
+					{{ temp_control('nozzle1', 'Extruder', '210')}}
+				</li>
+			</ul>
+
+		  <button type="button" id="load-select-preheat-temp-button" class="next-button" name="Next">NEXT</button>  
+	  </div>
+
+		<div id="filament-load-wizard__preheating-progress-section" class="hide">
+
+			<div class="steps-count">Set material temperature</div>
+			<div class="steps-progress"></div>
+
+			<div class="filament-img-temp-container filament-img-temp-container--load-filament">
+				<div class="filament-img">
+					<img src="../../img/ethereal-astroprint/nozzle.svg" alt="Filament" width="64" height="64">
+				</div>
+				<div class="temp-progress">
+					<p class="temp-msg">Heating Extruder...</p>
+					<p class="temp-value"> -- &deg;C/-- &deg;C</p>
+				</div>
+			</div>
+			<div class="progress-bar-container">
+				<progress max="100" value="0"></progress>
+			</div>
+			<button type="button" id="preheating-progress-section-button" class="next-button next-button--load-filament disable-btn" name="Next">NEXT</button>
+		</div>
+
+		<div id="insert-filament-section" class="hide">
+
+			<div class="steps-count">Set material temperature</div>
+			<div class="steps-progress"></div>
+
+			<h2 class="instruction-heading">Insert filament end into the feeder</h2>
+			<p class="instruction-msg">Gently push the filament until it is grabbed by the feeder and is visible in the bowden
+			</p>
+			<button type="button" id="insert-filament-section-button" class="next-button">NEXT</button>
+		</div>
+
+		<div id="extruding-in-progress-section" class="hide">
+
+			<div class="steps-count">Set material temperature</div>
+			<div class="steps-progress"></div>
+
+			<h2 class="instruction-heading">Extruding Filament...</h2>
+			<p class="instruction-msg">Press FINISH when the filament starts coming out from the hot end
+			</p>
+			<button type="button" id="extruding-in-progress-section-button" class="next-button">FINISH</button>
+		</div>
+
+		<div id="filament-load-wizard__finish-section" class="hide">
+			<img src="../../img/ethereal-astroprint/finish-icon.svg" alt="Finish icon" width="176" height="176">
+			<h2 class="finish-msg finish-msg--load-filament">Filament Load Complete!</h2>
+			<a href="#control">
+				<button type="button" class="finish-section-button next-button" id="filament-load-wizard__finish-button">OK</button>
+			</a>
+		</div>
+
+	</div>
+	<div class="cancel-filament-load-model hide"></div>
+</div>

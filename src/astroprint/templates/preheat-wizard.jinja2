@@ -14,36 +14,58 @@
 	<div id="preheat-wizard__preheating-progress" class="active">
 		<!-- <h1 class="preheat-wizard__heading">Heating...</h1> -->
 		<!-- nozzle-part -->
-		<div class="preheat-wizard__nozzle-container">
+		{%- macro progress_section(tool, imgName, class, progressBarName) %}
+			<div class="preheat-wizard__{{class}}-container">
+				<div class="preheat-wizard__{{class}}-container__img-temp-container">
+					<div class="{{class}}-img">
+						<img src="../../img/ethereal-astroprint/{{imgName}}" alt="{{tool}}" width="64" height="64">
+					</div>
+					<div class="{{class}}-temp-progress">
+						<p class="temp-msg">{{tool}} Temperature</p>
+						<p class="temp-value"> -- &deg;C/ -- &deg;C</p>
+					</div>
+				</div>
+				<div class="preheat-wizard__{{class}}-container__progress-container">
+					<progress max="100" value="0" id="{{progressBarName}}-progress-bar"></progress>
+				</div>
+			</div>
+		{%- endmacro %}
+
+		{{ progress_section('Extruder 1', 'nozzle.svg', 'extra', 'extra') }}
+		{{ progress_section('Extruder 2', 'nozzle.svg', 'nozzle', 'extruder') }}
+		{{ progress_section('Bed', 'bed-plate.svg', 'bed', 'bed') }}
+
+
+		<!-- <div class="preheat-wizard__nozzle-container">
 			<div class="preheat-wizard__nozzle-container__img-temp-container">
 				<div class="nozzle-img">
 					<img src="../../img/ethereal-astroprint/nozzle.svg" alt="Nozzle" width="64" height="64">
 				</div>
 				<div class="nozzle-temp-progress">
 					<p class="temp-msg">Extruder Temperature</p>
-					<p class="temp-value"> -- &deg;C/ -- &deg;C</p>
+					<p class="temp-value"> -?- &deg;C/ -?- &deg;C</p>
 				</div>
 			</div>
 			<div class="preheat-wizard__nozzle-container__progress-container">
 				<progress max="100" value="0" id="extruder-progress-bar"></progress>
 			</div>
-		</div>
+		</div> -->
 		
 		<!-- bed-part -->
-		<div class="preheat-wizard__bed-container">
+		<!-- <div class="preheat-wizard__bed-container">
 			<div class="preheat-wizard__bed-container__img-temp-container">
 				<div class="bed-img">
 					<img src="{{ url_for('static',filename='img/preheating-utility/bed-plate.svg') }}" alt="Bed" width="64" height="64">
 				</div>
 				<div class="bed-temp-progress">
 					<p class="temp-msg">Bed Temperature</p>
-					<p class="temp-value"> -- &deg;C/ -- &deg;C</p>
+					<p class="temp-value"> -?- &deg;C/ -?- &deg;C</p>
 				</div>
 			</div>
 			<div class="preheat-wizard__bed-container__progress-container">
 				<progress max="100" value="0" id="bed-progress-bar"></progress>
 			</div>
-		</div>
+		</div> -->
 
 		<!-- Cancel Button -->
 		<button type="button" class="preheat-wizard__cancel-button next-button">Cancel</button>

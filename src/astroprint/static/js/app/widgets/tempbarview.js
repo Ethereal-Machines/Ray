@@ -49,6 +49,8 @@ var TempBarView = Backbone.View.extend({
       this.setHandle(210);
     } else if (this.type === "bed") {
       this.setHandle(70);
+    } else if (this.type === "tool1") {
+      this.setHandle(210);
     }
   },
   onEditClicked: function(e)

@@ -103,7 +103,7 @@ body {
 .steps-progress {
 	height: 24px;
 	margin: 0 auto 16px;
-	background-image: url("../../img/ethereal-astroprint/step-1.svg");
+	/*background-image: url("../../img/ethereal-astroprint/step-1.svg");*/
 	background-repeat: no-repeat;
 	background-position: center;
 }

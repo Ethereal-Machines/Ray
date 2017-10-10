@@ -33,7 +33,7 @@ class PrinterProfileManager(object):
 
         self.data = {
             'driver': "marlin",
-            'extruder_count': 1,
+            'extruder_count': 2,
             'max_nozzle_temp': 280,
             'max_bed_temp': 140,
             'heated_bed': True,

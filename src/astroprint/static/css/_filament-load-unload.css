@@ -5,29 +5,63 @@
 
 .extrusion-control__heading {
 	font-size: 22px;
-	padding: 0 0 19px;
-	margin: -13px 0 0;
+	margin: -15px 0 14px;
+}
+
+.extrusion-control__headings {
+	display: flex;
+  list-style: none;
+  flex-direction: row;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+}
+
+.extrusion-control__headings__heading {
+	width: 360px;
+  height: 136px;
+  position: relative;
+}
+
+.extrusion-control__headings__heading--left {
+	margin-right: 8px;
+}
+
+.extrusion-control__headings__heading--right {
+	margin-left: 8px;
 }
 
 .extrusion-control__link-container {
 	list-style: none;
-	padding: 0;
+	padding: 0 32px;
 	display: flex;
 	flex-direction: row;
 	justify-content: center;
+	flex-wrap: wrap;
+	margin: 0;
+	position: absolute;
+	top: 256px;
 }
 
 .extrusion-control__link-container__link-item {
-	width: 360px;
-	height: 300px;
+	width: 176px;
+	height: 192px;
 	background-color: #BBB;
 	border-radius: 10px;
-	margin: 0 32px;
+	margin: 0 8px 0 0;
 	position: relative;
 }
 
+.extrusion-control__link-container__link-item--middle-right {
+	margin-left: 8px;
+}
+
+.extrusion-control__link-container__link-item--last {
+	margin-right: 0;
+}
+
 .extrusion-control__img-heading-container {
-	width: 335px;
+	width: 100%;
 	position: absolute;
 	left: 50%;
 	top: 50%;
@@ -37,7 +71,7 @@
 .extrusion-control__img-heading-container h2 {
 	font-size: 22px;
 	text-transform: uppercase;
-	margin: 35px 0;
+	margin: 20px 0 0 0;
 }
 
 .extrusion-control__link-container__link-item a {

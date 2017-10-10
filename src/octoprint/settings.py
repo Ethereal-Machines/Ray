@@ -100,7 +100,7 @@ default_settings = {
         },
         "pauseTriggers": [],
         "invertAxes": [],
-        "numExtruders": 1,
+        "numExtruders": 2,
         "extruderOffsets": [
             {"x": 0.0, "y": 0.0}
         ],

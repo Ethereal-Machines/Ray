@@ -8,7 +8,7 @@
  	url: API_BASEURL + "printer-profile",
 	defaults: {
 		'id': 'profile',
-		'extruder_count': 1,
+		'extruder_count': 2,
 		'max_nozzle_temp': 280,
 		'max_bed_temp': 140,
 		'heated_bed': true,
