@@ -44,24 +44,24 @@ from astroprint.api import files as api_astroprint_files
 VERSION = "1.0"
 
 def optionsAllowOrigin(request):
-	""" Always reply 200 on OPTIONS request """
+    """ Always reply 200 on OPTIONS request """
 
-	resp = current_app.make_default_options_response()
+    resp = current_app.make_default_options_response()
 
-	# Allow the origin which made the XHR
-	resp.headers['Access-Control-Allow-Origin'] = request.headers['Origin']
-	# Allow the actual method
-	resp.headers['Access-Control-Allow-Methods'] = request.headers['Access-Control-Request-Method']
-	# Allow for 10 seconds
-	resp.headers['Access-Control-Max-Age'] = "10"
+    # Allow the origin which made the XHR
+    resp.headers['Access-Control-Allow-Origin'] = request.headers['Origin']
+    # Allow the actual method
+    resp.headers['Access-Control-Allow-Methods'] = request.headers['Access-Control-Request-Method']
+    # Allow for 10 seconds
+    resp.headers['Access-Control-Max-Age'] = "10"
 
-	# 'preflight' request contains the non-standard headers the real request will have (like X-Api-Key)
-	customRequestHeaders = request.headers.get('Access-Control-Request-Headers', None)
-	if customRequestHeaders is not None:
-		# If present => allow them all
-		resp.headers['Access-Control-Allow-Headers'] = customRequestHeaders
+    # 'preflight' request contains the non-standard headers the real request will have (like X-Api-Key)
+    customRequestHeaders = request.headers.get('Access-Control-Request-Headers', None)
+    if customRequestHeaders is not None:
+        # If present => allow them all
+        resp.headers['Access-Control-Allow-Headers'] = customRequestHeaders
 
-	return resp
+    return resp
 
 @api.before_request
 def beforeApiRequests():
@@ -103,12 +103,12 @@ def beforeApiRequests():
 @api.after_request
 def afterApiRequests(resp):
 
-	# Allow crossdomain
-	allowCrossOrigin = s().getBoolean(["api", "allowCrossOrigin"])
-	if request.method != 'OPTIONS' and 'Origin' in request.headers and allowCrossOrigin:
-		resp.headers['Access-Control-Allow-Origin'] = request.headers['Origin']
+    # Allow crossdomain
+    allowCrossOrigin = s().getBoolean(["api", "allowCrossOrigin"])
+    if request.method != 'OPTIONS' and 'Origin' in request.headers and allowCrossOrigin:
+        resp.headers['Access-Control-Allow-Origin'] = request.headers['Origin']
 
-	return resp
+    return resp
 
 
 #~~ first run setup
@@ -116,26 +116,26 @@ def afterApiRequests(resp):
 
 # @api.route("/setup", methods=["POST"])
 # def firstRunSetup():
-# 	if not s().getBoolean(["server", "firstRun"]):
-# 		abort(403)
+#     if not s().getBoolean(["server", "firstRun"]):
+#         abort(403)
 
-# 	if "ac" in request.values.keys() and request.values["ac"] in valid_boolean_trues and \
-# 					"user" in request.values.keys() and "pass1" in request.values.keys() and \
-# 					"pass2" in request.values.keys() and request.values["pass1"] == request.values["pass2"]:
-# 		# configure access control
-# 		s().setBoolean(["accessControl", "enabled"], True)
-# 		octoprint.server.userManager.addUser(request.values["user"], request.values["pass1"], True, ["user", "admin"])
-# 		s().setBoolean(["server", "firstRun"], False)
-# 	elif "ac" in request.values.keys() and not request.values["ac"] in valid_boolean_trues:
-# 		# disable access control
-# 		s().setBoolean(["accessControl", "enabled"], False)
-# 		s().setBoolean(["server", "firstRun"], False)
+#     if "ac" in request.values.keys() and request.values["ac"] in valid_boolean_trues and \
+#                     "user" in request.values.keys() and "pass1" in request.values.keys() and \
+#                     "pass2" in request.values.keys() and request.values["pass1"] == request.values["pass2"]:
+#         # configure access control
+#         s().setBoolean(["accessControl", "enabled"], True)
+#         octoprint.server.userManager.addUser(request.values["user"], request.values["pass1"], True, ["user", "admin"])
+#         s().setBoolean(["server", "firstRun"], False)
+#     elif "ac" in request.values.keys() and not request.values["ac"] in valid_boolean_trues:
+#         # disable access control
+#         s().setBoolean(["accessControl", "enabled"], False)
+#         s().setBoolean(["server", "firstRun"], False)
 
-# 		octoprint.server.loginManager.anonymous_user = astroprint.users.DummyUser
-# 		octoprint.server.principals.identity_loaders.appendleft(astroprint.users.dummy_identity_loader)
+#         octoprint.server.loginManager.anonymous_user = astroprint.users.DummyUser
+#         octoprint.server.principals.identity_loaders.appendleft(astroprint.users.dummy_identity_loader)
 
-# 	s().save()
-# 	return NO_CONTENT
+#     s().save()
+#     return NO_CONTENT
 
 #~~ system state
 
@@ -143,16 +143,16 @@ def afterApiRequests(resp):
 @api.route("/state", methods=["GET"])
 @restricted_access
 def apiPrinterState():
-	return make_response(("/api/state has been deprecated, use /api/printer instead", 405, []))
+    return make_response(("/api/state has been deprecated, use /api/printer instead", 405, []))
 
 
 @api.route("/version", methods=["GET"])
 @restricted_access
 def apiVersion():
-	return jsonify({
-		"server": octoprint.server.VERSION,
-		"api": octoprint.server.api.VERSION
-	})
+    return jsonify({
+        "server": octoprint.server.VERSION,
+        "api": octoprint.server.api.VERSION
+    })
 
 #~~ system control
 
@@ -161,39 +161,39 @@ def apiVersion():
 @restricted_access
 #@admin_permission.require(403)
 def performSystemAction():
-	if "action" in request.values.keys():
-		action = request.values["action"]
-		available_actions = s().get(["system", "actions"])
-		for availableAction in available_actions:
-			if availableAction["action"] == action:
-				command = availableAction["command"]
-				if command:
-					logger = logging.getLogger(__name__)
-					logger.info("Performing command: %s" % command)
+    if "action" in request.values.keys():
+        action = request.values["action"]
+        available_actions = s().get(["system", "actions"])
+        for availableAction in available_actions:
+            if availableAction["action"] == action:
+                command = availableAction["command"]
+                if command:
+                    logger = logging.getLogger(__name__)
+                    logger.info("Performing command: %s" % command)
 
-					def executeCommand(command, logger):
-						time.sleep(0.5) #add a small delay to make sure the response is sent
-						try:
-							p = sarge.run(command, stderr=sarge.Capture())
-							if p.returncode != 0:
-								returncode = p.returncode
-								stderr_text = p.stderr.text
-								logger.warn("Command failed with return code %i: %s" % (returncode, stderr_text))
-							else:
-								logger.info("Command executed sucessfully")
+                    def executeCommand(command, logger):
+                        time.sleep(0.5) #add a small delay to make sure the response is sent
+                        try:
+                            p = sarge.run(command, stderr=sarge.Capture())
+                            if p.returncode != 0:
+                                returncode = p.returncode
+                                stderr_text = p.stderr.text
+                                logger.warn("Command failed with return code %i: %s" % (returncode, stderr_text))
+                            else:
+                                logger.info("Command executed sucessfully")
 
-						except Exception, e:
-							logger.warn("Command failed: %s" % e)
+                        except Exception, e:
+                            logger.warn("Command failed: %s" % e)
 
-					executeThread = threading.Thread(target=executeCommand, args=(command, logger))
-					executeThread.start()
+                    executeThread = threading.Thread(target=executeCommand, args=(command, logger))
+                    executeThread.start()
 
-					return OK
+                    return OK
 
-				else:
-					break
+                else:
+                    break
 
-	return ("Command not found", 404)
+    return ("Command not found", 404)
 
 
 #~~ Login/user handling
@@ -201,59 +201,58 @@ def performSystemAction():
 
 @api.route("/login", methods=["POST"])
 def login():
-	if octoprint.server.userManager is not None and "user" in request.values.keys() and "pass" in request.values.keys():
-		username = request.values["user"]
-		password = request.values["pass"]
+    if octoprint.server.userManager is not None and "user" in request.values.keys() and "pass" in request.values.keys():
+        username = request.values["user"]
+        password = request.values["pass"]
 
-		if "remember" in request.values.keys() and request.values["remember"] == "true":
-			remember = True
-		else:
-			remember = False
+        if "remember" in request.values.keys() and request.values["remember"] == "true":
+            remember = True
+        else:
+            remember = False
 
-		user = octoprint.server.userManager.findUser(username)
-		if user is not None:
-			if user.check_password(octoprint.server.userManager.createPasswordHash(password)):
-				login_user(user, remember=remember)
-				identity_changed.send(current_app._get_current_object(), identity=Identity(user.get_id()))
-				return jsonify(user.asDict())
-		return make_response(("User unknown or password incorrect", 401, []))
-	elif "passive" in request.values.keys():
-		user = current_user
-		if user is not None and not user.is_anonymous:
-			identity_changed.send(current_app._get_current_object(), identity=Identity(user.get_id()))
-			return jsonify(user.asDict())
-		elif s().getBoolean(["accessControl", "autologinLocal"]) \
-			and s().get(["accessControl", "autologinAs"]) is not None \
-			and s().get(["accessControl", "localNetworks"]) is not None:
+        user = octoprint.server.userManager.findUser(username)
+        if user is not None:
+            if user.check_password(octoprint.server.userManager.createPasswordHash(password)):
+                login_user(user, remember=remember)
+                identity_changed.send(current_app._get_current_object(), identity=Identity(user.get_id()))
+                return jsonify(user.asDict())
+        return make_response(("User unknown or password incorrect", 401, []))
+    elif "passive" in request.values.keys():
+        user = current_user
+        if user is not None and not user.is_anonymous:
+            identity_changed.send(current_app._get_current_object(), identity=Identity(user.get_id()))
+            return jsonify(user.asDict())
+        elif s().getBoolean(["accessControl", "autologinLocal"]) \
+            and s().get(["accessControl", "autologinAs"]) is not None \
+            and s().get(["accessControl", "localNetworks"]) is not None:
 
-			autologinAs = s().get(["accessControl", "autologinAs"])
-			localNetworks = netaddr.IPSet([])
-			for ip in s().get(["accessControl", "localNetworks"]):
-				localNetworks.add(ip)
+            autologinAs = s().get(["accessControl", "autologinAs"])
+            localNetworks = netaddr.IPSet([])
+            for ip in s().get(["accessControl", "localNetworks"]):
+                localNetworks.add(ip)
 
-			try:
-				remoteAddr = util.getRemoteAddress(request)
-				if netaddr.IPAddress(remoteAddr) in localNetworks:
-					user = octoprint.server.userManager.findUser(autologinAs)
-					if user is not None:
-						login_user(user)
-						identity_changed.send(current_app._get_current_object(), identity=Identity(user.get_id()))
-						return jsonify(user.asDict())
-			except:
-				logger = logging.getLogger(__name__)
-				logger.exception("Could not autologin user %s for networks %r" % (autologinAs, localNetworks))
-	return NO_CONTENT
+            try:
+                remoteAddr = util.getRemoteAddress(request)
+                if netaddr.IPAddress(remoteAddr) in localNetworks:
+                    user = octoprint.server.userManager.findUser(autologinAs)
+                    if user is not None:
+                        login_user(user)
+                        identity_changed.send(current_app._get_current_object(), identity=Identity(user.get_id()))
+                        return jsonify(user.asDict())
+            except:
+                logger = logging.getLogger(__name__)
+                logger.exception("Could not autologin user %s for networks %r" % (autologinAs, localNetworks))
+    return NO_CONTENT
 
 
 @api.route("/logout", methods=["POST"])
 @restricted_access
 def logout():
-	# Remove session keys set by Flask-Principal
-	for key in ('identity.id', 'identity.auth_type'):
-		del session[key]
-	identity_changed.send(current_app._get_current_object(), identity=AnonymousIdentity())
+    # Remove session keys set by Flask-Principal
+    for key in ('identity.id', 'identity.auth_type'):
+        del session[key]
+    identity_changed.send(current_app._get_current_object(), identity=AnonymousIdentity())
 
-	logout_user()
+    logout_user()
 
-	return NO_CONTENT
-
+    return NO_CONTENT
