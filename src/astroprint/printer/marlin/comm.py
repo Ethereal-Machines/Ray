@@ -761,7 +761,8 @@ class MachineCom(object):
             ["feature", "repetierTargetTemp"])
 
         if self._state == self.STATE_CONNECTING:
-            self._sendCommand("M105")
+            self._sendCommand("M105 t0")
+            self._sendCommand("M105 t1")
 
         while True:
             try:
@@ -984,7 +985,8 @@ class MachineCom(object):
                             self._serialLoggerEnabled and self._log(
                                 "Baudrate test retry: %d" % (
                                     self._baudrateDetectRetry))
-                            self._sendCommand("M105")
+                            self._sendCommand("M105 t0")
+                            self._sendCommand("M105 t1")
                             self._testingBaudrate = True
                         else:
                             baudrate = self._baudrateDetectList.pop(0)
@@ -998,7 +1000,8 @@ class MachineCom(object):
                                 self._baudrateDetectTestOk = 0
                                 timeout = getNewTimeout("communication")
                                 self._serial.write('\n')
-                                self._sendCommand("M105")
+                                self._sendCommand("M105 t0")
+                                self._sendCommand("M105 t1")
                                 self._testingBaudrate = True
                             except:
                                 self._serialLoggerEnabled and self._log(
@@ -1009,7 +1012,8 @@ class MachineCom(object):
                             self._serialLoggerEnabled and self._log(
                                 "Baudrate test ok: %d" % \
                                 (self._baudrateDetectTestOk))
-                            self._sendCommand("M105")
+                            self._sendCommand("M105 t0")
+                            self._sendCommand("M105 t1")
                         else:
                             self._sendCommand("M999")
                             self._serial.timeout = self._settings.getFloat(
@@ -1031,7 +1035,8 @@ class MachineCom(object):
                 # Connection attempt
                 elif self._state == self.STATE_CONNECTING:
                     if line == "" or "wait" in lineLower:
-                        self._sendCommand("M105")
+                        self._sendCommand("M105 t0")
+                        self._sendCommand("M105 t1")
 
                     elif "ok" in lineLower:
                         self._changeState(self.STATE_OPERATIONAL)
@@ -1065,7 +1070,8 @@ class MachineCom(object):
                             self._sendCommand(self._commandQueue.pop())
                         elif self._callback.doIdleTempReports and \
                             time.time() > tempRequestTimeout:
-                            self.sendCommand("M105")
+                            self.sendCommand("M105 t0")
+                            self.sendCommand("M105 t1")
                             tempRequestTimeout = getNewTimeout("temperature")
                     # resend -> start resend procedure from requested line
                     elif line.lower().startswith("resend") or \
@@ -1101,7 +1107,7 @@ class MachineCom(object):
 
                     # if self.isSdPrinting():
                     # 	if time.time() > tempRequestTimeout and not self._heatingUp:
-                    # 		self._sendCommand("M105")
+                    # 		self._sendCommand("M105 t0")
                     # 		tempRequestTimeout = getNewTimeout("temperature")
 
                     # 	if time.time() > sdStatusRequestTimeout and not self._heatingUp:
@@ -1112,8 +1118,9 @@ class MachineCom(object):
                     # Even when printing request the temperature every 5 seconds.
                     if time.time() > tempRequestTimeout:# and not self.isStreaming():
                         # It there's already a request for temps, don't add a new one....
-                        if len(self._commandQueue) == 0 or "M105" not in self._commandQueue[-1]:
-                            self._commandQueue.appendleft("M105")
+                        if len(self._commandQueue) == 0 or "M105 t0" not in self._commandQueue[-1] or "M105 t1" not in self._commandQueue:
+                            self._commandQueue.appendleft("M105 t0")
+                            self._commandQueue.appendleft("M105 t1")
 
                         tempRequestTimeout = getNewTimeout("temperature")
 
@@ -1527,7 +1534,7 @@ class MachineCom(object):
         self.setPause(True)
         # Don't send the M0 or M1 to the machine,
         # as M0 and M1 are handled as an LCD menu pause.
-        return "M105"
+        return "M105 t0"
 
     _gcode_M1 = _gcode_M0
 
