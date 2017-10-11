@@ -107,6 +107,7 @@ var FilamentLoadView = Backbone.View.extend({
 			// this.xhrResponse.abort();
 
 			clearInterval(this.timeLoading);
+			this.killPreheat();
 			currentView.removeClass('active').addClass('hide');
 			this.$el.find("#filament-load-wizard__finish-section").removeClass('hide').addClass('active');
 
@@ -154,6 +155,28 @@ var FilamentLoadView = Backbone.View.extend({
       	console.log("The status code is : " + xhr.status);
       	console.log("Msg form the server : " + xhr.responseText);
       	console.log("Status text : " + xhr.statusText);
+      }
+    });
+	},
+	killPreheat: function() {
+		var data1 = {
+			command: "target",
+			targets: {
+				tool0: 0
+			}
+		};
+
+		$.ajax({
+      url: API_BASEURL + "printer/" + "tool",
+      type: "POST",
+      dataType: "json",
+      contentType: "application/json; charset=UTF-8",
+      data: JSON.stringify(data1),
+      success: function() {
+      	// console.log("Tool: The request was successfull");
+      },
+      error: function() {
+      	console.log("Tool: There was an error!");
       }
     });
 	}

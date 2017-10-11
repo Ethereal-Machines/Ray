@@ -18,6 +18,7 @@ Content-Type: text/html
 		body {
 			margin: 0;
 			font-family: 'Open Sans', sans-serif;
+			margin: 0px !important;
 		}
 
 		#booting-panel {
@@ -26,6 +27,7 @@ Content-Type: text/html
 			background-color: rgba(0, 0, 0, 0.9);
 			text-align: center;
 			position: relative;
+			margin: 0 auto;
 		}
 
 		.booting-panel__content-box {

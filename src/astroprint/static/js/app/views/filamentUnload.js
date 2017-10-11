@@ -101,6 +101,7 @@ var FilamentUnloadView = Backbone.View.extend({
 			// Killing the ajax command sent from the previous step on click of the NEXT button
 			// this.xhrResponse.abort();
 			clearInterval(this.timeUnloading);
+			this.killPreheat();
 			currentView.removeClass('active').addClass('hide');
 			this.$el.find("#filament-unload-wizard__finish-section").removeClass('hide').addClass('active');
 
@@ -121,7 +122,7 @@ var FilamentUnloadView = Backbone.View.extend({
 			console.log("10mm retraction command is send in 5 sec");
       self._sendRetractionCommand(-1);
 
-    }, 5000);
+    }, 2500);
 	},
 	_sendRetractionCommand: function(direction) {
 		var self = this;
@@ -146,6 +147,28 @@ var FilamentUnloadView = Backbone.View.extend({
       	console.log("The status code is : " + xhr.status);
       	console.log("Msg form the server : " + xhr.responseText);
       	console.log("Status text : " + xhr.statusText);
+      }
+    });
+	},
+	killPreheat: function() {
+		var data1 = {
+			command: "target",
+			targets: {
+				tool0: 0
+			}
+		};
+
+		$.ajax({
+      url: API_BASEURL + "printer/" + "tool",
+      type: "POST",
+      dataType: "json",
+      contentType: "application/json; charset=UTF-8",
+      data: JSON.stringify(data1),
+      success: function() {
+      	// console.log("Tool: The request was successfull");
+      },
+      error: function() {
+      	console.log("Tool: There was an error!");
       }
     });
 	}

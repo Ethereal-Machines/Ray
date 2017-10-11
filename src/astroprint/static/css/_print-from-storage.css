@@ -23,6 +23,8 @@
 	width: 89%;
 	height: 336px;
 	overflow-y: scroll;
+	overflow-scrolling: auto;
+	-webkit-overflow-scrolling: touch;
 }
 
 /* Styles for the Navigation Wizard goes here */
