@@ -59,6 +59,10 @@ var AstroBoxApp = Backbone.View.extend({
   },
   initialize: function()
   {
+    $(document).on('dragstart', function() {
+      return false;
+    });
+
     this.socketData = new SocketData();
     // console.log(this.socketData);
     
