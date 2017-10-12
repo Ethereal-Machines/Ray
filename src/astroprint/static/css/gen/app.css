@@ -211,4 +211,6 @@ progress[value] {
 	height: 100%;
 	font-size: 30px;
 	text-align: center;
+	border: 0px !important;
+	background-color: white;
 }
