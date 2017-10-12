@@ -104,8 +104,6 @@ var ControlView = Backbone.View.extend({
   events: {
     'click .back-to-print button': 'resumePrinting',
     'show': 'render',
-    'click a.load-filament-link': 'startPreheatingLoad',
-    'click a.unload-filament-link': 'startPreheatingUnload',
     'click .next-button--start-preheating': 'triggerPreheating'
   }, // 'back-to-print' class is used to resume the printing
   template: null,
@@ -144,19 +142,13 @@ var ControlView = Backbone.View.extend({
   },
   triggerPreheating: function(e) {
     var parent = $(e.target)[0].parentElement;
-    var extruder = $(parent).find('.temp-control-items--extruder').find('.target-value-input').val();
-    var extra = $(parent).find('.temp-control-items--extra').find('.target-value-input').val();
+    var extruder = $(parent).find('.temp-control-items--extruder').find('.target-value').text();
+    var extra = $(parent).find('.temp-control-items--extra').find('.target-value').text();
 
-    var bed = $(parent).find('.temp-control-items--bed').find('.target-value-input').val();
-    this.tempView.extraTempBar.startPreheating(extra);
-    this.tempView.nozzleTempBar.startPreheating(extruder);
-    this.tempView.bedTempBar.startPreheating(bed);
-  },
-  startPreheatingLoad: function() {
-    this.filamentLoadPreheatView = new TempFilamentLoadPreheatView();
-  },
-  startPreheatingUnload: function() {
-    this.filamentUnloadPreheatView = new TempFilamentUnloadPreheatView();
+    var bed = $(parent).find('.temp-control-items--bed').find('.target-value').text();
+    this.tempView.extraTempBar.startPreheating(parseInt(extra.substr(0, extra.length - 3)));
+    this.tempView.nozzleTempBar.startPreheating(parseInt(extruder.substr(0, extruder.length - 3)));
+    this.tempView.bedTempBar.startPreheating(parseInt(bed.substr(0, bed.length - 3)));
   },
   // function for checking validating and rendering the selected template
   changeTemplate: function() {

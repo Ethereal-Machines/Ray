@@ -27,6 +27,31 @@
 	          <span class="target-value">- -</span>
 	          <input type="number" class="target-value-input hide" value="{{ temp }}" />
 	          <a class="temp-edit"><img src="{{ url_for('static',filename='img/preheating-utility/pencil-edit-button.svg') }}" width="20" height="20"></a>
+	          <div class="numpad-container hide">
+	          	<div class="numpad-target"></div>
+		          <table class="numpad">
+							  <tr class="numpad-row">
+							    <td class="numpad-row__item"><button class="numpad__num" value="1">1</button></td>
+							    <td class="numpad-row__item"><button class="numpad__num" value="2">2</button></td>
+							    <td class="numpad-row__item"><button class="numpad__num" value="3">3</button></td>
+							  </tr>
+							  <tr class="numpad-row">
+							    <td class="numpad-row__item"><button class="numpad__num" value="4">4</button></td>
+							    <td class="numpad-row__item"><button class="numpad__num" value="5">5</button></td>
+							    <td class="numpad-row__item"><button class="numpad__num" value="6">6</button></td>
+							  </tr>
+							  <tr class="numpad-row">
+							    <td class="numpad-row__item"><button class="numpad__num" value="7">7</button></td>
+							    <td class="numpad-row__item"><button class="numpad__num" value="8">8</button></td>
+							    <td class="numpad-row__item"><button class="numpad__num" value="9">9</button></td>
+							  </tr>
+							  <tr class="numpad-row">
+							    <td class="numpad-row__item"><button class="numpad__num__clear" value="clear">clr</button></td>
+							    <td class="numpad-row__item"><button class="numpad__num" value="0">0</button></td>
+							    <td class="numpad-row__item"><button class="numpad__num__done" value="done">done</button></td>
+							  </tr>
+							</table>
+	          </div>
 	        </div>
 	      </div>
 	    </div>

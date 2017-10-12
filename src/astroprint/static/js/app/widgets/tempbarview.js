@@ -16,25 +16,25 @@ var TempBarView = Backbone.View.extend({
     'mousedown .temp-target span.target-value': 'onTouchStart',
     'click .temp-target a.temp-edit': 'onEditClicked',
     'change .temp-target input': 'onTempFieldChanged',
-    'blur .temp-target input': 'onTempFieldBlur'
+    // 'blur .temp-target input': 'onTempFieldBlur',
+    'click .numpad__num': 'numpadClicked',
+    'click .numpad__num__done': 'doneClicked',
+    'click .numpad__num__clear': 'clearClicked'
   },
   initialize: function(params){
     this.scale = params.scale;
     this.type = params.type;
     this.setDefaultValue();
   },
-  remove: function()
-  {
+  remove: function() {
     $(window).unbind("resize.app");
     Backbone.View.prototype.remove.call(this);
   },
-  turnOff: function(e)
-  {
+  turnOff: function(e) {
     this._sendToolCommand('target', this.type, 0);
     this.setHandle(0);
   },
-  setMax: function(value)
-  {
+  setMax: function(value) {
     if (this.scale[1] != value) {
       this.scale[1] = value;
       var currentTemp = parseInt(this.$el.find('.temp-target span.target-value').text())
@@ -53,8 +53,7 @@ var TempBarView = Backbone.View.extend({
       this.setHandle(210);
     }
   },
-  onEditClicked: function(e)
-  {
+  onEditClicked: function(e) {
     e.preventDefault();
     e.stopPropagation();
 
@@ -62,52 +61,77 @@ var TempBarView = Backbone.View.extend({
     var container = target.closest('.temp-target');
     var label = container.find('span.target-value');
     var input = container.find('input');
-    var currentVal = input.val();
+    var numpad = container.find('.numpad-container');
 
     label.addClass('hide');
     input.removeClass('hide');
+    numpad.removeClass('hide');
 
-    console.log(label.text());
-
-    input.val(currentVal);
     setTimeout(function(){input.focus().select()},100);
   },
-  onTempFieldChanged: function(e)
-  {
-    var input = $(e.target);
+  numpadClicked: function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    var self = this;
+    var currentNum = $(e.currentTarget);
+    var numpadTarget = currentNum.closest('.numpad').closest('.numpad-container');
+    var targetInput = currentNum.closest('.numpad').closest('.numpad-container').closest('.temp-target').find('input');
+    var target = currentNum.closest('.numpad').closest('.numpad-container').find('.numpad-target');
+    target.append(currentNum.val());
+
+    var doneBtn = currentNum.closest('.numpad').find('.numpad__num__done');
+    var clearBtn = currentNum.closest('.numpad').find('.numpad__num__clear');
+  },
+  doneClicked: function(e) {
+    var currentNum = $(e.currentTarget);
+    var container = currentNum.closest('.numpad').closest('.numpad-container');
+    var target = container.find('.numpad-target');
+    var targetInput = container.closest('.temp-target').find('input');
+
+    targetInput.val(target.text());
+    this.onTempFieldChanged(targetInput);
+    this.onTempFieldBlur(targetInput);
+    target.empty();
+
+  },
+  clearClicked: function(e) {
+    var currentNum = $(e.currentTarget);
+    var container = currentNum.closest('.numpad').closest('.numpad-container');
+    var target = container.find('.numpad-target');
+
+    var targetText = target.text();
+
+    if (targetText.length > 0) {
+      var newText = targetText.slice(0, targetText.length - 1);
+      target.text(newText);
+    }
+  },
+  onTempFieldChanged: function(btn) {
+    var input = btn;
     var value = input.val();
 
     if (!isNaN(value) ) {
       value = Math.min(Math.max(value, this.scale[0]), this.scale[1]);
-      // this._sendToolCommand('target', this.type, value);
-      input.blur();
-
       this.setHandle(value);
     }
   },
   startPreheating: function(value) {
-    // var input = $(e.target);
-    // var value = input.val();
-
     var value = value;
 
     if (value != this.lastSent && !isNaN(value) ) {
       value = Math.min(Math.max(value, this.scale[0]), this.scale[1]);
       this._sendToolCommand('target', this.type, value);
-      // input.blur();
-
-      // this.setHandle(value);
     }
   },
-  onTempFieldBlur: function(e)
-  {
-    var input = $(e.target);
+  onTempFieldBlur: function(btn) {
+    var input = btn;
 
     input.addClass('hide');
+    input.closest('.temp-target').find('.numpad-container').addClass('hide');
     input.closest('.temp-target').find('span.target-value').removeClass('hide');
   },
-  _sendToolCommand: function(command, type, temp, successCb, errorCb)
-  {
+  _sendToolCommand: function(command, type, temp, successCb, errorCb) {
 
     if (temp == this.lastSent) return;
 
@@ -154,9 +178,7 @@ var TempBarView = Backbone.View.extend({
     this.lastSentTimestamp = new Date().getTime();
     this.lastSent = temp;
   },
-  setTemps: function(actual, target)
-  {
-    // console.log("Set Temps is called");
+  setTemps: function(actual, target) {
     var now = new Date().getTime();
 
     if (this.lastSent !== null && this.lastSentTimestamp > (now - this.waitAfterSent) ) {
@@ -174,7 +196,6 @@ var TempBarView = Backbone.View.extend({
     this.target = target;
     this.actual = actual;
 
-    // console.log("I am also running you BITCH");
     this.renderTemps(actual, target);
   },
 

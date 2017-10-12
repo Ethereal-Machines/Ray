@@ -166,3 +166,49 @@ progress[value] {
 	pointer-events: auto;
 	opacity: 1;
 }
+
+/* Styles for the number-pad goes here */
+
+.numpad-container {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 800px;
+	height: 480px;
+	background-color: black;
+	padding: 72px 208px;
+}
+
+.numpad-target {
+	width: 384px;
+	height: 67.2px;
+	border-bottom: .5px solid #888;
+	background-color: white !important;
+	color: black;
+	font-size: 40px;
+  vertical-align: middle;
+  line-height: 67.2px;
+}
+
+.numpad {
+	background-color: white !important;
+	color: black;
+	width: 384px;
+	height: 252px;
+}
+
+.numpad-row__item {
+	width: 128px;
+	height: 67.2px;
+	border: .5px solid #888;
+	text-align: center;
+}
+
+.numpad__num,
+.numpad__num__done,
+.numpad__num__clear {
+	width: 100%;
+	height: 100%;
+	font-size: 30px;
+	text-align: center;
+}
