@@ -1,0 +1,58 @@
+.about-page__container {
+	margin: -8px 0 18px;
+}
+
+.about-page__ethereal-logo {
+	display: block;
+	margin: 0 auto 16px;
+}
+
+.about-page__details-list {
+	display: flex;
+	flex-direction: column;
+	list-style: none;
+	padding: 0;
+	height: 240px;
+	margin: 16px auto 0;
+	width: 88%;
+	justify-content: center;
+}
+
+.about-page__details-list__detail {
+	height: 48px;
+	border-bottom: .5px solid #888;
+}
+
+.about-page__details-list__detail--top-border {
+	border-top: .5px solid #888;
+}
+
+.detail-img,
+.detail-heading {
+	float: left;
+}
+
+.detail-heading,
+.detail-value {
+	line-height: 48px;
+	vertical-align: middle;
+	padding: 0 16px;
+}
+
+.detail-heading {
+	text-align: left;
+	font-style: 18px;
+}
+
+.detail-value {
+	float: right;
+	text-align: right;
+	font-size: 20px;
+}
+
+.about-page__footer {
+	text-align: center;
+	margin: 0 0 25px;
+	font-size: 18px;
+	font-weight: 100;
+}

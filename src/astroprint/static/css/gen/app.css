@@ -52,7 +52,8 @@ body {
 #internal-storage-nav,
 #confirm-print-nav,
 #external-storage-wizard__confirm-print-nav,
-#printing-wizard-nav {
+#printing-wizard-nav,
+#about-page-nav {
 	display: flex;
 	flex-direction: row;
 	width: 100%;

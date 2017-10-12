@@ -1,34 +1,42 @@
-<div class="Divider">
+<div id="about-page">
+	<nav id="about-page-nav">
+		<div class="wizard-name">
+			About
+		</div>
+		<a href="#settings" class="back-button">Back</a>
+	</nav>
 
+	<div class="about-page__container">
+		<img src="{{ url_for('static', filename='img/about-page/ethereal-logo.svg') }}" alt="Ethereal Logo" class="about-page__ethereal-logo" width="64" height="64">
+
+		<ul class="about-page__details-list">
+			<li class="about-page__details-list__detail about-page__details-list__detail--top-border">
+				<img src="{{ url_for('static', filename='img/about-page/machine-type.svg') }}" alt="Detail" class="detail-img" width="48" height="48">
+				<span class="detail-heading">Machine Type</span>
+				<span class="detail-value">Ethereal Estrella</span>
+			</li>
+			<li class="about-page__details-list__detail">
+				<img src="{{ url_for('static', filename='img/about-page/serial-no.svg') }}" alt="Detail" class="detail-img" width="48" height="48">
+				<span class="detail-heading">Serial No.</span>
+				<span class="detail-value">ABCD12345</span>
+			</li>
+			<li class="about-page__details-list__detail">
+				<img src="{{ url_for('static', filename='img/about-page/firmware-version.svg') }}" alt="Detail" class="detail-img" width="48" height="48">
+				<span class="detail-heading">Firmware Virson</span>
+				<span class="detail-value">v 2.1.05</span>
+			</li>
+			<li class="about-page__details-list__detail">
+				<img src="{{ url_for('static', filename='img/about-page/build-volume.svg') }}" alt="Detail" class="detail-img" width="48" height="48">
+				<span class="detail-heading">Build Volume</span>
+				<span class="detail-value">200 x 250 x 200 mm</span>
+			</li>
+			<li class="about-page__details-list__detail">
+				<img src="{{ url_for('static', filename='img/about-page/usage-counter.svg') }}" alt="Detail" class="detail-img" width="48" height="48">
+				<span class="detail-heading">Usage Counter</span>
+				<span class="detail-value">0000 hrs</span>
+			</li>
+		</ul>
+	</div>
+
+	<footer class="about-page__footer">&copy;	Ethereal Machines | 2017</footer>
 </div>
-
-<div class="Firmware_Icon">
-
-</div>
-<p class="Firmware_version">Firmware version</p>
-<div class="Usage_Icon">
-
-</div>
-<p class="Usage_counter">Usage counter</p>
-<div class="Machine_Icon">
-
-</div>
-<p class="Machine_type ">Machine type </p>
-<div class="Logo">
-
-</div>
-
-<div class="Build_Icon">
-
-</div>
-<p class="Build_volume">Build volume</p>
-<div class="Serial_Icon ">
-
-</div>
-<p class="Serial_No_">Serial No</p>
-
-<p class="_0000_hours">0000 hours</p>
-<p class="_200_x_150_x_175_mm"> 200 x 150 x 175 mm</p>
-<p class="v_2_1_05">v 2.1.05</p>
-<p class="Ethereal_Junior">Ethereal Junior</p>
-<p class="ABCD12345">ABCD12345</p>
