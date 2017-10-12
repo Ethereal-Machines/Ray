@@ -68,9 +68,9 @@ Content-Type: text/html
 <body>
 	<div id="booting-panel">
 		<div class="booting-panel__content-box">
-			<h1>Your ETHERBOX is still booting up.</h1>
+			<h1>Ethereal Estrella is still booting up.</h1>
 			<hr>
-			<h2>Please hit the button below to reload the page.</h2>
+			<h2>Please hit the button below to reconnect.</h2>
 			<button class="reload-btn" onclick="location.reload()">Reconnect</button>
 		</div>
 	</div>
