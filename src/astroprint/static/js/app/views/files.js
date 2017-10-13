@@ -492,6 +492,8 @@ var FilesView = Backbone.View.extend({
       scrollTop: self.scrolled
     });
 
+    self.$('.up-button').removeClass('disable-btn');
+
     var target = self.$('.design-list-container');
     var scrollTop = target.scrollTop();
     var innerHeight = target.innerHeight();
@@ -500,7 +502,6 @@ var FilesView = Backbone.View.extend({
     target.scroll(function() {
       if (self.scrolled + innerHeight >= scrollHeight) {
         self.$('.down-button').addClass('disable-btn');
-        self.$('.up-button').removeClass('disable-btn');
       }
     });
   },
@@ -511,6 +512,8 @@ var FilesView = Backbone.View.extend({
       scrollTop: self.scrolled
     });
 
+    self.$('.down-button').removeClass('disable-btn');
+
     var target = self.$('.design-list-container');
     var scrollTop = target.scrollTop();
     var innerHeight = target.innerHeight();
@@ -520,7 +523,6 @@ var FilesView = Backbone.View.extend({
       if (self.scrolled === 0) {
         // console.log("Reached bottom");
         self.$('.up-button').addClass('disable-btn');
-        self.$('.down-button').removeClass('disable-btn'); 
       }
     });
   }

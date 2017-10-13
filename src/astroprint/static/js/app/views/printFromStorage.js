@@ -96,6 +96,7 @@ var ExternalStorageView = Backbone.View.extend({
 	list: null,
 	print_file: null,
 	copySuccessData: null,
+  scrolled: 0,
 	initialize: function(params) {
 		if (params !== undefined) {
 			this.fileList = params;
@@ -205,10 +206,12 @@ var ExternalStorageView = Backbone.View.extend({
 	},
   scrollDown: function() {
     var self = this;
-    this.scrolled = this.scrolled + 252;
+    this.scrolled = this.scrolled + 280;
     this.$('.external-storage-wizard__files-list').animate({
       scrollTop: self.scrolled
     });
+
+    self.$('.up-button').removeClass('disable-btn');
 
     var target = self.$('.external-storage-wizard__files-list');
     var scrollTop = target.scrollTop();
@@ -218,13 +221,12 @@ var ExternalStorageView = Backbone.View.extend({
     target.scroll(function() {
       if (self.scrolled + innerHeight >= scrollHeight) {
         self.$('.down-button').addClass('disable-btn');
-        self.$('.up-button').removeClass('disable-btn');
       }
     });
   },
   scrollUp: function() {
     var self = this;
-    this.scrolled = this.scrolled - 252;
+    this.scrolled = this.scrolled - 280;
     this.$('.external-storage-wizard__files-list').animate({
       scrollTop: self.scrolled
     });
@@ -234,11 +236,12 @@ var ExternalStorageView = Backbone.View.extend({
     var innerHeight = target.innerHeight();
     var scrollHeight = target[0].scrollHeight;
 
+    self.$('.down-button').removeClass('disable-btn');
+
     target.scroll(function() {
       if (self.scrolled === 0) {
         // console.log("Reached bottom");
         self.$('.up-button').addClass('disable-btn');
-        self.$('.down-button').removeClass('disable-btn'); 
       }
     });
   }

@@ -21,7 +21,7 @@
 	display: flex;
 	flex-direction: column;
 	width: 89%;
-	height: 300px;
+	height: 280px;
 	overflow-y: hidden;
 	overflow-scrolling: auto;
 	-webkit-overflow-scrolling: touch;
@@ -31,7 +31,7 @@
 	display: flex;
 	flex-direction: row;
 	justify-content: center;
-	margin: 12px 0;
+	margin: 15px 0 0;
 }
 
 /* Styles for the Navigation Wizard goes here */
