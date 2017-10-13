@@ -384,7 +384,7 @@ def read_ws_token(token):
 
 class Server():
     def __init__(
-        self, configfile=None, basedir=None, host="0.0.0.0", port=5000,
+        self, configfile=None, basedir=None, host="127.0.0.1", port=5000,
             debug=False, allowRoot=False, logConf=None):
         self._configfile = configfile
         self._basedir = basedir
