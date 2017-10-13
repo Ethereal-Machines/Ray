@@ -21,10 +21,17 @@
 	display: flex;
 	flex-direction: column;
 	width: 89%;
-	height: 336px;
-	overflow-y: scroll;
+	height: 300px;
+	overflow-y: hidden;
 	overflow-scrolling: auto;
 	-webkit-overflow-scrolling: touch;
+}
+
+.up-down-button-container {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	margin: 12px 0;
 }
 
 /* Styles for the Navigation Wizard goes here */

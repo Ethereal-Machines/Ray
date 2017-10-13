@@ -101,6 +101,10 @@ var ExternalStorageView = Backbone.View.extend({
 			this.fileList = params;
 		}
 
+    if (!$.isEmptyObject(params)) {
+      this.$('.down-button').removeClass('disable-btn');
+    }
+
 		this.printFileView = new PrintFileView({
 			list: this.list,
 			print_file: this.print_file
@@ -120,7 +124,9 @@ var ExternalStorageView = Backbone.View.extend({
 				'click .external-storage__file-name': 'openPrintModal',
 				'click .back-button--external-storage': 'hidePrintModal',
 				'click .copy--external-storage': 'copyFileToLocal',
-				'click .print-file--external-storage': 'printFile'
+				'click .print-file--external-storage': 'printFile',
+        'click .up-button': 'scrollUp',
+        'click .down-button': 'scrollDown'
 			});
 		}
 	},
@@ -196,5 +202,44 @@ var ExternalStorageView = Backbone.View.extend({
 		this.$(".print-file--external-storage").css('pointer-events', 'none');
 		this.$(".print-info__no-details").text("Analyzing G-code");
 		this.hidePrintModal();
-	}
+	},
+  scrollDown: function() {
+    var self = this;
+    this.scrolled = this.scrolled + 252;
+    this.$('.external-storage-wizard__files-list').animate({
+      scrollTop: self.scrolled
+    });
+
+    var target = self.$('.external-storage-wizard__files-list');
+    var scrollTop = target.scrollTop();
+    var innerHeight = target.innerHeight();
+    var scrollHeight = target[0].scrollHeight;
+
+    target.scroll(function() {
+      if (self.scrolled + innerHeight >= scrollHeight) {
+        self.$('.down-button').addClass('disable-btn');
+        self.$('.up-button').removeClass('disable-btn');
+      }
+    });
+  },
+  scrollUp: function() {
+    var self = this;
+    this.scrolled = this.scrolled - 252;
+    this.$('.external-storage-wizard__files-list').animate({
+      scrollTop: self.scrolled
+    });
+
+    var target = self.$('.external-storage-wizard__files-list');
+    var scrollTop = target.scrollTop();
+    var innerHeight = target.innerHeight();
+    var scrollHeight = target[0].scrollHeight;
+
+    target.scroll(function() {
+      if (self.scrolled === 0) {
+        // console.log("Reached bottom");
+        self.$('.up-button').addClass('disable-btn');
+        self.$('.down-button').removeClass('disable-btn'); 
+      }
+    });
+  }
 });

@@ -14,8 +14,8 @@ var DistanceControl = Backbone.View.extend({
     'change .z-length-changed': 'zSelectedDistance'
   },
   /* Below we have set the default values for the x, y and z distance selector */
-  xSelected: 5,
-  ySelected: 5,
+  xSelected: 3,
+  ySelected: 3,
   zSelected: 1,
 
   /* Below functions will be triggered when the distance for the x, y or z get changed */
@@ -132,7 +132,7 @@ var XYControlView = MovementControlView.extend({
 
       self.sendJogCommand('x', 1, self.distanceControl.xSelected);
 
-    }, 300);
+    }, 30);
     // this.sendJogCommand('x', 1, this.distanceControl.xSelected);
   },
   xPlusReleased: function() {
@@ -144,7 +144,7 @@ var XYControlView = MovementControlView.extend({
 
       self.sendJogCommand('x', -1, self.distanceControl.xSelected);
 
-    }, 300);
+    }, 30);
   },
   xMinusReleased: function() {
     clearInterval(this.init00);
@@ -155,7 +155,7 @@ var XYControlView = MovementControlView.extend({
 
       self.sendJogCommand('y', 1, self.distanceControl.ySelected);
 
-    }, 300);
+    }, 30);
   },
   yPlusReleased: function() {
     clearInterval(this.init00);
@@ -166,7 +166,7 @@ var XYControlView = MovementControlView.extend({
 
       self.sendJogCommand('y', -1, self.distanceControl.ySelected);
 
-    }, 300);
+    }, 30);
   },
   yMinusReleased: function() {
     clearInterval(this.init00);

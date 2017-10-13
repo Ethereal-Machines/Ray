@@ -461,8 +461,11 @@ var PrintFilesListView = Backbone.View.extend({
 var FilesView = Backbone.View.extend({
   el: '#files-view',
   printFilesListView: null,
+  scrolled: 0,
   events: {
-    'show': 'onShow'
+    'show': 'onShow',
+    'click .up-button': 'scrollUp',
+    'click .down-button': 'scrollDown'
   },
   initialize: function(options){
     // Initializing the PrintFilesListView and passing the params
@@ -481,5 +484,44 @@ var FilesView = Backbone.View.extend({
   onDriverChanged: function(){
     this.uploadView.render();
     this.printFilesListView.refresh(true);
+  },
+  scrollDown: function() {
+    var self = this;
+    this.scrolled = this.scrolled + 252;
+    this.$('.design-list-container').animate({
+      scrollTop: self.scrolled
+    });
+
+    var target = self.$('.design-list-container');
+    var scrollTop = target.scrollTop();
+    var innerHeight = target.innerHeight();
+    var scrollHeight = target[0].scrollHeight;
+
+    target.scroll(function() {
+      if (self.scrolled + innerHeight >= scrollHeight) {
+        self.$('.down-button').addClass('disable-btn');
+        self.$('.up-button').removeClass('disable-btn');
+      }
+    });
+  },
+  scrollUp: function() {
+    var self = this;
+    this.scrolled = this.scrolled - 252;
+    this.$('.design-list-container').animate({
+      scrollTop: self.scrolled
+    });
+
+    var target = self.$('.design-list-container');
+    var scrollTop = target.scrollTop();
+    var innerHeight = target.innerHeight();
+    var scrollHeight = target[0].scrollHeight;
+
+    target.scroll(function() {
+      if (self.scrolled === 0) {
+        // console.log("Reached bottom");
+        self.$('.up-button').addClass('disable-btn');
+        self.$('.down-button').removeClass('disable-btn'); 
+      }
+    });
   }
 });
