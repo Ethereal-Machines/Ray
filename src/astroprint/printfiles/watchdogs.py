@@ -17,7 +17,6 @@ from watchdog.events import FileSystemEventHandler
 from octoprint.settings import settings
 
 
-logger = logging.getLogger(__name__)
 
 class UploadCleanupWatchdogHandler(PatternMatchingEventHandler):
     """
@@ -60,6 +59,7 @@ class EtherBoxHandler(FileSystemEventHandler):
         ''' Initiate the object '''
         super(EtherBoxHandler, self).__init__(*args, **kwargs)
         global CALLBACKS
+        self.logger = logging.getLogger(__name__)
         CALLBACKS = []
 
     def on_created(self, event):
@@ -71,10 +71,11 @@ class EtherBoxHandler(FileSystemEventHandler):
         for callback in CALLBACKS:
             try:
                 callback.sendEvent("usb_inserted", usb_path)
-                logger.info("Event sent: %s", usb_path)
-                logger.info("All callbacks %s", CALLBACKS)
+                self.logger.info("Event sent: %s", usb_path)
+                self.logger.info("All callbacks %s", CALLBACKS)
             except Exception as e:
-                logger.info("error: %s", e)
+                self.logger.exception("error: %s", e)
+                self.logger.exception("All callbacks %s", CALLBACKS)
                 pass
         s = settings()
         s.set(['usb', 'filelist'], gcode_files)
@@ -85,13 +86,14 @@ class EtherBoxHandler(FileSystemEventHandler):
 
         for callback in CALLBACKS:
             try:
-                callback.sendEvent("usb_removed", None)
+                callback.sendEvent("usb_removed", event.src_path)
+                self.logger.info("Usb removed: %s", event.src_path)
             except Exception as e:
-                logger.info("error in removed: %s", event)
-                logger.info("error: %s", e)
-                logger.info("Event sent: %s", event.src_path)
-                logger.info("To %s", callback)
-                logger.info("All callbacks %s", CALLBACKS)
+                self.logger.exception("error in removed: %s", event)
+                self.logger.exception("error: %s", e)
+                self.logger.exception("Event sent: %s", event.src_path)
+                self.logger.exception("To %s", callback)
+                self.logger.exception("All callbacks %s", CALLBACKS)
                 pass
 
 
