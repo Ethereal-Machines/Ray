@@ -20,7 +20,8 @@
       {%- macro temp_control(class, label) %}
         <div class="temp-bar {{class}}">
           <div class="temp-target">
-            <span class="target-value">- -</span>
+            <span class="current-value temp-current">- - &deg;C /</span>
+            <span class="target-value">- - &deg;C</span>
           </div>
         </div>
       {%- endmacro %}
