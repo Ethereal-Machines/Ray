@@ -567,14 +567,12 @@ class Server():
                 printer.connect(port, baudrate)
 
         usbdetector = EtherBoxHandler()
-        usbdetector.registerCallback(self._router.get_connection_class())
         # start up watchdogs
         observer = Observer()
         observer.schedule(
             UploadCleanupWatchdogHandler(), s.getBaseFolder("uploads"))
         observer.schedule(
             usbdetector, s.get(['usb', 'folder']), recursive=True)
-            #EtherBoxHandler(), s.getBaseFolder("uploads"), recursive=True)
         observer.start()
 
         try:

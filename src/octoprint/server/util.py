@@ -32,6 +32,7 @@ from octoprint.events import Events
 
 from astroprint.boxrouter import boxrouterManager
 from astroprint.printfiles import FileDestinations
+from astroprint.printfiles.watchdogs import getEtherBoxHandlerCallback
 from astroprint.printfiles.map import SUPPORTED_EXTENSIONS
 from astroprint.printer.manager import printerManager
 from astroprint.camera import cameraManager
@@ -156,6 +157,7 @@ class PrinterStateConnection(SockJSConnection):
 
         self._userManager = userManager
         self._eventManager = eventManager
+        getEtherBoxHandlerCallback().append(self)
 
     def _getRemoteAddress(self, request):
         forwardedFor = request.headers.get("X-Forwarded-For")
