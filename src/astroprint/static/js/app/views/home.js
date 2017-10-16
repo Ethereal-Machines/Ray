@@ -22,6 +22,8 @@ var HomeView = Backbone.View.extend({
       this.$('.new-release .version-label').text(data.release.major+'.'+data.release.minor+'('+data.release.build+')');
       this.$('.new-release').removeClass('hide');
     }, this));
+
+    this.listenTo(app.socketData, 'change:usb_status', this.usbStatusChanged);
   },
   onDriverChanged: function(model, newDriver) {
     if (newDriver == 'marlin') {
@@ -82,5 +84,12 @@ var HomeView = Backbone.View.extend({
         console.log(xhr);
       }
     });
+  },
+  usbStatusChanged: function(s, value) {
+    if (value) {
+      this.$('.usb-icon-img').css('opacity', '1');
+    } else if (!value) {
+      this.$('.usb-icon-img').css('opacity', '.2');
+    }
   }
 });

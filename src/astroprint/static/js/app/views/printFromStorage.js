@@ -9,12 +9,13 @@ var PrintFromStorageView = Backbone.View.extend({
     'click .power-button': 'onPowerClicked',
     'click .power-off-modal': 'closePowerModal',
     'click .power-off-modal__button-container': 'noHideModel',
-    'click .external-storage-button': 'getExternalFileNames',
     'click .power-off-button': 'doTurnoff',
     'click .restart-button': 'doRestart'
   },
 	initialize: function() {
 		this.render();
+
+    this.listenTo(app.socketData, 'change:usb_status', this.usbStatusChanged);
 	},
 	render: function() {
 		var nav = this.$(".printer-name");
@@ -39,19 +40,6 @@ var PrintFromStorageView = Backbone.View.extend({
   },
   noHideModel: function(e) {
     e.stopPropagation();
-  },
-  getExternalFileNames: function() {
-  	$.ajax({
-  		url: '/api/usbfiles/usblist',
-  		type: 'GET',
-  		success: function(obj) {
-  			console.log(obj);
-  			new ExternalStorageView(obj);
-  		},
-  		error: function(xhr) {
-  			console.log(xhr);
-  		}
-  	});
   },
   doTurnoff: function() {
     var data = {"action": "shutdown", "command": "sudo shutdown now"};
@@ -84,6 +72,13 @@ var PrintFromStorageView = Backbone.View.extend({
         console.log(xhr);
       }
     });
+  },
+  usbStatusChanged: function(s, value) {
+    if (value) {
+      this.$('.usb-icon-img').css('opacity', '1');
+    } else if (!value) {
+      this.$('.usb-icon-img').css('opacity', '.2');
+    }
   }
 });
 
@@ -97,22 +92,16 @@ var ExternalStorageView = Backbone.View.extend({
 	print_file: null,
 	copySuccessData: null,
   scrolled: 0,
-	initialize: function(params) {
-		if (params !== undefined) {
-			this.fileList = params;
-		}
+	initialize: function() {
 
-    if (!$.isEmptyObject(params)) {
-      this.$('.down-button').removeClass('disable-btn');
-    }
+    this.getExternalFileNames();
 
 		this.printFileView = new PrintFileView({
 			list: this.list,
 			print_file: this.print_file
 		});
 
-		this.render();
-
+    this.listenTo(app.socketData, 'change:usb_status', this.usbStatusChanged);
 	},
 	render: function() {
 
@@ -131,6 +120,47 @@ var ExternalStorageView = Backbone.View.extend({
 			});
 		}
 	},
+  getExternalFileNames: function() {
+    var self = this;
+    $.ajax({
+      url: '/api/usbfiles/usblist',
+      type: 'GET',
+      success: function(obj) {
+        self.fileList = obj;
+        self.render();
+        if (!$.isEmptyObject(self.fileList)) {
+          self.$('.down-button').removeClass('disable-btn');
+        }
+      },
+      error: function(xhr) {
+        console.log(xhr);
+      }
+    });
+  },
+  usbStatusChanged: function(s, value) {
+    var self = this;
+    if (value) {
+      $.ajax({
+        url: '/api/usbfiles/usblist',
+        type: 'GET',
+        success: function(obj) {
+          self.fileList = obj;
+          self.render();
+          if (!$.isEmptyObject(self.fileList)) {
+            self.$('.down-button').removeClass('disable-btn');
+          }
+        },
+        error: function(xhr) {
+          console.log(xhr);
+        }
+      });
+    } else if (!value) {
+      self.$('.external-storage-wizard__files-list').empty();
+      self.$('.up-button').addClass('disable-btn');
+      self.$('.down-button').addClass('disable-btn');
+      self.scrolled = 0;
+    }
+  },
 	openPrintModal: function(e) {
 
 		e.preventDefault();

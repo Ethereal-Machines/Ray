@@ -20,6 +20,7 @@ var SocketData = Backbone.Model.extend({
     printing: false,
     paused: false,
     camera: false,
+    usb_status: false,
     printing_progress: {
       percent: 0.0,
       time_left: 0
@@ -52,6 +53,7 @@ var SocketData = Backbone.Model.extend({
     this.set('paused', initial_states.paused);
     this.set('online', initial_states.online);
     this.set('print_capture', initial_states.print_capture);
+    this.set('usb_status', initial_states.usb_status);
 
     //See if we need to check for sofware version
     if (initial_states.checkSoftware && initial_states.online) {
@@ -260,6 +262,10 @@ var SocketData = Backbone.Model.extend({
             case 'SoftwareUpdateEvent':
               //We need to release so that the update screen shows up
               window.location.reload()
+            break;
+
+            case 'usb_status':
+              this.set('usb_status', payload);
             break;
 
             default:
