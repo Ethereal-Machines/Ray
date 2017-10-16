@@ -214,3 +214,19 @@ progress[value] {
 	border: 0px !important;
 	background-color: white;
 }
+
+/* styles for the notify view goes here */
+#notify-view {
+	z-index: 6000;
+	background-color: black;
+	position: absolute;
+	top: 0;
+	left: 50%;
+	transform: translateX(-50%);
+	text-align: center;
+}
+
+#notify-view p {
+	font-size: 20px;
+	margin: 0 auto 40px;
+}
