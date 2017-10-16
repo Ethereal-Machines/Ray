@@ -14,6 +14,7 @@ var PrintFileInfoDialog = Backbone.View.extend({
   file_list_view: null,
   template: _.template( $("#printfile-info-template").html() ),
   print_file_view: null,
+  notifyView: null,
   events: {
     'click .actions a.remove': 'onDeleteClicked',
     'click .actions a.print': 'onPrintClicked',
@@ -37,11 +38,11 @@ var PrintFileInfoDialog = Backbone.View.extend({
     this.print_file_view = print_file_view;
     this.render();
     // this.$el.foundation('reveal', 'open');
-    // console.log("I need to open the modal");
     this.$el.removeClass('hide');
   },
   onDeleteClicked: function(e)
   {
+    var self = this;
     e.preventDefault();
 
     var print_file = this.print_file_view.print_file;
@@ -64,12 +65,14 @@ var PrintFileInfoDialog = Backbone.View.extend({
             print_file.set('uploaded_on', null);
           }
 
-          noty({text: filename+" deleted from your "+PRODUCT_NAME, type:"success", timeout: 3000});
-          this.print_file_view.render();
-          this.$el.foundation('reveal', 'close');
+          self.notifyView = new NotifyView({msg: filename+" deleted from your internal storage.", type: "success"});
+          app.router.selectView(self.notifyView);
+
         }, this),
         error: function() {
-          noty({text: "Error deleting "+filename, timeout: 3000});
+          var self = this;
+          self.notifyView = new NotifyView({msg: "Error deleting "+filename+".", type: "error"});
+          app.router.selectView(self.notifyView);
         },
         always: function() {
           loadingBtn.removeClass('loading');
@@ -100,6 +103,7 @@ var PrintFileView = Backbone.View.extend({
   list: null,
   printWhenDownloaded: false,
   downloadProgress: null,
+  notifyView: null,
   initialize: function(options)
   {
     this.list = options.list;
@@ -108,8 +112,6 @@ var PrintFileView = Backbone.View.extend({
   render: function()
   {
     var print_file = this.print_file.toJSON();
-
-    // console.log(print_file);
 
     if (print_file.local_filename) {
       this.$el.removeClass('remote');
@@ -151,9 +153,9 @@ var PrintFileView = Backbone.View.extend({
   // callback function to handle the Print button clicked event
   printClicked: function (evt, params)
   {
-    if (evt) evt.preventDefault();
+    var self = this;
 
-    // console.log(params);
+    if (evt) evt.preventDefault();
 
     if (params !== null) {
       var filename = params.filename;
@@ -183,8 +185,9 @@ var PrintFileView = Backbone.View.extend({
         if (xhr.status == 409) {
           error = xhr.responseText;
         }
-        noty({text: error ? error : "There was an error starting the print", timeout: 3000});
-        loadingBtn.removeClass('loading');
+
+        self.notifyView = new NotifyView({msg: "There was an error starting the print.", type: "error"});
+        app.router.selectView(self.notifyView);
       })
     } else {
       //We need to download and print
@@ -237,6 +240,7 @@ var PrintFilesListView = Backbone.View.extend({
   refresh_threshold: 1000, //don't allow refreshes faster than this (in ms)
   last_refresh: 0,
   refreshing: false,
+  notifyView: null,
   events: {
     'click .list-header button.sync': 'forceSync'
   },
@@ -293,7 +297,7 @@ var PrintFilesListView = Backbone.View.extend({
   refresh: function(syncCloud, doneCb)
   {
     var now = new Date().getTime();
-
+    var self = this;
     if (this.last_refresh == 0 || this.last_refresh < (now - this.refresh_threshold) ) {
       this.last_refresh = now;
 
@@ -335,7 +339,8 @@ var PrintFilesListView = Backbone.View.extend({
             this.refreshing = false;
           }, this))
           .fail(_.bind(function(){
-            noty({text: "There was an error retrieving print files", timeout: 3000});
+            self.notifyView = new NotifyView({msg: "There was an error retrieving print files.", type: "error"});
+            app.router.selectView(self.notifyView);
 
             if (_.isFunction(doneCb)) {
               doneCb(false);
