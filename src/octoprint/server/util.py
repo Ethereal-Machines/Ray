@@ -22,6 +22,7 @@ import threading
 import logging
 import zlib
 import json
+import weakref
 from functools import wraps
 
 import octoprint.server
@@ -157,7 +158,7 @@ class PrinterStateConnection(SockJSConnection):
 
         self._userManager = userManager
         self._eventManager = eventManager
-        getEtherBoxHandlerCallback().append(self)
+        getEtherBoxHandlerCallback().append(weakref.ref(self))
 
     def _getRemoteAddress(self, request):
         forwardedFor = request.headers.get("X-Forwarded-For")

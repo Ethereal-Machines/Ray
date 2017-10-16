@@ -71,32 +71,40 @@ class EtherBoxHandler(FileSystemEventHandler):
         gcode_files = _get_gcode_files(usb_path)
         if not gcode_files:
             return
-        for callback in CALLBACKS:
-            try:
-                callback.sendEvent("usb_status", True)
-                self.logger.info("Event sent: %s", usb_path)
-                self.logger.info("All callbacks %s", CALLBACKS)
-            except Exception as e:
-                self.logger.exception("error: %s", e)
-                self.logger.exception("All callbacks %s", CALLBACKS)
-                pass
         s = settings()
         s.set(['usb', 'filelist'], gcode_files)
+        for callback in CALLBACKS:
+            real_callback = ''
+            try:
+                # get original object
+                real_callback = callback()
+                if real_callback:
+                    real_callback.sendEvent("usb_status", True)
+                    self.logger.info("Event sent: %s", usb_path)
+                    self.logger.info(CALLBACKS)
+            except Exception as e:
+                self.logger.exception("error: %s", e)
+                self.logger.exception(CALLBACKS)
+                pass
 
     def on_deleted(self, event):
         s = settings()
         s.set(['usb', 'filelist'], [])
 
         for callback in CALLBACKS:
+            real_callback = ''
             try:
-                callback.sendEvent("usb_status", False)
-                self.logger.info("Usb removed: %s", event.src_path)
+                # get original object
+                real_callback = callback()
+                if real_callback:
+                    real_callback.sendEvent("usb_status", False)
+                    self.logger.info("Usb removed: %s", event.src_path)
+                    self.logger.info(CALLBACKS)
             except Exception as e:
                 self.logger.exception("error in removed: %s", event)
                 self.logger.exception("error: %s", e)
-                self.logger.exception("Event sent: %s", event.src_path)
-                self.logger.exception("To %s", callback)
-                self.logger.exception("All callbacks %s", CALLBACKS)
+                self.logger.exception("To %s", real_callback)
+                self.logger.exception(CALLBACKS)
                 pass
 
 
