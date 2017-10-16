@@ -73,6 +73,9 @@ class EtherBoxHandler(FileSystemEventHandler):
             return
         s = settings()
         s.set(['usb', 'filelist'], gcode_files)
+
+        alive_callbacks = []
+        global CALLBACKS
         for callback in CALLBACKS:
             real_callback = ''
             try:
@@ -82,15 +85,19 @@ class EtherBoxHandler(FileSystemEventHandler):
                     real_callback.sendEvent("usb_status", True)
                     self.logger.info("Event sent: %s", usb_path)
                     self.logger.info(CALLBACKS)
+                    alive_callbacks.append(callback)
             except Exception as e:
                 self.logger.exception("error: %s", e)
                 self.logger.exception(CALLBACKS)
                 pass
+        CALLBACKS = alive_callbacks
 
     def on_deleted(self, event):
         s = settings()
         s.set(['usb', 'filelist'], [])
 
+        alive_callbacks = []
+        global CALLBACKS
         for callback in CALLBACKS:
             real_callback = ''
             try:
@@ -100,12 +107,14 @@ class EtherBoxHandler(FileSystemEventHandler):
                     real_callback.sendEvent("usb_status", False)
                     self.logger.info("Usb removed: %s", event.src_path)
                     self.logger.info(CALLBACKS)
+                    alive_callbacks.append(callback)
             except Exception as e:
                 self.logger.exception("error in removed: %s", event)
                 self.logger.exception("error: %s", e)
                 self.logger.exception("To %s", real_callback)
                 self.logger.exception(CALLBACKS)
                 pass
+        CALLBACKS = alive_callbacks
 
 
 def getEtherBoxHandlerCallback():
