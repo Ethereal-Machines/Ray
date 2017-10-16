@@ -70,7 +70,7 @@ class EtherBoxHandler(FileSystemEventHandler):
             return
         for callback in CALLBACKS:
             try:
-                callback.sendEvent("usb_inserted", usb_path)
+                callback.sendEvent("usb_status", True)
                 self.logger.info("Event sent: %s", usb_path)
                 self.logger.info("All callbacks %s", CALLBACKS)
             except Exception as e:
@@ -86,7 +86,7 @@ class EtherBoxHandler(FileSystemEventHandler):
 
         for callback in CALLBACKS:
             try:
-                callback.sendEvent("usb_removed", event.src_path)
+                callback.sendEvent("usb_status", False)
                 self.logger.info("Usb removed: %s", event.src_path)
             except Exception as e:
                 self.logger.exception("error in removed: %s", event)
