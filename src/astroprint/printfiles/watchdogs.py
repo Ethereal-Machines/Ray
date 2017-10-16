@@ -44,7 +44,10 @@ def _get_gcode_files(directory):
     for parent, d, pack in os.walk(directory):
         for files in pack:
             curr_file = {}
-            if files.endswith('.gcode'):
+            if (
+                    files.endswith('.gcode')
+                    or files.endswith('.g')
+                    or files.endswith('.txt')):
                 curr_file['fullpath'] = os.path.abspath(os.path.join(parent, files))
                 curr_file['filename'] = files
                 allfiles.append(curr_file)
