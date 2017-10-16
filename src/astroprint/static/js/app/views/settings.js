@@ -23,7 +23,7 @@ var SettingsView = Backbone.View.extend({
 
   	$(html).insertBefore(nav);
   	nav.css('padding-left', '8px');
-  	name.text("Settings");
+  	name.html("<a href='#'>Settings</a>");
   },
   onCloseReleaseInfoClicked: function(e) {
     e.preventDefault();

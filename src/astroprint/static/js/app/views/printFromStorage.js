@@ -25,7 +25,7 @@ var PrintFromStorageView = Backbone.View.extend({
 
     $(html).insertBefore(nav);
     nav.css('padding-left', '8px');
-    name.text("Print from Storage");
+    name.html("<a href='#'>Print from Storage</a>");
 	},
 	onCloseReleaseInfoClicked: function(e) {
     e.preventDefault();

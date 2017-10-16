@@ -21,7 +21,6 @@ var PrintFileInfoDialog = Backbone.View.extend({
   },
   initialize: function(params)
   {
-    // console.log("PrintFileInfoDialog is being initialized");
     this.file_list_view = params.file_list_view;
   },
   render: function()
@@ -31,14 +30,14 @@ var PrintFileInfoDialog = Backbone.View.extend({
       time_format: app.utils.timeFormat
     }));
 
-    console.log(this.print_file_view.print_file);
+    // console.log(this.print_file_view.print_file);
   },
   open: function(print_file_view)
   {
     this.print_file_view = print_file_view;
     this.render();
     // this.$el.foundation('reveal', 'open');
-    console.log("I need to open the modal");
+    // console.log("I need to open the modal");
     this.$el.removeClass('hide');
   },
   onDeleteClicked: function(e)
@@ -103,7 +102,6 @@ var PrintFileView = Backbone.View.extend({
   downloadProgress: null,
   initialize: function(options)
   {
-    // console.log("PrintFileView is being initialized");
     this.list = options.list;
     this.print_file = options.print_file;
   },
@@ -205,7 +203,6 @@ var StorageControlView = Backbone.View.extend({
   selected: null,
   initialize: function(options)
   {
-    // console.log("StorageControlView is being initialized");
     this.print_file_view = options.print_file_view;
   },
   selectStorage: function(storage)
@@ -244,7 +241,6 @@ var PrintFilesListView = Backbone.View.extend({
     'click .list-header button.sync': 'forceSync'
   },
   initialize: function(options) {
-    // console.log("PrintFilesListView is being initialized");
     this.file_list = new PrintFileCollection();
     this.info_dialog = new PrintFileInfoDialog({file_list_view: this});
     this.storage_control_view = new StorageControlView({
@@ -462,6 +458,9 @@ var FilesView = Backbone.View.extend({
   el: '#files-view',
   printFilesListView: null,
   scrolled: 0,
+  fileListLength: 0,
+  checkFiles: null,
+  reachedBottom: false,
   events: {
     'show': 'onShow',
     'click .up-button': 'scrollUp',
@@ -474,6 +473,37 @@ var FilesView = Backbone.View.extend({
       forceSync: options.forceSync, // taking the values from the options parameter
       syncCompleted: options.syncCompleted // taking the values from the options parameter
     });
+
+    var actualFilesLength = this.printFilesListView.print_file_views.length;
+
+    // console.log("Actual no of files are " + actualFilesLength);
+
+    this.fileListLength = actualFilesLength;
+
+    var self = this;
+
+    this.checkFiles = setInterval(function() {
+
+      var actualFilesLength = self.printFilesListView.print_file_views.length;
+      self.fileListLength = actualFilesLength;
+      // console.log("The current no of files are : " + self.fileListLength);
+
+      if (actualFilesLength <= 5) {
+        // console.log("No of files are < than 5, no scrolling");
+        self.$('.down-button').addClass('disable-btn');
+        self.$('.up-button').addClass('disable-btn');
+      } else {
+        // self.reachedBottom = false;
+        if (self.reachedBottom === true) {
+          // console.log(reachedBottom);
+          // console.log("Hey hey I have reached to the bottom, again adding the disable-btn class to Down btn");
+          self.$('.down-button').addClass('disable-btn');
+        } else {
+          // console.log("No of files are > 5, scrolling enabled, removing the disable-btn class from Down btn");
+          self.$('.down-button').removeClass('disable-btn');
+        }
+      }
+    }, 1000);
 
     this.listenTo(app.printerProfile, 'change:driver', this.onDriverChanged);
   },
@@ -501,6 +531,7 @@ var FilesView = Backbone.View.extend({
 
     target.scroll(function() {
       if (self.scrolled + innerHeight >= scrollHeight) {
+        self.reachedBottom = true;
         self.$('.down-button').addClass('disable-btn');
       }
     });
@@ -523,6 +554,7 @@ var FilesView = Backbone.View.extend({
       if (self.scrolled === 0) {
         // console.log("Reached bottom");
         self.$('.up-button').addClass('disable-btn');
+        self.reachedBottom = false;
       }
     });
   }

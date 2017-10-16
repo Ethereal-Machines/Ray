@@ -22,6 +22,17 @@
 	color: #FFFFFF;
 }
 
+#home-nav a {
+	color: white;
+	text-decoration: none;
+}
+
+#home-nav a:hover {
+	color: white;
+	text-decoration: none;
+	cursor: default;
+}
+
 #home-nav-container {
 	display: flex;
 	flex-direction: row;

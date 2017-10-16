@@ -24,7 +24,7 @@ var UtilityView = Backbone.View.extend({
 
     $(html).insertBefore(nav);
     nav.css('padding-left', '8px');
-    name.text("Utilities");
+    name.html("<a href='#'>Utilities</a>");
   },
 
   /*
