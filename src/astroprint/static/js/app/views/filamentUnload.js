@@ -74,6 +74,7 @@ var FilamentUnloadView = Backbone.View.extend({
     $(currentView).removeClass('active').addClass('hide');
     this.$("#filament-unload-wizard__temp-control").removeClass('hide').addClass('active');
     this.$('#filament-unload-wizard__preheating-progress-section-button').removeClass('enable-btn').addClass('disable-btn');
+    this.killPreheat();
   },
   revealNextStep: function(e) {
     var currentView = this.$el.find('.active');
