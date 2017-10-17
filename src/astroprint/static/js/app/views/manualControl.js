@@ -43,6 +43,7 @@ var DistanceControl = Backbone.View.extend({
 var MovementControlView = Backbone.View.extend({
   distanceControl: null,
   printerProfile: null,
+  notifyView: null,
   initialize: function(params)
   {
     this.distanceControl = params.distanceControl;
@@ -81,6 +82,7 @@ var MovementControlView = Backbone.View.extend({
   // here we are sending the POST request whenever a home button in clicked
   sendHomeCommand: function(axis)
   {
+    var self = this;
     var data = {
       "command": "home",
       "axes": axis
@@ -99,6 +101,8 @@ var MovementControlView = Backbone.View.extend({
         console.log("The status code is : " + xhr.status);
         console.log("Msg form the server : " + xhr.responseText);
         console.log("Status text : " + xhr.statusText);
+        self.notifyView = new NotifyView({msg: xhr.responseText, type: "error"});
+        app.router.selectView(self.notifyView);
       }
     });
   }

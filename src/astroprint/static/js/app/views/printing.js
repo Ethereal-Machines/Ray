@@ -307,6 +307,7 @@ var CancelPrintDialog = Backbone.View.extend({
     'change input[name=reason]': 'onReasonChanged'
   },
   parent: null,
+  notifyView: null,
   initialize: function(params)
   {
     this.parent = params.parent;
@@ -341,10 +342,15 @@ var CancelPrintDialog = Backbone.View.extend({
       if (data && _.has(data, 'error')) {
         var error = JSON.parse(data.error);
         if (error.id == 'no_active_print') {
-          noty({text: "No Print Job is active", type: "warning" , timeout: 3000});
+          // noty({text: "No Print Job is active", type: "warning" , timeout: 3000});
+          this.notifyView = new NotifyView({msg: "No Print Job is active.", type: "warning"});
+          app.router.selectView(this.notifyView);
+
           this.close();
         } else {
-          noty({text: "There was an error canceling your job.", timeout: 3000});
+          // noty({text: "There was an error canceling your job.", timeout: 3000});
+          this.notifyView = new NotifyView({msg: "There was an error canceling your job.", type: "warning"});
+          app.router.selectView(this.notifyView);
         }
         loadingBtn.removeClass('loading');
       } else {
