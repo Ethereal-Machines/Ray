@@ -16,6 +16,7 @@ var FilamentLoadView = Backbone.View.extend({
 	template1: null,
 	extruderPercentage: null,
 	timeLoading: null,
+  notifyView: null,
 	initialize: function(options) {
 		this.listenTo(app.socketData, 'change:temps', this.tempUpdateAlert);
 
@@ -154,10 +155,14 @@ var FilamentLoadView = Backbone.View.extend({
       	console.log("The status code is : " + xhr.status);
       	console.log("Msg form the server : " + xhr.responseText);
       	console.log("Status text : " + xhr.statusText);
+
+        self.notifyView = new NotifyView({msg: xhr.responseText, type: "error"});
+        app.router.selectView(self.notifyView);
       }
     });
 	},
 	killPreheat: function() {
+    var self = this;
 		var data1 = {
 			command: "target",
 			targets: {
@@ -174,8 +179,10 @@ var FilamentLoadView = Backbone.View.extend({
       success: function() {
       	// console.log("Tool: The request was successfull");
       },
-      error: function() {
+      error: function(xhr) {
       	console.log("Tool: There was an error!");
+        self.notifyView = new NotifyView({msg: xhr.responseText, type: "error"});
+        app.router.selectView(self.notifyView);
       }
     });
 	}

@@ -12,6 +12,7 @@ var TempBarView = Backbone.View.extend({
   waitAfterSent: 2000, //During this time, ignore incoming target sets
   target: 0,
   actual: 0,
+  notifyView: null,
   events: {
     'mousedown .temp-target span.target-value': 'onTouchStart',
     'click .temp-target a.temp-edit': 'onEditClicked',
@@ -132,6 +133,7 @@ var TempBarView = Backbone.View.extend({
     input.closest('.temp-target').find('span.target-value').removeClass('hide');
   },
   _sendToolCommand: function(command, type, temp, successCb, errorCb) {
+    var self = this;
 
     if (temp == this.lastSent) return;
 
@@ -172,7 +174,13 @@ var TempBarView = Backbone.View.extend({
       contentType: "application/json; charset=UTF-8",
       data: JSON.stringify(data),
       success: function() { if (successCb !== undefined) successCb(); },
-      error: function() { if (errorCb !== undefined) errorCb(); }
+      error: function(xhr) {
+        if (errorCb !== undefined) errorCb();
+        else {
+          self.notifyView = new NotifyView({msg: xhr.responseText, type: 'error'});
+          app.router.selectView(self.notifyView);
+        }
+      }
     });
 
     this.lastSentTimestamp = new Date().getTime();
