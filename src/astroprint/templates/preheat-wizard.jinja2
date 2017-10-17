@@ -9,6 +9,9 @@
 		<div class="wizard-name wizard-name--preheating">
 			Preheating...
 		</div>
+		<button class="preheat-wizard__cancel-button cancel-button">
+			Cancel
+		</button>
 	</nav>
 
 	<div id="preheat-wizard__preheating-progress" class="active">
@@ -18,7 +21,7 @@
 			<div class="preheat-wizard__{{class}}-container">
 				<div class="preheat-wizard__{{class}}-container__img-temp-container">
 					<div class="{{class}}-img">
-						<img src="../../img/ethereal-astroprint/{{imgName}}" alt="{{tool}}" width="64" height="64">
+						<img src="../../img/preheating-utility/{{imgName}}" alt="{{tool}}" width="64" height="64">
 					</div>
 					<div class="{{class}}-temp-progress">
 						<p class="temp-msg">{{tool}} Temperature</p>
@@ -31,8 +34,8 @@
 			</div>
 		{%- endmacro %}
 
-		{{ progress_section('Extruder 1', 'nozzle.svg', 'extra', 'extra') }}
-		{{ progress_section('Extruder 2', 'nozzle.svg', 'nozzle', 'extruder') }}
+		{{ progress_section('Extruder 1', 'extruder-1.svg', 'extra', 'extra') }}
+		{{ progress_section('Extruder 2', 'extruder-2.svg', 'nozzle', 'extruder') }}
 		{{ progress_section('Bed', 'bed-plate.svg', 'bed', 'bed') }}
 
 
@@ -68,7 +71,7 @@
 		</div> -->
 
 		<!-- Cancel Button -->
-		<button type="button" class="preheat-wizard__cancel-button next-button">Cancel</button>
+		<!-- <button type="button" class="preheat-wizard__cancel-button next-button">Cancel</button> -->
 
 	</div>
 

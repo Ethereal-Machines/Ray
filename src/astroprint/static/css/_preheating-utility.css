@@ -97,22 +97,24 @@
 	justify-content: center;
 }
 
-.preheat-wizard__extra-container {
+/* change: Moving Cancel button on top */
+/*.preheat-wizard__extra-container {
 	margin-top: -22px;
-}
+}*/
 
 #extra-progress-bar,
 #extruder-progress-bar,
 #bed-progress-bar {
-	margin-bottom: 10px !important;
-	height: 12px !important;
+	margin-bottom: 20px !important;
+	height: 20px !important;
 }
 
+/* change: Moving Cancel button on top */
 .preheat-wizard__cancel-button {
-	background-color: #BBB;
-	text-transform: uppercase;
+	/*background-color: #BBB;*/
+	/*text-transform: uppercase;*/
 	border: 0px;
-	margin-top: 20px;
+	/*margin-top: 20px;*/
 }
 
 #preheat-wizard__finish-section {
