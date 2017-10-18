@@ -185,10 +185,10 @@ var XYControlView = MovementControlView.extend({
 var ZControlView = MovementControlView.extend({
   el: '#z-controls',
   events: {
-    'mousedown .control_btn_z_plus': 'zPlusTapped',
-    'mouseup .control_btn_z_plus': 'zPlusReleased',
-    'mousedown .control_btn_z_minus': 'zMinusTapped',
-    'mouseup .control_btn_z_minus': 'zMinusReleased',
+    'mousedown .control_btn_z_plus': 'zMinusTapped',
+    'mouseup .control_btn_z_plus': 'zMinusReleased',
+    'mousedown .control_btn_z_minus': 'zPlusTapped',
+    'mouseup .control_btn_z_minus': 'zPlusReleased',
     'click .home_z': 'homeTapped'
   },
   init00: null,
