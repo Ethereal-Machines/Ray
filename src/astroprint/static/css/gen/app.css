@@ -11,6 +11,10 @@ body {
           user-select: none;
 }
 
+body button {
+	font-weight: bold !important;
+}
+
 .hide {
 	display: none !important;
 }
@@ -153,6 +157,7 @@ progress[value] {
 	margin: 0 auto;
 	background-color: #BBB;
 	border: 0;
+	font-weight: bold;
 }
 
 .next-button a {

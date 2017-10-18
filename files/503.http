@@ -51,6 +51,7 @@ Content-Type: text/html
 	    background-color: #BBB;
 	    border: 0;
 	    text-transform: uppercase;
+	    font-weight: bold !important;
 		}
 
 		h1 {
