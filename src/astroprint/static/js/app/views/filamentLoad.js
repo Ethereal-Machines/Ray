@@ -74,6 +74,7 @@ var FilamentLoadView = Backbone.View.extend({
     $(currentView).removeClass('active').addClass('hide');
     this.$("#filament-load-wizard__temp-control").removeClass('hide').addClass('active');
     this.$('#preheating-progress-section-button').removeClass('enable-btn').addClass('disable-btn');
+    this.$('.cancel-button').removeClass('disable-btn');
     this.killPreheat();
   },
   revealNextStep: function(e) {
@@ -98,7 +99,7 @@ var FilamentLoadView = Backbone.View.extend({
 
       */
       this.extrudeTapped(); // initializing the extrusion process
-      
+      this.$('.cancel-button').addClass('disable-btn');
       currentView.removeClass('active').addClass('hide');
       this.$el.find("#extruding-in-progress-section").removeClass('hide').addClass('active');
 
