@@ -9,6 +9,7 @@
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	padding-top: 32px;
 }
 
 #z-controls {
@@ -16,6 +17,7 @@
 	flex-direction: column;
 	align-items: center;
 	width: 35%;
+	padding-top: 32px;
 }
 
 .control_bg_xy {
