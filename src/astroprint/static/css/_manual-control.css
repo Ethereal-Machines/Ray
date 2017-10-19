@@ -24,7 +24,7 @@
 	text-align: center;
 	width: 460.61px;
 	height: 294.43px;
-	background-image: url("../img/manual-controls/manual-xy-background.svg");
+	background-image: url("../img/manual-controls/manual-xy-background-dark.svg");
 	background-repeat: no-repeat;
 	background-size: 100%;
 	/*background-color: black;*/
@@ -34,7 +34,7 @@
 	width: 192.28px;
 	height: 293.21px;
 	text-align: center;
-	background-color: #eee;
+	background-color: #bbb;
 	border-radius: 17px;
 	box-shadow: 0.5px 4.1px 0.5px 0.1px #e7e7e7;
 }
