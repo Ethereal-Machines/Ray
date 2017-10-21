@@ -33,8 +33,11 @@ var FilamentLoadView = Backbone.View.extend({
   },
   startHeating: function(e) {
     var parent = $(e.target)[0].parentElement;
-    var extruder = $(parent).find('.target-value-input').val();
-    this.tempView.startPreheating(extruder);
+    // var extruder = $(parent).find('.target-value-input').val();
+    var extruder = $(parent).find('.target-value').text();
+
+    // this.tempView.startPreheating(extruder);
+    this.tempView.startPreheating(parseInt(extruder.substr(0, extruder.length - 3)));
   },
   tempUpdateAlert: function(s, value) {
     this.updatedTemp = value;
