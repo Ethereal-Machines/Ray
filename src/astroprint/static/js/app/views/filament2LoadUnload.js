@@ -166,30 +166,7 @@ var Filament2LoadView = Backbone.View.extend({
     });
   },
   killPreheat: function() {
-    var self = this;
-    var extradata = {
-      command: "target",
-      targets: {
-        tool1: 0
-      }
-    };
-
-    $.ajax({
-      url: API_BASEURL + "printer/" + "tool",
-      type: "POST",
-      dataType: "json",
-      contentType: "application/json; charset=UTF-8",
-      data: JSON.stringify(extradata),
-      success: function() {
-        // console.log("Tool: The request was successfull");
-      },
-      error: function(xhr) {
-        console.log("Tool: There was an error!");
-        self.notifyView = new NotifyView({msg: xhr.responseText, type: "error"});
-        app.router.selectView(self.notifyView);
-      }
-    });
-
+    this.tempView.startPreheating(0);
   }
 });
 
@@ -350,29 +327,6 @@ var Filament2UnloadView = Backbone.View.extend({
     });
   },
   killPreheat: function() {
-    var self = this;
-    var extradata = {
-      command: "target",
-      targets: {
-        tool1: 0
-      }
-    };
-
-    $.ajax({
-      url: API_BASEURL + "printer/" + "tool",
-      type: "POST",
-      dataType: "json",
-      contentType: "application/json; charset=UTF-8",
-      data: JSON.stringify(extradata),
-      success: function() {
-        // console.log("Tool: The request was successfull");
-      },
-      error: function(xhr) {
-        console.log("Tool: There was an error!");
-        self.notifyView = new NotifyView({msg: xhr.responseText, type: "error"});
-        app.router.selectView(self.notifyView);
-      }
-    });
-
+    this.tempView.startPreheating(0);
   }
 });
