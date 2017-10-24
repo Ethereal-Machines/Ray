@@ -128,52 +128,108 @@ var XYControlView = MovementControlView.extend({
     'click .home_z': 'homeTapped'
   },
   init00: null,
+  isMouseDown: false,
 
   // call back functions for taking care of the click events on the control keys
-  xPlusTapped: function(){ 
+  xPlusTapped: function(){
+
+    this.$(".control_btn_x_plus").css('box-shadow', '0px 0px 8px 1px black');
+    
     var self = this;
-    this.init00 = setInterval(function() {
 
-      self.sendJogCommand('x', 1, self.distanceControl.xSelected);
+    if (this.init00) clearInterval(this.init00);
 
-    }, 30);
-    // this.sendJogCommand('x', 1, this.distanceControl.xSelected);
+    self.sendJogCommand('x', 1, self.distanceControl.xSelected);
+    self.isMouseDown = true;    
+
+    if (self.isMouseDown) {
+      self.init00 = setInterval(function() {
+
+        self.sendJogCommand('x', 1, self.distanceControl.xSelected);
+
+      }, 30);
+    }
   },
   xPlusReleased: function() {
+    this.$(".control_btn_x_plus").css('box-shadow', '0px 0px 8px 6px black');
+    this.isMouseDown = false;
     clearInterval(this.init00);
+    this.init00 = null;
   },
   xMinusTapped: function() {
+
+    this.$(".control_btn_x_minus").css('box-shadow', '0px 0px 8px 1px black');
+
     var self = this;
-    this.init00 = setInterval(function() {
 
-      self.sendJogCommand('x', -1, self.distanceControl.xSelected);
+    if (this.init00) clearInterval(this.init00);
 
-    }, 30);
+    self.sendJogCommand('x', -1, self.distanceControl.xSelected);
+    self.isMouseDown = true;    
+
+    if (self.isMouseDown) {
+      self.init00 = setInterval(function() {
+
+        self.sendJogCommand('x', -1, self.distanceControl.xSelected);
+
+      }, 30);
+    }
   },
   xMinusReleased: function() {
+    this.$(".control_btn_x_minus").css('box-shadow', '0px 0px 8px 6px black');
+    this.isMouseDown = false;
     clearInterval(this.init00);
+    this.init00 = null;
   },
   yPlusTapped: function() {
+
+    this.$(".control_btn_y_plus").css('box-shadow', '0px 0px 8px 1px black');
+
     var self = this;
-    this.init00 = setInterval(function() {
 
-      self.sendJogCommand('y', 1, self.distanceControl.ySelected);
+    if (this.init00) clearInterval(this.init00);
 
-    }, 30);
+    self.sendJogCommand('y', 1, self.distanceControl.ySelected);
+    self.isMouseDown = true;    
+
+    if (self.isMouseDown) {
+      self.init00 = setInterval(function() {
+
+        self.sendJogCommand('y', 1, self.distanceControl.ySelected);
+
+      }, 30);
+    }
   },
   yPlusReleased: function() {
+    this.$(".control_btn_y_plus").css('box-shadow', '0px 0px 8px 6px black');
+    this.isMouseDown = false;
     clearInterval(this.init00);
+    this.init00 = null;
   },
   yMinusTapped: function() {
+
+    this.$(".control_btn_y_minus").css('box-shadow', '0px 0px 8px 1px black');
+
     var self = this;
-    this.init00 = setInterval(function() {
 
-      self.sendJogCommand('y', -1, self.distanceControl.ySelected);
+    if (this.init00) clearInterval(this.init00);
 
-    }, 30);
+    self.sendJogCommand('y', -1, self.distanceControl.ySelected);
+    self.isMouseDown = true;    
+
+    if (self.isMouseDown) {
+      self.init00 = setInterval(function() {
+
+        self.sendJogCommand('y', -1, self.distanceControl.ySelected);
+
+      }, 30);
+    }
   },
   yMinusReleased: function() {
+    this.$(".control_btn_y_minus").css('box-shadow', '0px 0px 8px 6px black');
+    this.isMouseDown = false;
     clearInterval(this.init00);
+    this.init00 = null;
   },
   homeTapped: function() {
     if (!app.socketData.get('paused')) {
@@ -191,29 +247,59 @@ var ZControlView = MovementControlView.extend({
     'mouseup .control_btn_z_minus': 'zPlusReleased',
     'click .home_z': 'homeTapped'
   },
-  init00: null,
-  zPlusTapped: function() {
+  init01: null,
+  isMouseDown: false,
+  zPlusTapped: function(e) {
+
+    this.$(".control_btn_z_minus").css('box-shadow', '0px 0px 8px 1px black');
+
     var self = this;
-    this.init00 = setInterval(function() {
 
-      self.sendJogCommand('z', 1, self.distanceControl.zSelected);
+    if (this.init01) clearInterval(this.init01);
 
-    }, 675);
+    self.sendJogCommand('z', 1, self.distanceControl.zSelected);
+    self.isMouseDown = true;    
+
+    if (self.isMouseDown) {
+      self.init01 = setInterval(function() {
+
+        self.sendJogCommand('z', 1, self.distanceControl.zSelected);
+
+      }, 430);
+    }
   },
-  zPlusReleased: function() {
-    clearInterval(this.init00);
+  zPlusReleased: function(e) {
+    this.$(".control_btn_z_minus").css('box-shadow', '0px 0px 8px 6px black');
+    this.isMouseDown = false;
+    clearInterval(this.init01);
+    this.init01 = null;
+    return false;
   },
-  zMinusTapped: function() {
+  zMinusTapped: function(e) {
+
+    this.$(".control_btn_z_plus").css('box-shadow', '0px 0px 8px 1px black');
+
     var self = this;
-    this.init00 = setInterval(function() {
 
-      self.sendJogCommand('z', -1 , self.distanceControl.zSelected);
+    if (this.init01) clearInterval(this.init01);
 
-    }, 675);
-    // this.sendJogCommand('z', -1 , this.distanceControl.zSelected);
+    self.sendJogCommand('z', -1, self.distanceControl.zSelected);
+    self.isMouseDown = true;    
+
+    if (self.isMouseDown) {
+      self.init01 = setInterval(function() {
+
+        self.sendJogCommand('z', -1, self.distanceControl.zSelected);
+
+      }, 430);
+    }
   },
-  zMinusReleased: function() {
-    clearInterval(this.init00);
+  zMinusReleased: function(e) {
+    this.$(".control_btn_z_plus").css('box-shadow', '0px 0px 8px 6px black');
+    this.isMouseDown = false;
+    clearInterval(this.init01);
+    this.init01 = null;
+    return false;
   },
   homeTapped: function() {
     if (!app.socketData.get('paused')) {
