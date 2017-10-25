@@ -28,16 +28,16 @@
 
       <div class="printing-wizard__nozzle-container">
         <img src="{{ url_for('static',filename='img/preheating-utility/extruder-1.svg') }}" alt="Nozzle" class="printing-wizard__target-img" width="48" height="48">
-        <progress max="100" value="0" class="printing-wizard__progress printing-wizard__progress--extra">
+        <progress max="100" value="0" class="printing-wizard__progress printing-wizard__progress--nozzle">
         </progress>
-        {{ temp_control('extra', 'Nozzle 1')}}
+        {{ temp_control('nozzle', 'Nozzle 1')}}
       </div>
 
       <div class="printing-wizard__nozzle-container">
         <img src="{{ url_for('static',filename='img/preheating-utility/extruder-2.svg') }}" alt="Nozzle" class="printing-wizard__target-img" width="48" height="48">
-        <progress max="100" value="0" class="printing-wizard__progress printing-wizard__progress--nozzle">
+        <progress max="100" value="0" class="printing-wizard__progress printing-wizard__progress--extra">
         </progress>
-        {{ temp_control('nozzle', 'Nozzle 2')}}
+        {{ temp_control('extra', 'Nozzle 2')}}
       </div>
 
       <div class="printing-wizard__bed-container">
