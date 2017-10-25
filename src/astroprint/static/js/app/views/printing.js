@@ -28,7 +28,7 @@
     }
 
     if (actual !== null) {
-      this.$el.find('sapn.temp-current').html(Math.round(actual)+' &deg;C /');
+      this.$el.find('span.temp-current').html(Math.round(actual)+' &deg;C /');
     }
   }
 });
