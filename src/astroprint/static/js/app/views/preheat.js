@@ -50,7 +50,7 @@ var PreheatingView = Backbone.View.extend({
 	    this.updateProgressBar();
     }
 
-    if (this.extruderPercentage === 100 && this.extraPercentage === 100 && this.bedPercentage === 100) {
+    if (this.extruderPercentage >= 99 && this.extraPercentage >= 99 && this.bedPercentage >= 99) {
     	currentView.removeClass('active').addClass('hide');;
     	this.$("#preheat-wizard__finish-section").removeClass('hide').addClass('active');
     }
