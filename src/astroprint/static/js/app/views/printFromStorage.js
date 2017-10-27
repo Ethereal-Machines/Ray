@@ -5,17 +5,10 @@
 var PrintFromStorageView = Backbone.View.extend({
 	el: "#print-from-storage-view",
 	events: {
-    "click .utility-button": "getButtonName",
-    'click .power-button': 'onPowerClicked',
-    'click .power-off-modal': 'closePowerModal',
-    'click .power-off-modal__button-container': 'noHideModel',
-    'click .power-off-button': 'doTurnoff',
-    'click .restart-button': 'doRestart'
+    "click .utility-button": "getButtonName"
   },
 	initialize: function() {
 		this.render();
-
-    this.listenTo(app.socketData, 'change:usb_status', this.usbStatusChanged);
 	},
 	render: function() {
 		var nav = this.$(".printer-name");
@@ -31,54 +24,6 @@ var PrintFromStorageView = Backbone.View.extend({
 	onCloseReleaseInfoClicked: function(e) {
     e.preventDefault();
     this.$('.new-release').remove()
-  },
-  onPowerClicked: function() {
-    this.$('.power-off-modal').removeClass('hide');
-  },
-  closePowerModal: function() {
-    this.$('.power-off-modal').addClass('hide');
-  },
-  noHideModel: function(e) {
-    e.stopPropagation();
-  },
-  doTurnoff: function() {
-    var data = {"action": "shutdown", "command": "sudo shutdown now"};
-    $.ajax({
-      url: API_BASEURL + "system",
-      type: "POST",
-      dataType: 'json',
-      contentType: "application/json; charset=UTF-8",
-      data: JSON.stringify(data),
-      success: function() {
-        console.log("success!!!!");
-      },
-      error: function(xhr) {
-        console.log(xhr);
-      }
-    });
-  },
-  doRestart: function() {
-    var data = {"action": "restart", "command": "sudo reboot now"};
-    $.ajax({
-      url: API_BASEURL + "system",
-      type: "POST",
-      dataType: 'json',
-      contentType: "application/json; charset=UTF-8",
-      data: JSON.stringify(data),
-      success: function() {
-        console.log("success!!!!");
-      },
-      error: function(xhr) {
-        console.log(xhr);
-      }
-    });
-  },
-  usbStatusChanged: function(s, value) {
-    if (value) {
-      this.$('.usb-icon-img').css('opacity', '1');
-    } else if (!value) {
-      this.$('.usb-icon-img').css('opacity', '.2');
-    }
   }
 });
 

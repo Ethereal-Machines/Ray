@@ -4,13 +4,7 @@
 
 var SettingsView = Backbone.View.extend({
   el: "#settings-view",
-  events: {
-  	'click .power-button': 'onPowerClicked',
-    'click .power-off-modal': 'closePowerModal',
-    'click .power-off-modal__button-container': 'noHideModel',
-    'click .power-off-button': 'doTurnoff',
-    'click .restart-button': 'doRestart'
-  },
+  events: {},
   initialize: function() {
   	this.render();
   },
@@ -28,46 +22,5 @@ var SettingsView = Backbone.View.extend({
   onCloseReleaseInfoClicked: function(e) {
     e.preventDefault();
     this.$('.new-release').remove()
-  },
-  onPowerClicked: function() {
-    this.$('.power-off-modal').removeClass('hide');
-  },
-  closePowerModal: function() {
-    this.$('.power-off-modal').addClass('hide');
-  },
-  noHideModel: function(e) {
-    e.stopPropagation();
-  },
-  doTurnoff: function() {
-    var data = {"action": "shutdown", "command": "sudo shutdown now"};
-    $.ajax({
-      url: API_BASEURL + "system",
-      type: "POST",
-      dataType: 'json',
-      contentType: "application/json; charset=UTF-8",
-      data: JSON.stringify(data),
-      success: function() {
-        console.log("success!!!!");
-      },
-      error: function(xhr) {
-        console.log(xhr);
-      }
-    });
-  },
-  doRestart: function() {
-    var data = {"action": "restart", "command": "sudo reboot now"};
-    $.ajax({
-      url: API_BASEURL + "system",
-      type: "POST",
-      dataType: 'json',
-      contentType: "application/json; charset=UTF-8",
-      data: JSON.stringify(data),
-      success: function() {
-        console.log("success!!!!");
-      },
-      error: function(xhr) {
-        console.log(xhr);
-      }
-    });
   }
 });

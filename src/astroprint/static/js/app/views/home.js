@@ -7,12 +7,7 @@ var HomeView = Backbone.View.extend({
   events: {
     'show': 'onShow',
     'click .new-release a.check': 'onReleaseInfoClicked',
-    'click .new-release a.close': 'onCloseReleaseInfoClicked',
-    'click .power-button': 'onPowerClicked',
-    'click .power-off-modal': 'closePowerModal',
-    'click .power-off-modal__button-container': 'noHideModel',
-    'click .power-off-button': 'doTurnoff',
-    'click .restart-button': 'doRestart'
+    'click .new-release a.close': 'onCloseReleaseInfoClicked'
   },
   initialize: function() {
     this.listenTo(app.printerProfile, 'change:driver', this.onDriverChanged);
@@ -22,8 +17,6 @@ var HomeView = Backbone.View.extend({
       this.$('.new-release .version-label').text(data.release.major+'.'+data.release.minor+'('+data.release.build+')');
       this.$('.new-release').removeClass('hide');
     }, this));
-
-    this.listenTo(app.socketData, 'change:usb_status', this.usbStatusChanged);
   },
   onDriverChanged: function(model, newDriver) {
     if (newDriver == 'marlin') {
@@ -43,53 +36,5 @@ var HomeView = Backbone.View.extend({
   onCloseReleaseInfoClicked: function(e) {
     e.preventDefault();
     this.$('.new-release').remove()
-  },
-  onPowerClicked: function() {
-    this.$('.power-off-modal').removeClass('hide');
-  },
-  closePowerModal: function() {
-    this.$('.power-off-modal').addClass('hide');
-  },
-  noHideModel: function(e) {
-    e.stopPropagation();
-  },
-  doTurnoff: function() {
-    var data = {"action": "shutdown", "command": "sudo shutdown now"};
-    $.ajax({
-      url: API_BASEURL + "system",
-      type: "POST",
-      dataType: 'json',
-      contentType: "application/json; charset=UTF-8",
-      data: JSON.stringify(data),
-      success: function() {
-        console.log("success!!!!");
-      },
-      error: function(xhr) {
-        console.log(xhr);
-      }
-    });
-  },
-  doRestart: function() {
-    var data = {"action": "restart", "command": "sudo reboot now"};
-    $.ajax({
-      url: API_BASEURL + "system",
-      type: "POST",
-      dataType: 'json',
-      contentType: "application/json; charset=UTF-8",
-      data: JSON.stringify(data),
-      success: function() {
-        console.log("success!!!!");
-      },
-      error: function(xhr) {
-        console.log(xhr);
-      }
-    });
-  },
-  usbStatusChanged: function(s, value) {
-    if (value) {
-      this.$('.usb-icon-img').css('opacity', '1');
-    } else if (!value) {
-      this.$('.usb-icon-img').css('opacity', '.2');
-    }
   }
 });
