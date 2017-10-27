@@ -500,7 +500,6 @@ var FilesView = Backbone.View.extend({
       } else {
         // self.reachedBottom = false;
         if (self.reachedBottom === true) {
-          // console.log(reachedBottom);
           // console.log("Hey hey I have reached to the bottom, again adding the disable-btn class to Down btn");
           self.$('.down-button').addClass('disable-btn');
         } else {
@@ -522,7 +521,7 @@ var FilesView = Backbone.View.extend({
   },
   scrollDown: function() {
     var self = this;
-    this.scrolled = this.scrolled + 252;
+    this.scrolled = this.scrolled + 282;
     this.$('.design-list-container').animate({
       scrollTop: self.scrolled
     });
@@ -543,7 +542,9 @@ var FilesView = Backbone.View.extend({
   },
   scrollUp: function() {
     var self = this;
-    this.scrolled = this.scrolled - 252;
+    // making the reachedBottom 'false' immediately when the Scroll Up button is clicked
+    self.reachedBottom = false;
+    this.scrolled = this.scrolled - 282;
     this.$('.design-list-container').animate({
       scrollTop: self.scrolled
     });
@@ -559,7 +560,6 @@ var FilesView = Backbone.View.extend({
       if (self.scrolled === 0) {
         // console.log("Reached bottom");
         self.$('.up-button').addClass('disable-btn');
-        self.reachedBottom = false;
       }
     });
   }
