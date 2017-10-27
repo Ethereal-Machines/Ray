@@ -135,7 +135,8 @@ var PrintFileView = Backbone.View.extend({
 
     this.delegateEvents({
       // 'infoClicked function will display the informations regarding the files being clicked'
-      'click .left-section, .middle-section': 'infoClicked',
+      // 'click .left-section, .middle-section': 'infoClicked',
+      'click .left-section, .middle-section__heading': 'infoClicked',
       // handeling the event when Print button is clicked
       'click a.print': 'printClicked',
     });

@@ -115,6 +115,9 @@
 	float: left;
 	padding: 0 17px;
 	font-size: 20px;
+	width: 656px;
+	overflow: hidden;
+	height: 56px !important;
 }
 
 /* Styling for Internal Storage Wizard goes here */
@@ -136,6 +139,9 @@
 	line-height: 56px;
 	vertical-align: middle;
 	padding: 0 17px;
+	width: 656px;
+	overflow: hidden;
+	max-height: 56px !important;
 }
 
 /* Styling for print-file-info starts here */
@@ -159,7 +165,17 @@
 
 .file-name {
 	font-size: 22px;
-	margin: 0;
+	overflow: hidden;
+	width: 80%;
+	margin: 0 auto;
+	max-height: 25px;
+}
+
+.file-name--external-storage {
+	overflow: hidden;
+	width: 80%;
+	margin: 0 auto;
+	max-height: 25px;
 }
 
 .file-date {
