@@ -22,6 +22,11 @@ from astroprint.network.manager import networkManager
 from astroprint.printer.manager import printerManager
 from astroprint.printerprofile import printerProfileManager
 
+import logging
+
+_logger = logging.getLogger(__name__)
+
+
 def not_setup_only(func):
     """
     If you decorate a view with this, it will ensure that the calls only run on
@@ -119,9 +124,14 @@ def logout_astroprint():
 @api.route('/setup/astroprint', methods=['POST'])
 @not_setup_only
 def login_astroprint():
-    machineId = request.values.get('machineId', None)
-    accessCode = request.values.get('accessCode', None)
+    data = request.get_json()
+    if data:
+        machineId = data.get('machineId')
+        accessCode = data.get('accessCode')
+    else:
+        return make_response('No Credentials given', 400)
 
+    _logger.info(data)
     if machineId and accessCode:
         ap = astroprintCloud()
 

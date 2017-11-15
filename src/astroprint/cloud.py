@@ -40,6 +40,8 @@ from astroprint.boxrouter import boxrouterManager
 from astroprint.printer.manager import printerManager
 from astroprint.printfiles.downloadmanager import downloadManager
 
+_logger = logging.getLogger(__name__)
+
 
 class AstroPrintCloudException(Exception):
     pass
@@ -232,8 +234,8 @@ class AstroPrintCloud(object):
         r = requests.post(
             "%s/%s" % (self.apiHost, 'api/private_key/'),
             data={
-                "email": email,
-                "password": password
+                "boxid": email,
+                "access_key": password
             },
             headers={
                 'User-Agent': self._sm.userAgent,
@@ -255,7 +257,7 @@ class AstroPrintCloud(object):
         r = requests.post(
             "%s/%s" % (self.apiHost, 'api/public_key/'),
             data={
-                "email": email,
+                "boxid": email,
                 "private_key": private_key
             },
             headers={'User-Agent': self._sm.userAgent}

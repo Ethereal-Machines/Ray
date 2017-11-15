@@ -486,6 +486,8 @@ var StepAstroprint = StepView.extend({
       url: API_BASEURL + 'setup/astroprint',
       method: 'post',
       data: JSON.stringify(data),
+      dataType: 'json',
+      contentType: "application/json;charset=utf-8",
       success: _.bind(function() {
         location.href = this.$('.submit-action').attr('href');
       }, this),
