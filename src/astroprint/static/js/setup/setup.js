@@ -457,6 +457,8 @@ var StepAstroprint = StepView.extend({
         if (data.user) {
           console.log("User is found");
           this.$el.addClass('success');
+          this.$el.find('.checking-state').addClass('hide');
+          this.$el.find('.success-state').removeClass('hide');
           this.$el.find('span.email').text(data.user);
         } else {
           console.log("User is not found");
@@ -492,10 +494,13 @@ var StepAstroprint = StepView.extend({
         location.href = this.$('.submit-action').attr('href');
       }, this),
       error: _.bind(function(xhr) {
+        console.log(xhr);
         if (xhr.status == 400 || xhr.status == 401 || xhr.status == 503) {
           message = "There was an error logging you in";
         } else {
           message = xhr.responseText;
+          this.$el.find('.settings-state').addClass('hide');
+          this.$el.find('.success-state').removeClass('hide');
         }
         noty({text: message, timeout: 3000});
         this.$('#machineId').focus();
@@ -514,6 +519,8 @@ var StepAstroprint = StepView.extend({
       success: _.bind(function() {
         this.$el.removeClass('success');
         this.$el.addClass('settings');
+        this.$el.find('.success-state').addClass('hide');
+        this.$el.find('.settings-state').removeClass('hide');
       }, this),
       error: _.bind(function(xhr) {
         noty({text: "Error logging you out", timeout: 3000});
