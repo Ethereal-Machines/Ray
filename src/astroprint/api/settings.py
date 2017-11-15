@@ -129,19 +129,17 @@ def handleWifiHotspot():
 
     elif request.method == "DELETE":
             result = networkManager().stopHotspot()
-
             if result is True:
-                    return jsonify()
+                return jsonify()
             else:
-                    return (result, 500)
+                return (result, 500)
 
     else: #POST
-            result = nm.startHotspot()
-
-            if result is True:
-                    return jsonify()
-            else:
-                    return (result, 500)
+        result = nm.startHotspot()
+        if result is True:
+            return jsonify()
+        else:
+            return (result, 500)
 
 
 @api.route("/settings/camera", methods=["GET", "POST"])
