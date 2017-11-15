@@ -30,12 +30,12 @@ def cloud_slicer_logout():
 
 @api.route('/astroprint/private-key', methods=['POST'])
 def set_private_key():
-    email = request.values.get('email')
-    password = request.values.get('password')
+    boxid = request.values.get('email')
+    access_key = request.values.get('password')
 
-    if email and password:
+    if boxid and access_key:
         try:
-            if astroprintCloud().signin(email, password):
+            if astroprintCloud().signin(boxid, access_key):
                 return jsonify(SUCCESS)
 
         except (AstroPrintCloudNoConnectionException, ConnectionError):
