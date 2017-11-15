@@ -314,7 +314,10 @@ def restartServer():
 @api.route("/settings/software/logs", methods=['POST'])
 @restricted_access
 def sendLogs():
-    if softwareManager.sendLogs(request.values.get('ticket', None), request.values.get('message', None)):
+    if softwareManager.sendLogs(
+            request.values.get('ticket', None),
+            request.values.get('message', None)
+        ):
         return jsonify();
     else:
         return ("There was an error trying to send your logs.", 500)

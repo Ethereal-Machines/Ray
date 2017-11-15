@@ -664,7 +664,5 @@ class SoftwareManager(object):
 
             if privateKey and publicKey:
                 from astroprint.cloud import HMACAuth
-
                 return HMACAuth(publicKey, privateKey)
-
         return None
