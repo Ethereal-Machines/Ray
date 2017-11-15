@@ -31,10 +31,13 @@ var StepView = Backbone.View.extend({
   {
     e.preventDefault();
     var serializedData = $(e.currentTarget).serializeArray();
+    console.log(serializedData);
     var data = {};
     _.each(serializedData, function(item) {
       data[item.name] = item.value;
     });
+
+    console.log(data);
 
     this.onSubmit(data);
   },
@@ -57,87 +60,87 @@ var StepWelcome = StepView.extend({
 * Name
 ***************/
 
-var StepName = StepView.extend({
-  el: "#step-name",
-  currentName: null,
-  constructor: function()
-  {
-    this.events["keyup input"] = "onNameChanged";
-    this.events['click .failed-state button'] = 'onShow';
-    StepView.apply(this, arguments);
-  },
-  onShow: function()
-  {
-    this.$el.removeClass('settings failed');
-    this.$el.addClass('checking');
-    $.ajax({
-      url: API_BASEURL + 'setup/name',
-      method: 'GET',
-      dataType: 'json',
-      success: _.bind(function(data) {
-        this.currentName = data.name;
-        this.$el.find('input').val(data.name).focus();
-        this.render();
-        this.$el.addClass('settings');
-      }, this),
-      error: _.bind(function(xhr) {
-        this.$el.addClass('failed');
-        this.$el.find('.failed-state h3').text(xhr.responseText);
-      }, this),
-      complete: _.bind(function() {
-        this.$el.removeClass('checking');
-      }, this)
-    })
-  },
-  render: function(name)
-  {
-    if (name == undefined) {
-      name = this.$el.find('input').val();
-    }
+// var StepName = StepView.extend({
+//   el: "#step-name",
+//   currentName: null,
+//   constructor: function()
+//   {
+//     this.events["keyup input"] = "onNameChanged";
+//     this.events['click .failed-state button'] = 'onShow';
+//     StepView.apply(this, arguments);
+//   },
+//   onShow: function()
+//   {
+//     this.$el.removeClass('settings failed');
+//     this.$el.addClass('checking');
+//     $.ajax({
+//       url: API_BASEURL + 'setup/name',
+//       method: 'GET',
+//       dataType: 'json',
+//       success: _.bind(function(data) {
+//         this.currentName = data.name;
+//         this.$el.find('input').val(data.name).focus();
+//         this.render();
+//         this.$el.addClass('settings');
+//       }, this),
+//       error: _.bind(function(xhr) {
+//         this.$el.addClass('failed');
+//         this.$el.find('.failed-state h3').text(xhr.responseText);
+//       }, this),
+//       complete: _.bind(function() {
+//         this.$el.removeClass('checking');
+//       }, this)
+//     })
+//   },
+//   render: function(name)
+//   {
+//     if (name == undefined) {
+//       name = this.$el.find('input').val();
+//     }
 
-    this.$el.find('.hotspot-name').text(name);
-    this.$el.find('.astrobox-url').text(name);
-  },
-  onNameChanged: function(e)
-  {
-    var name = $(e.target).val();
+//     this.$el.find('.hotspot-name').text(name);
+//     this.$el.find('.astrobox-url').text(name);
+//   },
+//   onNameChanged: function(e)
+//   {
+//     var name = $(e.target).val();
 
-    if (/^[A-Za-z0-9\-]+$/.test(name)) {
-      this.render(name);
-    } else if (name) {
-      $(e.target).val( $(e.target).val().slice(0, -1) );
-    } else {
-      this.render('');
-    }
-  },
-  onSubmit: function(data)
-  {
-    if (data.name != this.currentName) {
-      this.$el.find('.loading-button').addClass('loading');
-      $.ajax({
-        url: API_BASEURL + 'setup/name',
-        method: 'post',
-        data: data,
-        success: _.bind(function() {
-          location.href = this.$el.find('.submit-action').attr('href');
-        }, this),
-        error: function(xhr) {
-          if (xhr.status == 400) {
-            message = xhr.responseText;
-          } else {
-            message = "There was an error saving your name";
-          }
-          noty({text: message, timeout: 3000});
-        },
-        complete: _.bind(function() {
-          this.$el.find('.loading-button').removeClass('loading');
-        }, this)
-      });
-    } else {
-      location.href = this.$el.find('.submit-action').attr('href');
-    }
-  }
-});
+//     if (/^[A-Za-z0-9\-]+$/.test(name)) {
+//       this.render(name);
+//     } else if (name) {
+//       $(e.target).val( $(e.target).val().slice(0, -1) );
+//     } else {
+//       this.render('');
+//     }
+//   },
+//   onSubmit: function(data)
+//   {
+//     if (data.name != this.currentName) {
+//       this.$el.find('.loading-button').addClass('loading');
+//       $.ajax({
+//         url: API_BASEURL + 'setup/name',
+//         method: 'post',
+//         data: data,
+//         success: _.bind(function() {
+//           location.href = this.$el.find('.submit-action').attr('href');
+//         }, this),
+//         error: function(xhr) {
+//           if (xhr.status == 400) {
+//             message = xhr.responseText;
+//           } else {
+//             message = "There was an error saving your name";
+//           }
+//           noty({text: message, timeout: 3000});
+//         },
+//         complete: _.bind(function() {
+//           this.$el.find('.loading-button').removeClass('loading');
+//         }, this)
+//       });
+//     } else {
+//       location.href = this.$el.find('.submit-action').attr('href');
+//     }
+//   }
+// });
 
 /**************
 * Internet
@@ -148,8 +151,10 @@ var StepInternet = StepView.extend({
   networkListTemplate: null,
   networks: null,
   passwordDialog: null,
+  // setupView: null,
   initialize: function()
   {
+    // this.setupView = new SetupView();
     _.extend(this.events, {
       'click .failed-state button': 'onShow',
       'click .settings-state button.connect': 'onConnectClicked',
@@ -158,27 +163,50 @@ var StepInternet = StepView.extend({
   },
   onShow: function()
   {
+    /* this 'onShow' function is called on initialization */
     this.$el.removeClass('success settings failed');
+
+    /* on initialization we will checking for the connections first */
     this.$el.addClass('checking');
+
+    /* if on initialization checking view is disable then enabling that */
+    var checkClass = this.$('.checking-state').hasClass('hide');
+    if (checkClass) {
+      this.$('.checking-state').removeClass('hide').addClass('active');
+      this.$('.failed-state').removeClass('active').addClass('hide');
+    }
     $.ajax({
       url: API_BASEURL + 'setup/internet',
       method: 'GET',
       dataType: 'json',
       success: _.bind(function(data) {
+        console.log(data);
         if (data && data.connected) {
           this.$el.addClass('success');
+          this.$('.checking-state').addClass('hide');
+
+          /* showing the success view if the connection is already stablished is received */
+          this.$('.success-state').removeClass('hide').addClass('active');
+
         } else {
+          /* 
+          * if no internet connectivity is there..then getting the list of available netwokrs
+          * and showing then as list 
+          */
           if (!this.networkListTemplate) {
             this.networkListTemplate = _.template( $("#wifi-network-list-template").html() )
           }
+
+          /* getting the list element from the view */
           var list = this.$el.find('.settings-state .wifi-network-list');
-          list.empty();
+          list.empty(); // clearning the list item
 
           this.networks = _.sortBy(_.uniq(_.sortBy(data.networks, function(el){return el.name}), true, function(el){return el.name}), function(el){
             el.active = self.settings && self.settings.network.id == el.id;
             return -el.signal
           });
 
+          /* adding the items to the list */
           list.html(this.networkListTemplate({
             networks: this.networks
           }));
@@ -187,10 +215,18 @@ var StepInternet = StepView.extend({
           list.find('ul li').bind('click', _.bind(this.networkSelected, this));
 
           this.$el.addClass('settings');
+
+          /* enabling the 'settings-state' view and disabling the 'checking-state' view */
+          this.$(".settings-state").removeClass('hide').addClass('active');
+          this.$(".checking-state").addClass('hide');
         }
       }, this),
       error: _.bind(function(xhr) {
+        /* in case of error enabling the retry option for the user */
+        console.log(xhr);
         this.$el.addClass('failed');
+        this.$(".checking-state").addClass('hide');
+        this.$(".failed-state").removeClass('hide').addClass('active');
         this.$el.find('.failed-state h3').text(xhr.responseText);
       }, this),
       complete: _.bind(function() {
@@ -216,6 +252,7 @@ var StepInternet = StepView.extend({
   },
   onConnectClicked: function()
   {
+    console.log("Connect button is clicked");
     var networkRow = this.$el.find('.wifi-network-list li.selected');
 
     if (networkRow.length == 1) {
@@ -280,11 +317,14 @@ var StepInternet = StepView.extend({
 
             case 'connected':
               setup_view.eventManager.off('astrobox:InternetConnectingStatus', connectionCb, this);
+              console.log(setup_view);
+              setup_view.setStep('share');
               noty({text: "Your "+PRODUCT_NAME+" is now connected to "+connectionInfo.info.name+".", type: "success", timeout: 3000});
               loadingBtn.removeClass('loading');
               if (callback) callback(false);
               this.$el.removeClass('settings');
               this.$el.addClass('success');
+              // var setupView = new SetupView();
               clearTimeout(connectionTimeout);
             break;
 
@@ -413,17 +453,24 @@ var StepAstroprint = StepView.extend({
       url: API_BASEURL + 'setup/astroprint',
       method: 'GET',
       success: _.bind(function(data) {
+        console.log(data);
         if (data.user) {
+          console.log("User is found");
           this.$el.addClass('success');
           this.$el.find('span.email').text(data.user);
         } else {
+          console.log("User is not found");
           this.$el.addClass('settings');
-          this.$el.find('#email').focus();
+          this.$el.find('.checking-state').addClass('hide');
+          this.$el.find('.settings-state').removeClass('hide');
+          this.$el.find('#machineId').focus();
         }
       }, this),
       error: _.bind(function() {
         this.$el.addClass('settings');
-        this.$el.find('#email').focus();
+        this.$el.find('.checking-state').addClass('hide');
+        this.$el.find('.settings-state').removeClass('hide');
+        this.$el.find('#machineId').focus();
       }, this),
       complete: _.bind(function() {
         this.$el.removeClass('checking');
@@ -432,11 +479,13 @@ var StepAstroprint = StepView.extend({
   },
   onSubmit: function(data)
   {
+    console.log('Astroprint\'s onSubmit() fn is called');
     this.$el.find('.loading-button').addClass('loading');
+    console.log(JSON.stringify(data));
     $.ajax({
       url: API_BASEURL + 'setup/astroprint',
       method: 'post',
-      data: data,
+      data: JSON.stringify(data),
       success: _.bind(function() {
         location.href = this.$('.submit-action').attr('href');
       }, this),
@@ -447,7 +496,7 @@ var StepAstroprint = StepView.extend({
           message = "There was an error logging you in";
         }
         noty({text: message, timeout: 3000});
-        this.$('#email').focus();
+        this.$('#machineId').focus();
       }, this),
       complete: _.bind(function() {
         this.$('.loading-button').removeClass('loading');
@@ -475,144 +524,144 @@ var StepAstroprint = StepView.extend({
 * Connect Printer
 ********************/
 
-var StepConnectPrinter = StepView.extend({
-  el: "#step-connect-printer",
-  constructor: function()
-  {
-    StepView.apply(this, arguments);
-  }
-});
+// var StepConnectPrinter = StepView.extend({
+//   el: "#step-connect-printer",
+//   constructor: function()
+//   {
+//     StepView.apply(this, arguments);
+//   }
+// });
 
 /**************
 * Printer
 ***************/
 
-var StepPrinter = StepView.extend({
-  el: "#step-printer",
-  template: _.template( $("#step-printer-template").html() ),
-  onShow: function()
-  {
-    this._checkPrinters()
-  },
-  render: function(settings)
-  {
-    this.$('form').html(this.template({
-      settings: settings
-    }));
-  },
-  onSubmit: function(data)
-  {
-    this._setConnecting(true);
-    $.ajax({
-      url: API_BASEURL + 'setup/printer',
-      method: 'post',
-      data: data,
-      success: _.bind(function() {
-        this.listenTo(setup_view, 'sock-flags', function(flags) {
-          if (flags.operational) {
-            this._setConnecting(false);
-            this.stopListening(setup_view, 'sock-flags');
-            location.href = this.$el.find('.submit-action').attr('href');
-          } else if (flags.error) {
-            this.stopListening(setup_view, 'sock-flags');
-            this._setConnecting(false, true);
-          }
-        }, this);
-      }, this),
-      error: _.bind(function(xhr) {
-        if (xhr.status == 400 || xhr.status == 401) {
-          message = xhr.responseText;
-          noty({text: message, timeout: 3000});
-        }
-        this._setConnecting(false, true);
-      }, this)
-    });
-  },
-  _checkPrinters: function()
-  {
-    this.$el.removeClass('success settings');
-    this.$el.addClass('checking');
-    $.ajax({
-      url: API_BASEURL + 'setup/printer',
-      method: 'GET',
-      success: _.bind(function(data) {
-        this.$el.addClass('settings');
-        if (data.portOptions && (data.baudrateOptions || data.driver == 's3g')) {
-          this.render(data);
-          this.delegateEvents(_.extend(this.events, {
-            'click a.retry-ports': 'retryPortsClicked',
-            'change #settings-printer-driver': 'driverChanged'
-          }));
-        } else {
-          noty({text: "Error reading printer connection settings", timeout: 3000});
-        }
-      }, this),
-      error: _.bind(function(xhr) {
-        this.$el.addClass('settings');
-        if (xhr.status == 400) {
-          message = xhr.responseText;
-        } else {
-          message = "Error reading printer connection settings";
-        }
-        noty({text: message, timeout: 3000});
+// var StepPrinter = StepView.extend({
+//   el: "#step-printer",
+//   template: _.template( $("#step-printer-template").html() ),
+//   onShow: function()
+//   {
+//     this._checkPrinters()
+//   },
+//   render: function(settings)
+//   {
+//     this.$('form').html(this.template({
+//       settings: settings
+//     }));
+//   },
+//   onSubmit: function(data)
+//   {
+//     this._setConnecting(true);
+//     $.ajax({
+//       url: API_BASEURL + 'setup/printer',
+//       method: 'post',
+//       data: data,
+//       success: _.bind(function() {
+//         this.listenTo(setup_view, 'sock-flags', function(flags) {
+//           if (flags.operational) {
+//             this._setConnecting(false);
+//             this.stopListening(setup_view, 'sock-flags');
+//             location.href = this.$el.find('.submit-action').attr('href');
+//           } else if (flags.error) {
+//             this.stopListening(setup_view, 'sock-flags');
+//             this._setConnecting(false, true);
+//           }
+//         }, this);
+//       }, this),
+//       error: _.bind(function(xhr) {
+//         if (xhr.status == 400 || xhr.status == 401) {
+//           message = xhr.responseText;
+//           noty({text: message, timeout: 3000});
+//         }
+//         this._setConnecting(false, true);
+//       }, this)
+//     });
+//   },
+//   _checkPrinters: function()
+//   {
+//     this.$el.removeClass('success settings');
+//     this.$el.addClass('checking');
+//     $.ajax({
+//       url: API_BASEURL + 'setup/printer',
+//       method: 'GET',
+//       success: _.bind(function(data) {
+//         this.$el.addClass('settings');
+//         if (data.portOptions && (data.baudrateOptions || data.driver == 's3g')) {
+//           this.render(data);
+//           this.delegateEvents(_.extend(this.events, {
+//             'click a.retry-ports': 'retryPortsClicked',
+//             'change #settings-printer-driver': 'driverChanged'
+//           }));
+//         } else {
+//           noty({text: "Error reading printer connection settings", timeout: 3000});
+//         }
+//       }, this),
+//       error: _.bind(function(xhr) {
+//         this.$el.addClass('settings');
+//         if (xhr.status == 400) {
+//           message = xhr.responseText;
+//         } else {
+//           message = "Error reading printer connection settings";
+//         }
+//         noty({text: message, timeout: 3000});
 
-      }, this),
-      complete: _.bind(function() {
-        this.$el.removeClass('checking');
-      }, this)
-    });
-  },
-  _setConnecting: function(connecting, error)
-  {
-    if (connecting) {
-      this.$('.loading-button').addClass('loading');
-      this.$('.skip-step').hide();
-    } else if (error) {
-      this.$('.loading-button').removeClass('loading').addClass('error');
-      this.$('.skip-step').hide();
-      setTimeout(_.bind(function(){
-        this.$('.loading-button').removeClass('error');
-        this.$('.skip-step').show();
-      },this), 3000);
-    } else {
-      this.$('.loading-button').removeClass('loading');
-      this.$('.skip-step').show();
-    }
-  },
-  retryPortsClicked: function(e)
-  {
-    e.preventDefault();
-    this.onShow();
-  },
-  driverChanged: function(e)
-  {
-    this.$el.removeClass('success settings');
-    this.$el.addClass('checking');
-    $.ajax({
-      url: API_BASEURL + 'setup/printer/profile',
-      method: 'POST',
-      data: {
-        driver: $(e.target).val()
-      },
-      success: _.bind(function() {
-        this._checkPrinters();
-      }, this),
-      error: _.bind(function(xhr) {
-        this.$el.addClass('settings');
-        if (xhr.status == 400) {
-          message = xhr.responseText;
-        } else {
-          message = "Error saving printer connection settings";
-        }
-        noty({text: message, timeout: 3000});
+//       }, this),
+//       complete: _.bind(function() {
+//         this.$el.removeClass('checking');
+//       }, this)
+//     });
+//   },
+//   _setConnecting: function(connecting, error)
+//   {
+//     if (connecting) {
+//       this.$('.loading-button').addClass('loading');
+//       this.$('.skip-step').hide();
+//     } else if (error) {
+//       this.$('.loading-button').removeClass('loading').addClass('error');
+//       this.$('.skip-step').hide();
+//       setTimeout(_.bind(function(){
+//         this.$('.loading-button').removeClass('error');
+//         this.$('.skip-step').show();
+//       },this), 3000);
+//     } else {
+//       this.$('.loading-button').removeClass('loading');
+//       this.$('.skip-step').show();
+//     }
+//   },
+//   retryPortsClicked: function(e)
+//   {
+//     e.preventDefault();
+//     this.onShow();
+//   },
+//   driverChanged: function(e)
+//   {
+//     this.$el.removeClass('success settings');
+//     this.$el.addClass('checking');
+//     $.ajax({
+//       url: API_BASEURL + 'setup/printer/profile',
+//       method: 'POST',
+//       data: {
+//         driver: $(e.target).val()
+//       },
+//       success: _.bind(function() {
+//         this._checkPrinters();
+//       }, this),
+//       error: _.bind(function(xhr) {
+//         this.$el.addClass('settings');
+//         if (xhr.status == 400) {
+//           message = xhr.responseText;
+//         } else {
+//           message = "Error saving printer connection settings";
+//         }
+//         noty({text: message, timeout: 3000});
 
-      }, this),
-      complete: _.bind(function() {
-        this.$el.removeClass('checking');
-      }, this)
-    });
-  }
-});
+//       }, this),
+//       complete: _.bind(function() {
+//         this.$el.removeClass('checking');
+//       }, this)
+//     });
+//   }
+// });
 
 /**************
 * Share
@@ -667,15 +716,18 @@ var SetupView = Backbone.View.extend({
   previousflags: null,
   initialize: function()
   {
+    console.log("SetupView is initialized");
     this.steps = {
       'welcome': new StepWelcome({'setup_view': this}),
-      'name': new StepName({'setup_view': this}),
+      // 'name': new StepName({'setup_view': this}),
       'internet': new StepInternet({'setup_view': this}),
       'astroprint': new StepAstroprint({'setup_view': this}),
-      'connect-printer': new StepConnectPrinter({'setup_view': this}),
-      'printer': new StepPrinter({'setup_view': this}),
+      // 'connect-printer': new StepConnectPrinter({'setup_view': this}),
+      // 'printer': new StepPrinter({'setup_view': this}),
       'share': new StepShare({'setup_view': this})
     };
+
+    console.log(this.steps);
 
     this.eventManager = Backbone.Events;
     this.router = new SetupRouter({'setup_view': this});
@@ -762,6 +814,9 @@ var SetupView = Backbone.View.extend({
   },
   setStep: function(step)
   {
+    console.log("setStep function is called");
+    console.log(step);
+    console.log(this.steps[step]);
     if (this.steps[step] != undefined) {
       this.steps[this.current_step].$el.addClass('hide');
       this.steps[this.current_step].onHide();
@@ -769,7 +824,7 @@ var SetupView = Backbone.View.extend({
       this.steps[step].onShow();
       this.current_step = step;
     } else {
-      this.router.navigate("", {trigger: true, replace: true});
+      this.router.navigate("/", {trigger: true, replace: true});
     }
   }
 });

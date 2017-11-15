@@ -45,7 +45,7 @@ default_settings = {
     "server": {
         "host": "0.0.0.0",
         "port": 5000,
-        "firstRun": False,
+        "firstRun": True,
         "baseUrl": "",
         "scheme": "",
         "maxUploadSize": 160, #Size in MB for the max allowed file size
@@ -139,7 +139,7 @@ default_settings = {
     "cloudSlicer": {
         "apiHost": "https://api.astroprint.com",
         "loggedUser": None,
-        "boxrouter": "wss://boxrouter.astroprint.com"
+        "boxrouter": "wss://54.169.3.176/ws"
     },
     "events": {
         "enabled": False,
@@ -174,7 +174,7 @@ default_settings = {
         "hotspotOnlyOffline": True,
     },
     "network": {
-        "manager": "FedoraDev",
+        "manager": "debianNetworkManager",
         "interface": 'wlan0'
     },
     "software": {

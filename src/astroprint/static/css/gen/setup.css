@@ -2,10 +2,18 @@
 
 /* Adding another comment for testing the working of SSHFS */
 
-.bold {
-	color: maroon;
+/*.bold {
+  color: maroon;
+}*/
+
+/*#step-internet .bold {
+  color: blue;
+}*/
+
+.hide {
+  display: none;
 }
 
-#step-internet .bold {
-	color: blue;
+.active {
+  display: block;
 }

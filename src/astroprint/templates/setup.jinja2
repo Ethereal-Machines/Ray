@@ -1,6 +1,13 @@
 {% extends 'base.jinja2' %}
 
 {% block css %}
+  {% assets filters="scss", output="css/gen/app.css", "css/scss/app.scss" %}
+    <link rel="stylesheet" type="text/css" href="{{ ASSET_URL }}" />
+  {% endassets %}
+  {% assets filters="scss", output="css/gen/setup.css",
+    "css/scss/setup.scss" %}
+    <link rel="stylesheet" type="text/css" href="{{ ASSET_URL }}" />
+  {% endassets %}
 {% endblock %}
 
 {% block content %}
@@ -11,11 +18,11 @@
       <div class="content" align="center">
         <img src="/img/setup/step_1_rocket.png" height="104"/>
         {{variantData['welcomeMsgContent']}}
-        <a class="button success radius expand bold" href="#name">Begin Setup</i></a>
+        <a class="success next-button" href="#internet">Begin Setup</i></a>
       </div>
     </div>
 
-    <div id="step-name" class="step hide">
+    <!-- <div id="step-name" class="step hide">
       <h1 class="bold">Name Your <span class="light">Astro</span>Box&trade;<div class="nub"></div></h1>
       <div class="content">
         <img src="/img/setup/step_2_rocket.png" height="104"/>
@@ -51,12 +58,12 @@
           <button class="success radius">Retry</button>
         </div>
       </div>
-    </div>
+    </div> -->
 
     <div id="step-internet" class="step hide">
       <h1 class="bold">Internet Setup<div class="nub"></div></h1>
       <div class="content">
-        <div class="success-state" align="center">
+        <div class="success-state hide" align="center">
           <img src="/img/setup/step_4_wifi-box.png" height="107"/>
           <h3 class="bold" align="center">Success!</h3>
           <p>
@@ -80,15 +87,15 @@
           <i class="icon-rocket-spinner animate-spin"></i>
           <h3 class="bold" align="center">Checking connection...</h3>
         </div>
-        <div class="failed-state" align="center">
+        <div class="failed-state hide" align="center">
           <i class="icon-cancel-circled failed"></i>
           <h3 class="bold" align="center"></h3>
           <button class="success radius expand">Retry</button>
-          <div align="right">
-            <a href="#connect-printer" class="skip-step">Skip internet. Use {{variantData['productName']}} offline <i class="icon-right-open"></i></a>
+          <div align="center">
+            <a href="#astroprint" class="skip-step">Skip internet. Use {{variantData['productName']}} offline <i class="icon-right-open"></i></a>
           </div>
         </div>
-        <div class="settings-state">
+        <div class="settings-state hide">
           <h2 class="bold" align="center">Choose your WiFi Network</h2>
           <div class="wifi-network-list"></div>
           <div class="row">
@@ -97,7 +104,7 @@
                 <button class="disabled success radius connect expand bold">Connect</button>
               </div>
               <div class="small-12 medium-6 medium-pull-6 columns">
-                <a href="#connect-printer" class="button secondary radius expand bold"><sup>*</sup>Skip</a>
+                <a href="#astroprint" class="button secondary radius expand bold"><sup>*</sup>Skip</a>
               </div>
               <div class="small-12 columns">
                 <span class="button disabled loading success radius expand">
@@ -186,7 +193,7 @@
           <i class="icon-rocket-spinner animate-spin"></i>
           <h3 class="bold" align="center">Checking AstroPrint.com...</h3>
         </div>
-        <div class="success-state" align="center">
+        <div class="success-state hide" align="center">
           <img src="/img/setup/step_5_rocket-launch.png" height="93"/>
           <h4 class="bold" align="center">
             <i class="icon-user ok"></i>
@@ -195,7 +202,7 @@
           </h4>
           <a class="button success radius expand" href="#connect-printer"><small>Next:</small> <b>Printer Connection</b> <i class="icon-right-open"></i></a>
         </div>
-        <div class="settings-state">
+        <div class="settings-state hide">
           <img src="/img/setup/step_5_rocket-launch.png" height="93"/>
           <p>
             This allows you to slice, store, and print through our cloud servers. Sign in below or <a target="_astroprint" href="http://www.astroprint.com/account/signup">create a new account</a>.
@@ -217,13 +224,13 @@
             </div>
           </form>
           <div align="right">
-            <a href="#connect-printer" class="skip-step">Skip AstroPrint Account <i class="icon-right-open"></i></a>
+            <a href="#share" class="skip-step">Skip AstroPrint Account <i class="icon-right-open"></i></a>
           </div>
         </div>
       </div>
     </div>
 
-    <div id="step-connect-printer" class="step hide">
+    <!-- <div id="step-connect-printer" class="step hide">
       <h1 class="bold">Connect Your Printer<div class="nub"></div></h1>
       <div class="content">
         <img src="/img/setup/step_6_connect-box.png" height="90"/>
@@ -235,9 +242,9 @@
           <a class="skip-step" href="#share">Skip and Configure Later <i class="icon-right-open"></i></a>
         </div>
       </div>
-    </div>
+    </div> -->
 
-    <div id="step-printer" class="step hide">
+    <!-- <div id="step-printer" class="step hide">
       <h1 class="bold">Connect Your Printer<div class="nub"></div></h1>
       <div class="content">
         <img src="/img/setup/step_6.2_connected-box.png" height="76"/>
@@ -318,7 +325,7 @@
           </div>
         <% } %>
       </script>
-    </div>
+    </div> -->
 
     <div id="step-share" class="step hide">
       <h1 class="bold">You're done!<div class="nub"></div></h1>
@@ -341,7 +348,7 @@
     </div>
   </div>
 </div>
-<div id="version-label">{{version}}</div>
+<!-- <div id="version-label">{{version}}</div> -->
 {% endblock %}
 
 {% block js %}
@@ -354,17 +361,12 @@
     var WS_TOKEN = "{{ wsToken }}";
     var shareOptions = {{ variantData['share'] | tojson | safe }}
   </script>
-<script type="text/javascript" src="js/lib/jquery.js"></script>
-<script type="text/javascript" src="js/lib/underscore.js"></script>
-<script type="text/javascript" src="js/lib/backbone.js"></script>
-<script type="text/javascript" src="js/lib/sockjs.js"></script>
-<script type="text/javascript" src="js/lib/fastclick.js"></script>
-<script type="text/javascript" src="js/lib/foundation/foundation.js"></script>
-<script type="text/javascript" src="js/lib/foundation/foundation.abide.js"></script>
-<script type="text/javascript" src="js/lib/foundation/foundation.reveal.js"></script>
-<script type="text/javascript" src="js/lib/noty.js"></script>
-<script type="text/javascript" src="js/lib/noty.top.js"></script>
-<script type="text/javascript" src="js/lib/setup.js"></script>
+  {% assets
+    "js/lib/jquery.js", "js/lib/underscore.js", "js/lib/backbone.js", "js/lib/sockjs.js", "js/lib/fastclick.js", "js/lib/foundation/foundation.js", "js/lib/foundation/foundation.abide.js", "js/lib/foundation/foundation.reveal.js",
+    "js/lib/jquery.noty.js", "js/lib/jquery.noty.top.js", "js/lib/sockjs.js",
+    "js/setup/setup.js" -%}
+      <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+  {%- endassets %}
   <script type="text/javascript">
     $(document).foundation();
   </script>
