@@ -493,9 +493,9 @@ var StepAstroprint = StepView.extend({
       }, this),
       error: _.bind(function(xhr) {
         if (xhr.status == 400 || xhr.status == 401 || xhr.status == 503) {
-          message = xhr.responseText;
-        } else {
           message = "There was an error logging you in";
+        } else {
+          message = xhr.responseText;
         }
         noty({text: message, timeout: 3000});
         this.$('#machineId').focus();
