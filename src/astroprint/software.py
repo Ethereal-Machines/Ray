@@ -35,6 +35,9 @@ from octoprint.events import eventManager, Events
 
 from astroprint.boxrouter import boxrouterManager
 
+logging.basicConfig()
+_logger = logging.getLogger(__name__)
+
 if platformStr != 'darwin' and os.environ.get('DEV') is None:
     import apt.debfile
     import apt.progress.base
@@ -459,7 +462,8 @@ class SoftwareManager(object):
                     'platform': self.data['platform']
                 }),
                 auth=self._checkAuth(),
-                headers=self._requestHeaders
+                headers=self._requestHeaders,
+                timeout=10,
             )
 
             if r.status_code != 200:
