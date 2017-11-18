@@ -191,7 +191,6 @@ class AstroprintBoxRouter(object):
         self.connected = False
         self.authenticated = False
 
-        self._logger.info('This box has id %s' % self.boxId)
 
         self._eventManager.subscribe(
             Events.NETWORK_STATUS, self._onNetworkStateChanged)
@@ -236,13 +235,17 @@ class AstroprintBoxRouter(object):
                     self._boxId = f.read()
 
             if not self._boxId:
-                self._boxId = uuid.uuid5(
-                    uuid.UUID(
-                        self.ASTROBOX_NAMESPACE_UUID), str(uuid.getnode())).hex
-                with open(boxIdFile, 'w') as f:
-                    f.write(self._boxId)
-
+                raise RuntimeError(
+                        "Box id not present, printer must be authenticated")
         return self._boxId
+
+    @boxId.setter
+    def boxId(self, boxId):
+        ''' Set the boxId of the printer '''
+        self._boxId = boxId
+        boxIdFile = "%s/box-id" % os.path.dirname(self._settings._configfile)
+        with open(boxIdFile, 'w') as f:
+            f.write(boxId)
 
     def boxrouter_connect(self):
         if not networkManager().isOnline():
