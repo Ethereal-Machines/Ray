@@ -21,6 +21,8 @@ from astroprint.cloud import astroprintCloud, AstroPrintCloudNoConnectionExcepti
 from astroprint.network.manager import networkManager
 from astroprint.printer.manager import printerManager
 from astroprint.printerprofile import printerProfileManager
+from astroprint.boxrouter import boxrouterManager
+from astroprint.software import softwareManager
 
 import logging
 
@@ -131,19 +133,23 @@ def login_astroprint():
     else:
         return make_response('No Credentials given', 400)
 
-    _logger.info(data)
     if machineId and accessCode:
         ap = astroprintCloud()
-
         try:
             if ap.signin(machineId, accessCode):
                 s = settings()
                 s.set(['setup','machineId'], machineId)
                 s.set(['setup','accessCode'], accessCode)
                 s.save()
-                return make_response("OK", 200)
+                _logger.info("setting printer id to: %s", machineId)
+                boxrouterManager()
+                boxrouterManager().boxId = machineId
 
-        except (AstroPrintCloudNoConnectionException, ConnectionError):
+                _logger.info("Checking for updates")
+                softwareManager().checkForcedUpdate()
+                return make_response("OK", 200)
+        except (AstroPrintCloudNoConnectionException, ConnectionError) as e:
+            _logger.error(e)
             return make_response("AstroPrint.com can't be reached", 503)
 
     return make_response('Invalid Credentials', 400)
