@@ -20,6 +20,8 @@ import time
 import logging
 import logging.config
 
+import requests
+
 SUCCESS = {}
 NO_CONTENT = ("", 204)
 OK = ("", 200)
@@ -465,14 +467,43 @@ class Server():
         from astroprint.boxrouter import boxrouterManager
 
         networkManager()
-        boxrouterManager()
+        machine_id = s.get(["setup", "machineId"])
+        access_key = s.get(["setup", "accessCode"])
+        _set_boxid = False
+        if machine_id and access_key:
+            api = s.get(["cloudSlicer", "apiHost"])
+            _data = {
+                'boxid': machine_id,
+                'access_key': access_key,
+            }
+            try:
+                logger.info("Trying to set printer id")
+                logger.info(_data)
+                headers = {'Content-type': 'application/json'}
+                res = requests.post(
+                    "%s/api/printerauth/" % api,
+                    json=_data,
+                    headers=headers,
+                    timeout=10,
+                    allow_redirects=False,
+                )
+                if res.status_code == 200:
+                    logger.info("Printer's id is: %s", machine_id)
+                    boxrouterManager()
+                    boxrouterManager().boxId = machine_id
 
-        # configure timelapse
-        #octoprint.timelapse.configureTimelapse()
+                    _set_boxid = True
+                    logger.info("Done setting printer id", machine_id)
+                else:
+                    logger.info("Could not authenticate the printer")
+            except Exception as e:
+                logger.error(
+                        "Error setting up boxrouter, boxid could not be set")
+                logger.error(e)
 
         app.wsgi_app = ReverseProxied(app.wsgi_app)
 
-        app.secret_key = boxrouterManager().boxId
+        app.secret_key = os.urandom(4096)
         loginManager = LoginManager()
         loginManager.session_protection = "strong"
         loginManager.user_callback = load_user
@@ -486,7 +517,7 @@ class Server():
         if self._debug:
             events.DebugEventListener()
 
-        if networkManager().isOnline():
+        if networkManager().isOnline() and _set_boxid:
             softwareManager.checkForcedUpdate()
 
         if self._host is None:
