@@ -308,7 +308,7 @@ class AstroPrintCloud(object):
 
         try:
             r = requests.get(
-                '%s/files/print_files/%s' % (self.apiHost, print_file_id),
+                '%s/api/print_files/%s' % (self.apiHost, print_file_id),
                 auth=self.hmacAuth
             )
             data = r.json()
