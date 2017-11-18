@@ -1,0 +1,63 @@
+<!--
+**********************************
+* Code by Kanishka Mohan Madhuni *
+**********************************
+-->
+
+<div id="wifi-wizard">
+  <nav id="wifi-wizard-nav">
+    <div class="wizard-name">
+      Connect to WiFi Network
+    </div>
+    <a href="#connectivity" class="back-button">Back</a>
+  </nav>
+  
+  <!-- <div class="back-button delete-wifi">Delete All</div> -->
+
+  <section class="stored-wifi-list-section">
+
+    <div class="section-sub-container section-sub-container--no-wifi">
+      <div class="msg">
+        There is no stored wifi connection. Try to add the wifi in the list.
+      </div>
+      <div class="section-sub-container__button-container">
+        <button class="next-button add-new-network">Add New Network</button>
+      </div>
+    </div>
+
+    <div class="section-sub-container section-sub-container--wifi-available hide">
+      <h1 class="section-heading">Choose from the list of saved networks</h1>
+      <ul class="stored-wifi-list">
+        <script type="text/template" id="stored-wifi-list-template">
+          <% _.each(wifiItems, function(wifi) { %>
+            <li>
+              <img src="{{ url_for('static', filename='img/print-from-storage/file-icon.svg') }}" width="56" height="56" alt="File Img">
+              <span><%= wifi.name %></span>
+            </li>
+          <% }); %>
+        </script>
+      </ul>
+      <div class="section-sub-container__button-container">
+        <button class="next-button add-new-network">Add New Network</button>
+        <button class="next-button up-button disable-btn">Scroll Up</button>
+        <button class="next-button down-button disable-btn">Scroll Down</button>
+      </div>
+    </div>
+
+    <div class="forget-network-modal hide">
+      <script type="text/template" id="forget-network-modal-template">
+        <div class="forget-network-modal__inner">
+          <h1 class="forget-network__modal-heading">Forget Network</h1>
+          <hr>
+          <img src="" width="96" height="96">
+          <p class="modal-msg">Are you sure to forget network <%= network.name %>?</p>
+          <div class="modal-btn-container">
+            <button class="forget-network-btn">Forget</button>
+            <button class="forget-network-cancel-btn">Cancel</button>
+          </div>
+        </div>
+      </script>
+    </div>
+
+  </section>
+</div>

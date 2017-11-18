@@ -1,0 +1,41 @@
+.connectivity-types {
+  list-style: none;
+  display: flex;
+  flex-direction: row;
+  margin: 0;
+  padding: 0 32px;
+  width: 100%;
+}
+
+.connectivity-types li {
+  width: 360px;
+  height: 336px;
+  border-radius: 10px;
+  background-color: #BBB;
+  position: relative;
+}
+
+.lan-connectivity {
+  margin-right: 8px;
+}
+
+.wifi-connectivity {
+  margin-left: 8px;
+}
+
+.connectivity-types a {
+  display: block;
+  width: 100%;
+  height: 100%;
+  color: black;
+  text-decoration: none;
+}
+
+.img-heading-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  text-align: center;
+}

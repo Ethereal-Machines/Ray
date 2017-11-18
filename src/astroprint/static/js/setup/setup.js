@@ -309,6 +309,7 @@ var StepInternet = StepView.extend({
         }, 70000); //1 minute
 
         connectionCb = function(connectionInfo){
+          console.log(connectionInfo);
           switch (connectionInfo.status) {
             case 'disconnected':
             case 'connecting':
@@ -317,8 +318,15 @@ var StepInternet = StepView.extend({
 
             case 'connected':
               setup_view.eventManager.off('astrobox:InternetConnectingStatus', connectionCb, this);
-              console.log(setup_view);
-              setup_view.setStep('share');
+              /* We are not directly going to the share page*/
+              // console.log(setup_view);
+              // setup_view.setStep('share');
+              /* Here we are navigating to the success state */
+              console.log('Hiding the unnecerray items');
+              this.$('#wifi-network-password-modal').addClass('hide');
+              this.$('.settings-state').removeClass('active').addClass('hide');
+              this.$('.success-state').removeClass('hide').addClass('active');
+              
               noty({text: "Your "+PRODUCT_NAME+" is now connected to "+connectionInfo.info.name+".", type: "success", timeout: 3000});
               loadingBtn.removeClass('loading');
               if (callback) callback(false);
@@ -823,9 +831,9 @@ var SetupView = Backbone.View.extend({
   },
   setStep: function(step)
   {
-    console.log("setStep function is called");
-    console.log(step);
-    console.log(this.steps[step]);
+    // console.log("setStep function is called");
+    // console.log(step);
+    // console.log(this.steps[step]);
     if (this.steps[step] != undefined) {
       this.steps[this.current_step].$el.addClass('hide');
       this.steps[this.current_step].onHide();

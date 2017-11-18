@@ -26,6 +26,8 @@ var AppRouter = Backbone.Router.extend({
   helpView: null,
   utilityView: null,
   aboutView: null,
+  connectivityView: null,
+  wifiView: null,
   routes: {
     "": "home",
     "files": "files",
@@ -46,6 +48,9 @@ var AppRouter = Backbone.Router.extend({
     "settings": "settings",
     "utilities": "utilities",
     "about":"about",
+    // adding routes for the connectivity view
+    "connectivity": "connectivity",
+    "connectivity/wifi": "wifi",
     "settings/:page": "settings",
     "gcode-terminal": "terminal",
     "camera": "camera",
@@ -227,6 +232,22 @@ var AppRouter = Backbone.Router.extend({
 
     this.selectView(this.aboutView);
   
+  },
+  connectivity: function() {
+    if (!this.connectivityView) {
+      this.connectivityView = new ConnectivityView();
+    }
+
+    this.selectView(this.connectivityView);
+    this.connectivityView.getWifiSettings();
+  },
+  wifi: function() {
+    if (!this.wifiView) {
+      this.wifiView = new WifiView();
+    }
+
+    this.selectView(this.wifiView);
+    this.wifiView.getStoredWifi();
   },
   terminal: function()
   {

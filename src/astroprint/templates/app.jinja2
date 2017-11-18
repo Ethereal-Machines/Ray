@@ -21,6 +21,8 @@
 <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/_printing.css') }}" />
 <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/_unreachable-view.css') }}" />
 <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/_about.css') }}" />
+<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/_connectivity.css') }}" />
+<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/_wifi.css') }}" />
 
 {% endblock %}
 
@@ -43,6 +45,8 @@
           <div id="supplies-view" class="app-view hide"> {%- include 'supplies.jinja2' -%} </div>
           <div id="help-view" class="app-view hide"> {%- include 'help.jinja2' -%} </div>
           <div id="about-view" class="app-view hide"> {%- include 'about.jinja2' -%} </div>
+          <div id="connectivity-view" class="app-view hide"> {%- include 'connectivity.jinja2' -%} </div>
+          <div id="wifi-view" class="app-view hide"> {%- include 'wifi.jinja2' -%} </div>
           <div id="home-view" class="app-view hide"> {%- include 'home.jinja2' -%} </div>
           <div id="control-view" class="app-view hide"> {%- include 'control.jinja2' -%} </div>
           <div id="print-from-storage-view" class="app-view hide"> {%- include 'print-from-storage.jinja2' -%} </div>
@@ -116,7 +120,7 @@
     "js/app/models/socketdata.js", "js/app/models/printfiles.js", "js/app/models/printerprofile.js",
     "js/app/widgets/tempbarview.js", "js/app/widgets/camera-control.js",
     "js/app/views/home.js", "js/app/views/printFromStorage.js", "js/app/views/automatic-preheat.js", "js/app/views/files.js", "js/app/views/control.js", "js/app/views/filamentLoad.js", "js/app/views/filamentUnload.js", "js/app/views/filament2LoadUnload.js", "js/app/views/manualControl.js", "js/app/views/settings.js", "js/app/views/connection.js",
-    "js/app/views/turnoff.js","js/app/views/utility.js", "js/app/views/about.js","js/app/views/reboot.js", "js/app/views/printing.js", "js/app/views/terminal.js", "js/app/views/camera.js", "js/app/views/unreachable.js", "js/app/views/notify.js", "js/app/views/supplies.js", "js/app/views/help.js", "js/app/views/preheat.js",
+    "js/app/views/turnoff.js","js/app/views/utility.js", "js/app/views/about.js", "js/app/views/connectivity.js", "js/app/views/wifi.js", "js/app/views/reboot.js", "js/app/views/printing.js", "js/app/views/terminal.js", "js/app/views/camera.js", "js/app/views/unreachable.js", "js/app/views/notify.js", "js/app/views/supplies.js", "js/app/views/help.js", "js/app/views/preheat.js",
     "js/app/router.js",
     "js/app/app.js" -%}
       <script type="text/javascript" src="{{ ASSET_URL }}"></script>
