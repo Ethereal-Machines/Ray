@@ -299,13 +299,27 @@ class Printer(object):
         self.resetSerialLogging()
 
     def isOperational(self):
-        return self._comm is not None and (self._state == self.STATE_OPERATIONAL or self._state == self.STATE_PRINTING or self._state == self.STATE_PAUSED)
+        return (
+                self._comm is not None
+                and (
+                    self._state == self.STATE_OPERATIONAL
+                    or self._state == self.STATE_PRINTING
+                    or self._state == self.STATE_PAUSED))
 
     def isClosedOrError(self):
-        return self._comm is None or self._state == self.STATE_ERROR or self._state == self.STATE_CLOSED_WITH_ERROR or self._state == self.STATE_CLOSED
+        return (
+                self._comm is None
+                or self._state == self.STATE_ERROR
+                or self._state == self.STATE_CLOSED_WITH_ERROR
+                or self._state == self.STATE_CLOSED)
 
     def isError(self):
-        return self._state != self.STATE_CONNECTING and (self._comm is None or self._state == self.STATE_ERROR or self._state == self.STATE_CLOSED_WITH_ERROR)
+        return (
+                self._state != self.STATE_CONNECTING
+                and (
+                    self._comm is None
+                    or self._state == self.STATE_ERROR
+                    or self._state == self.STATE_CLOSED_WITH_ERROR))
 
     def isBusy(self):
         return self.isPrinting() or self.isPaused()
@@ -572,6 +586,9 @@ class Printer(object):
     # ~~~ File Management ~~~~
 
     def selectFile(self, filename, sd, printAfterSelect=False):
+        if not self.isConnected():
+            self._logger.info(
+                "Cannot load file: printer not connected or currently busy")
         if not self.isConnected() or self.isBusy() or self.isStreaming():
             self._logger.info(
                 "Cannot load file: printer not connected or currently busy")
