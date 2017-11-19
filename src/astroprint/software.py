@@ -480,7 +480,10 @@ class SoftwareManager(object):
 
         if data and data['update_available']:
             # check if it's the same one we have installed
-            data['is_current'] = data['release']['major'] == int(self.data['version']['major']) and data['release']['minor'] == int(self.data['version']['minor']) and data['release']['build'] == self.data['version']['build']
+            data['is_current'] = (
+                    data['release']['major'] == int(self.data['version']['major'])
+                    and data['release']['minor'] == int(self.data['version']['minor'])
+                    and data['release']['build'] == self.data['version']['build'])
 
         return data
 
