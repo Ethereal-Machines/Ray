@@ -38,6 +38,7 @@ from .events import EventSender
 
 LINE_CHECK_STRING = 'box'
 
+
 class AstroprintBoxRouterClient(WebSocketClient):
     def __init__(self, hostname, router):
         self._printerListener = None
@@ -124,10 +125,12 @@ class AstroprintBoxRouterClient(WebSocketClient):
         self._lineCheckThread.start()
 
     def closed(self, code, reason=None):
-        #only retry if the connection was terminated by the remote or a link check failure (silentReconnect)
+        # only retry if the connection was terminated by the
+        # remote or a link check failure (silentReconnect)
         router = self._weakRefRouter()
 
-        if self._error or (self.server_terminated and router and router.connected):
+        if self._error or (
+                self.server_terminated and router and router.connected):
             router.close()
             router._doRetry()
 
@@ -141,7 +144,8 @@ class AstroprintBoxRouterClient(WebSocketClient):
             if response is not None:
                 self.send(json.dumps(response))
         else:
-            self._logger.warn('Unknown message type [%s] received' % msg['type'])
+            self._logger.warn(
+                    'Unknown message type [%s] received' % msg['type'])
 
     def broadcastEvent(self, event, data):
         if self._eventSender:
@@ -168,8 +172,9 @@ class AstroprintBoxRouterClient(WebSocketClient):
 class AstroprintBoxRouter(object):
     #seconds to wait before retrying. When all exahusted it gives up
     RETRY_SCHEDULE = [
-        2, 2, 4, 10, 20, 30, 60, 120, 240, 480, 3600, 10800, \
-        28800, 43200, 86400, 86400]
+        2, 2, 2, 2, 2, 3, 6, 2, 2, 4, 3, 1,
+        2, 4, 4, 4, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 40, 40, 40,
+        40, 50, 50, 50, 60, 120, 120, 240, 240, 300, 400, 600, 86400, 86400,]
 
     STATUS_DISCONNECTED = 'disconnected'
     STATUS_CONNECTING = 'connecting'
@@ -228,7 +233,8 @@ class AstroprintBoxRouter(object):
     def boxId(self):
         if not self._boxId:
             import os
-            boxIdFile = "%s/box-id" % os.path.dirname(self._settings._configfile)
+            boxIdFile = "%s/box-id" % os.path.dirname(
+                    self._settings._configfile)
 
             if os.path.exists(boxIdFile):
                 with open(boxIdFile, 'r') as f:
@@ -264,7 +270,8 @@ class AstroprintBoxRouter(object):
 
                     if self._publicKey and self._privateKey:
                         self.status = self.STATUS_CONNECTING
-                        self._eventManager.fire(Events.ASTROPRINT_STATUS, self.status)
+                        self._eventManager.fire(
+                                Events.ASTROPRINT_STATUS, self.status)
 
                         try:
                             if self._retryTimer:
@@ -272,13 +279,15 @@ class AstroprintBoxRouter(object):
                                 # and there was a pending retry
                                 self._retryTimer.cancel()
                                 self._retryTimer = None
-                                #If it fails, the retry sequence should restart
+                                # If it fails, the retry sequence
+                                # should restart
                                 self._retries = 0
 
                             if self._ws and not self._ws.terminated:
                                 self._ws.terminate()
 
-                            self._ws = AstroprintBoxRouterClient(self._address, self)
+                            self._ws = AstroprintBoxRouterClient(
+                                    self._address, self)
                             self._ws.connect()
                             self.connected = True
 
