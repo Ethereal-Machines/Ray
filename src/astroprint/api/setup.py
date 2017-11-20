@@ -75,7 +75,7 @@ def check_internet():
         networks = nm.getWifiNetworks()
 
         if networks:
-            return jsonify(networks = networks, connected = False)
+            return jsonify(networks=networks, connected=False)
         else:
             return make_response("Unable to get WiFi networks", 500)
 
@@ -84,8 +84,9 @@ def check_internet():
 def connect_internet():
     if "application/json" in request.headers["Content-Type"]:
         data = request.json
-        if 'id' in data and 'password' in data:
-            result = networkManager().setWifiNetwork(data['id'], data['password'])
+        if 'id' in data:
+            result = networkManager().setWifiNetwork(
+                data['id'], data.get('password'))
 
             if result:
                 return jsonify(result)
