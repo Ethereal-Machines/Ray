@@ -41,6 +41,7 @@
   flex-direction: column;
   width: 89%;
   height: 280px;
+  overflow: hidden;
   /*overflow-y: hidden;*/
   overflow-y: scroll;
 }
@@ -63,7 +64,8 @@
   float: left;
   padding: 0 17px;
   font-size: 20px;
-  width: 656px;
+  /*width: 656px;*/
+  width: 600px;
   overflow: hidden;
   height: 56px !important;
 }
