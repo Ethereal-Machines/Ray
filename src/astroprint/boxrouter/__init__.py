@@ -50,7 +50,8 @@ class AstroprintBoxRouterClient(WebSocketClient):
         self._weakRefRouter = weakref.ref(router)
         self._logger = logging.getLogger(__name__)
         self._condition = threading.Condition()
-        self._messageHandler = BoxRouterMessageHandler(self._weakRefRouter, self)
+        self._messageHandler = BoxRouterMessageHandler(
+                self._weakRefRouter, self)
         super(AstroprintBoxRouterClient, self).__init__(hostname)
 
     def __del__(self):
@@ -64,10 +65,8 @@ class AstroprintBoxRouterClient(WebSocketClient):
 
                 except socket.error as e:
                     self._logger.error('Error raised during send: %s' % e)
-
                     self._error = True
-
-                    #Something happened to the link. Let's try to reset it
+                    # Something happened to the link. Let's try to reset it
                     self.close()
 
     def ponged(self, pong):
