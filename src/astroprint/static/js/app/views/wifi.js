@@ -1,11 +1,14 @@
+/**********************************
+* Code by Kanishka Mohan Madhuni *
+**********************************/
+
 var WifiView = Backbone.View.extend({
   el: '#wifi-view',
   storedWifi: null,
   storedWifiTemplate: _.template( $('#stored-wifi-list-template').html() ),
-  events: {},
-  initialize: function() {
-    console.log('WifiView is initialized');
-  },
+  notifyView: null,
+  loadingStatus: null,
+  initialize: function() {},
   getStoredWifi: function() {
     var self = this;
     $.ajax({
@@ -13,14 +16,15 @@ var WifiView = Backbone.View.extend({
       method: 'GET',
       dataType: 'json',
       success: function(data) {
-        // console.log(data);
         self.storedWifi = data.storedWifiNetworks;
+        self.$('.section-sub-container--checking').addClass('hide');
         self.getStoredWifiStatus();
         self.showStoredWifi();
-        console.log(self.storedWifi);
       },
       error: function(xhr) {
-        console.log(xhr);
+        // console.log(xhr);
+        self.notifyView = new NotifyView({msg: 'The requested URL was not found on the server.  If you entered the URL manually please check your spelling and try again.', type: 'error'});
+        app.router.selectView(self.notifyView);
       }
     });
   },
@@ -51,11 +55,11 @@ var WifiView = Backbone.View.extend({
     for (var key in this.storedWifi) {
       if (this.storedWifi[key].name === networkName) {
         networkObj = this.storedWifi[key];
-        console.log(networkObj);
       }
     }
 
-    var forgetNetworkModal = new ForgetNetworkView(networkObj);
+    var forgetNetworkModal = new ForgetNetworkView({parent: this});
+    forgetNetworkModal.open(networkObj);
 
   }
 });
@@ -65,32 +69,40 @@ var ForgetNetworkView = Backbone.View.extend({
   template: _.template( $('#forget-network-modal-template').html() ),
   network: null,
   notifyView: null,
+  parent: null,
   events: {
     'click .forget-network-btn': 'forgetNetwork',
     'click .forget-network-cancel-btn': 'closeModal'
   },
   initialize: function(params) {
+    /* setting the parent element */
+    this.parent = params.parent;
     this.$el.removeClass('hide');
-    this.render(params);
-    this.network = params;
   },
-  render: function(params) {
-    var networkObj = params;
+  render: function(wifiInfo) {
     this.$el.html(this.template({
-      network: networkObj
+      network: wifiInfo
     }));
   },
-  forgetNetwork: function() {
+  open: function(wifiInfo) {
+    /* setting the current network object */
+    this.network  = wifiInfo;
+    this.render(wifiInfo);
+  },
+  forgetNetwork: function(e) {
+    e.preventDefault();
+    this.undelegateEvents();
+
     var self = this;
-    console.log(self.network.id);
     $.ajax({
-      url: API_BASEURL + "settings/network/stored-wifi/" + this.network.id,
+      url: API_BASEURL + "settings/network/stored-wifi/" + self.network.id,
       type: "DELETE",
       success: function() {
         self.notifyView = new NotifyView({msg: 'Network has been forgotten', type: 'success'});
         app.router.selectView(self.notifyView);
 
-        // self.wifiView.getStoredWifi();
+        /* updating the list of wifi after forgetting the stored wifi */
+        self.parent.getStoredWifi();
       },
       error: function(xhr) {
         self.notifyView = new NotifyView({msg: xhr.responseText, type: 'warning'});
@@ -100,15 +112,10 @@ var ForgetNetworkView = Backbone.View.extend({
 
     this.$el.addClass('hide');
   },
-  closeModal: function() {
+  closeModal: function(e) {
+    e.preventDefault();
+    this.undelegateEvents();
+
     this.$el.addClass('hide');
-    var self = this;
-    console.log(self.network.id);
   }
 });
-
-// "421c6674-f6b7-4532-8fdd-cda333a5b3a3"
-// "2984df18-002e-4b3e-aef6-09c6af5d5210"
-// "b500696b-5c9c-4d7d-8687-0a87f448a8bf"
-// "e255f85c-188d-47a5-bc06-d73104d9957e"
-// "d2ff355b-8fb6-4753-a536-a03a131e36d4"
