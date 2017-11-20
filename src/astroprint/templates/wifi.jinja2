@@ -10,12 +10,12 @@
       Connect to WiFi Network
     </div>
     <a href="#connectivity" class="back-button">Back</a>
+    <a class="back-button cancel-btn hide">Cancel</a>
   </nav>
   
   <!-- <div class="back-button delete-wifi">Delete All</div> -->
 
   <section class="stored-wifi-list-section">
-
     <div class="section-sub-container section-sub-container--checking">
       <i class="fa fa-spinner fa-spin fa-3x fa-fw loading"></i>
       <h1 class="section-heading section-heading--extra-margin">Looking for the available wifi networks...</h1>
@@ -30,7 +30,7 @@
       </div>
     </div>
 
-    <div class="section-sub-container section-sub-container--wifi-available hide">
+    <div class="section-sub-container section-sub-container--stored-wifi hide">
       <h1 class="section-heading">Choose from the list of saved networks</h1>
       <ul class="stored-wifi-list">
         <script type="text/template" id="stored-wifi-list-template">
@@ -63,6 +63,51 @@
         </div>
       </script>
     </div>
-
   </section>
+
+  <section class="add-new-wifi-section hide">
+    <div class="section-sub-container section-sub-container--checking-available">
+      <i class="fa fa-spinner fa-spin fa-3x fa-fw loading"></i>
+      <h1 class="section-heading section-heading--extra-margin">Looking for the available wifi networks...</h1>
+    </div>
+
+    <div class="section-sub-container section-sub-container--wifi-available hide">
+      <h1 class="section-heading">Choose from the list of saved networks</h1>
+      <ul class="available-wifi-list">
+        <script type="text/template" id="available-wifi-list-template">
+          <% _.each(wifiItems, function(wifi) { %>
+            <li>
+              <img src="{{ url_for('static', filename='img/print-from-storage/file-icon.svg') }}" width="56" height="56" alt="File Img">
+              <span><%= wifi.name %></span>
+            </li>
+          <% }); %>
+        </script>
+      </ul>
+      <div class="section-sub-container__button-container">
+        <button class="next-button up-button disable-btn">Scroll Up</button>
+        <button class="next-button down-button disable-btn">Scroll Down</button>
+      </div>
+    </div>
+
+    <div class="add-password-modal hide">
+      <script type="text/template" id="add-password-modal-template">
+        <h1 class="add-password-modal__heading">Enter password of <%= network.name %></h1>
+        <form>
+          <form>
+            <input type="hidden" class="network-id-field" name="id" value="<%= network.id %>"/>
+            <input type="password" class="network-password-field" name="password"/>
+            <label for="show-password">
+              <input type="checkbox" class="show-password"/>
+              Show Password
+            </label>
+            <div class="section-sub-container__button-container section-sub-container__button-container--extra-padding">
+              <button class="next-button connect" type="submit" value="Connect">Connect</button>
+              <button class="next-button cancel-btn--add-password">Cancel</button>
+            </div>
+            <i class="fa fa-spinner fa-spin fa-3x fa-fw loading fa-spinner--add-password hide"></i>
+        </form>
+      </script>
+    </div>
+  </section>
+
 </div>
