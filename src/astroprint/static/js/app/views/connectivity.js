@@ -12,7 +12,6 @@ var ConnectivityView = Backbone.View.extend({
       method: 'GET',
       dataType: 'json',
       success: function(data) {
-        console.log(data);
         self.currentSettings = data;
         self.checkCurrentStatus();
       },
@@ -24,11 +23,15 @@ var ConnectivityView = Backbone.View.extend({
   checkCurrentStatus: function() {
     if (this.currentSettings.networks.wired != null) {
       this.$('.lan-connectivity__status').text('LAN Connected');
+    } else {
+      this.$('.lan-connectivity__status').text('LAN Not Connected');
     }
 
     if (this.currentSettings.networks.wireless != null) {
       var networkName = this.currentSettings.networks.wireless.name;
       this.$('.wifi-connectivity__status').text('Connected to ' + networkName);
+    } else {
+      this.$('.wifi-connectivity__status').text('Not Connected');
     }
   },
   getWifiList: function() {
