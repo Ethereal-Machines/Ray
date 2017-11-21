@@ -129,9 +129,10 @@ hr {
   margin: 21px 0 24.5px;
 }
 
+.connect-network-btn,
 .forget-network-btn,
 .forget-network-cancel-btn {
-  width: 200px;
+  width: 140px;
   height: 40px;
   background-color: #BBB;
   font-size: 22px;

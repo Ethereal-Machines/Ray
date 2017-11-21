@@ -219,6 +219,7 @@ var ForgetNetworkView = Backbone.View.extend({
   notifyView: null,
   parent: null,
   events: {
+    'click .connect-network-btn': 'reconnectToNetwork',
     'click .forget-network-btn': 'forgetNetwork',
     'click .forget-network-cancel-btn': 'closeModal'
   },
@@ -237,8 +238,37 @@ var ForgetNetworkView = Backbone.View.extend({
     this.network  = wifiInfo;
     this.render(wifiInfo);
   },
+  reconnectToNetwork: function(e) {
+    console.log('connect button is clicked');
+    // e.preventDefault();
+    this.undelegateEvents();
+
+    var self = this;
+    var id = self.network.id;
+    console.log(id);
+
+    $.ajax({
+      url: API_BASEURL + 'settings/network/active',
+      type: 'POST',
+      contentType: 'application/json',
+      dataType: 'json',
+      data: JSON.stringify({id: id}),
+      success: function() {
+        console.log('Connected to the network');
+      },
+      error: function(xhr) {
+        // console.log(xhr);
+        // console.log(this.data);
+        // console.log('There was an error connecting to the network.');
+        self.notifyView = new NotifyView({msg: xhr.responseText, type: 'error'});
+        app.router.selectView(self.notifyView);
+      }
+    });
+
+    this.$el.addClass('hide');
+  },
   forgetNetwork: function(e) {
-    e.preventDefault();
+    // e.preventDefault();
     this.undelegateEvents();
 
     var self = this;
@@ -261,7 +291,7 @@ var ForgetNetworkView = Backbone.View.extend({
     this.$el.addClass('hide');
   },
   closeModal: function(e) {
-    e.preventDefault();
+    // e.preventDefault();
     this.undelegateEvents();
 
     this.$el.addClass('hide');
