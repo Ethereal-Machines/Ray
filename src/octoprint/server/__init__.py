@@ -106,7 +106,7 @@ def box_identify():
 def index():
     s = settings()
     loggedUsername = s.get(["cloudSlicer", "loggedUser"])
-
+    networkManager().setHostname('Ray')
     if (s.getBoolean(["server", "firstRun"])):
         swm = swManager()
 
@@ -496,6 +496,7 @@ class Server():
                     logger.info("Done setting printer id", machine_id)
                 else:
                     logger.info("Could not authenticate the printer")
+                    logger.info("Response status code: %s", res.status_code)
             except Exception as e:
                 logger.error(
                         "Error setting up boxrouter, boxid could not be set")
