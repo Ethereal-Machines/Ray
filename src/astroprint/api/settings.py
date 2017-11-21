@@ -126,27 +126,22 @@ def handleWifiHotspot():
         })
 
     elif request.method == "PUT":
-            if "application/json" in request.headers["Content-Type"]:
-                    data = request.json
+        if "application/json" in request.headers["Content-Type"]:
+                data = request.json
 
-                    if "hotspotOnlyOffline" in data:
-                            s = settings()
-                            s.setBoolean(
-                                    ['wifi', 'hotspotOnlyOffline'],
-                                    data["hotspotOnlyOffline"]
-                            )
-                            s.save()
-                            return jsonify()
+                if "hotspotOnlyOffline" in data:
+                        s = settings()
+                        s.setBoolean(
+                                ['wifi', 'hotspotOnlyOffline'],
+                                data["hotspotOnlyOffline"]
+                        )
+                        s.save()
+                        return jsonify()
 
-            return ("Invalid Request", 400)
+        return ("Invalid Request", 400)
 
     elif request.method == "DELETE":
-            result = networkManager().stopHotspot()
-            if result is True:
-                return jsonify()
-            else:
-                return (result, 500)
-
+        result = networkManager().stopHotspot()
         if result is True:
             return jsonify()
         else:
