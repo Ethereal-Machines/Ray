@@ -6,10 +6,10 @@ __copyright__ = "Copyright (C) 2016 3DaGoGo, Inc - Released under terms of the A
 # singleton
 _instance = None
 
-def boxrouterManager():
+def boxrouterManager(connect=True):
     global _instance
     if _instance is None:
-        _instance = AstroprintBoxRouter()
+        _instance = AstroprintBoxRouter(connect)
     return _instance
 
 import json
@@ -181,7 +181,7 @@ class AstroprintBoxRouter(object):
     STATUS_ERROR = 'error'
     ASTROBOX_NAMESPACE_UUID = 'ec35c0da-e6e2-4a50-9c85-3e102fffac48'
 
-    def __init__(self):
+    def __init__(self, connect=True):
         self._settings = settings()
         self._logger = logging.getLogger(__name__)
         self._eventManager = eventManager()
@@ -203,7 +203,7 @@ class AstroprintBoxRouter(object):
 
         self._address = self._settings.get(['cloudSlicer','boxrouter'])
 
-        if self._address:
+        if self._address and connect:
             self.boxrouter_connect()
 
         else:

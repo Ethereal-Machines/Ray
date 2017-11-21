@@ -533,7 +533,7 @@ class Server():
         app.register_blueprint(api, url_prefix="/api")
 
         # Makes sure the singleton is created here. It doesn't need to be stored
-        boxrouterManager()
+        boxrouterManager(connect=False)
         self._router = SockJSRouter(self._createSocketConnection, "/sockjs")
 
         discoveryManager = DiscoveryManager()
