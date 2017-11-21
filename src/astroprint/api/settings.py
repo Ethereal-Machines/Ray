@@ -28,8 +28,16 @@ def handlePrinterSettings():
             data = request.json
 
             if "serial" in data.keys():
-                if "port" in data["serial"].keys(): s.set(["serial", "port"], data["serial"]["port"])
-                if "baudrate" in data["serial"].keys(): s.setInt(["serial", "baudrate"], data["serial"]["baudrate"])
+                if "port" in data["serial"].keys():
+                    s.set(
+                        ["serial", "port"],
+                        data["serial"]["port"]
+                    )
+                if "baudrate" in data["serial"].keys():
+                    s.setInt(
+                        ["serial", "baudrate"],
+                        data["serial"]["baudrate"]
+                    )
             s.save()
 
     return jsonify({
@@ -94,7 +102,8 @@ def setWifiNetwork():
     if "application/json" in request.headers["Content-Type"]:
         data = request.json
         if 'id' in data:
-            result = networkManager().setWifiNetwork(data['id'], data.get('password'))
+            result = networkManager().setWifiNetwork(
+                data['id'], data.get('password'))
             if result:
                 return jsonify(result)
             else:
@@ -102,7 +111,7 @@ def setWifiNetwork():
     return ("Invalid Request", 400)
 
 
-@api.route("/settings/network/hotspot", methods=["GET", "POST", "PUT", "DELETE"])
+@api.route("/settings/network/hotspot", methods=["GET","POST","PUT","DELETE"])
 @restricted_access
 def handleWifiHotspot():
     nm = networkManager()
@@ -111,7 +120,8 @@ def handleWifiHotspot():
             'hotspot': {
                     'active': nm.isHotspotActive(),
                     'name': nm.getHostname(),
-                    'hotspotOnlyOffline': settings().getBoolean(['wifi', 'hotspotOnlyOffline'])
+                    'hotspotOnlyOffline': settings().getBoolean(
+                        ['wifi', 'hotspotOnlyOffline'])
             } if nm.isHotspotable() else False
         })
 
@@ -121,7 +131,10 @@ def handleWifiHotspot():
 
                     if "hotspotOnlyOffline" in data:
                             s = settings()
-                            s.setBoolean(['wifi', 'hotspotOnlyOffline'], data["hotspotOnlyOffline"])
+                            s.setBoolean(
+                                    ['wifi', 'hotspotOnlyOffline'],
+                                    data["hotspotOnlyOffline"]
+                            )
                             s.save()
                             return jsonify()
 
@@ -134,8 +147,6 @@ def handleWifiHotspot():
             else:
                 return (result, 500)
 
-    else: #POST
-        result = nm.startHotspot()
         if result is True:
             return jsonify()
         else:
@@ -200,7 +211,9 @@ def getAdvancedSoftwareSettings():
             "regenerate": s.getBoolean(['api','regenerate'])
         },
         serialActivated= s.getBoolean(['serial', 'log']),
-        sizeLogs= sum([os.path.getsize(os.path.join(logsDir, f)) for f in os.listdir(logsDir)])
+        sizeLogs= sum(
+            [os.path.getsize(
+                os.path.join(logsDir, f)) for f in os.listdir(logsDir)])
     )
 
 
