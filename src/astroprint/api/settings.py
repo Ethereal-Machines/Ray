@@ -93,8 +93,8 @@ def deleteStoredWiFiNetwork(networkId):
 def setWifiNetwork():
     if "application/json" in request.headers["Content-Type"]:
         data = request.json
-        if 'id' in data and 'password' in data:
-            result = networkManager().setWifiNetwork(data['id'], data['password'])
+        if 'id' in data:
+            result = networkManager().setWifiNetwork(data['id'], data.get('password'))
             if result:
                 return jsonify(result)
             else:
