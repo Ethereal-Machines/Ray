@@ -314,14 +314,13 @@ var AddPasswordModal = Backbone.View.extend({
     this.parent.$('.section-sub-container--wifi-available').addClass('hide');
     this.parent.$('.cancel-btn').addClass('hide');
     this.$el.removeClass('hide');
-    // this.$('.network-password-field').focus();
   },
   render: function(wifiInfo) {
     this.$el.html(this.template({
       network: wifiInfo
     }));
 
-    this.$('input#example1').mlKeyboard({
+    this.$('input.network-password-field').mlKeyboard({
       layout: 'en_US'
     });
   },
