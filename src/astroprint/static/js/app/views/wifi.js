@@ -337,7 +337,6 @@ var AddPasswordModal = Backbone.View.extend({
     this.$el.addClass('hide');
     this.parent.$('.section-sub-container--wifi-available').removeClass('hide');
     this.parent.$('.cancel-btn').removeClass('hide');
-    this.$('.section-sub-container--checking-available').removeClass('hide');
     this.$('.fa-spinner--add-password').addClass('hide');
     this.$('button').removeClass('disable-btn');
   },
@@ -345,8 +344,9 @@ var AddPasswordModal = Backbone.View.extend({
     this.$el.addClass('hide');
     this.$('.fa-spinner--add-password').addClass('hide');
     this.$('button').removeClass('disable-btn');
-    this.$('.section-sub-container--checking-available').removeClass('hide');
+    this.parent.$('.section-sub-container--checking-available').removeClass('hide');
     this.parent.$('.stored-wifi-list-section').removeClass('hide');
+    this.parent.$('.add-new-wifi-section').addClass('hide');
     this.parent.$('.back-button').removeClass('hide');
     this.parent.$('.cancel-btn').addClass('hide');
     this.parent.getStoredWifi();
