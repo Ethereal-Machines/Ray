@@ -1,32 +1,48 @@
 {% extends 'base.jinja2' %}
 
 {% block css %}
-  {% assets filters="scss", output="css/gen/locked.css",
-    "css/scss/locked.scss" %}
-    <link rel="stylesheet" type="text/css" href="{{ ASSET_URL }}" />
-  {% endassets %}
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/gen/app.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/_locked.css') }}">
 {% endblock %}
 
 {% block content %}
-  <div class="row">
-    <div class="small-12 medium-10 large-7 columns small-centered">
-      <div class="locked-area">
-        <center><img src="/img/astrolock.png"/></center>
-        <h2 class="bold"><span class="highlight">{{astroboxName}}</span> is password protected.</h2>
-        User: <span class="highlight">{{username}}</span><br/>
-        Enter your password for access:
-        <form id="login-form" action="/api/login" method="post">
-          <input type="hidden" name="user" value="{{username}}"/>
-          <input type="hidden" name="remember" value="true"/>
-          <input type="password" name="pass" class="radius"/>
-          <div class="loading-button expand">
-            <button class="button radius success"><b>Enter</b></button>
-            <span class="button radius disabled success loading bold"><i class="icon-rocket-spinner animate-spin"></i> Sending...</span>
-          </div>
-        </form>
-      </div>
+  <div class="locked-area app-view">
+    <div class="content-container">
+      <h2>EtherBox is password protected</h2>
+      <hr>
+      <p>User : <span class="highlight"><b>{{username}}</b></span></p>
+      <p>Enter your password for access:</p>
+      <form id="login-form" action="/api/login" method="post">
+        <input type="hidden" name="user" value="{{username}}"/>
+        <input type="hidden" name="remember" value="true"/>
+        <input type="password" name="pass" class="password-input"/>
+        <div class="loading-button expand">
+          <button class="next-button">Enter</button>
+        </div>
+        <div class="loading-icon hide">
+          <i class="fa fa-spinner fa-spin fa-3x fa-fw loading"></i>
+        </div>
+      </form>
     </div>
   </div>
+
+  <div id="notify-wizard" class="panel hide">
+    <script type="text/template" id="notify-template">
+      <% if (type == "success") { %>
+        <img src="{{ url_for('static',filename='img/ethereal-astroprint/finish-icon.svg') }}" width="120" height="120">
+      <% } else if (type == "warning") { %>
+        <img src="{{ url_for('static',filename='img/preheating-utility/confirm-cancel-icon.svg') }}" width="120" height="120">
+      <% } else if (type == "error") { %>
+        <img src="{{ url_for('static',filename='img/ethereal-astroprint/error-icon-group.svg') }}" width="120" height="120">
+      <% } %>
+      <p><%= msg %></p>
+      <div class="loading-button">
+        <button class="success radius next-button next-button--notify">OK</button>
+      </div>
+    </script>
+  </div>
+
 {% endblock %}
 
 {% block js %}
