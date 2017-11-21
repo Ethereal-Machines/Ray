@@ -240,7 +240,7 @@ var ForgetNetworkView = Backbone.View.extend({
   },
   reconnectToNetwork: function(e) {
     console.log('connect button is clicked');
-    // e.preventDefault();
+    e.preventDefault();
     this.undelegateEvents();
 
     var self = this;
@@ -268,7 +268,7 @@ var ForgetNetworkView = Backbone.View.extend({
     this.$el.addClass('hide');
   },
   forgetNetwork: function(e) {
-    // e.preventDefault();
+    e.preventDefault();
     this.undelegateEvents();
 
     var self = this;
@@ -291,7 +291,7 @@ var ForgetNetworkView = Backbone.View.extend({
     this.$el.addClass('hide');
   },
   closeModal: function(e) {
-    // e.preventDefault();
+    e.preventDefault();
     this.undelegateEvents();
 
     this.$el.addClass('hide');
