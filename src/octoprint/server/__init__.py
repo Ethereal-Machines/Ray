@@ -493,7 +493,7 @@ class Server():
                     boxrouterManager().boxId = machine_id
 
                     _set_boxid = True
-                    logger.info("Done setting printer id", machine_id)
+                    logger.info("Done setting printer id")
                 else:
                     logger.info("Could not authenticate the printer")
                     logger.info("Response status code: %s", res.status_code)
@@ -603,8 +603,8 @@ class Server():
         observer = Observer()
         observer.schedule(
             UploadCleanupWatchdogHandler(), s.getBaseFolder("uploads"))
-        observer.schedule(
-            usbdetector, s.get(['usb', 'folder']), recursive=True)
+        #observer.schedule(
+        #    usbdetector, s.get(['usb', 'folder']), recursive=True)
         observer.start()
 
         try:
