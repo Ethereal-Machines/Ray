@@ -24,24 +24,24 @@
           <i class="fa fa-spinner fa-spin fa-3x fa-fw loading"></i>
         </div>
       </form>
+      <div id="notify-wizard" class="panel hide">
+        <script type="text/template" id="notify-template">
+          <% if (type == "success") { %>
+            <img src="{{ url_for('static',filename='img/ethereal-astroprint/finish-icon.svg') }}" width="120" height="120">
+          <% } else if (type == "warning") { %>
+            <img src="{{ url_for('static',filename='img/preheating-utility/confirm-cancel-icon.svg') }}" width="120" height="120">
+          <% } else if (type == "error") { %>
+            <img src="{{ url_for('static',filename='img/ethereal-astroprint/error-icon-group.svg') }}" width="120" height="120">
+          <% } %>
+          <p><%= msg %></p>
+          <div class="loading-button">
+            <button class="success radius next-button next-button--notify">OK</button>
+          </div>
+        </script>
+      </div>
     </div>
   </div>
 
-  <div id="notify-wizard" class="panel hide">
-    <script type="text/template" id="notify-template">
-      <% if (type == "success") { %>
-        <img src="{{ url_for('static',filename='img/ethereal-astroprint/finish-icon.svg') }}" width="120" height="120">
-      <% } else if (type == "warning") { %>
-        <img src="{{ url_for('static',filename='img/preheating-utility/confirm-cancel-icon.svg') }}" width="120" height="120">
-      <% } else if (type == "error") { %>
-        <img src="{{ url_for('static',filename='img/ethereal-astroprint/error-icon-group.svg') }}" width="120" height="120">
-      <% } %>
-      <p><%= msg %></p>
-      <div class="loading-button">
-        <button class="success radius next-button next-button--notify">OK</button>
-      </div>
-    </script>
-  </div>
 
 {% endblock %}
 
