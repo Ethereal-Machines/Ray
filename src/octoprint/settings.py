@@ -114,7 +114,14 @@ default_settings = {
     },
     "controls": [],
     "system": {
-        "actions": [],
+        "actions": {
+            'shutdown': {
+                'command': 'sudo shutdown now',
+            },
+            'restart': {
+                'command': 'sudo restart',
+            }
+        }
     },
     "accessControl": {
         "enabled": True,
@@ -130,9 +137,9 @@ default_settings = {
         "config": "/default/path/to/your/cura/config.ini"
     },
     "cloudSlicer": {
-        "apiHost": "http://192.168.1.250/ethcld",
+        "apiHost": "https://api.astroprint.com",
         "loggedUser": None,
-        "boxrouter": "ws://192.168.1.250/ws"
+        "boxrouter": "wss://54.169.3.176/ws"
     },
     "events": {
         "enabled": False,
