@@ -50,7 +50,7 @@ var AppRouter = Backbone.Router.extend({
     "about":"about",
     // adding routes for the connectivity view
     "connectivity": "connectivity",
-    "connectivity/wifi": "wifi",
+    "connectivity/#wifi": "wifi",
     "settings/:page": "settings",
     "gcode-terminal": "terminal",
     "camera": "camera",
