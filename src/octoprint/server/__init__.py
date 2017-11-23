@@ -8,8 +8,11 @@ import json
 import tornado.wsgi
 from ext.sockjs.tornado import SockJSRouter
 from flask import Flask, render_template, send_from_directory, make_response, Response, request, abort
-from flask.ext.login import LoginManager, current_user, logout_user
-from flask.ext.principal import Principal, Permission, RoleNeed, identity_loaded, UserNeed
+from flask import Blueprint, request, jsonify, abort, current_app, session, make_response
+from flask.ext.login import LoginManager, current_user, logout_user, login_user
+from flask.ext.principal import (
+        Principal, Permission, RoleNeed, identity_loaded, UserNeed, Identity,
+        identity_changed)
 from flask.ext.compress import Compress
 from flask.ext.assets import Environment
 from watchdog.observers import Observer
@@ -19,6 +22,7 @@ import os
 import time
 import logging
 import logging.config
+import octoprint
 
 import requests
 
@@ -107,6 +111,14 @@ def index():
     s = settings()
     loggedUsername = s.get(["cloudSlicer", "loggedUser"])
     networkManager().setHostname('Ray')
+    if (loggedUsername and (current_user is None or \
+                            not current_user.is_authenticated or \
+                            current_user.get_id() != loggedUsername)):
+        user = octoprint.server.userManager.findUser(loggedUsername)
+        if user is not None:
+            login_user(user, remember=True)
+            identity_changed.send(current_app._get_current_object(), identity=Identity(user.get_id()))
+
     if (s.getBoolean(["server", "firstRun"])):
         swm = swManager()
 
@@ -138,21 +150,6 @@ def index():
             variantData=variantManager().data,
             astroboxName=networkManager().getHostname(),
             wsToken=create_ws_token(userManager.findUser(loggedUsername).publicKey if loggedUsername else None)
-        )
-
-    elif (
-        loggedUsername and (current_user is None or \
-                            not current_user.is_authenticated or \
-                            current_user.get_id() != loggedUsername)):
-        if current_user.is_authenticated:
-            logout_user()
-
-        return render_template(
-            "locked.jinja2",
-            username=loggedUsername,
-            uiApiKey=UI_API_KEY,
-            astroboxName=networkManager().getHostname(),
-            variantData=variantManager().data
         )
 
     else:
