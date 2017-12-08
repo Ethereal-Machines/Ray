@@ -34,6 +34,7 @@ class RequestHandler(object):
             'camera': printer.isCameraConnected(),
             'printCapture': cm.timelapseInfo,
             'profile': printerProfileManager().data,
+            'temps': printer.getCurrentTemperatures(),
             'remotePrint': True,
             'capabilities': ['remotePrint'] + cm.capabilities
         }
