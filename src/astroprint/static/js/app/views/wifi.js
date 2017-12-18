@@ -178,6 +178,7 @@ var WifiView = Backbone.View.extend({
                 app.eventManager.off('astrobox:InternetConnectingStatus', connectionCb, this);
                 if (connectionInfo.reason == 'no_secrets') {
                   message = "Invalid password for "+data.name+".";
+                  childElement.resetState();
                 } else {
                   message = "Unable to connect to "+data.name+".";
                   childElement.resetState();
