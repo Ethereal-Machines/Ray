@@ -1,19 +1,311 @@
-/* Adding a comment on the file */
-
-/* Adding another comment for testing the working of SSHFS */
-
-/*.bold {
-  color: maroon;
-}*/
-
-/*#step-internet .bold {
-  color: blue;
-}*/
-
-.hide {
-  display: none;
+/*******************************************
+  Common styles for all the screens goes here
+*********************************************/
+.active {
+  display: block !important;
 }
 
-.active {
+.text-center {
+  text-align: center;
+}
+
+.link-next-button,
+.top-button {
   display: block;
+  margin: 0 auto;
+  height: 56px;
+  background-color: #BBBBBB;
+  font-size: 22px;
+  color: black;
+  line-height: 56px;
+  text-decoration: none;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.link-next-button {
+  width: 304px;
+}
+
+.link-next-button:hover {
+  text-decoration: none;
+  color: black;
+}
+
+.step-top-bar,
+.step-bottom-bar {
+  width: 100%;
+  height: 56px;
+  background: #111111;
+  color: white;
+  display: flex;
+  flex-direction: row;
+}
+
+.step-bottom-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+.only-heading,
+.heading-with-button {
+  font-size: 28px;
+  font-weight: 300;
+  line-height: 56px;
+  margin: 0;
+}
+
+.only-heading {
+  width: 100%;
+  text-align: center;
+}
+
+.heading-with-button {
+  width: 656px;
+  text-align: left;
+  padding-left: 24px;
+}
+
+button {
+  outline: none;
+  border: 0px;
+}
+
+button.bottom-button {
+  background-color: #111111;
+}
+
+.top-button {
+  width: 144px;
+  display: inline-block;
+  color: white;
+  font-weight: 300 !important;
+}
+
+.bottom-button {
+  width: 50%;
+  line-height: 56px;
+  text-decoration: none;
+  text-transform: uppercase;
+  color: white;
+  font-size: 20px;
+  font-weight: 300 !important;
+}
+
+.bottom-button:hover {
+  text-decoration: none;
+  color: white;
+}
+
+.bottom-button--right {
+  text-align: right;
+  padding-right: 28px;
+}
+
+.bottom-button--left {
+  text-align: left;
+  padding-left: 28px;
+}
+
+.bottom-button--single {
+  width: 1000% !important;
+}
+
+/**********************************
+  Styles for 'step-welcome' go here
+***********************************/
+#step-welcome {
+  padding: 71.5px 0 71.5px;
+}
+
+.step__heading {
+  font-size: 48px;
+  font-weight: 300;
+  margin: 0 0 24px;
+}
+
+.step__msg {
+  font-size: 18px;
+  margin: 0 0 82px;
+}
+
+.step__loading-animation {
+  width: 136px;
+  height: 20px;
+  margin-bottom: 75px;
+}
+
+/*************************************************
+  Styles for 'step-to-internet-connection' go here
+***************************************************/
+.step__content__msg {
+  padding: 19px 0 27.4px;
+  font-size: 18px;
+  margin: 0;
+}
+
+/***************************************
+  Styles for 'connect-internet' go here 
+*****************************************/
+.networks-list {
+  list-style: none;
+  margin: 0 auto;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  width: 89%;
+  height: 280px;
+  overflow: hidden;
+  overflow-y: scroll;
+}
+
+.networks-list li {
+  height: 56px;
+  border-bottom: .5px solid gray;
+}
+
+.selected {
+  background-color: #EEEEEE;
+}
+
+.networks-list li img {
+  float: left;
+}
+
+.networks-list li span {
+  float: left;
+  width: 600px;
+  height: 56px !important;
+  padding: 0 17px;
+  line-height: 56px;
+  vertical-align: middle;
+  font-size: 20px;
+  overflow: hidden;
+}
+
+/*********************************
+  Styles for 'wifi-passowrd-modal'
+**********************************/
+#wifi-network-password-modal {
+  position: absolute;
+  top: 0;
+  width: 800px;
+  height: 480px;
+  margin: 0 auto;
+  z-index: 2;
+}
+
+.wifi-password-modal__form {
+  width: 100%;
+  position: relative;
+}
+
+.network-password-field {
+  display: block;
+  width: 696px;
+  margin: 0 auto;
+  font-size: 25px;
+  padding: 5px;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom: 1px solid gray;
+  outline: none;
+}
+
+#show-password {
+  width: 40px;
+  height: 32px;
+  position: absolute;
+  top: 0;
+  right: 50px;
+  background: transparent url('../../img/setup/hide-password.svg') no-repeat 0 50%;
+}
+
+.connecting {
+  position: relative;
+  width: 100%;
+  height: 424px;
+}
+
+.connecting__msg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.connecting__msg p {
+  margin: 0 0 52px;
+}
+
+.connecting__msg img {
+  display: block;
+  margin: 0 auto;
+  font-size: 18px;
+}
+
+/***************************
+  Styles for 'success-state'
+****************************/
+.success-state {
+  width: 100%;
+}
+
+.success-state img {
+  display: block;
+  margin: 88px auto 24px;
+}
+
+.success-state p {
+  margin: 0;
+  font-size: 22px;
+}
+
+/****************************
+  Styles for 'checking-state'
+*****************************/
+.checking-state {
+  width: 100%;
+}
+
+.checking-state p {
+  margin: 0;
+  padding: 160px 0 52px;
+  font-size: 18px;
+}
+
+.checking-state img {
+  display: block;
+  margin: 0 auto;
+}
+
+/****************************
+  Styles for 'failed-state'
+*****************************/
+.failed-state {
+  width: 100%;
+}
+
+.failed-state img {
+  display: block;
+  margin: 88px auto 24px;
+}
+
+.failed-state p {
+  margin: 0;
+  font-size: 22px;
+}
+
+/*********************************
+  Styles for 'device-registration'
+**********************************/
+#step-registration {
+  width: 100%;
+}
+
+.step__content__msg--registration {
+  max-width: 566px;
+  margin: 0 auto;
 }
