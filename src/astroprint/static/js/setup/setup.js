@@ -56,91 +56,99 @@ var StepWelcome = StepView.extend({
   el: "#step-welcome"
 });
 
+/*******************************
+Setup Internet Connection Screen
+*********************************/
+
+var StepToInternetConnection = StepView.extend({
+  el: "#step-to-internet-connection"
+});
+
 /**************
 * Name
 ***************/
 
-// var StepName = StepView.extend({
-//   el: "#step-name",
-//   currentName: null,
-//   constructor: function()
-//   {
-//     this.events["keyup input"] = "onNameChanged";
-//     this.events['click .failed-state button'] = 'onShow';
-//     StepView.apply(this, arguments);
-//   },
-//   onShow: function()
-//   {
-//     this.$el.removeClass('settings failed');
-//     this.$el.addClass('checking');
-//     $.ajax({
-//       url: API_BASEURL + 'setup/name',
-//       method: 'GET',
-//       dataType: 'json',
-//       success: _.bind(function(data) {
-//         this.currentName = data.name;
-//         this.$el.find('input').val(data.name).focus();
-//         this.render();
-//         this.$el.addClass('settings');
-//       }, this),
-//       error: _.bind(function(xhr) {
-//         this.$el.addClass('failed');
-//         this.$el.find('.failed-state h3').text(xhr.responseText);
-//       }, this),
-//       complete: _.bind(function() {
-//         this.$el.removeClass('checking');
-//       }, this)
-//     })
-//   },
-//   render: function(name)
-//   {
-//     if (name == undefined) {
-//       name = this.$el.find('input').val();
-//     }
+var StepName = StepView.extend({
+  el: "#step-name",
+  currentName: null,
+  constructor: function()
+  {
+    this.events["keyup input"] = "onNameChanged";
+    this.events['click .failed-state button'] = 'onShow';
+    StepView.apply(this, arguments);
+  },
+  onShow: function()
+  {
+    this.$el.removeClass('settings failed');
+    this.$el.addClass('checking');
+    $.ajax({
+      url: API_BASEURL + 'setup/name',
+      method: 'GET',
+      dataType: 'json',
+      success: _.bind(function(data) {
+        this.currentName = data.name;
+        this.$el.find('input').val(data.name).focus();
+        this.render();
+        this.$el.addClass('settings');
+      }, this),
+      error: _.bind(function(xhr) {
+        this.$el.addClass('failed');
+        this.$el.find('.failed-state h3').text(xhr.responseText);
+      }, this),
+      complete: _.bind(function() {
+        this.$el.removeClass('checking');
+      }, this)
+    })
+  },
+  render: function(name)
+  {
+    if (name == undefined) {
+      name = this.$el.find('input').val();
+    }
 
-//     this.$el.find('.hotspot-name').text(name);
-//     this.$el.find('.astrobox-url').text(name);
-//   },
-//   onNameChanged: function(e)
-//   {
-//     var name = $(e.target).val();
+    this.$el.find('.hotspot-name').text(name);
+    this.$el.find('.astrobox-url').text(name);
+  },
+  onNameChanged: function(e)
+  {
+    var name = $(e.target).val();
 
-//     if (/^[A-Za-z0-9\-]+$/.test(name)) {
-//       this.render(name);
-//     } else if (name) {
-//       $(e.target).val( $(e.target).val().slice(0, -1) );
-//     } else {
-//       this.render('');
-//     }
-//   },
-//   onSubmit: function(data)
-//   {
-//     if (data.name != this.currentName) {
-//       this.$el.find('.loading-button').addClass('loading');
-//       $.ajax({
-//         url: API_BASEURL + 'setup/name',
-//         method: 'post',
-//         data: data,
-//         success: _.bind(function() {
-//           location.href = this.$el.find('.submit-action').attr('href');
-//         }, this),
-//         error: function(xhr) {
-//           if (xhr.status == 400) {
-//             message = xhr.responseText;
-//           } else {
-//             message = "There was an error saving your name";
-//           }
-//           noty({text: message, timeout: 3000});
-//         },
-//         complete: _.bind(function() {
-//           this.$el.find('.loading-button').removeClass('loading');
-//         }, this)
-//       });
-//     } else {
-//       location.href = this.$el.find('.submit-action').attr('href');
-//     }
-//   }
-// });
+    if (/^[A-Za-z0-9\-]+$/.test(name)) {
+      this.render(name);
+    } else if (name) {
+      $(e.target).val( $(e.target).val().slice(0, -1) );
+    } else {
+      this.render('');
+    }
+  },
+  onSubmit: function(data)
+  {
+    if (data.name != this.currentName) {
+      this.$el.find('.loading-button').addClass('loading');
+      $.ajax({
+        url: API_BASEURL + 'setup/name',
+        method: 'post',
+        data: data,
+        success: _.bind(function() {
+          location.href = this.$el.find('.submit-action').attr('href');
+        }, this),
+        error: function(xhr) {
+          if (xhr.status == 400) {
+            message = xhr.responseText;
+          } else {
+            message = "There was an error saving your name";
+          }
+          noty({text: message, timeout: 3000});
+        },
+        complete: _.bind(function() {
+          this.$el.find('.loading-button').removeClass('loading');
+        }, this)
+      });
+    } else {
+      location.href = this.$el.find('.submit-action').attr('href');
+    }
+  }
+});
 
 /**************
 * Internet
@@ -152,8 +160,7 @@ var StepInternet = StepView.extend({
   networks: null,
   passwordDialog: null,
   // setupView: null,
-  initialize: function()
-  {
+  initialize: function() {
     // this.setupView = new SetupView();
     _.extend(this.events, {
       'click .failed-state button': 'onShow',
@@ -161,8 +168,7 @@ var StepInternet = StepView.extend({
       'change .hotspot-off input': 'hotspotOffChanged'
     });
   },
-  onShow: function()
-  {
+  onShow: function() {
     /* this 'onShow' function is called on initialization */
     this.$el.removeClass('success settings failed');
 
@@ -234,8 +240,7 @@ var StepInternet = StepView.extend({
       }, this)
     })
   },
-  networkSelected: function(e)
-  {
+  networkSelected: function(e) {
     var networkRow = $(e.currentTarget);
 
     this.$('.wifi-network-list li.selected').removeClass('selected');
@@ -250,8 +255,7 @@ var StepInternet = StepView.extend({
           scrollTop: this.$('.settings-state button.connect').offset().top
         }, 1000);
   },
-  onConnectClicked: function()
-  {
+  onConnectClicked: function() {
     console.log("Connect button is clicked");
     var networkRow = this.$el.find('.wifi-network-list li.selected');
 
@@ -269,8 +273,7 @@ var StepInternet = StepView.extend({
       }
     }
   },
-  hotspotOffChanged: function(e)
-  {
+  hotspotOffChanged: function(e) {
     var target = $(e.currentTarget);
 
     $.ajax({
@@ -286,8 +289,7 @@ var StepInternet = StepView.extend({
       noty({text: "There was an error saving hotspot option.", timeout: 3000});
     })
   },
-  doConnect: function(data, callback)
-  {
+  doConnect: function(data, callback) {
     var loadingBtn = this.$el.find(".settings-state .loading-button");
     loadingBtn.addClass('loading');
 
@@ -308,7 +310,7 @@ var StepInternet = StepView.extend({
           connectionCb.call(this, {status: 'failed', reason: 'timeout'});
         }, 70000); //1 minute
 
-        connectionCb = function(connectionInfo){
+        connectionCb = function(connectionInfo) {
           console.log(connectionInfo);
           switch (connectionInfo.status) {
             case 'disconnected':
@@ -323,11 +325,11 @@ var StepInternet = StepView.extend({
               // setup_view.setStep('share');
               /* Here we are navigating to the success state */
               console.log('Hiding the unnecerray items');
-              this.$('#wifi-network-password-modal').addClass('hide');
+              this.$('#wifi-network-password-modal').toggleClass('hide');
               this.$('.settings-state').removeClass('active').addClass('hide');
               this.$('.success-state').removeClass('hide').addClass('active');
               
-              noty({text: "Your "+PRODUCT_NAME+" is now connected to "+connectionInfo.info.name+".", type: "success", timeout: 3000});
+              // noty({text: "Your "+PRODUCT_NAME+" is now connected to "+connectionInfo.info.name+".", type: "success", timeout: 3000});
               loadingBtn.removeClass('loading');
               if (callback) callback(false);
               this.$el.removeClass('settings');
@@ -339,9 +341,11 @@ var StepInternet = StepView.extend({
             case 'failed':
               setup_view.eventManager.off('astrobox:InternetConnectingStatus', connectionCb, this);
               if (connectionInfo.reason == 'no_secrets') {
-                noty({text: "Invalid password for "+data.name+".", timeout: 3000});
+                // noty({text: "Invalid password for "+data.name+".", timeout: 3000});
+                alert("Invalid password for " + data.name + ".");
               } else {
-                noty({text: "Unable to connect to "+data.name+".", timeout: 3000});
+                // noty({text: "Unable to connect to "+data.name+".", timeout: 3000});
+                alert("Unable to connect to " + data.name + ".");
               }
               loadingBtn.removeClass('loading');
               if (callback) callback(true);
@@ -350,7 +354,8 @@ var StepInternet = StepView.extend({
 
             default:
               setup_view.eventManager.off('astrobox:InternetConnectingStatus', connectionCb, this);
-              noty({text: "Unable to connect to "+data.name+".", timeout: 3000});
+              // noty({text: "Unable to connect to "+data.name+".", timeout: 3000});
+              alert("Unable to connect to " + data.name + ".");
               loadingBtn.removeClass('loading');
               clearTimeout(connectionTimeout);
               if (callback) callback(true);
@@ -360,13 +365,15 @@ var StepInternet = StepView.extend({
         setup_view.eventManager.on('astrobox:InternetConnectingStatus', connectionCb, this);
 
       } else if (data.message) {
-        noty({text: data.message, timeout: 3000});
+        // noty({text: data.message, timeout: 3000});
+        alert(data.message);
         loadingBtn.removeClass('loading');
         if (callback) callback(true);
       }
     }, this))
     .fail(function(){
-      noty({text: "There was an error connecting.", timeout: 3000});
+      // noty({text: "There was an error connecting.", timeout: 3000});
+      alert("There was an error connecting.");
       loadingBtn.removeClass('loading');
       if (callback) callback(true);
     })
@@ -378,69 +385,79 @@ var WiFiNetworkPasswordDialog = Backbone.View.extend({
   events: {
     'click button.connect': 'connectClicked',
     'submit form': 'connectClicked',
-    'click a.cancel': 'cancelClicked',
-    'change #show-password': 'onShowPasswordChanged'
+    'click .top-button': 'cancelClicked',
+    'click #show-password': 'onShowPasswordChanged'
   },
   parent: null,
   template: _.template($('#wifi-network-password-modal-template').html()),
-  initialize: function(params)
-  {
+  initialize: function(params) {
     this.parent = params.parent;
   },
-  render: function(wifiInfo)
-  {
+  render: function(wifiInfo) {
     this.$el.html( this.template({wifi: wifiInfo}) );
   },
-  open: function(wifiInfo)
-  {
-    this.render(wifiInfo)
-    this.$el.foundation('reveal', 'open', {
-      close_on_background_click: false,
-      close_on_esc: false
-    });
-    this.$el.one('opened', _.bind(function() {
-      this.$el.find('.network-password-field').focus();
-    }, this));
+  open: function(wifiInfo) {
+    var wifiList = this.parent.$el.find('.step__content');
+    this.render(wifiInfo);
+    wifiList.toggleClass('hide');
+    this.$el.toggleClass('hide');
+    this.$el.find('.network-password-field').focus();
   },
-  connectClicked: function(e)
-  {
+  connectClicked: function(e) {
     e.preventDefault();
 
+    var content = this.$el.find('.step__content');
     var form = this.$el.find('form');
-    var loadingBtn = this.$el.find('.loading-button');
+    var connecting = this.$el.find('.connecting');
     var password = form.find('.network-password-field').val();
 
     if (password) {
-      loadingBtn.addClass('loading');
+      content.toggleClass('hide');
+      connecting.toggleClass('hide');
       this.parent.doConnect(
         {id: form.find('.network-id-field').val(), password: password},
         _.bind(function(error) { //callback
-          loadingBtn.removeClass('loading');
           form.find('.network-password-field').val('');
           if (!error) {
-            this.$el.foundation('reveal', 'close');
+            connecting.toggleClass('hide');
+            this.parent.$el.find('.step__content').toggleClass('hide');
+          } else {
+            content.toggleClass('hide');
+            connecting.toggleClass('hide');
           }
         }, this)
       );
     }
   },
-  cancelClicked: function(e)
-  {
+  cancelClicked: function(e) {
     e.preventDefault();
-    this.$el.foundation('reveal', 'close');
+    var wifiList = this.parent.$el.find('.step__content');
+    wifiList.toggleClass('hide');
+    this.$el.toggleClass('hide');
   },
-  onShowPasswordChanged: function(e)
-  {
+  onShowPasswordChanged: function(e) {
     var target = $(e.currentTarget);
-    var checked = target.is(':checked');
+    target.toggleClass('checked');
+    var checked = target.hasClass('checked');
+    console.log(checked);
     var field = this.$('input[name=password]');
 
     if (checked) {
       field.attr('type', 'text');
+      target.css('background-image', 'url("../../img/setup/show-password.svg")');
     } else {
       field.attr('type', 'password');
+      target.css('background-image', 'url("../../img/setup/hide-password.svg")');
     }
   }
+});
+
+/*********************************
+Device Registration message Screen
+**********************************/
+
+var DeviceRegistration = StepView.extend({
+  el: "#step-registration"
 });
 
 /**************
@@ -736,7 +753,9 @@ var SetupView = Backbone.View.extend({
     console.log("SetupView is initialized");
     this.steps = {
       'welcome': new StepWelcome({'setup_view': this}),
-      // 'name': new StepName({'setup_view': this}),
+      'goToInternet': new StepToInternetConnection({'step_view': this}),
+      'deviceRegistration': new DeviceRegistration({ 'step_view': this }),
+      'name': new StepName({'setup_view': this}),
       'internet': new StepInternet({'setup_view': this}),
       'astroprint': new StepAstroprint({'setup_view': this}),
       // 'connect-printer': new StepConnectPrinter({'setup_view': this}),
