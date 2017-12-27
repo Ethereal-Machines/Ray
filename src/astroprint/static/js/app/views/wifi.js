@@ -86,7 +86,14 @@ var WifiView = Backbone.View.extend({
         self.$('.section-sub-container--wifi-available').removeClass('hide');
         self.availableNetworks = data.networks;
 
-        self.showAvailableWifi();
+        if (self.availableNetworks.length === 0) {
+          console.log('No Wifi is Available');
+          self.showNoWifiAvailable();
+        } else {
+          console.log('Wifi are available outside');
+          self.showAvailableWifi();
+        }
+
         // console.log(self.availableNetworks);
       },
       error: function(xhr) {
@@ -94,7 +101,11 @@ var WifiView = Backbone.View.extend({
       }
     });
   },
+  showNoWifiAvailable: function() {
+    this.$('.available-wifi-list').find('.no-wifi-msg').removeClass('hide');
+  },
   showAvailableWifi: function() {
+    this.$('.available-wifi-list').find('.no-wifi-msg').addClass('hide');
     this.$('.available-wifi-list').html(this.availableNetworkTemplate({
       wifiItems: this.availableNetworks
     }));

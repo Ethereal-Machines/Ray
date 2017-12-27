@@ -44,6 +44,7 @@
   overflow: hidden;
   /*overflow-y: hidden;*/
   overflow-y: scroll;
+  position: relative;
 }
 
 .stored-wifi-list li,
@@ -68,6 +69,24 @@
   width: 600px;
   overflow: hidden;
   height: 56px !important;
+}
+
+.available-wifi-list .no-wifi-msg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 70%;
+  text-align: center;
+}
+
+.no-wifi-msg h1 {
+  margin: 0;
+}
+
+.no-wifi-msg p {
+  margin: 0;
+  padding: 20px 0 0;
 }
 
 .section-sub-container__button-container {

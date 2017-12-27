@@ -31,7 +31,7 @@
     </div>
 
     <div class="section-sub-container section-sub-container--stored-wifi hide">
-      <h1 class="section-heading">Choose from the list of saved networks</h1>
+      <h1 class="section-heading">Choose a wifi to connect with</h1>
       <ul class="stored-wifi-list">
         <script type="text/template" id="stored-wifi-list-template">
           <% _.each(wifiItems, function(wifi) { %>
@@ -73,8 +73,12 @@
     </div>
 
     <div class="section-sub-container section-sub-container--wifi-available hide">
-      <h1 class="section-heading">Choose from the list of saved networks</h1>
+      <h1 class="section-heading">Choose a wifi to connect with...</h1>
       <ul class="available-wifi-list">
+        <div class="no-wifi-msg hide">
+          <h1>Sorry! No WiFi is available to connect with.</h1>
+          <p>Please check your router settings and try again.</p>
+        </div>
         <script type="text/template" id="available-wifi-list-template">
           <% _.each(wifiItems, function(wifi) { %>
             <li>
