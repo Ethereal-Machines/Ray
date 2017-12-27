@@ -15,6 +15,10 @@ body button {
 	font-weight: bold !important;
 }
 
+.active {
+	display: block !important;
+}
+
 .hide {
 	display: none !important;
 }
@@ -239,4 +243,60 @@ progress[value] {
 #notify-view p {
 	font-size: 20px;
 	margin: 0 auto 40px;
+}
+
+/**************************************************
+	Overriding the styles for the On Screen Keyboard
+	to customize the look and feel.
+***************************************************/
+#mlkeyboard {
+	/* display: block !important; */
+	height: 250px !important;
+	background: #EEEEEE !important;
+}
+
+#mlkeyboard ul li {
+	width: 52px;
+	height: 50px;
+	line-height: 50px;
+	vertical-align: middle;
+	margin: 2px;
+	background: #EEEEEE !important;
+	border: none !important;
+	font-size: 27px;
+}
+
+#mlkeyboard-backspace {
+	font-size: 20px !important;
+}
+
+#mlkeyboard ul #mlkeyboard-backspace,
+#mlkeyboard ul #mlkeyboard-return,
+#mlkeyboard ul #mlkeyboard-left-shift,
+#mlkeyboard ul #mlkeyboard-right-shift,
+#mlkeyboard ul #mlkeyboard-capslock,
+#mlkeyboard ul #mlkeyboard-tab,
+#mlkeyboard ul #mlkeyboard-space {
+	background: #222222 !important;
+	color: white;
+	font-size: 20px;
+}
+
+#mlkeyboard ul #mlkeyboard-capslock {
+	width: 80px !important;
+}
+#mlkeyboard ul #mlkeyboard-left-shift {
+	width: 120px !important;
+}
+#mlkeyboard ul #mlkeyboard-right-shift {
+	display: none !important;
+}
+
+#mlkeyboard ul #mlkeyboard-space {
+	width: 400px !important;
+	height: 30px !important;
+	position: absolute;
+	bottom: 0;
+	left: 50%;
+	transform: translateX(-50%);
 }
