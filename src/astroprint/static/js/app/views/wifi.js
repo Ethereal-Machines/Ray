@@ -319,7 +319,7 @@ var AddPasswordModal = Backbone.View.extend({
     'click button.connect': 'connectClicked',
     'submit form': 'connectClicked',
     'click .cancel-btn--add-password': 'cancelClicked',
-    'change .show-password': 'showPassword'
+    'click .show-password': 'showPassword'
   },
   initialize: function(params) {
     this.parent = params.parent;
@@ -339,9 +339,13 @@ var AddPasswordModal = Backbone.View.extend({
   open: function(wifiInfo) {
     this.network  = wifiInfo;
     this.render(wifiInfo);
+    this.$('.network-password-field').focus();
+    $('#mlkeyboard').addClass('active');
     // console.log(this.network);
   },
   connectClicked: function(e) {
+    $('#mlkeyboard').removeClass('active');
+
     e.preventDefault();
     this.undelegateEvents();
 
@@ -360,19 +364,23 @@ var AddPasswordModal = Backbone.View.extend({
   },
   cancelClicked: function(e) {
     e.preventDefault();
+    $('#mlkeyboard').removeClass('active');
     this.undelegateEvents();
 
     this.resetState();
   },
   showPassword: function(e) {
     var target = $(e.currentTarget);
-    var checked = target.is(':checked');
+    target.toggleClass('checked');
+    var checked = target.hasClass('checked');
     var field = this.$('input[name=password]');
 
     if (checked) {
       field.attr('type', 'text');
+      target.css('background-image', 'url("../img/setup/show-password.svg")');
     } else {
       field.attr('type', 'password');
+      target.css('background-image', 'url("../img/setup/hide-password.svg")');
     }
   },
   randomCall: function(data) {
