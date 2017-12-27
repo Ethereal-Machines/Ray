@@ -302,7 +302,7 @@ button.bottom-button {
   Styles for 'device-registration'
 **********************************/
 #step-registration {
-  width: 100%;
+  /* width: 100%; */
 }
 
 .step__content__msg--registration {
