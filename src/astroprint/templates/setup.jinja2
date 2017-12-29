@@ -1,6 +1,7 @@
 {% extends 'base.jinja2' %}
 
 {% block css %}
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/jquery.ml-keyboard.css') }}" />
   <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/gen/app.css') }}" />
   <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/gen/setup.css') }}" />
 {% endblock %}
@@ -206,46 +207,54 @@
     </div>
   </div>
 
-  <div id="step-astroprint" class="step hide">
-    <h1 class="bold">AstroPrint.com Account<div class="nub"></div></h1>
-    <div class="content">
+  <div id="step-astroprint" class="step hide app-view">
+    <div class="step_content text-center app-content">
       <div class="checking-state" align="center">
-        <i class="icon-rocket-spinner animate-spin"></i>
-        <h3 class="bold" align="center">Checking AstroPrint.com...</h3>
+        <div class="step-top-bar">
+          <h1 class="only-heading">Register your device!</h1>
+        </div>
+        <p>Please Wait...</p>
+        <img src="{{ url_for('static', filename='img/setup/loading-icon.svg') }}" alt="Loading Animation" width="136" height="20" class="step__loading-animation">
       </div>
       <div class="success-state hide" align="center">
-        <img src="/img/setup/step_5_rocket-launch.png" height="93"/>
-        <h4 class="bold" align="center">
-          <i class="icon-user ok"></i>
-          <span class="email"></span>
-          (<a class="logout" href="#">Logout</a>)
-        </h4>
-        <a class="button success radius expand" href="#share"><small>Next:</small> <b>Share/b> <i class="icon-right-open"></i></a>
+        <div class="step-top-bar">
+          <h1 class="only-heading">Device Registration Complete!</h1>
+        </div>
+        <img src="{{ url_for('static',filename='img/ethereal-astroprint/finish-icon.svg') }}" alt="Finish Icon" width="112" height="112">
+        <p class="text-center">
+           Your device has been registered successfully!
+        </p>
+        <div class="step-bottom-bar">
+          <a href="#name" class="bottom-button bottom-button--single bottom-button--right">Next</a>
+        </div>
+      </div>
+      <div class="failed-state hide" align="center">
+        <div class="step-top-bar">
+          <h1 class="only-heading">Registration failed!</h1>
+        </div>
+        <img src="{{ url_for('static',filename='img/preheating-utility/confirm-cancel-icon.svg') }}" alt="Finish Icon" width="112" height="112">
+        <p class="text-center error-msg"></p>
+        <div class="step-bottom-bar">
+          <button href="#astroprint" class="bottom-button bottom-button--single bottom-button--right retry-btn">Retry</button>
+        </div>
       </div>
       <div class="settings-state hide">
-        <img src="/img/setup/step_5_rocket-launch.png" height="93"/>
-        <p>
-          This allows you to slice, store, and print through our cloud servers. Sign in below or <a target="_astroprint" href="http://www.astroprint.com/account/signup">create a new account</a>.
-        </p>
-        <form>
-          <label for="machineId">
-            <i class="icon-user"></i> <b>Machine ID</b>
-            <input type="text" id="machineId" class="radius" name="machineId"/>
-          </label>
-          <label for="accessCode">
-            <i class="icon-lock"></i> <b>Access Code</b>
-            <input type="password" id="accessCode" class="radius" name="accessCode"/>
-          </label>
-          <div align="center">
-            <div class="loading-button expand">
-              <button class="success radius submit-action expand" href="#connect-printer"><small>Next:</small> <b>Printer Connection</b> <i class="icon-right-open"></i></button>
-              <span class="button success disabled radius loading expand"><i class="icon-rocket-spinner animate-spin"></i> Logging in...</span>
-            </div>
-          </div>
-        </form>
-        <div align="right">
-          <a href="#share" class="skip-step">Skip AstroPrint Account <i class="icon-right-open"></i></a>
+        <div class="step-top-bar">
+          <a href="#deviceRegistration" class="access-key-cancel-button">
+            <img src="{{ url_for('static', filename='img/settings-page/back-icon.svg') }}" alt="Back" height="56" width="56">
+          </a>
+          <button class="back-button-img hide">
+            <img src="{{ url_for('static', filename='img/settings-page/back-icon.svg') }}" alt="Back" height="56" width="56">
+          </button>
+          <h1 class="heading-with-button">Register your device</h1>
+          <button class="top-button hide access-key-submit-button">Submit</button>
+          <button class="top-button go-to-access-key">Next</button>
         </div>
+        <p class="step__content__msg form-msg text-center">Enter the unique Machine Id</p>
+        <form class="wifi-password-modal__form">
+          <input type="text" id="machineId" class="network-password-field" name="machineId" placeholder="Enter Unique Machine Id"/>
+          <input type="password" id="accessCode" class="network-password-field hide" name="accessCode" placeholder="Enter Access Code"/>
+        </form>
       </div>
     </div>
   </div>
@@ -381,7 +390,7 @@
     var shareOptions = {{ variantData['share'] | tojson | safe }}
   </script>
   {% assets
-    "js/lib/jquery.js", "js/lib/underscore.js", "js/lib/backbone.js", "js/lib/sockjs.js", "js/lib/fastclick.js", "js/lib/foundation/foundation.js", "js/lib/foundation/foundation.abide.js", "js/lib/foundation/foundation.reveal.js",
+    "js/lib/jquery.js", "js/lib/underscore.js", "js/lib/backbone.js",  "js/lib/jquery.ml-keyboard.js", "js/lib/sockjs.js", "js/lib/fastclick.js", "js/lib/foundation/foundation.js", "js/lib/foundation/foundation.abide.js", "js/lib/foundation/foundation.reveal.js",
     "js/lib/jquery.noty.js", "js/lib/jquery.noty.top.js", "js/lib/sockjs.js", "js/setup/setup.js" -%}
       <script type="text/javascript" src="{{ ASSET_URL }}"></script>
   {%- endassets %}
