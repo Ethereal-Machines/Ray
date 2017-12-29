@@ -344,7 +344,7 @@ var AddPasswordModal = Backbone.View.extend({
     // console.log(this.network);
   },
   connectClicked: function(e) {
-    $('#mlkeyboard').removeClass('active');
+    $('#mlkeyboard').remove();
 
     e.preventDefault();
     this.undelegateEvents();
@@ -363,8 +363,9 @@ var AddPasswordModal = Backbone.View.extend({
     this.$('button').addClass('disable-btn');
   },
   cancelClicked: function(e) {
+    console.log('cancel password button is clicked');
     e.preventDefault();
-    $('#mlkeyboard').removeClass('active');
+    $('#mlkeyboard').remove();
     this.undelegateEvents();
 
     this.resetState();
