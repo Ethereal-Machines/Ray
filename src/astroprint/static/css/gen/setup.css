@@ -219,7 +219,7 @@ button.bottom-button {
   width: 696px;
   margin: 0 auto;
   font-size: 25px;
-  padding: 5px;
+  padding: 5px 40px 5px 5px;
   border-top: none;
   border-left: none;
   border-right: none;
@@ -311,12 +311,12 @@ button.bottom-button {
   font-size: 22px;
 }
 
+.settings-state {
+  width: 100%;
+}
 /*********************************
   Styles for 'device-registration'
 **********************************/
-#step-registration {
-  /* width: 100%; */
-}
 
 .step__content__msg--registration {
   max-width: 566px;
@@ -325,4 +325,9 @@ button.bottom-button {
 
 #machineId {
   margin-bottom: 20px;
+}
+
+#step-share img {
+  display: block;
+  margin: 88px auto 24px;
 }
