@@ -185,7 +185,7 @@ default_settings = {
     },
     "usb": {
         "filelist": [],
-        "folder": "/media/pi",
+        "folder": "/media/usb",
     },
     "setup": {
         "machineId": None,
