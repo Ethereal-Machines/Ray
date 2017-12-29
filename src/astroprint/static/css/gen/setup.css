@@ -9,6 +9,12 @@
   text-align: center;
 }
 
+.app-content {
+  width: 100%;
+  height: 424px;
+  margin: 0 auto;
+}
+
 .link-next-button,
 .top-button {
   display: block;
@@ -110,6 +116,13 @@ button.bottom-button {
 
 .bottom-button--single {
   width: 1000% !important;
+}
+
+.back-button-img {
+  width: 56px;
+  height: 56px;
+  padding: 0;
+  background-color: #111111;
 }
 
 /**********************************
@@ -308,4 +321,8 @@ button.bottom-button {
 .step__content__msg--registration {
   max-width: 566px;
   margin: 0 auto;
+}
+
+#machineId {
+  margin-bottom: 20px;
 }
