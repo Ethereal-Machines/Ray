@@ -114,14 +114,7 @@ default_settings = {
     },
     "controls": [],
     "system": {
-        "actions": {
-            'shutdown': {
-                'command': 'sudo shutdown now',
-            },
-            'restart': {
-                'command': 'sudo restart',
-            }
-        }
+        "actions": [],
     },
     "accessControl": {
         "enabled": True,
