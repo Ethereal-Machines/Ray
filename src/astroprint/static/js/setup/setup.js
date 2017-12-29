@@ -165,10 +165,13 @@ var StepInternet = StepView.extend({
     _.extend(this.events, {
       'click .failed-state button': 'onShow',
       'click .settings-state button.connect': 'onConnectClicked',
-      'change .hotspot-off input': 'hotspotOffChanged'
+      'click .cancel-btn--wifi-network': 'onCancelClicked',
+      'change .hotspot-off input': 'hotspotOffChanged',
+      'click .retry-btn': 'retryForNetworks'
     });
   },
   onShow: function() {
+    console.log('onShow function is called');
     /* this 'onShow' function is called on initialization */
     this.$el.removeClass('success settings failed');
 
@@ -176,10 +179,14 @@ var StepInternet = StepView.extend({
     this.$el.addClass('checking');
 
     /* if on initialization checking view is disable then enabling that */
+
     var checkClass = this.$('.checking-state').hasClass('hide');
     if (checkClass) {
-      this.$('.checking-state').removeClass('hide').addClass('active');
-      this.$('.failed-state').removeClass('active').addClass('hide');
+      this.$('.checking-state').removeClass('hide');
+      this.$('.failed-state').addClass('hide');
+      this.$('.settings-state').addClass('hide');
+      // this.$('.checking-state').removeClass('hide').addClass('active');
+      // this.$('.failed-state').removeClass('active').addClass('hide');
     }
     $.ajax({
       url: API_BASEURL + 'setup/internet',
@@ -187,12 +194,14 @@ var StepInternet = StepView.extend({
       dataType: 'json',
       success: _.bind(function(data) {
         console.log(data);
+        this.$('.checking-state').addClass('hide');
         if (data && data.connected) {
           this.$el.addClass('success');
-          this.$('.checking-state').addClass('hide');
+          // this.$('.checking-state').addClass('hide');
 
           /* showing the success view if the connection is already stablished is received */
-          this.$('.success-state').removeClass('hide').addClass('active');
+          // this.$('.success-state').removeClass('hide').addClass('active');
+          this.$('.success-state').removeClass('hide');
 
         } else {
           /* 
@@ -223,8 +232,8 @@ var StepInternet = StepView.extend({
           this.$el.addClass('settings');
 
           /* enabling the 'settings-state' view and disabling the 'checking-state' view */
-          this.$(".settings-state").removeClass('hide').addClass('active');
-          this.$(".checking-state").addClass('hide');
+          this.$(".settings-state").removeClass('hide');
+          // this.$(".checking-state").addClass('hide');
         }
       }, this),
       error: _.bind(function(xhr) {
@@ -232,8 +241,8 @@ var StepInternet = StepView.extend({
         console.log(xhr);
         this.$el.addClass('failed');
         this.$(".checking-state").addClass('hide');
-        this.$(".failed-state").removeClass('hide').addClass('active');
-        this.$el.find('.failed-state h3').text(xhr.responseText);
+        this.$(".failed-state").removeClass('hide');
+        this.$('.failed-state p').text(xhr.responseText);
       }, this),
       complete: _.bind(function() {
         this.$el.removeClass('checking');
@@ -272,6 +281,10 @@ var StepInternet = StepView.extend({
         this.doConnect({id: network.id, password: null});
       }
     }
+  },
+  onCancelClicked: function() {
+    this.$('.checking-state').removeClass('hide');
+    this.$('.settings-state').addClass('hide');
   },
   hotspotOffChanged: function(e) {
     var target = $(e.currentTarget);
@@ -377,6 +390,9 @@ var StepInternet = StepView.extend({
       loadingBtn.removeClass('loading');
       if (callback) callback(true);
     })
+  },
+  retryForNetworks: function() {
+    this.onShow();
   }
 });
 
@@ -385,7 +401,7 @@ var WiFiNetworkPasswordDialog = Backbone.View.extend({
   events: {
     'click button.connect': 'connectClicked',
     'submit form': 'connectClicked',
-    'click .top-button': 'cancelClicked',
+    'click .cancel-btn-password': 'cancelClicked',
     'click #show-password': 'onShowPasswordChanged'
   },
   parent: null,
@@ -395,6 +411,10 @@ var WiFiNetworkPasswordDialog = Backbone.View.extend({
   },
   render: function(wifiInfo) {
     this.$el.html( this.template({wifi: wifiInfo}) );
+    this.$('.network-password-field').mlKeyboard({
+      layout: 'en_US'
+    });
+    $('#mlkeyboard').addClass('active');
   },
   open: function(wifiInfo) {
     var wifiList = this.parent.$el.find('.step__content');
@@ -405,32 +425,42 @@ var WiFiNetworkPasswordDialog = Backbone.View.extend({
   },
   connectClicked: function(e) {
     e.preventDefault();
-
+    $('#mlkeyboard').remove();
     var content = this.$el.find('.step__content');
     var form = this.$el.find('form');
     var connecting = this.$el.find('.connecting');
     var password = form.find('.network-password-field').val();
+    var submitBtn = this.$('.connect').addClass('hide');
 
-    if (password) {
-      content.toggleClass('hide');
-      connecting.toggleClass('hide');
-      this.parent.doConnect(
-        {id: form.find('.network-id-field').val(), password: password},
-        _.bind(function(error) { //callback
-          form.find('.network-password-field').val('');
-          if (!error) {
-            connecting.toggleClass('hide');
-            this.parent.$el.find('.step__content').toggleClass('hide');
-          } else {
-            content.toggleClass('hide');
-            connecting.toggleClass('hide');
-          }
-        }, this)
-      );
-    }
+    this.$('.cancel-btn-password').addClass('hide');
+    submitBtn.addClass('hide');
+    content.toggleClass('hide');
+    connecting.toggleClass('hide');
+    this.parent.doConnect(
+      {id: form.find('.network-id-field').val(), password: password},
+      _.bind(function(error) { //callback
+        form.find('.network-password-field').val('');
+        if (!error) {
+          connecting.toggleClass('hide');
+          this.parent.$el.find('.step__content').toggleClass('hide');
+          submitBtn.removeClass('hide');
+        } else {
+          submitBtn.removeClass('hide');
+          content.toggleClass('hide');
+          connecting.toggleClass('hide');
+          this.$('.cancel-btn-password').removeClass('hide');
+          this.$('.network-password-field').focus();
+          this.$('.network-password-field').mlKeyboard({
+            layout: 'en_US'
+          });
+          $('#mlkeyboard').addClass('active');
+        }
+      }, this)
+    );
   },
   cancelClicked: function(e) {
     e.preventDefault();
+    $('#mlkeyboard').remove();
     var wifiList = this.parent.$el.find('.step__content');
     wifiList.toggleClass('hide');
     this.$el.toggleClass('hide');
