@@ -275,7 +275,6 @@ progress[value] {
 #mlkeyboard ul #mlkeyboard-left-shift,
 #mlkeyboard ul #mlkeyboard-right-shift,
 #mlkeyboard ul #mlkeyboard-capslock,
-#mlkeyboard ul #mlkeyboard-tab,
 #mlkeyboard ul #mlkeyboard-space {
 	background: #222222 !important;
 	color: white;
@@ -285,6 +284,13 @@ progress[value] {
 #mlkeyboard ul #mlkeyboard-capslock {
 	width: 80px !important;
 }
+
+#mlkeyboard ul #mlkeyboard-tab {
+	background: transparent !important;
+	font-size: 0px !important;
+	width: 20px !important;
+}
+
 #mlkeyboard ul #mlkeyboard-left-shift {
 	width: 120px !important;
 }
