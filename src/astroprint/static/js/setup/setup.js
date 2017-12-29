@@ -466,12 +466,19 @@ var DeviceRegistration = StepView.extend({
 
 var StepAstroprint = StepView.extend({
   el: "#step-astroprint",
-  initialize: function()
-  {
+  submitBtn : $('.access-key-submit-button'),
+  nextBtn : $('.go-to-access-key'),
+  cancelBtn : $('.access-key-cancel-button'),
+  formBackBtn : $('.back-button-img'),
+  initialize: function() {
     this.events["click a.logout"] = "onLogoutClicked";
+    this.events["click .go-to-access-key"] = "toAccessKey";
+    this.events["click .access-key-submit-button"] = "onSubmit";
+    this.events["click .access-key-cancel-button"] = "cancelRegistration";
+    this.events["click .back-button-img"] = "toMachineId";
+    this.events["click .retry-btn"] = "retryVerification";
   },
-  onShow: function()
-  {
+  onShow: function() {
     this.$el.removeClass('success settings');
     this.$el.addClass('checking');
     $.ajax({
@@ -491,6 +498,10 @@ var StepAstroprint = StepView.extend({
           this.$el.find('.checking-state').addClass('hide');
           this.$el.find('.settings-state').removeClass('hide');
           this.$el.find('#machineId').focus();
+          this.$('#machineId').mlKeyboard({
+            layout: 'en_US'
+          });
+          $('#mlkeyboard').addClass('active');
         }
       }, this),
       error: _.bind(function() {
@@ -498,17 +509,68 @@ var StepAstroprint = StepView.extend({
         this.$el.find('.checking-state').addClass('hide');
         this.$el.find('.settings-state').removeClass('hide');
         this.$el.find('#machineId').focus();
+        this.$('#machineId').mlKeyboard({
+          layout: 'en_US'
+        });
+        $('#mlkeyboard').addClass('active');
       }, this),
       complete: _.bind(function() {
         this.$el.removeClass('checking');
       }, this)
     });
   },
-  onSubmit: function(data)
-  {
+  toAccessKey: function() {
+    this.$('#machineId').addClass('hide');
+    this.$('.form-msg').text('Enter the Access Code');
+    $('#mlkeyboard').remove();
+    this.submitBtn.removeClass('hide');
+    this.cancelBtn.addClass('hide');
+    this.nextBtn.addClass('hide');
+    this.formBackBtn.removeClass('hide');
+
+    this.$('#accessCode').removeClass('hide').focus();
+    this.$('#accessCode').mlKeyboard({
+      layout: 'en_US'
+    });
+    $('#mlkeyboard').addClass('active');
+  },
+  toMachineId: function() {
+    $('#mlkeyboard').remove();
+    // this.formBackBtn.addClass('hide');
+    this.resetFormState();
+    this.$('#accessCode').addClass('hide');
+    this.$('#machineId').removeClass('hide').focus();
+    // this.$('.form-msg').text('Enter the unique Machine Id');
+    this.$('#machineId').mlKeyboard({
+      layout: 'en_US'
+    });
+    $('#mlkeyboard').addClass('active');
+  },
+  cancelRegistration: function() {
+    this.$('#machineId').removeClass('hide').val('');
+    this.$('#accessCode').val('').addClass('hide');
+    $('#mlkeyboard').remove();
+    this.resetFormState();
+  },
+  resetFormState: function() {
+    this.$('.form-msg').text('Enter the unique Machine Id');
+    this.submitBtn.addClass('hide');
+    this.nextBtn.removeClass('hide');
+    this.cancelBtn.removeClass('hide');
+    this.formBackBtn.addClass('hide');
+  },
+  onSubmit: function() {
+    $('#mlkeyboard').remove();
+    this.$('.settings-state').addClass('hide');
+    this.$('.checking-state').removeClass('hide');
     console.log('Astroprint\'s onSubmit() fn is called');
-    this.$el.find('.loading-button').addClass('loading');
-    console.log(JSON.stringify(data));
+    var data = {};
+    var serializedData = $('.wifi-password-modal__form').serializeArray();
+    serializedData.forEach(function (element) {
+      data[element.name] = element.value;
+    });
+    console.log(data);
+
     $.ajax({
       url: API_BASEURL + 'setup/astroprint',
       method: 'post',
@@ -516,18 +578,24 @@ var StepAstroprint = StepView.extend({
       dataType: 'json',
       contentType: "application/json;charset=utf-8",
       success: _.bind(function() {
-        location.href = this.$('.submit-action').attr('href');
+        // location.href = this.$('.submit-action').attr('href');
+        $('#mlkeyboard').remove();
+        this.$('.success-state').removeClass('hide');
       }, this),
       error: _.bind(function(xhr) {
         console.log(xhr);
+        $('#mlkeyboard').remove();
+        this.$('.checking-state').addClass('hide');
         if (xhr.status == 400 || xhr.status == 401 || xhr.status == 503) {
-          message = "There was an error logging you in";
+          message = "Registration failed!";
+          this.$('.failed-state').removeClass('hide');
+          this.$('.failed-state .error-msg').text(message);
         } else {
           message = xhr.responseText;
-          this.$el.find('.settings-state').addClass('hide');
-          this.$el.find('.success-state').removeClass('hide');
+          this.$('.failed-state').removeClass('hide');
+          this.$('.failed-state .error-msg').text(message);
         }
-        noty({text: message, timeout: 3000});
+        // noty({text: message, timeout: 3000});
         this.$('#machineId').focus();
       }, this),
       complete: _.bind(function() {
@@ -535,8 +603,12 @@ var StepAstroprint = StepView.extend({
       }, this)
     });
   },
-  onLogoutClicked: function(e)
-  {
+  retryVerification: function() {
+    this.$('.failed-state').addClass('hide');
+    this.$('.settings-state').removeClass('hide');
+    this.cancelRegistration();
+  },
+  onLogoutClicked: function(e) {
     e.preventDefault();
     $.ajax({
       url: API_BASEURL + 'setup/astroprint',
