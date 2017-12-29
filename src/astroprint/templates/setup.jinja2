@@ -27,7 +27,7 @@
       <img src="{{ url_for('static', filename='img/setup/setup_graphic.svg') }}" alt="Internet Image" width="352.66" height="265.62">
     </div>
     <div class="step-bottom-bar">
-      <a href="#name" class="bottom-button bottom-button--left">Skip</a>
+      <a href="#share" class="bottom-button bottom-button--left">Skip</a>
       <a href="#internet" class="bottom-button bottom-button--right">Connect to network</a>
     </div>
   </div>
@@ -75,7 +75,7 @@
     <div class="step-top-bar">
       <h1 class="only-heading">Connect to wireless network</h1>
     </div>
-    <div class="step__content">
+    <div class="step__content app-content">
       <div class="success-state hide">
         <img src="{{ url_for('static',filename='img/ethereal-astroprint/finish-icon.svg') }}" alt="Finish Icon" width="112" height="112">
         <p class="text-center">
@@ -95,7 +95,8 @@
           Oops...Something went wrong!
         </p>
         <div class="step-bottom-bar">
-          <a href="#deviceRegistration" class="bottom-button bottom-button--single bottom-button--right">Skip</a>
+          <a href="#goToInternet" class="bottom-button bottom-button--left">Cancel</a>
+          <a href="#internet" class="bottom-button bottom-button--right retry-btn">Retry</a>
         </div>
         <!-- <button class="success radius expand">Retry</button> -->
       </div>
@@ -103,7 +104,7 @@
         <p class="step__content__msg text-center">Select the network you want to connect to...</p>
         <div class="wifi-network-list"></div>
         <div class="step-bottom-bar">
-          <a href="" class="bottom-button bottom-button--left">Cancel</a>
+          <a href="#goToInternet" class="bottom-button bottom-button--left cancel-btn--wifi-network">Cancel</a>
           <button class="bottom-button bottom-button--right connect">Connect</button>
         </div>
         <!-- <div class="row">
@@ -146,8 +147,11 @@
           </div>
         <% } else { %> -->
           <div class="step-top-bar">
+            <button class="back-button-img cancel-btn-password">
+              <img src="{{ url_for('static', filename='img/settings-page/back-icon.svg') }}" alt="Back" height="56" width="56">
+            </button>
             <h1 class="heading-with-button">Enter password...</h1>
-            <button class="top-button">Cancel</button>
+            <button class="top-button connect">Connect</button>
           </div>
           <div class="step__content">
             <p class="step__content__msg text-center">Enter the password for <span class="bold"><%= wifi.name %></span>.</p>
@@ -155,9 +159,9 @@
               <input type="hidden" class="network-id-field" name="id" value="<%= wifi.id %>"/>
               <input type="password" class="network-password-field" name="password"/>
               <div type="checkbox" id="show-password"></div>
-              <div class="loading-button expand">
+              <!-- <div class="loading-button expand">
                 <input type="submit" class="button connect" value="Connect"/>
-              </div>
+              </div> -->
             </form>
           </div>
           <div class="connecting hide">
@@ -202,7 +206,7 @@
       <img src="{{ url_for('static', filename='img/setup/register_printer.svg') }}" alt="Internet Image" width="191" height="199">
     </div>
     <div class="step-bottom-bar">
-      <a href="#name" class="bottom-button bottom-button--left">Skip</a>
+      <a href="#share" class="bottom-button bottom-button--left">Skip</a>
       <a href="#astroprint" class="bottom-button bottom-button--right">Next</a>
     </div>
   </div>
@@ -356,23 +360,19 @@
     </script>
   </div> -->
 
-  <div id="step-share" class="step hide">
-    <h1 class="bold">You're done!<div class="nub"></div></h1>
-    <div class="content">
-      <img src="/img/setup/final_step_astroprint_logo.png" height=""/>
-      <p>{{variantData['congratsMsg']}}</p>
-      <div class="row">
-        <div class="small-offset-1 small-5 columns">
-          <button class="radius share-button facebook bold expand"><i class="icon-facebook-squared"></i></button>
-        </div>
-        <div class="small-5 small-pull-1 columns">
-          <button class="radius share-button twitter bold expand"><i class="icon-twitter"></i></button>
-        </div>
-      </div>
-      <div class="loading-button expand">
-        <a class="button radius success bold setup-done expand" href="#">Start Printing <i class="icon-right-open"></i></a>
-        <span class="button disabled success bold expand loading"><i class="icon-rocket-spinner animate-spin"></i> Launching</span>
-      </div>
+  <!-- Setup complete screen go here -->
+  <div id="step-share" class="step hide app-view">
+    <div class="step-top-bar">
+      <h1 class="only-heading">Setup Complete!</h1>
+    </div>
+    <div class="step_content text-center">
+      <img src="{{ url_for('static',filename='img/ethereal-astroprint/finish-icon.svg') }}" alt="Finish Icon" width="112" height="112">
+      <p class="text-center">
+        Your device has been set up and is ready to print!
+      </p>
+    </div>
+    <div class="step-bottom-bar">
+      <a href="#" class="bottom-button bottom-button--single bottom-button--right setup-done">Next</a>
     </div>
   </div>
 </div>
