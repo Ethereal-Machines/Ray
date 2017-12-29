@@ -253,6 +253,7 @@ progress[value] {
 	/* display: block !important; */
 	height: 250px !important;
 	background: #EEEEEE !important;
+	z-index: 10;
 }
 
 #mlkeyboard ul li {
@@ -272,7 +273,6 @@ progress[value] {
 
 #mlkeyboard ul #mlkeyboard-backspace,
 #mlkeyboard ul #mlkeyboard-return,
-#mlkeyboard ul #mlkeyboard-left-shift,
 #mlkeyboard ul #mlkeyboard-right-shift,
 #mlkeyboard ul #mlkeyboard-capslock,
 #mlkeyboard ul #mlkeyboard-space {
@@ -285,9 +285,13 @@ progress[value] {
 	width: 80px !important;
 }
 
-#mlkeyboard ul #mlkeyboard-tab {
+#mlkeyboard ul #mlkeyboard-tab,
+#mlkeyboard ul #mlkeyboard-left-shift {
 	background: transparent !important;
 	font-size: 0px !important;
+}
+
+#mlkeyboard ul #mlkeyboard-tab {
 	width: 20px !important;
 }
 

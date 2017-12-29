@@ -117,7 +117,8 @@ KeyTab.prototype.defaultClickAction = function() {
   Key.call(this, arguments);
 
   this.id = "mlkeyboard-capslock";
-  this.default_value = 'caps lock';
+  // this.default_value = 'caps lock';
+  this.default_value = 'shift';
 }
 
 KeyCapsLock.prototype = new Key();
