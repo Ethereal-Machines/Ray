@@ -46,12 +46,13 @@ var TempBarView = Backbone.View.extend({
     }
   },
   setDefaultValue: function() {
+    /* Setting the default values of preheating directly from the 'printer-profile' */
     if (this.type === "tool0") {
-      this.setHandle(210);
+      this.setHandle(app.printerProfile.get('nozzle1Temp'));
     } else if (this.type === "bed") {
-      this.setHandle(70);
+      this.setHandle(app.printerProfile.get('bedTemp'));
     } else if (this.type === "tool1") {
-      this.setHandle(210);
+      this.setHandle(app.printerProfile.get('nozzle2Temp'));
     }
   },
   onEditClicked: function(e) {
