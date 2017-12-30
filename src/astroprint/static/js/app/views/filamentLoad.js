@@ -19,6 +19,7 @@ var FilamentLoadView = Backbone.View.extend({
   notifyView: null,
   initialize: function(options) {
     this.listenTo(app.socketData, 'change:temps', this.tempUpdateAlert);
+    this.listenTo(app.printerProfile, 'change:nozzle1Temp', this.printerProfileChange);
 
     this.tempView = new TempBarVerticalView({
       scale: [0, app.printerProfile.get('max_nozzle_temp')],
@@ -30,6 +31,11 @@ var FilamentLoadView = Backbone.View.extend({
   },
   render: function() {
     this.$("#filament-load-wizard__preheating-progress-section").find('.temp-value').html(this.template1({tempObj: this.updatedTemp}));
+  },
+  printerProfileChange: function(s, value) {
+    // console.log('Filament load printer profile changes');
+    var tempHtml = value + ` &deg;C`;
+    this.$('.target-value').text('').append(tempHtml);
   },
   startHeating: function(e) {
     var parent = $(e.target)[0].parentElement;
