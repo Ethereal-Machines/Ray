@@ -18,6 +18,7 @@ var AppRouter = Backbone.Router.extend({
   // adding external storage view
   externalStorageView: null,
   preheatingView: null,
+  generalSettingsView: null,
   settingsView: null,
   printingView: null,
   terminalView: null,
@@ -45,6 +46,7 @@ var AppRouter = Backbone.Router.extend({
     // adding routes for the preheating view
     "preheating": "preHeating",
     "printing": "printing",
+    "general-settings": "generalSettings",
     "settings": "settings",
     "utilities": "utilities",
     "about":"about",
@@ -198,6 +200,13 @@ var AppRouter = Backbone.Router.extend({
     }
 
     this.selectView(this.printingView);
+  },
+  generalSettings: function() {
+    if (!this.generalSettingsView) {
+      this.generalSettingsView = new GeneralSettingsView();
+    }
+
+    this.selectView(this.generalSettingsView);
   },
   settings: function(page)
   {
