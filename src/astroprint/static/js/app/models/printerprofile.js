@@ -5,7 +5,7 @@
  */
 
  var PrinterProfile = Backbone.Model.extend({
- 	url: API_BASEURL + "printer-profile",
+	url: API_BASEURL + "printer-profile",
 	defaults: {
 		'id': 'profile',
 		'extruder_count': 2,
@@ -16,6 +16,14 @@
 		'invert_z': false,
 		// below two properties have been added for the extrusion process
 		'extrusion_amount': 5,
-		'extrusion_speed': 2
-	}
+		'extrusion_speed': 2,
+
+		/*
+		* The nozzle and bed temperature's default values are set
+		* These values are corresponds to the material 'PLA'
+		*/
+		'nozzle1Temp': 215,
+		'nozzle2Temp': 215,
+		'bedTemp': 72
+	},
 });
