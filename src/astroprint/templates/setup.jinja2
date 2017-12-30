@@ -194,6 +194,24 @@
       <% }); %>
       </ul>
     </script>
+
+    <div id="notify-view" class="hide">
+      <script type="text/template" id="notify-template">
+        <div class="notify-view__content">
+          <% if (type == "success") { %>
+            <img src="{{ url_for('static',filename='img/ethereal-astroprint/finish-icon.svg') }}" width="120" height="120">
+          <% } else if (type == "warning") { %>
+            <img src="{{ url_for('static',filename='img/preheating-utility/confirm-cancel-icon.svg') }}" width="120" height="120">
+          <% } else if (type == "error") { %>
+            <img src="{{ url_for('static',filename='img/ethereal-astroprint/error-icon-group.svg') }}" width="120" height="120">
+          <% } %>
+          <p><%= msg %></p>
+          <div class="loading-button">
+            <button class="success radius next-button next-button--notify">OK</button>
+          </div>
+        </div>
+      </script>
+    </div>
   </div>
 
   <!-- Step to device registration -->
