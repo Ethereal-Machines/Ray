@@ -159,6 +159,7 @@ var StepInternet = StepView.extend({
   networkListTemplate: null,
   networks: null,
   passwordDialog: null,
+  notifyTemplate: _.template($("#notify-template").html()),
   // setupView: null,
   initialize: function() {
     // this.setupView = new SetupView();
@@ -167,7 +168,8 @@ var StepInternet = StepView.extend({
       'click .settings-state button.connect': 'onConnectClicked',
       'click .cancel-btn--wifi-network': 'onCancelClicked',
       'change .hotspot-off input': 'hotspotOffChanged',
-      'click .retry-btn': 'retryForNetworks'
+      'click .retry-btn': 'retryForNetworks',
+      'click .next-button--notify': 'closeErrorMsg'
     });
   },
   onShow: function() {
@@ -306,6 +308,8 @@ var StepInternet = StepView.extend({
     var loadingBtn = this.$el.find(".settings-state .loading-button");
     loadingBtn.addClass('loading');
 
+    var self = this;
+
     $.ajax({
       url: API_BASEURL + 'setup/internet',
       type: 'POST',
@@ -355,10 +359,12 @@ var StepInternet = StepView.extend({
               setup_view.eventManager.off('astrobox:InternetConnectingStatus', connectionCb, this);
               if (connectionInfo.reason == 'no_secrets') {
                 // noty({text: "Invalid password for "+data.name+".", timeout: 3000});
-                alert("Invalid password for " + data.name + ".");
+                var msg = "Invalid password for " + data.name + ".";
+                self.$('#notify-view').removeClass('hide').html(self.notifyTemplate({ msg: msg, type: 'warning' }));
               } else {
                 // noty({text: "Unable to connect to "+data.name+".", timeout: 3000});
-                alert("Unable to connect to " + data.name + ".");
+                var msg = "Unable to connect to " + data.name + ".";
+                self.$('#notify-view').removeClass('hide').html(self.notifyTemplate({ msg: msg, type: 'warning' }));
               }
               loadingBtn.removeClass('loading');
               if (callback) callback(true);
@@ -368,7 +374,8 @@ var StepInternet = StepView.extend({
             default:
               setup_view.eventManager.off('astrobox:InternetConnectingStatus', connectionCb, this);
               // noty({text: "Unable to connect to "+data.name+".", timeout: 3000});
-              alert("Unable to connect to " + data.name + ".");
+              var msg = "Unable to connect to " + data.name + ".";
+              self.$('#notify-view').removeClass('hide').html(self.notifyTemplate({ msg: msg, type: 'warning' }));
               loadingBtn.removeClass('loading');
               clearTimeout(connectionTimeout);
               if (callback) callback(true);
@@ -379,17 +386,22 @@ var StepInternet = StepView.extend({
 
       } else if (data.message) {
         // noty({text: data.message, timeout: 3000});
-        alert(data.message);
+        var msg = data.message;
+        self.$('#notify-view').removeClass('hide').html(self.notifyTemplate({ msg: msg, type: 'warning' }));
         loadingBtn.removeClass('loading');
         if (callback) callback(true);
       }
     }, this))
     .fail(function(){
       // noty({text: "There was an error connecting.", timeout: 3000});
-      alert("There was an error connecting.");
+      var msg = "There was an error connecting.";
+      self.$('#notify-view').removeClass('hide').html(self.notifyTemplate({ msg: msg, type: 'error' }));
       loadingBtn.removeClass('loading');
       if (callback) callback(true);
     })
+  },
+  closeErrorMsg: function() {
+    this.$('#notify-view').addClass('hide');
   },
   retryForNetworks: function() {
     this.onShow();
