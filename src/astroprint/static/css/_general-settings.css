@@ -1,6 +1,7 @@
-/**********************************
-* Code by Kanishka Mohan Madhuni *
-**********************************/
+/*
+ *	(c) Kanishka Mohan Madhuni (kmmadhuni@gmail.com)
+ */
+
 .settings-list {
   list-style: none;
   width: 89%;
@@ -44,7 +45,7 @@
   padding: 0;
 }
 
-.btn {
+.btn {`
   width: 70px;
   height: 40px;
   line-height: 40px;

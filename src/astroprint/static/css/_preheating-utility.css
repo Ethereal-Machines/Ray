@@ -1,4 +1,8 @@
-#preheat-control {
+/*
+ *	(c) Kanishka Mohan Madhuni (kmmadhuni@gmail.com)
+ */
+
+  #preheat-control {
 	width: 100%;
 	display: flex;
 	flex-direction: column;
