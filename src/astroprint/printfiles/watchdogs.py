@@ -38,9 +38,10 @@ class UploadCleanupWatchdogHandler(PatternMatchingEventHandler):
         fm.removeFileFromMetadata(filename)
 
 
-def _get_gcode_files(directory):
+def _get_gcode_files(usb_path):
     """ Get gcode files in the dir """
     allfiles = []
+    directory = os.path.abspath(os.path.join(usb_path, os.pardir))
     for parent, d, pack in os.walk(directory):
         for files in pack:
             curr_file = {}
