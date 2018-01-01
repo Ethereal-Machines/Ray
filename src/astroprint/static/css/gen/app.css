@@ -67,7 +67,8 @@ body button {
 #printing-wizard-nav,
 #about-page-nav,
 #connectivity-wizard-nav,
-#wifi-wizard-nav {
+#wifi-wizard-nav,
+#general-settings-wizard-nav {
 	display: flex;
 	flex-direction: row;
 	width: 100%;
