@@ -1,13 +1,16 @@
-/******************************************
-* Code modified by Kanishka Mohan Madhuni *
-*******************************************/
+/*
+ *  (c) AstroPrint Product Team. 3DaGoGo, Inc. (product@astroprint.com)
+ *  (c) Kanishka Mohan Madhuni (kmmadhuni@gmail.com)
+ * 
+ *  Distributed under the GNU Affero General Public License http://www.gnu.org/licenses/agpl.html
+ */
 
-/***********
-* Changes: *
-************
-1) Code for the PrintFileInfoDialog has been changed as per the new UI requirements
-2) Code realted to the Uploading items from the local machines have been removed
-*/
+
+/*
+ * Changes included for new UI requirements
+ * 1) Code for the PrintFileInfoDialog has been changed as per the new UI requirements
+ * 2) Code realted to the Uploading items from the local machines have been removed
+ */
 
 var PrintFileInfoDialog = Backbone.View.extend({
   el: '#print-file-info',

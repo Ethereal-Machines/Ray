@@ -1,6 +1,9 @@
-/******************************************
-* Code modified by Kanishka Mohan Madhuni *
-*******************************************/
+/*
+ *  (c) 3DaGoGo, Inc. (product@astroprint.com)
+ *  (c) Kanishka Mohan Madhuni (kmmadhuni@gmail.com)
+ *
+ *  Distributed under the GNU Affero General Public License http://www.gnu.org/licenses/agpl.html
+ */
 
  var TempBarHorizontalView = TempBarView.extend({
   containerDimensions: null,

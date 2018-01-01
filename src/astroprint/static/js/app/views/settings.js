@@ -1,6 +1,7 @@
-/*********************************
-* Code by Kanishka Mohan Madhuni *
-**********************************/
+/*
+ *  (c) Kanishka Mohan Madhuni (kmmadhuni@gmail.com)
+ *
+ */
 
 var SettingsView = Backbone.View.extend({
   el: "#settings-view",
