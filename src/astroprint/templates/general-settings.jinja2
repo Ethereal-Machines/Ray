@@ -1,0 +1,53 @@
+<!--
+**********************************
+* Code by Kanishka Mohan Madhuni *
+**********************************
+-->
+<div id="general-settings-wizard">
+  <nav id="general-settings-wizard-nav">
+    <div class="wizard-name">
+      General Settings
+    </div>
+    <a href="#settings" class="cancel-button">Back</a>
+  </nav>
+  <h1 class="section-heading">Ethereal 'Ray'</h1>
+  <ul class="settings-list">
+    <li class="setting setting--border-top">
+      <div class="setting__left">
+        <img src="http://via.placeholder.com/40x40" alt="Icon">
+        <span>Element Type</span>
+      </div>
+      <div class="setting__right setting__right--btn-container">
+        <span class="btn btn--pla selected">PLA</span>
+        <span class="btn btn--abs">ABS</span>
+      </div>
+    </li>
+    <li class="setting">
+      <div class="setting__left">
+        <img src="{{ url_for('static',filename='img/preheating-utility/extruder-1.svg') }}" width="40" height="40" alt="Icon">
+        <span>Extruder-1 Temperature</span>
+      </div>
+      <div class="setting__right">
+        <span class="extruder-1-temp">215</span><span> &deg;C</span>
+      </div>
+    </li>
+    <li class="setting">
+      <div class="setting__left">
+        <img src="{{ url_for('static',filename='img/preheating-utility/extruder-2.svg') }}" width="40" height="40" alt="Icon">
+        <span>Extruder-2 Temperature</span>
+      </div>
+      <div class="setting__right">
+        <span class="extruder-2-temp">215</span><span> &deg;C</span>
+      </div>
+    </li>
+    <li class="setting">
+      <div class="setting__left">
+        <img src="{{ url_for('static',filename='img/preheating-utility/bed-plate.svg') }}" width="40" height="40" alt="Icon">
+        <span>Bed Temperature</span>
+      </div>
+      <div class="setting__right">
+        <span class="bed-temp">72</span><span> &deg;C</span>
+      </div>
+    </li>
+  </ul>
+</div>
