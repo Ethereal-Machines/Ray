@@ -5,8 +5,12 @@ __author__ = "Gina Häußge <osd@foosel.net>"
 __license__ = 'GNU Affero General Public License http://www.gnu.org/licenses/agpl.html'
 
 import os
+import glib
 import logging
 
+# usb detection
+import pyudev
+from pyudev.glib import MonitorObserver
 
 from astroprint.printer.manager import printerManager
 from astroprint.printfiles.map import SUPPORTED_EXTENSIONS
@@ -56,23 +60,42 @@ def _get_gcode_files(usb_path):
 
 
 global CALLBACKS
-class EtherBoxHandler(FileSystemEventHandler):
-    ''' Watch for USB insertion for print from storage feature '''
+class EtherBoxHandler(threading.Thread):
+    ''' Monitor udev for detection of usb '''
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self):
         ''' Initiate the object '''
-        super(EtherBoxHandler, self).__init__(*args, **kwargs)
+        super(EtherBoxHandler, self).__init__()
         global CALLBACKS
         self.logger = logging.getLogger(__name__)
         CALLBACKS = []
+        self.init_monitoring()
 
-    def on_created(self, event):
+    def init_monitoring(self):
+        # initialize a few stuffs
+        self.context = pyudev.Context()
+        self.monitor = pyudev.Monitor.from_netlink(self.context)
+        self.monitor.filter_by(subsystem='usb')
+        self.observer = MonitorObserver(self.monitor)
+        self.observer.connect('device_event', self.device_event)
+        self.monitor.start()
+
+    def run(self):
+        glib.MainLoop.run()
+
+    def device_event(self, observer, action, device):
+        ''' Catch the addition/removal of usb '''
+        if action == 'add':
+            return self.on_created()
+        return self.on_deleted()
+
+    def on_created(self):
         ''' Called when the media is inserted '''
-        usb_path = event.src_path
+        s = settings()
+        usb_path = s.get(['usb', 'folder'])
         gcode_files = _get_gcode_files(usb_path)
         if not gcode_files:
             return
-        s = settings()
         s.set(['usb', 'filelist'], gcode_files)
 
         alive_callbacks = []
@@ -93,7 +116,7 @@ class EtherBoxHandler(FileSystemEventHandler):
                 pass
         CALLBACKS = alive_callbacks
 
-    def on_deleted(self, event):
+    def on_deleted(self):
         s = settings()
         s.set(['usb', 'filelist'], [])
 
