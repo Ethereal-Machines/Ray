@@ -14,13 +14,14 @@
 }
 
 .temp-control-items {
-	width: 150px;
+	width: 180px;
 	text-align: center;
 }
 
 .temp-bar-label {
-	text-transform: uppercase;
 	display: block;
+	text-transform: uppercase;
+	text-align: center;
 	font-size: 20px;
 	padding: 15px 0;
 	color: #95989A;
