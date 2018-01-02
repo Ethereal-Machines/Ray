@@ -69,19 +69,20 @@ class EtherBoxHandler(threading.Thread):
         global CALLBACKS
         self.logger = logging.getLogger(__name__)
         CALLBACKS = []
-        self.init_monitoring()
 
-    def init_monitoring(self):
+    def _work(self):
+        ''' Runs the actual loop to detect the events '''
         # initialize a few stuffs
-        self.context = pyudev.Context()
-        self.monitor = pyudev.Monitor.from_netlink(self.context)
+        self.context = Context()
+        self.monitor = Monitor.from_netlink(self.context)
         self.monitor.filter_by(subsystem='usb')
         self.observer = MonitorObserver(self.monitor)
         self.observer.connect('device_event', self.device_event)
         self.monitor.start()
+        glib.MainLoop.run()
 
     def run(self):
-        glib.MainLoop.run()
+        self._work()
 
     def device_event(self, observer, action, device):
         ''' Catch the addition/removal of usb '''

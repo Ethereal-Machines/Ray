@@ -619,6 +619,7 @@ class Server():
             observer.stop()
             self.cleanup()
 
+        usbdetector.join()
         observer.join()
         logger.info('Good Bye!')
 
