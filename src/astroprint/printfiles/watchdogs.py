@@ -61,15 +61,17 @@ def _get_gcode_files(usb_path):
 
 
 global CALLBACKS
-class EtherBoxHandler(threading.Thread):
+class EtherBoxHandler():
     ''' Monitor udev for detection of usb '''
 
     def __init__(self):
         ''' Initiate the object '''
-        super(EtherBoxHandler, self).__init__()
-        global CALLBACKS
         self.logger = logging.getLogger(__name__)
+        global CALLBACKS
         CALLBACKS = []
+        thread = threading.Thread(target=self._work)
+        thread.daemon = True
+        thread.start()
 
     def _work(self):
         ''' Runs the actual loop to detect the events '''
@@ -81,9 +83,6 @@ class EtherBoxHandler(threading.Thread):
         self.observer.connect('device_event', self.device_event)
         self.monitor.start()
         glib.MainLoop().run()
-
-    def run(self):
-        self._work()
 
     def device_event(self, observer, action, device):
         ''' Catch the addition/removal of usb '''

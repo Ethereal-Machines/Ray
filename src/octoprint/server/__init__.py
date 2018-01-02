@@ -596,7 +596,6 @@ class Server():
                 printer.connect(port, baudrate)
 
         usbdetector = EtherBoxHandler()
-        usbdetector.start()
         # start up watchdogs
         observer = Observer()
         observer.schedule(
@@ -619,7 +618,6 @@ class Server():
             observer.stop()
             self.cleanup()
 
-        usbdetector.join()
         observer.join()
         logger.info('Good Bye!')
 
