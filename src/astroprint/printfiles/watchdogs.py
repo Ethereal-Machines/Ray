@@ -7,6 +7,7 @@ __license__ = 'GNU Affero General Public License http://www.gnu.org/licenses/agp
 import os
 import glib
 import logging
+import threading
 
 # usb detection
 import pyudev
@@ -79,7 +80,7 @@ class EtherBoxHandler(threading.Thread):
         self.observer = MonitorObserver(self.monitor)
         self.observer.connect('device_event', self.device_event)
         self.monitor.start()
-        glib.MainLoop.run()
+        glib.MainLoop().run()
 
     def run(self):
         self._work()
