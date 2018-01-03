@@ -125,11 +125,9 @@ class EtherBoxHandler():
                 real_callback = callback()
                 if real_callback:
                     real_callback.sendEvent("usb_status", False)
-                    self.logger.info("Usb removed: %s", event.src_path)
                     self.logger.info(CALLBACKS)
                     alive_callbacks.append(callback)
             except Exception as e:
-                self.logger.exception("error in removed: %s", event)
                 self.logger.exception("error: %s", e)
                 self.logger.exception("To %s", real_callback)
                 self.logger.exception(CALLBACKS)
