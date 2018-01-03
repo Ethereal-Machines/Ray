@@ -79,7 +79,7 @@ class EtherBoxHandler():
         self.logger.info("Starting to monitor for usb")
         self.monitor.start()
         for device in iter(self.monitor.poll, None):
-            self.logger.info("Got event: %s", device.action)
+            self.logger.info("Got USB event: %s", device.action)
             if device.action == 'add':
                 self.on_created()
             else:
