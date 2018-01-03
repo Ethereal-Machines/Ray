@@ -1,10 +1,6 @@
 {% extends 'base.jinja2' %}
 
 {% block css %}
-  {% assets filters="scss", output="css/gen/updating.css",
-    "css/scss/updating.scss" %}
-    <link rel="stylesheet" type="text/css" href="{{ ASSET_URL }}" />
-  {% endassets %}
 {% endblock %}
 
 {% block content %}
