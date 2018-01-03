@@ -9,18 +9,15 @@ import glib
 import logging
 import threading
 
-# usb detection
 import pyudev
-from pyudev.glib import MonitorObserver
-
-from astroprint.printer.manager import printerManager
-from astroprint.printfiles.map import SUPPORTED_EXTENSIONS
 
 from watchdog.events import PatternMatchingEventHandler
 from watchdog.events import FileSystemEventHandler
 
-from octoprint.settings import settings
+from astroprint.printer.manager import printerManager
+from astroprint.printfiles.map import SUPPORTED_EXTENSIONS
 
+from octoprint.settings import settings
 
 
 class UploadCleanupWatchdogHandler(PatternMatchingEventHandler):
@@ -76,13 +73,15 @@ class EtherBoxHandler():
     def _work(self):
         ''' Runs the actual loop to detect the events '''
         # initialize a few stuffs
-        self.context = Context()
-        self.monitor = Monitor.from_netlink(self.context)
+        self.context = pyudev.Context()
+        self.monitor = pyudev.Monitor.from_netlink(self.context)
         self.monitor.filter_by(subsystem='usb')
-        self.observer = MonitorObserver(self.monitor)
-        self.observer.connect('device_event', self.device_event)
         self.monitor.start()
-        glib.MainLoop().run()
+        for device in iter(self.monitor.poll, None):
+            if device.action == 'add':
+                self.on_created()
+            else:
+                self.on_deleted()
 
     def device_event(self, observer, action, device):
         ''' Catch the addition/removal of usb '''
