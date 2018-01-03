@@ -76,18 +76,14 @@ class EtherBoxHandler():
         self.context = pyudev.Context()
         self.monitor = pyudev.Monitor.from_netlink(self.context)
         self.monitor.filter_by(subsystem='usb')
+        self.logger.info("Starting to monitor for usb")
         self.monitor.start()
         for device in iter(self.monitor.poll, None):
+            self.logger.info("Got event: %s", device.action)
             if device.action == 'add':
                 self.on_created()
             else:
                 self.on_deleted()
-
-    def device_event(self, observer, action, device):
-        ''' Catch the addition/removal of usb '''
-        if action == 'add':
-            return self.on_created()
-        return self.on_deleted()
 
     def on_created(self):
         ''' Called when the media is inserted '''
