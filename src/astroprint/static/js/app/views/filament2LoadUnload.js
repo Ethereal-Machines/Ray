@@ -131,7 +131,25 @@ var Filament2LoadView = Backbone.View.extend({
   extrudeTapped: function() {
     var self = this;
 
-    this._sendExtrusionCommand(1);
+    var data = {
+      command: 'select',
+      tool: 'tool1'
+    };
+
+    $.ajax({
+      url: API_BASEURL + 'printer/tool',
+      type: 'POST',
+      dataType: 'json',
+      contentType: 'application/json; charset=UTF-8',
+      data: JSON.stringify(data),
+      success: function () {
+        self._sendExtrusionCommand(1);
+      },
+      error: function (xhr) {
+        console.log(xhr);
+        console.log('There was an error selecting the tool');
+      }
+    });
 
     this.timeLoading = setInterval(function() {
 
@@ -150,8 +168,7 @@ var Filament2LoadView = Backbone.View.extend({
     var data = {
       command: "extrude",
       amount: parseFloat(printer_profile.extrusion_amount * direction),
-      speed: parseFloat(printer_profile.extrusion_speed),
-      tool: 'tool1'
+      speed: parseFloat(printer_profile.extrusion_speed)
     }
 
     $.ajax({
@@ -299,7 +316,25 @@ var Filament2UnloadView = Backbone.View.extend({
   retractTapped: function() {
     var self = this;
 
-    this._sendRetractionCommand(-1);
+    var data = {
+      command: 'select',
+      tool: 'tool1'
+    };
+
+    $.ajax({
+      url: API_BASEURL + 'printer/tool',
+      type: 'POST',
+      dataType: 'json',
+      contentType: 'application/json; charset=UTF-8',
+      data: JSON.stringify(data),
+      success: function () {
+        self._sendRetractionCommand(-1);
+      },
+      error: function (xhr) {
+        console.log(xhr);
+        console.log('There was an error selecting the tool');
+      }
+    });
 
     this.timeUnloading = setInterval(function() {
 
@@ -316,8 +351,7 @@ var Filament2UnloadView = Backbone.View.extend({
     var data = {
       command: "extrude",
       amount: parseFloat(printer_profile.extrusion_amount * direction),
-      speed: parseFloat(printer_profile.extrusion_speed),
-      tool: 'tool1'
+      speed: parseFloat(printer_profile.extrusion_speed)
     }
 
     $.ajax({
