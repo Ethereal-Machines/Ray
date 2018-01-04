@@ -132,7 +132,25 @@ var FilamentLoadView = Backbone.View.extend({
   extrudeTapped: function() {
     var self = this;
 
-    this._sendExtrusionCommand(1);
+    var data = {
+      command: 'select',
+      tool: 'tool0'
+    };
+
+    $.ajax({
+      url: API_BASEURL + 'printer/tool',
+      type: 'POST',
+      dataType: 'json',
+      contentType: 'application/json; charset=UTF-8',
+      data: JSON.stringify(data),
+      success: function () {
+        self._sendExtrusionCommand(1);
+      },
+      error: function (xhr) {
+        console.log(xhr);
+        console.log('There was an error selecting the tool');
+      }
+    });
 
     this.timeLoading = setInterval(function() {
 
