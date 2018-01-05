@@ -6,6 +6,7 @@ __license__ = 'GNU Affero General Public License http://www.gnu.org/licenses/agp
 
 import os
 import glib
+import time
 import logging
 import threading
 
@@ -40,23 +41,6 @@ class UploadCleanupWatchdogHandler(PatternMatchingEventHandler):
         fm.removeFileFromMetadata(filename)
 
 
-def _get_gcode_files(usb_path):
-    """ Get gcode files in the dir """
-    allfiles = []
-    directory = os.path.abspath(os.path.join(usb_path, os.pardir))
-    for parent, d, pack in os.walk(directory):
-        for files in pack:
-            curr_file = {}
-            if (
-                    files.endswith('.gcode')
-                    or files.endswith('.g')
-                    or files.endswith('.txt')):
-                curr_file['fullpath'] = os.path.abspath(os.path.join(parent, files))
-                curr_file['filename'] = files
-                allfiles.append(curr_file)
-    return allfiles
-
-
 global CALLBACKS
 class EtherBoxHandler():
     ''' Monitor udev for detection of usb '''
@@ -85,11 +69,28 @@ class EtherBoxHandler():
             else:
                 self.on_deleted()
 
+    def _get_gcode_files(self, directory):
+        """ Get gcode files in the dir """
+        allfiles = []
+        self.logger.info("USB: directory we searched in is: %s", directory)
+        for parent, d, pack in os.walk(directory):
+            for files in pack:
+                curr_file = {}
+                if (
+                        files.endswith('.gcode')
+                        or files.endswith('.g')
+                        or files.endswith('.txt')):
+                    curr_file['fullpath'] = os.path.abspath(os.path.join(parent, files))
+                    curr_file['filename'] = files
+                    allfiles.append(curr_file)
+        return allfiles
+
     def on_created(self):
         ''' Called when the media is inserted '''
         s = settings()
         usb_path = s.get(['usb', 'folder'])
-        gcode_files = _get_gcode_files(usb_path)
+        time.sleep(3)
+        gcode_files = self._get_gcode_files(usb_path)
         if not gcode_files:
             return
         s.set(['usb', 'filelist'], gcode_files)
