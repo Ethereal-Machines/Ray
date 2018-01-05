@@ -156,16 +156,16 @@ var ControlView = Backbone.View.extend({
   // function for checking validating and rendering the selected template
   changeTemplate: function() {
     /* Added conditions to render the particular Utility based on the click from Utility page */
-
+    var navHeading = this.$('.wizard-name');
     if (this.buttonName === "Manual_Controls_Button") {
-
+      navHeading.text('Manual Controls');
       this.setTemplate(this.$("#xyz-controls-template").html(), null);
       this.distanceControl = new DistanceControl();
       this.xyControlView = new XYControlView({distanceControl: this.distanceControl});
       this.zControlView = new ZControlView({distanceControl: this.distanceControl});
 
     } else if (this.buttonName === "Filament_Button"){
-
+      navHeading.text('Filament Utilities');
       this.setTemplate(this.$("#filament-template").html(), {profile: app.printerProfile.toJSON()});
       this.extrusionView = new ExtrusionControlView();
 
@@ -174,7 +174,7 @@ var ControlView = Backbone.View.extend({
       this.setTemplate( "<h1 align='center'> No template for the Automatic Bed Levling </h1>", null);
 
     } else if (this.buttonName === "Preheat_Button"){
-
+      navHeading.text('Preheat');
       this.setTemplate( this.$("#pre-heat-template").html(), null);
       this.tempView = new TempView();
     }
