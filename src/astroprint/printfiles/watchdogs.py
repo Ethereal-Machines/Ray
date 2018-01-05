@@ -91,8 +91,6 @@ class EtherBoxHandler():
         usb_path = s.get(['usb', 'folder'])
         time.sleep(3)
         gcode_files = self._get_gcode_files(usb_path)
-        if not gcode_files:
-            return
         s.set(['usb', 'filelist'], gcode_files)
 
         alive_callbacks = []
