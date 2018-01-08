@@ -11,8 +11,14 @@ body {
           user-select: none;
 }
 
-body button {
+body button: link,
+body button: visited {
 	font-weight: bold !important;
+       outline: none !important;
+}
+
+body button:active {
+       outline: none !important;
 }
 
 .active {
@@ -144,7 +150,7 @@ button {
 .temp-value {
 	font-size: 22px;
 	margin: 0;
-	padding: 0 0 10px 15px;
+	/*padding: 0 0 10px 15px;*/
 }
 
 .filament-img {
