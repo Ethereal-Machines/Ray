@@ -60,7 +60,7 @@
 .printing-wizard__progress {
 	margin: 0 8px 0 !important;
   /*width: 344px !important;*/
-	width: 250px !important;
+	width: 230px !important;
 	height: 32px !important;
 }
 
@@ -81,6 +81,7 @@
 .printing-wizard__time-left__value,
 .printing-wizard__layer-left__value {
 	font-size: 40px;
+       padding-right: 30px;
 }
 
 .temp-current {
