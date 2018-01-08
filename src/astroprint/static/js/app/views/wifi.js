@@ -1,6 +1,6 @@
-/**********************************
-* Code by Kanishka Mohan Madhuni *
-**********************************/
+/*
+ * (c) Kanishka Mohan Madhuni (kmmadhuni@gmail.com)
+ */
 
 var WifiView = Backbone.View.extend({
   el: '#wifi-view',
@@ -12,8 +12,11 @@ var WifiView = Backbone.View.extend({
   loadingStatus: null,
   events: {
     'click .add-new-network': 'getWifiList',
-    'click .cancel-btn': 'resetState'
+    'click .cancel-btn': 'resetState',
+    'click .scroll-up-button': 'scrollUpAvailableWifi',
+    'click .scroll-down-button': 'scrollDownAvailableWifi'
   },
+  scrolled: 0,
   initialize: function() {},
   getStoredWifi: function() {
     var self = this;
@@ -92,8 +95,10 @@ var WifiView = Backbone.View.extend({
         } else {
           console.log('Wifi are available outside');
           self.showAvailableWifi();
+          if (self.availableNetworks.length > 5) {
+            self.$('.scroll-down-button').removeClass('disable-btn');
+          }
         }
-
         // console.log(self.availableNetworks);
       },
       error: function(xhr) {
@@ -113,12 +118,53 @@ var WifiView = Backbone.View.extend({
     // binding the click event to each list element
     this.$('.available-wifi-list li').bind('click', _.bind(this.addPasswordModal, this));
   },
+  scrollUpAvailableWifi: function() {
+    var self = this;
+    this.scrolled = this.scrolled - 280;
+    this.$('.available-wifi-list').animate({
+      scrollTop: self.scrolled
+    });
+
+    var target = self.$('.available-wifi-list');
+    var scrollTop = target.scrollTop();
+    var innerHeight = target.innerHeight();
+    var scrollHeight = target[0].scrollHeight;
+
+    self.$('.scroll-down-button').removeClass('disable-btn');
+
+    target.scroll(function () {
+      if (self.scrolled === 0) {
+        self.$('.scroll-up-button').addClass('disable-btn');
+      }
+    });
+  },
+  scrollDownAvailableWifi: function() {
+    var self = this;
+    this.scrolled = this.scrolled + 280;
+    this.$('.available-wifi-list').animate({
+      scrollTop: self.scrolled
+    });
+
+    self.$('.scroll-up-button').removeClass('disable-btn');
+
+    var target = self.$('.available-wifi-list');
+    var scrollTop = target.scrollTop();
+    var innerHeight = target.innerHeight();
+    var scrollHeight = target[0].scrollHeight;
+
+    target.scroll(function () {
+      if (self.scrolled + innerHeight >= scrollHeight) {
+        self.$('.scroll-down-button').addClass('disable-btn');
+      }
+    });
+  },
   resetState: function() {
     this.$('.back-button').removeClass('hide');
     this.$('.stored-wifi-list-section').removeClass('hide');
     this.$('.cancel-btn').addClass('hide');
     this.$('.section-sub-container--checking-available').removeClass('hide');
     this.$('.add-new-wifi-section').addClass('hide');
+    this.$('.scroll-down-button').addClass('disable-btn');
   },
   changeState: function() {
     this.$('.stored-wifi-list-section').addClass('hide');
