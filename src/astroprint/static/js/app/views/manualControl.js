@@ -133,7 +133,7 @@ var XYControlView = MovementControlView.extend({
   // call back functions for taking care of the click events on the control keys
   xPlusTapped: function(){
 
-    this.$(".control_btn_x_plus").css('box-shadow', '0px 0px 8px 1px black');
+    this.$(".control_btn_x_plus").css('box-shadow', '0px 2px 8px rgb(76, 73, 73)');
     
     var self = this;
 
@@ -151,14 +151,14 @@ var XYControlView = MovementControlView.extend({
     }
   },
   xPlusReleased: function() {
-    this.$(".control_btn_x_plus").css('box-shadow', '0px 0px 8px 6px black');
+    this.$(".control_btn_x_plus").css('box-shadow', '0px 5px 10px rgb(76, 73, 73)');
     this.isMouseDown = false;
     clearInterval(this.init00);
     this.init00 = null;
   },
   xMinusTapped: function() {
 
-    this.$(".control_btn_x_minus").css('box-shadow', '0px 0px 8px 1px black');
+    this.$(".control_btn_x_minus").css('box-shadow', '0px 2px 8px rgb(76, 73, 73)');
 
     var self = this;
 
@@ -176,14 +176,14 @@ var XYControlView = MovementControlView.extend({
     }
   },
   xMinusReleased: function() {
-    this.$(".control_btn_x_minus").css('box-shadow', '0px 0px 8px 6px black');
+    this.$(".control_btn_x_minus").css('box-shadow', '0px 5px 10px rgb(76, 73, 73)');
     this.isMouseDown = false;
     clearInterval(this.init00);
     this.init00 = null;
   },
   yPlusTapped: function() {
 
-    this.$(".control_btn_y_plus").css('box-shadow', '0px 0px 8px 1px black');
+    this.$(".control_btn_y_plus").css('box-shadow', '0px 2px 8px rgb(76, 73, 73)');
 
     var self = this;
 
@@ -201,14 +201,14 @@ var XYControlView = MovementControlView.extend({
     }
   },
   yPlusReleased: function() {
-    this.$(".control_btn_y_plus").css('box-shadow', '0px 0px 8px 6px black');
+    this.$(".control_btn_y_plus").css('box-shadow', '0px 5px 10px rgb(76, 73, 73)');
     this.isMouseDown = false;
     clearInterval(this.init00);
     this.init00 = null;
   },
   yMinusTapped: function() {
 
-    this.$(".control_btn_y_minus").css('box-shadow', '0px 0px 8px 1px black');
+    this.$(".control_btn_y_minus").css('box-shadow', '0px 2px 8px rgb(76, 73, 73)');
 
     var self = this;
 
@@ -226,7 +226,7 @@ var XYControlView = MovementControlView.extend({
     }
   },
   yMinusReleased: function() {
-    this.$(".control_btn_y_minus").css('box-shadow', '0px 0px 8px 6px black');
+    this.$(".control_btn_y_minus").css('box-shadow', '0px 5px 10px rgb(76, 73, 73)');
     this.isMouseDown = false;
     clearInterval(this.init00);
     this.init00 = null;
@@ -251,7 +251,7 @@ var ZControlView = MovementControlView.extend({
   isMouseDown: false,
   zPlusTapped: function(e) {
 
-    this.$(".control_btn_z_minus").css('box-shadow', '0px 0px 8px 1px black');
+    this.$(".control_btn_z_minus").css('box-shadow', '0px 2px 8px rgb(76, 73, 73)');
 
     var self = this;
 
@@ -269,7 +269,7 @@ var ZControlView = MovementControlView.extend({
     }
   },
   zPlusReleased: function(e) {
-    this.$(".control_btn_z_minus").css('box-shadow', '0px 0px 8px 6px black');
+    this.$(".control_btn_z_minus").css('box-shadow', '0px 5px 10px rgb(76, 73, 73)');
     this.isMouseDown = false;
     clearInterval(this.init01);
     this.init01 = null;
@@ -277,7 +277,7 @@ var ZControlView = MovementControlView.extend({
   },
   zMinusTapped: function(e) {
 
-    this.$(".control_btn_z_plus").css('box-shadow', '0px 0px 8px 1px black');
+    this.$(".control_btn_z_plus").css('box-shadow', '0px 2px 8px rgb(76, 73, 73)');
 
     var self = this;
 
@@ -295,7 +295,7 @@ var ZControlView = MovementControlView.extend({
     }
   },
   zMinusReleased: function(e) {
-    this.$(".control_btn_z_plus").css('box-shadow', '0px 0px 8px 6px black');
+    this.$(".control_btn_z_plus").css('box-shadow', '0px 5px 10px rgb(76, 73, 73)');
     this.isMouseDown = false;
     clearInterval(this.init01);
     this.init01 = null;
