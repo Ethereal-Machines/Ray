@@ -31,6 +31,10 @@ body button {
 	/*border: 1px solid grey;*/
 }
 
+button {
+	outline: none;
+}
+
 #manual-container {
 	display: flex;
 	flex-direction: row;
