@@ -155,7 +155,8 @@ hr {
 .connect-network-btn,
 .forget-network-btn,
 .forget-network-cancel-btn {
-  width: 140px;
+  /* width: 140px; */
+  width: 160px;
   height: 40px;
   background-color: #BBB;
   font-size: 22px;
