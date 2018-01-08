@@ -36,7 +36,7 @@
         <script type="text/template" id="stored-wifi-list-template">
           <% _.each(wifiItems, function(wifi) { %>
             <li>
-              <img src="{{ url_for('static', filename='img/print-from-storage/file-icon.svg') }}" width="56" height="56" alt="File Img">
+              <img src="{{ url_for('static', filename='img/setup/wifi-lock.svg') }}" width="56" height="56" alt="File Img">
               <span><%= wifi.name %></span>
             </li>
           <% }); %>
@@ -54,10 +54,10 @@
         <div class="forget-network-modal__inner">
           <h1 class="forget-network__modal-heading">Forget Network</h1>
           <hr>
-          <img src="" width="96" height="96">
+          <img src="{{ url_for('static', filename='img/setup/wifi-lock.svg') }}" width="96" height="96">
           <p class="modal-msg">Are you sure to forget network <%= network.name %>?</p>
           <div class="modal-btn-container">
-            <button class="connect-network-btn">Connect</button>
+            <!-- <button class="connect-network-btn">Connect</button> -->
             <button class="forget-network-btn">Forget</button>
             <button class="forget-network-cancel-btn">Cancel</button>
           </div>
@@ -82,7 +82,7 @@
         <script type="text/template" id="available-wifi-list-template">
           <% _.each(wifiItems, function(wifi) { %>
             <li>
-              <img src="{{ url_for('static', filename='img/print-from-storage/file-icon.svg') }}" width="56" height="56" alt="File Img">
+              <img src="{{ url_for('static', filename='img/setup/wifi-lock.svg') }}" width="56" height="56" alt="File Img">
               <span><%= wifi.name %></span>
             </li>
           <% }); %>
