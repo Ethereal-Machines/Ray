@@ -17,7 +17,8 @@
 
   <section class="stored-wifi-list-section">
     <div class="section-sub-container section-sub-container--checking">
-      <i class="fa fa-spinner fa-spin fa-3x fa-fw loading"></i>
+      <!-- <i class="fa fa-spinner fa-spin fa-3x fa-fw loading"></i> -->
+      <img src="{{ url_for('static', filename='img/ethereal-astroprint/loading-animation.gif') }}" alt="Loading Animation" width="101" height="21" class="loading-animation">
       <h1 class="section-heading section-heading--extra-margin">Looking for the available wifi networks...</h1>
     </div>
 
@@ -68,7 +69,8 @@
 
   <section class="add-new-wifi-section hide">
     <div class="section-sub-container section-sub-container--checking-available">
-      <i class="fa fa-spinner fa-spin fa-3x fa-fw loading"></i>
+      <!-- <i class="fa fa-spinner fa-spin fa-3x fa-fw loading"></i> -->
+      <img src="{{ url_for('static', filename='img/ethereal-astroprint/loading-animation.gif') }}" alt="Loading Animation" width="101" height="21" class="loading-animation">
       <h1 class="section-heading section-heading--extra-margin">Looking for the available wifi networks...</h1>
     </div>
 
@@ -109,7 +111,8 @@
               <button class="next-button connect" type="submit" value="Connect">Connect</button>
               <button class="next-button cancel-btn--add-password">Cancel</button>
             </div>
-            <i class="fa fa-spinner fa-spin fa-3x fa-fw loading fa-spinner--add-password hide"></i>
+            <!-- <i class="fa fa-spinner fa-spin fa-3x fa-fw loading fa-spinner--add-password hide"></i> -->
+            <img src="{{ url_for('static', filename='img/ethereal-astroprint/loading-animation.gif') }}" alt="Loading Animation" width="101" height="21" class="loading-animation loading-animation--password fa-spinner--add-password hide">
         </form>
       </script>
     </div>

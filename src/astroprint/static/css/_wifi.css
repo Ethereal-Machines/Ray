@@ -23,6 +23,15 @@
   margin: 0 auto;
 }
 
+.loading-animation {
+  display: block;
+  margin: 0 auto;
+}
+
+.loading-animation--password {
+  margin-top: 18px;
+}
+
 .section-heading--extra-margin {
   margin: 20px 0 !important;
 }
