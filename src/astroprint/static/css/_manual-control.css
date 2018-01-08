@@ -14,7 +14,13 @@
 }
 
 .home_z {
-	box-shadow: 0px 0px 1px 2px black;
+	/* box-shadow: 0px 0px 1px 2px black; */
+	box-shadow: 0px 5px 10px rgb(76, 73, 73);
+	outline: none;
+}
+
+.home_z:active {
+	box-shadow: 0px 2px 8px rgb(76, 73, 73);
 }
 
 #xy-controls {
@@ -34,7 +40,9 @@
 .control_btn_x_minus, 
 .control_btn_y_minus, 
 .control_btn_z_minus {
-	box-shadow: 0px 0px 8px 6px black;
+	/* box-shadow: 0px 0px 8px 6px black; */
+	box-shadow: 0px 5px 10px rgb(76, 73, 73);
+	outline: none;
 }
 
 #z-controls {
