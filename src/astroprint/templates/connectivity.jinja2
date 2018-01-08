@@ -14,9 +14,9 @@
   <!-- container for LAN and WIFI connectivity -->
   <ul class="connectivity-types">
     <li class="lan-connectivity">
-      <a href="#">
+      <a href="#connectivity">
         <div class="img-heading-container">
-          <img src="" alt="" width="96" height="96">
+          <img src="{{ url_for('static', filename='img/ethereal-astroprint/lan.png') }}" alt="" width="96" height="96">
           <h2>LAN Connection</h2>
           <p class="lan-connectivity__status">LAN Not Connected</p>
         </div>
@@ -25,7 +25,7 @@
     <li class="wifi-connectivity">
       <a href="#connectivity/#wifi">
         <div class="img-heading-container">
-          <img src="" alt="" width="96" height="96">
+          <img src="{{ url_for('static', filename='img/setup/wifi-lock.svg') }}" alt="" width="96" height="96">
           <h2>WIFI Connection</h2>
           <p class="wifi-connectivity__status">Not Connected</p>
         </div>
