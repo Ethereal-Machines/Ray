@@ -238,10 +238,11 @@ class AstroprintBoxRouter(object):
             if os.path.exists(boxIdFile):
                 with open(boxIdFile, 'r') as f:
                     self._boxId = f.read()
-
             if not self._boxId:
-                raise RuntimeError(
-                        "Box id not present, printer must be authenticated")
+                self._boxId = settings.get(['setup', 'machineId'])
+            if not self._boxId:
+                raise RuntimeError('BoxId not present, please login')
+
         return self._boxId
 
     @boxId.setter
