@@ -85,7 +85,7 @@
 .link-heading {
 	font-size: 24px;
 	text-transform: uppercase;
-	font-weight: 500;
+	/* font-weight: 500; */
 	margin: 0;
 }
 

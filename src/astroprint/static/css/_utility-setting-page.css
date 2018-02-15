@@ -77,7 +77,7 @@
 .utility-link-heading,
 .setting-link-heading {
 	font-size: 24px;
-	font-weight: 500;
+	/* font-weight: 500; */
 	text-transform: uppercase;
 	margin: 0;
 	padding: 18px 0;
