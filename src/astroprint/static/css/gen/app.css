@@ -1,9 +1,9 @@
 * {
 	box-sizing: border-box;
-	font-family: 'Roboto', sans-serif;
 }
 
 body {
+	font-family: 'RobotoRegular', FallBack, sans-serif;
 	margin: 0 !important;
   -webkit-user-select: none;
      -moz-user-select: -moz-none;
@@ -11,9 +11,9 @@ body {
           user-select: none;
 }
 
-body button: link,
-body button: visited {
-	font-weight: bold !important;
+body button {
+	font-family: 'RobotoMedium', FallBack, sans-serif;
+	/* font-weight: bold !important; */
        outline: none !important;
 }
 
@@ -79,6 +79,7 @@ button {
 #connectivity-wizard-nav,
 #wifi-wizard-nav,
 #general-settings-wizard-nav {
+	font-family: 'RobotoLight', Fallback, sans-serif;
 	display: flex;
 	flex-direction: row;
 	width: 100%;
@@ -87,6 +88,20 @@ button {
 	color: #FFFFFF;
 	justify-content: space-between;
 	margin-bottom: 32px;
+}
+
+.section-heading--font-regular {
+	font-family: 'RobotoRegular', Fallback, sans-serif;
+}
+
+#home-page-links,
+#utility-page-links,
+#settings-page-links,
+.choose-storage,
+.connectivity-types,
+.extrusion-control__link-container,
+.extrusion-control__headings {
+	font-family: 'RobotoMedium', Fallback, sans-serif;
 }
 
 .wrapper {
@@ -167,6 +182,7 @@ progress[value] {
 }
 
 .next-button {
+	font-family: 'RobotoMedium', FallBack, sans-serif;
 	width: 240px;
 	height: 48px;
 	font-size: 22px;

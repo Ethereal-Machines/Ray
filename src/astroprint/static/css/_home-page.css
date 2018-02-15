@@ -103,6 +103,7 @@
 	width: 100%;
 	background-color: #111111;
 	height: 56px;
+	font-family: 'RobotoLight', Fallback, sans-serif;
 }
 
 #footer-container {

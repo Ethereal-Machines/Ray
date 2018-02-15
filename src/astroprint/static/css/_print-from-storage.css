@@ -21,10 +21,11 @@
 	display: flex;
 	flex-direction: column;
 	width: 89%;
-	height: 280px;
-	overflow-y: hidden;
-	overflow-scrolling: auto;
-	-webkit-overflow-scrolling: touch;
+	height: 320px;
+	/* height: 280px; */
+	overflow-y: scroll;
+	/* overflow-scrolling: auto; */
+	/* -webkit-overflow-scrolling: touch; */
 }
 
 .up-down-button-container {
