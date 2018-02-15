@@ -71,13 +71,13 @@
 }
 
 .home-page-links__link-item__sub-links__sub-link-item--up {
-	margin-bottom: 8px;
+	margin-top: 8px;
 	background-color: #BBBBBB;
 	border-radius: 10px;
 }
 
 .home-page-links__link-item__sub-links__sub-link-item--down {
-	margin-top: 8px;
+	margin-bottom: 8px;
 	background-color: #BBBBBB;
 	border-radius: 10px;
 }
