@@ -1,0 +1,21 @@
+/**
+ * (c) Kanishka Mohan Madhuni (kmmadhuni@gmail.com)
+*/
+
+/* Fonts declaration goes here */
+@font-face {
+  font-family: 'RobotoThin';
+  src: url('../../font/Roboto-Thin.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'RobotoRegular';
+  src: url('../../font/Roboto-Regular.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'RobotoMedium';
+  src: url('../../font/Roboto-Medium.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'RobotoLight';
+  src: url('../../font/Roboto-Light.ttf') format('truetype');
+}
