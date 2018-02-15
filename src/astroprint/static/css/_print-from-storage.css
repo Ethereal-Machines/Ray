@@ -95,6 +95,7 @@
 .choose-storage__item__sub-heading {
 	padding: 36px 0;
 	margin: 0;
+	font-weight: normal;
 }
 
 /* Styling for External Stroage Wizard goes here */
