@@ -19,7 +19,7 @@
     <div class="section-sub-container section-sub-container--checking">
       <!-- <i class="fa fa-spinner fa-spin fa-3x fa-fw loading"></i> -->
       <img src="{{ url_for('static', filename='img/ethereal-astroprint/loading-animation.gif') }}" alt="Loading Animation" width="101" height="21" class="loading-animation">
-      <h1 class="section-heading section-heading--extra-margin">Looking for the available wifi networks...</h1>
+      <h1 class="section-heading section-heading--font-regular section-heading--extra-margin">Looking for the available wifi networks...</h1>
     </div>
 
     <div class="section-sub-container section-sub-container--no-wifi hide">
@@ -32,7 +32,7 @@
     </div>
 
     <div class="section-sub-container section-sub-container--stored-wifi hide">
-      <h1 class="section-heading">Choose a wifi to connect with</h1>
+      <h1 class="section-heading section-heading--font-regular">Choose a wifi to connect with</h1>
       <ul class="stored-wifi-list">
         <script type="text/template" id="stored-wifi-list-template">
           <% _.each(wifiItems, function(wifi) { %>
@@ -71,11 +71,11 @@
     <div class="section-sub-container section-sub-container--checking-available">
       <!-- <i class="fa fa-spinner fa-spin fa-3x fa-fw loading"></i> -->
       <img src="{{ url_for('static', filename='img/ethereal-astroprint/loading-animation.gif') }}" alt="Loading Animation" width="101" height="21" class="loading-animation">
-      <h1 class="section-heading section-heading--extra-margin">Looking for the available wifi networks...</h1>
+      <h1 class="section-heading section-heading--extra-margin section-heading--font-regular">Looking for the available wifi networks...</h1>
     </div>
 
     <div class="section-sub-container section-sub-container--wifi-available hide">
-      <h1 class="section-heading">Choose a wifi to connect with...</h1>
+      <h1 class="section-heading section-heading--font-regular">Choose a wifi to connect with...</h1>
       <ul class="available-wifi-list">
         <div class="no-wifi-msg hide">
           <h1>Sorry! No WiFi is available to connect with.</h1>
