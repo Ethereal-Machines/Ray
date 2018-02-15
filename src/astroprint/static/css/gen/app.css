@@ -79,7 +79,7 @@ button {
 #connectivity-wizard-nav,
 #wifi-wizard-nav,
 #general-settings-wizard-nav {
-	font-family: 'RobotoLight', Fallback, sans-serif;
+	font-family: 'RobotoRegular', Fallback, sans-serif;
 	display: flex;
 	flex-direction: row;
 	width: 100%;
@@ -92,6 +92,11 @@ button {
 
 .section-heading--font-regular {
 	font-family: 'RobotoRegular', Fallback, sans-serif;
+	font-weight: bold !important;
+}
+
+.section-heading {
+	font-weight: bold !important;
 }
 
 #home-page-links,
@@ -102,6 +107,7 @@ button {
 .extrusion-control__link-container,
 .extrusion-control__headings {
 	font-family: 'RobotoMedium', Fallback, sans-serif;
+	font-weight: bold !important;
 }
 
 .wrapper {
@@ -138,6 +144,7 @@ button {
 	text-align: center;
 	margin: 22px auto 17px;
 	font-size: 20px;
+	font-weight: bold;
 }
 
 .steps-progress {
