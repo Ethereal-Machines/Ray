@@ -126,6 +126,9 @@ def index():
         wstoken = create_ws_token(
                 userManager.findUser(loggedUsername).publicKey \
             if loggedUsername else None)
+
+        
+
         return render_template(
             "setup.jinja2",
             debug=debug,
@@ -138,6 +141,17 @@ def index():
             settings=s,
             wsToken=wstoken,
         )
+
+        ## Toran's changes
+        # return Response(json.dumps({'debug': debug,
+        #     'uiApiKey': UI_API_KEY,
+        #     'version': VERSION,
+        #     'commit': swm.commit,
+        #     'variantData': variantManager().data,
+        #     'astroboxName': networkManager().getHostname(),
+        #     'checkSoftware': swm.shouldCheckForNew,
+        #     'settings': s, # class instance
+        #     'wsToken': wstoken}, mimetype='application/json')
 
     elif softwareManager.updatingRelease or softwareManager.forceUpdateInfo:
         return render_template(
@@ -175,7 +189,7 @@ def index():
             printer_profile=printerProfileManager().data,
             uiApiKey=UI_API_KEY,
             astroboxName=nm.getHostname(),
-            variantData=variantManager().data,
+            variantData=variantManager().data, # dict
             checkSoftware=swm.shouldCheckForNew,
             serialLogActive=s.getBoolean(['serial', 'log']),
             cameraManager=cm.name,
@@ -713,6 +727,35 @@ class Server():
 
         from astroprint.network.manager import networkManagerShutdown
         networkManagerShutdown()
+
+
+# toran's changes
+
+from flask import url_for
+
+def has_no_empty_params(rule):
+    defaults = rule.defaults if rule.defaults is not None else ()
+    arguments = rule.arguments if rule.arguments is not None else ()
+    return len(defaults) >= len(arguments)
+
+
+@app.route("/site-map")
+def site_map():
+    links = []
+    for rule in app.url_map.iter_rules():
+        # Filter out rules we can't navigate to in a browser
+        # and rules that require parameters
+        if "GET" in rule.methods and has_no_empty_params(rule):
+            url = url_for(rule.endpoint, **(rule.defaults or {}))
+            links.append((url, rule.endpoint))
+    # links is now a list of url, endpoint tuples
+
+    ## jsonified
+    # return Response(json.dumps(dict(links)), mimetype='application/json')
+
+    # using template
+    sites = ["http://0.0.0.0:5000" + url + " : " + view + "\n" for url, view in dict(links).items()]
+    return render_template('site-map.html', sites = sites)
 
 if __name__ == "__main__":
     octoprint = Server()
