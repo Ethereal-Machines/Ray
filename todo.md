@@ -1,0 +1,6 @@
+ - app.jinja2
+    - index.htmlinde
+    - locked.jinja2
+    - reboot.jinja2
+    - setup.jinja2 (Mostly the same things as is app.jinja2)
+    - updating.jinja2
