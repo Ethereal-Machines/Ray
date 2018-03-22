@@ -10,9 +10,9 @@ from ext.sockjs.tornado import SockJSRouter
 from flask import Flask, render_template, send_from_directory, make_response, Response, request, abort
 from flask import Blueprint, request, jsonify, abort, current_app, session, make_response
 from flask.ext.login import LoginManager, current_user, logout_user, login_user
-from flask.ext.principal import (
-        Principal, Permission, RoleNeed, identity_loaded, UserNeed, Identity,
-        identity_changed)
+from flask.ext.principal import (Principal, Permission, RoleNeed,
+                                 identity_loaded, UserNeed, Identity,
+                                 identity_changed)
 from flask.ext.compress import Compress
 from flask.ext.assets import Environment
 from watchdog.observers import Observer
@@ -35,15 +35,13 @@ debug = False
 app = Flask(
     "octoprint",
     template_folder="../astroprint/templates",
-    static_folder='../astroprint/static'
-)
+    static_folder='../astroprint/static')
 
 app.config.from_object('astroprint.settings')
 
 app_config_file = os.path.join(
-    os.path.realpath(os.path.dirname(__file__)+'/../../../local'),
-    "application.cfg"
-)
+    os.path.realpath(os.path.dirname(__file__) + '/../../../local'),
+    "application.cfg")
 
 if os.path.isfile(app_config_file):
     app.config.from_pyfile(app_config_file, silent=True)
@@ -91,80 +89,114 @@ from astroprint.about import info
 UI_API_KEY = None
 VERSION = None
 
+
 @app.route('/astrobox/identify', methods=['GET'])
 def box_identify():
     br = boxrouterManager()
     nm = networkManager()
 
-    return Response(json.dumps({
-        'id': br.boxId,
-        'name': nm.getHostname(),
-        'version': VERSION
-    }),
-    headers= {
-        'Access-Control-Allow-Origin': '*'
-    } if settings().getBoolean(['api', 'allowCrossOrigin']) else None)
+    return Response(
+        json.dumps({
+            'id': br.boxId,
+            'name': nm.getHostname(),
+            'version': VERSION
+        }),
+        headers={'Access-Control-Allow-Origin': '*'}
+        if settings().getBoolean(['api', 'allowCrossOrigin']) else None)
 
 
-@app.route("/")
+@app.route("/", methods=['GET', 'POST'])
 def index():
     s = settings()
     loggedUsername = s.get(["cloudSlicer", "loggedUser"])
     networkManager().setHostname('Ray')
-    if (loggedUsername and (current_user is None or \
-                            not current_user.is_authenticated or \
+    if (loggedUsername and (current_user is None or
+                            not current_user.is_authenticated or
                             current_user.get_id() != loggedUsername)):
         user = octoprint.server.userManager.findUser(loggedUsername)
         if user is not None:
             login_user(user, remember=True)
-            identity_changed.send(current_app._get_current_object(), identity=Identity(user.get_id()))
+            identity_changed.send(
+                current_app._get_current_object(),
+                identity=Identity(user.get_id()))
 
     if (s.getBoolean(["server", "firstRun"])):
         swm = swManager()
 
         # we need to get the user to sign into their AstroPrint account
         wstoken = create_ws_token(
-                userManager.findUser(loggedUsername).publicKey \
+            userManager.findUser(loggedUsername).publicKey
             if loggedUsername else None)
 
-        
+        # Toran's changes
+        # jsonifying for exposing the view as REST API
+        return Response(
+            json.dumps(
+                {
+                    'debug': debug,
+                    'uiApiKey': UI_API_KEY,
+                    'version': VERSION,
+                    'commit': swm.commit,
+                    'variantData': variantManager().data,
+                    'astroboxName': networkManager().getHostname(),
+                    'checkSoftware': swm.shouldCheckForNew,
+                    'settings': s,  # class instance
+                    'wsToken': wstoken
+                },
+                sort_keys=False,
+                indent=4),
+                mimetype='application/json',
+                headers={'Access-Control-Allow-Origin': '*'})
 
-        return render_template(
-            "setup.jinja2",
-            debug=debug,
-            uiApiKey=UI_API_KEY,
-            version=VERSION,
-            commit=swm.commit,
-            variantData=variantManager().data,
-            astroboxName=networkManager().getHostname(),
-            checkSoftware=swm.shouldCheckForNew,
-            settings=s,
-            wsToken=wstoken,
-        )
-
-        ## Toran's changes
-        # return Response(json.dumps({'debug': debug,
-        #     'uiApiKey': UI_API_KEY,
-        #     'version': VERSION,
-        #     'commit': swm.commit,
-        #     'variantData': variantManager().data,
-        #     'astroboxName': networkManager().getHostname(),
-        #     'checkSoftware': swm.shouldCheckForNew,
-        #     'settings': s, # class instance
-        #     'wsToken': wstoken}, mimetype='application/json')
+        # return render_template(
+        #     "setup.jinja2",
+        #     debug=debug,
+        #     uiApiKey=UI_API_KEY,
+        #     version=VERSION,
+        #     commit=swm.commit,
+        #     variantData=variantManager().data,
+        #     astroboxName=networkManager().getHostname(),
+        #     checkSoftware=swm.shouldCheckForNew,
+        #     settings=s,
+        #     wsToken=wstoken,
+        # )
 
     elif softwareManager.updatingRelease or softwareManager.forceUpdateInfo:
-        return render_template(
-            "updating.jinja2",
-            uiApiKey=UI_API_KEY,
-            showForceUpdate=softwareManager.forceUpdateInfo != None,
-            releaseInfo=softwareManager.updatingRelease or softwareManager.forceUpdateInfo,
-            lastCompletionPercent=softwareManager.lastCompletionPercent,
-            lastMessage=softwareManager.lastMessage,
-            variantData=variantManager().data,
-            astroboxName=networkManager().getHostname(),
-            wsToken=create_ws_token(userManager.findUser(loggedUsername).publicKey if loggedUsername else None)
-        )
+        # Toran's changes
+        # jsonifying for exposing the view as REST API
+        return Response(
+            json.dumps(
+                {
+                    'uiApiKey': UI_API_KEY,
+                    'showForceUpdate': softwareManager.forceUpdateInfo != None,
+                    'releaseInfo': softwareManager.updatingRelease or softwareManager.forceUpdateInfo,
+                    'lastCompletionPercent': softwareManager.lastCompletionPercent,
+                    'lastMessage': softwareManager.lastMessage,
+                    'variantData': variantManager().data,  # dict
+                    'astroboxName': networkManager().getHostname(),
+                    'wsToken':
+                    create_ws_token(
+                        userManager.findUser(loggedUsername).publicKey
+                        if loggedUsername else None)
+                },
+                sort_keys=False,
+                indent=4),
+                mimetype='application/json',
+                headers = {'Access-Control-Allow-Origin': '*'})
+
+        # return render_template(
+        #     "updating.jinja2",
+        #     uiApiKey=UI_API_KEY,
+        #     showForceUpdate=softwareManager.forceUpdateInfo != None,
+        #     releaseInfo=softwareManager.updatingRelease
+        #     or softwareManager.forceUpdateInfo,
+        #     lastCompletionPercent=softwareManager.lastCompletionPercent,
+        #     lastMessage=softwareManager.lastMessage,
+        #     variantData=variantManager().data,
+        #     astroboxName=networkManager().getHostname(),
+        #     wsToken=create_ws_token(
+        #         userManager.findUser(loggedUsername).publicKey
+        #         if loggedUsername else None))
 
     else:
         pm = printerManager()
@@ -176,27 +208,61 @@ def index():
         printing = pm.isPrinting()
         online = nm.isOnline()
 
-        return render_template(
-            "app.jinja2",
-            user_email=loggedUsername,
-            show_bad_shutdown=swm.wasBadShutdown and not swm.badShutdownShown,
-            version=VERSION,
-            commit=swm.commit,
-            printing=printing,
-            paused=paused,
-            online=online,
-            print_capture=cm.timelapseInfo if printing or paused else None,
-            printer_profile=printerProfileManager().data,
-            uiApiKey=UI_API_KEY,
-            astroboxName=nm.getHostname(),
-            variantData=variantManager().data, # dict
-            checkSoftware=swm.shouldCheckForNew,
-            serialLogActive=s.getBoolean(['serial', 'log']),
-            cameraManager=cm.name,
-            wsToken=create_ws_token(
-                userManager.findUser(loggedUsername).publicKey \
-                if loggedUsername else None)
+        # Toran's changes
+        # jsonifying for exposing the view as REST API
+        return Response(
+            json.dumps(
+                {
+                    'user_email': loggedUsername,
+                    'show_bad_shutdown': swm.wasBadShutdown and not swm.badShutdownShown,
+                    'version': VERSION,
+                    'commit': swm.commit,
+                    'printing': printing,
+                    'paused': paused,
+                    'online': online,
+                    'print_capture': cm.timelapseInfo if printing or paused else None,
+                    'printer_profile': printerProfileManager().data,
+                    'uiApiKey': UI_API_KEY,
+                    'astroboxName': nm.getHostname(),
+                    'variantData': variantManager().data,  # dict
+                    'checkSoftware': swm.shouldCheckForNew,
+                    'serialLogActive': s.getBoolean(['serial', 'log']),
+                    'cameraManager': cm.name,
+                    'wsToken': create_ws_token(
+                        userManager.findUser(loggedUsername).publicKey \
+                        if loggedUsername else None),
+                },
+                sort_keys=False,
+                indent=4
+            ),
+            mimetype='application/json',
+            headers = {'Access-Control-Allow-Origin': '*'}
+            
         )
+
+
+
+        # return render_template(
+        #     "app.jinja2",
+        #     user_email=loggedUsername,
+        #     show_bad_shutdown=swm.wasBadShutdown and not swm.badShutdownShown,
+        #     version=VERSION,
+        #     commit=swm.commit,
+        #     printing=printing,
+        #     paused=paused,
+        #     online=online,
+        #     print_capture=cm.timelapseInfo if printing or paused else None,
+        #     printer_profile=printerProfileManager().data,
+        #     uiApiKey=UI_API_KEY,
+        #     astroboxName=nm.getHostname(),
+        #     variantData=variantManager().data, # dict
+        #     checkSoftware=swm.shouldCheckForNew,
+        #     serialLogActive=s.getBoolean(['serial', 'log']),
+        #     cameraManager=cm.name,
+        #     wsToken=create_ws_token(
+        #         userManager.findUser(loggedUsername).publicKey \
+        #         if loggedUsername else None)
+        # )
 
 
 @app.route("/about")
@@ -206,7 +272,7 @@ def about():
 
 @app.route("/discovery.xml")
 def discoveryXml():
-    response = make_response( discoveryManager.getDiscoveryXmlContents() )
+    response = make_response(discoveryManager.getDiscoveryXmlContents())
     response.headers['Content-Type'] = 'application/xml'
     return response
 
@@ -275,10 +341,8 @@ def getStatus():
             'capabilities': ['remotePrint'] + cm.capabilities
         }),
         mimetype='application/json',
-        headers={
-            'Access-Control-Allow-Origin': '*'
-        } if settings().getBoolean(['api', 'allowCrossOrigin']) else None
-    )
+        headers={'Access-Control-Allow-Origin': '*'}
+        if settings().getBoolean(['api', 'allowCrossOrigin']) else None)
 
 
 @app.route("/wsToken", methods=['GET'])
@@ -296,12 +360,12 @@ def getWsToken():
         else:
             abort(403, 'Invalid Logged User')
 
-    return Response(json.dumps({
-        'ws_token': create_ws_token(publicKey)}),
-        headers={
-            'Access-Control-Allow-Origin': '*'
-        } if settings().getBoolean(['api', 'allowCrossOrigin']) else None
-    )
+    return Response(
+        json.dumps({
+            'ws_token': create_ws_token(publicKey)
+        }),
+        headers={'Access-Control-Allow-Origin': '*'}
+        if settings().getBoolean(['api', 'allowCrossOrigin']) else None)
 
 
 @app.route("/accessKeys", methods=["POST"])
@@ -317,9 +381,9 @@ def getAccessKeys():
     # - nobody logged: None
     # - any log: email
 
-    if email and accessKey:#somebody is logged in the remote client
-        if userLogged:#Somebody logged in Astrobox
-            if userLogged == email:#I am the user logged
+    if email and accessKey:  # somebody is logged in the remote client
+        if userLogged:  # Somebody logged in Astrobox
+            if userLogged == email:  # I am the user logged
                 online = networkManager().isOnline()
 
                 if online:
@@ -333,11 +397,11 @@ def getAccessKeys():
                     user = userManager.findUser(email)
                     if user.get_private_key() != accessKey:
                         abort(403)
-            #I am NOT the logged user
+            # I am NOT the logged user
             else:
                 abort(403)
 
-    else:#nodody is logged in the remote client
+    else:  # nodody is logged in the remote client
         if userLogged:
             abort(401)
 
@@ -346,11 +410,9 @@ def getAccessKeys():
             'api_key': UI_API_KEY,
             'ws_token': create_ws_token(publicKey)
         }),
-        mimetype= 'application/json',
-        headers= {
-            'Access-Control-Allow-Origin': '*'
-        } if settings().getBoolean(['api', 'allowCrossOrigin']) else None
-    )
+        mimetype='application/json',
+        headers={'Access-Control-Allow-Origin': '*'}
+        if settings().getBoolean(['api', 'allowCrossOrigin']) else None)
 
 
 @identity_loaded.connect_via(app)
@@ -376,7 +438,7 @@ def create_ws_token(public_key=None):
     from itsdangerous import URLSafeTimedSerializer
 
     s = URLSafeTimedSerializer(UI_API_KEY)
-    return s.dumps({ 'public_key': public_key })
+    return s.dumps({'public_key': public_key})
 
 
 def read_ws_token(token):
@@ -388,17 +450,23 @@ def read_ws_token(token):
     s = URLSafeTimedSerializer(UI_API_KEY)
 
     try:
-        return s.loads(token, max_age= 10)
+        return s.loads(token, max_age=10)
     except BadSignature as e:
         return None
+
 
 #~~ startup code
 
 
 class Server():
-    def __init__(
-        self, configfile=None, basedir=None, host="127.0.0.1", port=5000,
-            debug=False, allowRoot=False, logConf=None):
+    def __init__(self,
+                 configfile=None,
+                 basedir=None,
+                 host="127.0.0.1",
+                 port=5000,
+                 debug=False,
+                 allowRoot=False,
+                 logConf=None):
         self._configfile = configfile
         self._basedir = basedir
         self._host = host
@@ -441,9 +509,11 @@ class Server():
         self._initSettings(self._configfile, self._basedir)
         s = settings()
 
-        if not s.getBoolean(['api', 'regenerate']) and s.getString(['api', 'key']):
+        if not s.getBoolean(['api', 'regenerate']) and s.getString(
+                ['api', 'key']):
             UI_API_KEY = s.getString(['api', 'key'])
         else:
+            # Toran's changes
             # UI_API_KEY = ''.join('%02X' % ord(z) for z in uuid.uuid4().bytes)
 
             # commented above random UUID logic
@@ -467,8 +537,8 @@ class Server():
         softwareManager = swManager()
         VERSION = softwareManager.versionString
 
-        logger.info("Starting AstroBox (%s) - Commit (%s)" % (
-            VERSION, softwareManager.commit))
+        logger.info("Starting AstroBox (%s) - Commit (%s)" %
+                    (VERSION, softwareManager.commit))
 
         from astroprint.migration import migrateSettings
         migrateSettings()
@@ -514,7 +584,7 @@ class Server():
                     logger.info("Response status code: %s", res.status_code)
             except Exception as e:
                 logger.error(
-                        "Error setting up boxrouter, boxid could not be set")
+                    "Error setting up boxrouter, boxid could not be set")
                 logger.error(e)
 
         app.wsgi_app = ReverseProxied(app.wsgi_app)
@@ -562,6 +632,7 @@ class Server():
             :return: an access validation wrapper taking a request as parameter
             and performing the request validation
             """
+
             def f(request):
                 """
                 Creates a custom wsgi and Flask request context in order to be
@@ -575,6 +646,7 @@ class Server():
                     app.session_interface.open_session(app, request)
                     loginManager.reload_user()
                     validator(request)
+
             return f
 
         self._tornado_app = Application(self._router.urls + [
@@ -583,21 +655,23 @@ class Server():
             #   {"path": s.getBaseFolder("timelapse"),
             #   "as_attachment": True}),
             (r"/downloads/files/local/([^/]*\.(gco|gcode))",
-                LargeResponseHandler,
-                {"path": s.getBaseFolder("uploads"), "as_attachment": True}),
-            (r"/downloads/logs/([^/]*)",
-                LargeResponseHandler,
-                {"path": s.getBaseFolder("logs"),
-                 "as_attachment": True,
-                 "access_validation": access_validation_factory(admin_validator)}),
+             LargeResponseHandler, {
+                 "path": s.getBaseFolder("uploads"),
+                 "as_attachment": True
+             }),
+            (r"/downloads/logs/([^/]*)", LargeResponseHandler, {
+                "path": s.getBaseFolder("logs"),
+                "as_attachment": True,
+                "access_validation": access_validation_factory(admin_validator)
+            }),
             #(r"/downloads/camera/current",
             #   UrlForwardHandler,
             #   {"url": s.get(["webcam", "snapshot"]),
             #   "as_attachment": True,
             #   "access_validation": access_validation_factory(user_validator)}),
-            (r".*",
-                FallbackHandler,
-                {"fallback": WSGIContainer(app.wsgi_app)})
+            (r".*", FallbackHandler, {
+                "fallback": WSGIContainer(app.wsgi_app)
+            })
         ])
         self._server = HTTPServer(
             self._tornado_app,
@@ -608,7 +682,8 @@ class Server():
 
         eventManager.fire(events.Events.STARTUP)
         if s.getBoolean(["serial", "autoconnect"]):
-            (port, baudrate) = s.get(["serial", "port"]), s.getInt(["serial", "baudrate"])
+            (port, baudrate) = s.get(["serial", "port"]), s.getInt(
+                ["serial", "baudrate"])
             connectionOptions = printer.getConnectionOptions()
             if port in connectionOptions["ports"]:
                 printer.connect(port, baudrate)
@@ -616,8 +691,8 @@ class Server():
         usbdetector = EtherBoxHandler()
         # start up watchdogs
         observer = Observer()
-        observer.schedule(
-            UploadCleanupWatchdogHandler(), s.getBaseFolder("uploads"))
+        observer.schedule(UploadCleanupWatchdogHandler(),
+                          s.getBaseFolder("uploads"))
         observer.start()
 
         try:
@@ -656,7 +731,8 @@ class Server():
             "version": 1,
             "formatters": {
                 "simple": {
-                    "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+                    "format":
+                    "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
                 }
             },
             "handlers": {
@@ -667,22 +743,33 @@ class Server():
                     "stream": "ext://sys.stdout"
                 },
                 "file": {
-                    "class": "logging.handlers.TimedRotatingFileHandler",
-                    "level": "DEBUG",
-                    "formatter": "simple",
-                    "when": "D",
-                    "backupCount": 5,
-                    "filename": os.path.join(
-                        settings().getBaseFolder("logs"), "astrobox.log")
+                    "class":
+                    "logging.handlers.TimedRotatingFileHandler",
+                    "level":
+                    "DEBUG",
+                    "formatter":
+                    "simple",
+                    "when":
+                    "D",
+                    "backupCount":
+                    5,
+                    "filename":
+                    os.path.join(settings().getBaseFolder("logs"),
+                                 "astrobox.log")
                 },
                 "serialFile": {
-                    "class": "logging.handlers.RotatingFileHandler",
-                    "level": "DEBUG",
-                    "formatter": "simple",
+                    "class":
+                    "logging.handlers.RotatingFileHandler",
+                    "level":
+                    "DEBUG",
+                    "formatter":
+                    "simple",
                     # let's limit the serial log to 2MB in size
-                    "maxBytes": 2 * 1024 * 1024,
-                    "filename": os.path.join(
-                        settings().getBaseFolder("logs"), "serial.log")
+                    "maxBytes":
+                    2 * 1024 * 1024,
+                    "filename":
+                    os.path.join(settings().getBaseFolder("logs"),
+                                 "serial.log")
                 }
             },
             "loggers": {
@@ -737,6 +824,7 @@ class Server():
 
 from flask import url_for
 
+
 def has_no_empty_params(rule):
     defaults = rule.defaults if rule.defaults is not None else ()
     arguments = rule.arguments if rule.arguments is not None else ()
@@ -754,12 +842,16 @@ def site_map():
             links.append((url, rule.endpoint))
     # links is now a list of url, endpoint tuples
 
-    ## jsonified
+    # jsonified
     # return Response(json.dumps(dict(links)), mimetype='application/json')
 
     # using template
-    sites = ["http://0.0.0.0:5000" + url + " : " + view + "\n" for url, view in dict(links).items()]
-    return render_template('site-map.html', sites = sites)
+    sites = [
+        "http://0.0.0.0:5000" + url + " : " + view + "\n"
+        for url, view in dict(links).items()
+    ]
+    return render_template('site-map.html', sites=sites)
+
 
 if __name__ == "__main__":
     octoprint = Server()
