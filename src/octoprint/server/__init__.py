@@ -444,7 +444,11 @@ class Server():
         if not s.getBoolean(['api', 'regenerate']) and s.getString(['api', 'key']):
             UI_API_KEY = s.getString(['api', 'key'])
         else:
-            UI_API_KEY = ''.join('%02X' % ord(z) for z in uuid.uuid4().bytes)
+            # UI_API_KEY = ''.join('%02X' % ord(z) for z in uuid.uuid4().bytes)
+
+            # commented above random UUID logic
+            # hardcoded to resolve api key dependency while cross-origin things
+            UI_API_KEY = 'E539C79C8AE0454689F2057B166BAD8E'
 
         # then initialize logging
         self._initLogging(self._debug, self._logConf)
