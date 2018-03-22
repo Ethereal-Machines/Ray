@@ -39,3 +39,8 @@ src/astroprint/static/css/scss/*.css
 # src/astroprint/static/css/gen/*.css
 src/astroprint/static/css/gen/*.css.map
 # src/astroprint/static/js/gen/*.js
+
+
+# vscode
+.vscode/*
+site-map.txt
