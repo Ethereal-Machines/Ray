@@ -130,73 +130,73 @@ def index():
 
         # Toran's changes
         # jsonifying for exposing the view as REST API
-        return Response(
-            json.dumps(
-                {
-                    'debug': debug,
-                    'uiApiKey': UI_API_KEY,
-                    'version': VERSION,
-                    'commit': swm.commit,
-                    'variantData': variantManager().data,
-                    'astroboxName': networkManager().getHostname(),
-                    'checkSoftware': swm.shouldCheckForNew,
-                    'settings': s,  # class instance
-                    'wsToken': wstoken
-                },
-                sort_keys=False,
-                indent=4),
-                mimetype='application/json',
-                headers={'Access-Control-Allow-Origin': '*'})
+        # return Response(
+        #     json.dumps(
+        #         {
+        #             'debug': debug,
+        #             'uiApiKey': UI_API_KEY,
+        #             'version': VERSION,
+        #             'commit': swm.commit,
+        #             'variantData': variantManager().data,
+        #             'astroboxName': networkManager().getHostname(),
+        #             'checkSoftware': swm.shouldCheckForNew,
+        #             'settings': s,  # class instance
+        #             'wsToken': wstoken
+        #         },
+        #         sort_keys=False,
+        #         indent=4),
+        #         mimetype='application/json',
+        #         headers={'Access-Control-Allow-Origin': '*'})
 
-        # return render_template(
-        #     "setup.jinja2",
-        #     debug=debug,
-        #     uiApiKey=UI_API_KEY,
-        #     version=VERSION,
-        #     commit=swm.commit,
-        #     variantData=variantManager().data,
-        #     astroboxName=networkManager().getHostname(),
-        #     checkSoftware=swm.shouldCheckForNew,
-        #     settings=s,
-        #     wsToken=wstoken,
-        # )
+        return render_template(
+            "setup.jinja2",
+            debug=debug,
+            uiApiKey=UI_API_KEY,
+            version=VERSION,
+            commit=swm.commit,
+            variantData=variantManager().data,
+            astroboxName=networkManager().getHostname(),
+            checkSoftware=swm.shouldCheckForNew,
+            settings=s,
+            wsToken=wstoken,
+        )
 
     elif softwareManager.updatingRelease or softwareManager.forceUpdateInfo:
         # Toran's changes
         # jsonifying for exposing the view as REST API
-        return Response(
-            json.dumps(
-                {
-                    'uiApiKey': UI_API_KEY,
-                    'showForceUpdate': softwareManager.forceUpdateInfo != None,
-                    'releaseInfo': softwareManager.updatingRelease or softwareManager.forceUpdateInfo,
-                    'lastCompletionPercent': softwareManager.lastCompletionPercent,
-                    'lastMessage': softwareManager.lastMessage,
-                    'variantData': variantManager().data,  # dict
-                    'astroboxName': networkManager().getHostname(),
-                    'wsToken':
-                    create_ws_token(
-                        userManager.findUser(loggedUsername).publicKey
-                        if loggedUsername else None)
-                },
-                sort_keys=False,
-                indent=4),
-                mimetype='application/json',
-                headers = {'Access-Control-Allow-Origin': '*'})
+        # return Response(
+        #     json.dumps(
+        #         {
+        #             'uiApiKey': UI_API_KEY,
+        #             'showForceUpdate': softwareManager.forceUpdateInfo != None,
+        #             'releaseInfo': softwareManager.updatingRelease or softwareManager.forceUpdateInfo,
+        #             'lastCompletionPercent': softwareManager.lastCompletionPercent,
+        #             'lastMessage': softwareManager.lastMessage,
+        #             'variantData': variantManager().data,  # dict
+        #             'astroboxName': networkManager().getHostname(),
+        #             'wsToken':
+        #             create_ws_token(
+        #                 userManager.findUser(loggedUsername).publicKey
+        #                 if loggedUsername else None)
+        #         },
+        #         sort_keys=False,
+        #         indent=4),
+        #         mimetype='application/json',
+        #         headers = {'Access-Control-Allow-Origin': '*'})
 
-        # return render_template(
-        #     "updating.jinja2",
-        #     uiApiKey=UI_API_KEY,
-        #     showForceUpdate=softwareManager.forceUpdateInfo != None,
-        #     releaseInfo=softwareManager.updatingRelease
-        #     or softwareManager.forceUpdateInfo,
-        #     lastCompletionPercent=softwareManager.lastCompletionPercent,
-        #     lastMessage=softwareManager.lastMessage,
-        #     variantData=variantManager().data,
-        #     astroboxName=networkManager().getHostname(),
-        #     wsToken=create_ws_token(
-        #         userManager.findUser(loggedUsername).publicKey
-        #         if loggedUsername else None))
+        return render_template(
+            "updating.jinja2",
+            uiApiKey=UI_API_KEY,
+            showForceUpdate=softwareManager.forceUpdateInfo != None,
+            releaseInfo=softwareManager.updatingRelease
+            or softwareManager.forceUpdateInfo,
+            lastCompletionPercent=softwareManager.lastCompletionPercent,
+            lastMessage=softwareManager.lastMessage,
+            variantData=variantManager().data,
+            astroboxName=networkManager().getHostname(),
+            wsToken=create_ws_token(
+                userManager.findUser(loggedUsername).publicKey
+                if loggedUsername else None))
 
     else:
         pm = printerManager()
@@ -210,59 +210,59 @@ def index():
 
         # Toran's changes
         # jsonifying for exposing the view as REST API
-        return Response(
-            json.dumps(
-                {
-                    'user_email': loggedUsername,
-                    'show_bad_shutdown': swm.wasBadShutdown and not swm.badShutdownShown,
-                    'version': VERSION,
-                    'commit': swm.commit,
-                    'printing': printing,
-                    'paused': paused,
-                    'online': online,
-                    'print_capture': cm.timelapseInfo if printing or paused else None,
-                    'printer_profile': printerProfileManager().data,
-                    'uiApiKey': UI_API_KEY,
-                    'astroboxName': nm.getHostname(),
-                    'variantData': variantManager().data,  # dict
-                    'checkSoftware': swm.shouldCheckForNew,
-                    'serialLogActive': s.getBoolean(['serial', 'log']),
-                    'cameraManager': cm.name,
-                    'wsToken': create_ws_token(
-                        userManager.findUser(loggedUsername).publicKey \
-                        if loggedUsername else None),
-                },
-                sort_keys=False,
-                indent=4
-            ),
-            mimetype='application/json',
-            headers = {'Access-Control-Allow-Origin': '*'}
+        # return Response(
+        #     json.dumps(
+        #         {
+        #             'user_email': loggedUsername,
+        #             'show_bad_shutdown': swm.wasBadShutdown and not swm.badShutdownShown,
+        #             'version': VERSION,
+        #             'commit': swm.commit,
+        #             'printing': printing,
+        #             'paused': paused,
+        #             'online': online,
+        #             'print_capture': cm.timelapseInfo if printing or paused else None,
+        #             'printer_profile': printerProfileManager().data,
+        #             'uiApiKey': UI_API_KEY,
+        #             'astroboxName': nm.getHostname(),
+        #             'variantData': variantManager().data,  # dict
+        #             'checkSoftware': swm.shouldCheckForNew,
+        #             'serialLogActive': s.getBoolean(['serial', 'log']),
+        #             'cameraManager': cm.name,
+        #             'wsToken': create_ws_token(
+        #                 userManager.findUser(loggedUsername).publicKey \
+        #                 if loggedUsername else None),
+        #         },
+        #         sort_keys=False,
+        #         indent=4
+        #     ),
+        #     mimetype='application/json',
+        #     headers = {'Access-Control-Allow-Origin': '*'}
             
-        )
-
-
-
-        # return render_template(
-        #     "app.jinja2",
-        #     user_email=loggedUsername,
-        #     show_bad_shutdown=swm.wasBadShutdown and not swm.badShutdownShown,
-        #     version=VERSION,
-        #     commit=swm.commit,
-        #     printing=printing,
-        #     paused=paused,
-        #     online=online,
-        #     print_capture=cm.timelapseInfo if printing or paused else None,
-        #     printer_profile=printerProfileManager().data,
-        #     uiApiKey=UI_API_KEY,
-        #     astroboxName=nm.getHostname(),
-        #     variantData=variantManager().data, # dict
-        #     checkSoftware=swm.shouldCheckForNew,
-        #     serialLogActive=s.getBoolean(['serial', 'log']),
-        #     cameraManager=cm.name,
-        #     wsToken=create_ws_token(
-        #         userManager.findUser(loggedUsername).publicKey \
-        #         if loggedUsername else None)
         # )
+
+
+
+        return render_template(
+            "app.jinja2",
+            user_email=loggedUsername,
+            show_bad_shutdown=swm.wasBadShutdown and not swm.badShutdownShown,
+            version=VERSION,
+            commit=swm.commit,
+            printing=printing,
+            paused=paused,
+            online=online,
+            print_capture=cm.timelapseInfo if printing or paused else None,
+            printer_profile=printerProfileManager().data,
+            uiApiKey=UI_API_KEY,
+            astroboxName=nm.getHostname(),
+            variantData=variantManager().data, # dict
+            checkSoftware=swm.shouldCheckForNew,
+            serialLogActive=s.getBoolean(['serial', 'log']),
+            cameraManager=cm.name,
+            wsToken=create_ws_token(
+                userManager.findUser(loggedUsername).publicKey \
+                if loggedUsername else None)
+        )
 
 
 @app.route("/about")
