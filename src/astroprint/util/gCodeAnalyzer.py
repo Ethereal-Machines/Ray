@@ -26,6 +26,8 @@ class GCodeAnalyzer(thread):
         self.layerHeight = None
         self.totalFilament = None
         self.parent = parent
+        ## Toran's changes
+        return
 
     def makeCalcs(self):
         self.start()
@@ -103,3 +105,5 @@ class GCodeAnalyzer(thread):
                 parameters['filename'] = self.filename
 
                 self.exceptionCallback(parameters)
+        ## Toran's changes
+        return
