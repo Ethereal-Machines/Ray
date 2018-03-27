@@ -70,6 +70,22 @@ def autoBedLevelCommand():
     pm.autoBedLevel()
     return NO_CONTENT
 
+## Code added by: Toran Sahu (Ethereal Machines)
+## For testing purpose
+@api.route("/printer/custom/command", methods=["POST"])
+@restricted_access
+def customCommands():
+    pm = printerManager() 
+    data = request.json
+    if data is None:
+        print "Data is None!!!"
+        return make_response("Data is None!!!")
+    if "commands" in data.keys():
+        commands = data['commands']
+    pm.custom(commands)
+    print "Command executed successfully."
+    return make_response("Command executed successfully.")
+
 #~~ Tool
 
 @api.route("/printer/tool", methods=["POST"])
