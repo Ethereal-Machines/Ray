@@ -75,6 +75,13 @@ def autoBedLevelCommand():
 @api.route("/printer/custom/command", methods=["POST"])
 @restricted_access
 def customCommands():
+    """
+    Execute commands received from client.
+
+    JSON should have key: 'commands' of type:
+        - list (for multiple commnads) or
+        - string (for single command)
+    """
     pm = printerManager() 
     data = request.json
     if data is None:
