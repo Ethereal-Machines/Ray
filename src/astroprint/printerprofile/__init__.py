@@ -37,7 +37,8 @@ class PrinterProfileManager(object):
             'max_nozzle_temp': 280,
             'max_bed_temp': 140,
             'heated_bed': True,
-            'cancel_gcode': ['G28 X0 Y0'],
+            ## Code edited by: Toran Sahu (Ethereal Machines)
+            'cancel_gcode': ['G28 X0 Y0 Z0 M104 S0'], # Added Z0, for Z-Homing on print cancel
             'invert_z': False
         }
 
