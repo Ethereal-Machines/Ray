@@ -71,7 +71,11 @@ class PrinterMarlin(Printer):
 
     def disableMotorsAndHeater(self):
         self.setTemperature('bed', 0)
-        self.setTemperature('tool', 0)
+        ## Code edited by: Toran Sahu
+        # self.setTemperature('tool', 0) # type='tool' is invalid parameter
+        self.setTemperature('tool0', 0) # passing tool0, 0 for extruder 1
+        self.setTemperature('tool1', 0) # passing tool1, 0 for extruder 2
+        
         # Motors Off, Fan off
         self.commands(["M84", "M106 S0"])
 
@@ -188,16 +192,22 @@ class PrinterMarlin(Printer):
                 movementSpeed[axis]
             ), "G90"]
         )
-
+    
     def home(self, axes):
         self.commands(
             ["G91", "G28 %s" % " ".join(
                 map(lambda x: "%s0" % x.upper(), axes)), "G90"])
 
+
     # Ethereal Automatic Bed Levelling
     def autoBedLevel(self):
         self.commands(["G28", "G29"])
         self.command("B0")
+
+    ## Code added by: Toran Sahu (Ethereal Machines)
+    ## For testing purpose
+    def custom(self, command_list):
+        self.commands(command_list)
 
     def extrude(self, tool, amount, speed=None):
         if self._comm:
@@ -314,7 +324,8 @@ class PrinterMarlin(Printer):
             if len(c) > 0:
                 cancelCommands.append(c)
 
-        self.commands((cancelCommands or ['G28 X Y']) + ['M110 N0'])
+        ## Code edited by: Toran Sahu (Ethereal Machines)
+        self.commands((cancelCommands or ['G28 X Y Z']) + ['M110 N0']) # Added Z, for Z-Homing on print cancel
 
         if disableMotorsAndHeater:
             self.disableMotorsAndHeater()
