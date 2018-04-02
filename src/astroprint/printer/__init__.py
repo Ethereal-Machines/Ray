@@ -650,16 +650,13 @@ class Printer(object):
 
     def getStateString(self):
         raise NotImplementedError()
-    
-    def getPrintTime(self):
-		## Toran's changes
-		return ( time.time() - self._timeStarted - self._secsPaused ) if self.isPrinting() else 0
-		# raise NotImplementedError()
 
+    def getPrintTime(self):
+		raise NotImplementedError()
+
+    ## Code added by: Toran Sahu (Ethereal Machines)
     def getCurrentLayer(self):
-	    ## Toran's changes
-		return max(1, self._currentLayer)
-		# raise NotImplementedError()
+		raise NotImplementedError()
 
     def getConsumedFilament(self):
         raise NotImplementedError()
