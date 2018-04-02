@@ -237,7 +237,7 @@ def index():
         #     ),
         #     mimetype='application/json',
         #     headers = {'Access-Control-Allow-Origin': '*'}
-            
+
         # )
 
 
@@ -513,7 +513,7 @@ class Server():
                 ['api', 'key']):
             UI_API_KEY = s.getString(['api', 'key'])
         else:
-            # Toran's changes
+            # Code edited by: Toran Sahu (Ethereal Machines)
             # UI_API_KEY = ''.join('%02X' % ord(z) for z in uuid.uuid4().bytes)
 
             # commented above random UUID logic
