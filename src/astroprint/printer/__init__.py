@@ -252,7 +252,11 @@ class Printer(object):
                 fileDataProps = fileData["gcodeAnalysis"].keys()
                 if "print_time" in fileDataProps:
                     estimatedPrintTime = fileData["gcodeAnalysis"]["print_time"]
-                if "filament_lenght" in fileDataProps:
+                ## Code edited by: Toran Sahu (toran.sahu@yahoo.com)
+                # rectified typo:
+                # if "filament_lenght" in fileDataProps:
+                # to
+                if "filament_length" in fileDataProps:
                     filament = fileData["gcodeAnalysis"]["filament_length"]
                 if "layer_count" in fileDataProps:
                     layerCount = fileData["gcodeAnalysis"]['layer_count']
