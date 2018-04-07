@@ -265,6 +265,7 @@ var SocketData = Backbone.Model.extend({
             break;
 
             case 'usb_status':
+              console.log('Usb event is registered');
               this.set('usb_status', payload);
             break;
 
