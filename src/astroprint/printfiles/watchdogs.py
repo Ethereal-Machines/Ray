@@ -87,8 +87,18 @@ class EtherBoxHandler():
     def on_created(self):
         ''' Called when the media is inserted '''
         s = settings()
-        usb_path = s.get(['usb', 'folder'])
-        time.sleep(3)
+        # Code Edited by: Toran Sahu <toran.sahu@yahoo.com>
+        # Added logic to get the correct usb mount point
+        # Overriding usb_path = s.get(['usb', 'folder'])
+        time.sleep(5)  # waiting for 5 sec, HW event taking time
+        # usb_path = s.get(['usb', 'folder'])
+        usb_path = 'None'
+        expected_paths = ['/media/usb0/', '/media/usb1/', '/media/usb2/', '/media/usb3/', '/media/usb4/']
+        for path in expected_paths:
+            if len(os.listdir(path)) > 0:
+                usb_path = path
+                break
+        self.logger.info("USB found at " + usb_path)
         gcode_files = self._get_gcode_files(usb_path)
         s.set(['usb', 'filelist'], gcode_files)
 
