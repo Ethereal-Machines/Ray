@@ -96,7 +96,7 @@ class EtherBoxHandler():
         time.sleep(5)  # waiting for 5 sec, HW event taking time
         # usb_path = s.get(['usb', 'folder'])
         usb_path = 'None'
-        expected_paths = ['/media/usb0/', '/media/usb1/', '/media/usb2/', '/media/usb3/', '/media/usb4/']
+        expected_paths = ['/media/usb' + str(usb_id) for usb_id in range(0, 8)]
         for path in expected_paths:
             if len(os.listdir(path)) > 0:
                 usb_path = path
