@@ -75,10 +75,13 @@ class EtherBoxHandler():
         for parent, d, pack in os.walk(directory):
             for files in pack:
                 curr_file = {}
+                # Code edited by: Toran Sahu <toran.sahu@yahoo.com>
+                # Searching for .gcode files only
                 if (
                         files.endswith('.gcode')
-                        or files.endswith('.g')
-                        or files.endswith('.txt')):
+                        # or files.endswith('.g')
+                        # or files.endswith('.txt')
+                    ):
                     curr_file['fullpath'] = os.path.abspath(os.path.join(parent, files))
                     curr_file['filename'] = files
                     allfiles.append(curr_file)
