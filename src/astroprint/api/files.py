@@ -453,25 +453,25 @@ def usbprintFileCommand():
 # @api.route("/files/printusb")
 # @api.route("/files/printusb/")
 # def print_from_usb():
-# filename = flask.request.args.get('futurepath')
-# if not os.path.exists(filepath):
-# return flask.jsonify({
-# 'status': 'failed',
-# 'msg': 'File not there, did the user unplug the usb?'
-# })
+    # filename = flask.request.args.get('futurepath')
+    # if not os.path.exists(filepath):
+        # return flask.jsonify({
+                # 'status': 'failed',
+                # 'msg': 'File not there, did the user unplug the usb?'
+        # })
 
-# # print it
-# pm = printerManager()
-# if (not pm.isOperational()) or pm.isPaused() or pm.isPrinting():
-# return make_response("Printer is either not operational or is busy")
+    # # print it
+    # pm = printerManager()
+    # if (not pm.isOperational()) or pm.isPaused() or pm.isPrinting():
+        # return make_response("Printer is either not operational or is busy")
 
-# return flask.jsonify({
-# 'status': 'success',
-# 'msg': 'File copied',
-# })
+    # return flask.jsonify({
+            # 'status': 'success',
+            # 'msg': 'File copied',
+    # })
 
 
-## Code added by: Toran Sahu(Ethreal Machines)
+## Code added by: Toran Sahu <toran.sahu@yahoo.com>
 # AIM: Get data (Added by slicing engine) directly from gcode file
 
 @api.route("/gcode_data/<string:origin>/<path:filename>", methods=["GET"])
