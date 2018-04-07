@@ -377,10 +377,7 @@ def copy_from_usb():
     filename = flask.request.args.get('filename')
     filepath = flask.request.args.get('filepath')
 
-    # Code Edited by: Toran Sahu <toran.sahu@yahoo.com>
-    # enhanced the file existence check logic
-    # if not os.path.exists(filepath):
-    if not os.path.isfile(os.path.join(filepath, filename)):
+    if not os.path.exists(filepath):
         return flask.jsonify({
             'status':
             'failed',
