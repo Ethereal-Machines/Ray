@@ -542,6 +542,11 @@ class MachineCom(object):
                 # send the first enqueued command, this will in turn resume
                 # file reading when queue is empty
                 self._sendCommand(self._commandQueue.pop(), True)
+
+                # code edited by: Toran Sahu <toran.sahu@yahoo.com>
+                # start fan with 100% on print resume
+                self.sendCommand("M106")  # Start fans
+
             else:
                 self._logger.warn(
                     'There was no stored position on resume command')
