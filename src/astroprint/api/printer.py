@@ -79,17 +79,17 @@ def customCommands():
     Execute commands received from client.
 
     JSON should have key: 'commands' of type:
-        - list (for multiple commnads) or
-        - string (for single command)
+        - list (for single or multiple commnads)
     """
-    pm = printerManager() 
+    pm = printerManager()
     data = request.json
     if data is None:
         print "Data is None!!!"
         return make_response("Data is None!!!")
     if "commands" in data.keys():
         commands = data['commands']
-    pm.custom(commands)
+        pm.exec_custom_command(commands)
+    # pm.custom(commands)
     print "Command executed successfully."
     return make_response("Command executed successfully.")
 
