@@ -75,7 +75,7 @@ class PrinterMarlin(Printer):
         # self.setTemperature('tool', 0) # type='tool' is invalid parameter
         self.setTemperature('tool0', 0) # passing tool0, 0 for extruder 1
         self.setTemperature('tool1', 0) # passing tool1, 0 for extruder 2
-        
+
         # Motors Off, Fan off
         self.commands(["M84", "M106 S0"])
 
@@ -197,7 +197,7 @@ class PrinterMarlin(Printer):
                 movementSpeed[axis]
             ), "G90"]
         )
-    
+
     def home(self, axes):
         self.commands(
             ["G91", "G28 %s" % " ".join(
@@ -211,7 +211,7 @@ class PrinterMarlin(Printer):
 
     ## Code added by: Toran Sahu (Ethereal Machines)
     ## For testing purpose
-    def custom(self, command_list):
+    def exec_custom_command(self, command_list):
         self.commands(command_list)
 
     def extrude(self, tool, amount, speed=None):
