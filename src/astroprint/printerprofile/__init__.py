@@ -39,7 +39,11 @@ class PrinterProfileManager(object):
             'heated_bed': True,
             ## Code edited by: Toran Sahu (Ethereal Machines)
             'cancel_gcode': ['G28 X0 Y0 Z0 M104 S0'], # Added Z0, for Z-Homing on print cancel
-            'invert_z': False
+            'invert_z': False,
+            ## Code edited by: Kanishka M Madhuni (Ethereal Machines)
+            'nozzle_1_default_temp': 210,
+            'nozzle_2_default_temp': 210,
+            'bed_default_temp': 75,
         }
 
         if not os.path.isfile(self._infoFile):
