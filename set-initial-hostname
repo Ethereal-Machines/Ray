@@ -6,8 +6,12 @@ import argparse
 
 parser = argparse.ArgumentParser(prog="set-initial-hostname")
 
-parser.add_argument("-c", "--config", action="store", dest="config",
-						help="Specify the astrobox config file.")
+parser.add_argument(
+    "-c",
+    "--config",
+    action="store",
+    dest="config",
+    help="Specify the astrobox config file.")
 
 args = parser.parse_args()
 
@@ -20,20 +24,21 @@ from octoprint.settings import settings
 
 _settings = settings(init=True, basedir=None, configfile=args.config)
 
-defaultHostnameFile = "%s/default-hostname" % os.path.dirname(_settings._configfile)
+defaultHostnameFile = "%s/default-hostname" % os.path.dirname(
+    _settings._configfile)
 
 if not os.path.exists(defaultHostnameFile):
-	import random
+    import random
 
-	from astroprint.variant import variantManager
-	from astroprint.network.debian import DebianNetworkManager
+    from astroprint.variant import variantManager
+    from astroprint.network.debian import DebianNetworkManager
 
-	rmdId = random.randint(0, 9999) 
+    rmdId = random.randint(0, 9999)
 
-	defaultHostname = '%s-%04d' % (variantManager().data['networkName'], rmdId)
+    defaultHostname = '%s-%04d' % (variantManager().data['networkName'], rmdId)
 
-	with open(defaultHostnameFile, 'w') as f:
-		f.write(defaultHostname)
+    with open(defaultHostnameFile, 'w') as f:
+        f.write(defaultHostname)
 
-	DebianNetworkManager().setHostname(defaultHostname)
-	print "hostname set to %s" % defaultHostname
+    DebianNetworkManager().setHostname(defaultHostname)
+    print "hostname set to %s" % defaultHostname
