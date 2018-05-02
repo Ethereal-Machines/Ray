@@ -28,7 +28,7 @@ import re
 from tempfile import mkstemp
 from sys import platform as platformStr
 
-from flask.ext.login import current_user
+from flask_login import current_user
 
 from octoprint.settings import settings
 from octoprint.events import eventManager, Events
