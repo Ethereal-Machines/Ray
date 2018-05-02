@@ -815,7 +815,9 @@ class Server():
         networkManagerShutdown()
 
 
-# toran's changes
+##
+# Code Added By: Toran Sahu <toran.sahu@yahoo.com>
+##
 
 from flask import url_for
 
@@ -828,6 +830,7 @@ def has_no_empty_params(rule):
 
 @app.route("/site-map")
 def site_map():
+    """Render template with list of all the api endpoints in the project."""
     links = []
     for rule in app.url_map.iter_rules():
         # Filter out rules we can't navigate to in a browser
@@ -847,6 +850,11 @@ def site_map():
     ]
     return render_template('site-map.html', sites=sites)
 
+
+@app.route("/first-run", methods=["GET", ])
+def first_run():
+    """Return boolean value of firstRun from config."""
+    return Response(json.dumps({'first_run': s.getBoolean(["server", "firstRun"])}))
 
 if __name__ == "__main__":
     octoprint = Server()
