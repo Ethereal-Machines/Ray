@@ -9,12 +9,18 @@ import tornado.wsgi
 from ext.sockjs.tornado import SockJSRouter
 from flask import Flask, render_template, send_from_directory, make_response, Response, request, abort
 from flask import Blueprint, request, jsonify, abort, current_app, session, make_response
-from flask.ext.login import LoginManager, current_user, logout_user, login_user
-from flask.ext.principal import (Principal, Permission, RoleNeed,
+# from flask.ext.login import LoginManager, current_user, logout_user, login_user
+from flask_login import LoginManager, current_user, logout_user, login_user
+# from flask.ext.principal import (Principal, Permission, RoleNeed,
+#                                  identity_loaded, UserNeed, Identity,
+#                                  identity_changed)
+from flask_principal import (Principal, Permission, RoleNeed,
                                  identity_loaded, UserNeed, Identity,
                                  identity_changed)
-from flask.ext.compress import Compress
-from flask.ext.assets import Environment
+# from flask.ext.compress import Compress
+from flask_compress import Compress
+# from flask.ext.assets import Environment
+from flask_assets import Environment
 from watchdog.observers import Observer
 from sys import platform
 
@@ -854,7 +860,14 @@ def site_map():
 @app.route("/first-run", methods=["GET", ])
 def first_run():
     """Return boolean value of firstRun from config."""
-    return Response(json.dumps({'first_run': s.getBoolean(["server", "firstRun"])}))
+    s = settings()
+    return Response(json.dumps({
+            'first_run': s.getBoolean(["server", "firstRun"])
+        }),
+        mimetype='application/json',
+        headers={'Access-Control-Allow-Origin': '*'}
+        if settings().getBoolean(['api', 'allowCrossOrigin']) else None)
+
 
 if __name__ == "__main__":
     octoprint = Server()
