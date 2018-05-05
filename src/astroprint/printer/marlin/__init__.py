@@ -262,6 +262,12 @@ class PrinterMarlin(Printer):
                 )
             )
 
+    ##
+    # Comment Added by: Toran Sahu <toran.sahu@yahoo.com>
+    # TODO: use comm._gcode_M109 & _gcode_M190 to set temp in setTemperature; add logic to set value of {state: {heatingUp: <true/false>}}
+    # refer _monitor from comm.py, pm.mcHeatingUpUpdate, mc._heatingUp, mc._oksAfterHeatingUp where mc is obj of comm.MachineCom
+    ##
+
     def selectFile(self, filename, sd, printAfterSelect=False):
         if not super(PrinterMarlin, self).selectFile(
                                           filename, sd, printAfterSelect):

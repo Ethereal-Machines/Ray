@@ -100,6 +100,7 @@ def customCommands():
 def printerToolCommand():
     pm = printerManager()
 
+
     if not pm.isOperational():
         return make_response("Printer is not operational", 409)
 
@@ -141,6 +142,19 @@ def printerToolCommand():
         # perform the actual temperature commands
         for tool in validated_values.keys():
             pm.setTemperature(tool, validated_values[tool])
+
+        # update heatUp state
+        # if sum(validated_values.values()) <= 0:
+        #     pm.mcHeatingUpUpdate(False)
+        # else:
+        #     pm.mcHeatingUpUpdate(True)
+
+        ##
+        # Comment Added by: Toran Sahu <toran.sahu@yahoo.com>
+        # above commented logic fails
+        # TODO: use comm._gcode_M109 & _gcode_M190 to set temp in setTemperature; add logic to set value of {state: {heatingUp: <true/false>}}
+        # refer _monitor from comm.py, pm.mcHeatingUpUpdate, mc._heatingUp, mc._oksAfterHeatingUp where mc is obj of comm.MachineCom
+        ##
 
     ##~~ extrusion
     elif command == "extrude":
